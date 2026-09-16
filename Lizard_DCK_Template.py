@@ -1139,9 +1139,9 @@ AREA395_S@surface   ! 2 surface area
 
 INPUTS 14
 TAir_@aname ! TB1_S@surface		! [unconnected] TB1 - boundary temperature on side 1    ! TSTAR_A1 ! 
-Tamb ! TB2_S@surface		! [unconnected] TB2 - boundary temperature on side 2 
+TB2_S@surface ! TB2_S@surface		! [unconnected] TB2 - boundary temperature on side 2 
 RH_@aname ! RH1_S@surface       ! [unconnected] RH1 - relative humidity on side 1  ! 
-RH_amb ! RH2_S@surface		! [unconnected] RH2 - relative humidity on side 2 
+RH2_S@surface ! RH2_S@surface		! [unconnected] RH2 - relative humidity on side 2 
 hconv1_S@surface 	! [unconnected] h1 - heat transfer coefficent on side 1
 hconv2_S@surface	! [unconnected] h2 - heat transfer coefficent on side 2
 qWG1_NoRad_S@surface	    ! [unconnected] qWG1 - energy gain on side 1 ! qWG1_NoRad_S@surface
