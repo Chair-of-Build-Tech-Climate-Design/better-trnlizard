@@ -1493,6 +1493,25 @@ def printbuibotpart(dataset):
                     else:
                         addouttempllines = addouttempllines + '{1}= {0}'.format(ntype,stri)
                     addouttempllines = addouttempllines + ' : {}\r\n'.format(output_item.Ntype[ni])
+            # Ensure HCONVI (NTYPE 108) output exists for HAMT surfaces (required by Type395 wiring)
+            if len(Airnodes.Ecalsurfaces) > 0:
+                hconvi_covered = []
+                for output_item in Airnodes.Output:
+                    if output_item and output_item.Type == 'SURFACE':
+                        for ni, ntype in enumerate(output_item.NtypesNo):
+                            if str(ntype) == '108':
+                                hconvi_covered.extend([str(s) for s in output_item.SurfaceID])
+                hconvi_missing = [str(s) for s in Airnodes.Ecalsurfaces if str(s) not in hconvi_covered]
+                if hconvi_missing:
+                    if onlyairlinks == 1:
+                        addouttempllines = addouttempllines + ' AIRNODES = {0}\r\n NTYPES '.format(Airnodes.Name)
+                        stri_h = ''
+                    else:
+                        stri_h = '        '
+                    addouttempllines = addouttempllines + '{1}= {0} : SURF = '.format('108', stri_h)
+                    for srf in hconvi_missing:
+                        addouttempllines = addouttempllines + '{0},'.format(srf)
+                    addouttempllines = addouttempllines + '   : HCONVI - pure convective HTC on FRONT (inside)\r\n'
     if trnflowfound == 1 or trnflowfound == -1:
         trnflowtempllines = templates.Trnflow
         pollutants = ''
