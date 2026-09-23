@@ -1384,8 +1384,9 @@ def printData(data_collection,*search_attr):
         for attr_check in search_attr:
             if getattr(item, attr_check) != '':
                 linedefinition=getattr(Template, attr_check)
-                for attr, value in item.__dict__.iteritems():
-                    linedefinition=re.sub('@self.{0}'.format(attr), str(value), linedefinition)
+                for attr, value in sorted(item.__dict__.iteritems(), key=lambda pair: len(pair[0]), reverse=True):
+                    placeholder = '@self.{0}'.format(attr)
+                    linedefinition = linedefinition.replace(placeholder, str(value))
                 datastorage = datastorage + linedefinition
     return datastorage
 #this function runs through the first argument and prints information
@@ -1398,8 +1399,9 @@ def printSingleData(data_collection, *search_attr):
         for attr_check in search_attr:
             if getattr(item, attr_check) != '':
                 linedefinition=getattr(Template, attr_check)
-                for attr, value in item.__dict__.iteritems():
-                    linedefinition=re.sub('@self.{0}'.format(attr), str(value), linedefinition)
+                for attr, value in sorted(item.__dict__.iteritems(), key=lambda pair: len(pair[0]), reverse=True):
+                    placeholder = '@self.{0}'.format(attr)
+                    linedefinition = linedefinition.replace(placeholder, str(value))
                 datastorage = datastorage + linedefinition
     return datastorage
 @timing
