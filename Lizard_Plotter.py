@@ -39,7 +39,6 @@ import scriptcontext as sc
 import os
 import inspect
 import subprocess
-os.chdir(OutputFilePath.encode('string-escape'))
 ctrlout = open(OutputFilePath.encode('string-escape') + 'control.txt', 'w')
 counter = 0
 for item in Settings:
@@ -57,7 +56,7 @@ ctrlout.close()
 #This call is not wating and directly jumps back to rhino after executing the simulation
 if Plot == 1:
     #proc = Popen( analysis_folder + 'plots.py ' + 'control.txt' , shell=True, stdin=None, stdout=None, stderr=None, close_fds=True)
-    proc = Popen( ScriptPath + ' ' + 'control.txt' , shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False)
+    proc = Popen( ScriptPath + ' ' + 'control.txt' , shell=True, stdin=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=False, cwd=OutputFilePath.encode('string-escape'))
     mess, err = proc.communicate() #now wait
     print mess
     print err

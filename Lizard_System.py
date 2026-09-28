@@ -6132,7 +6132,6 @@ LABELS  3
             results_folder = os.path.join(variants_folder, "Results")
             moveResultFiles(sourcefolder = variants_folder, targetfolder = results_folder, extension = ['.prn','.out'])
             # cleanSimulationFolder(sourcefolder = variants_folder, filecontent = ['Qspec.sum','.rad','.BAL','.log','.bld','trn','xyz','.hea','.out','.dc','.oct','.bat'])
-        os.chdir(variants_folder)
         #variables_dict = todict(zone.Airnode[-1].surfaces)
         #starting from here a daylight grid with surfaces can be printed
         if RunDaylightPreprocessing == 1 or WriteDaylightGrid == 1:
