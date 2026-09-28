@@ -1855,11 +1855,18 @@ if Reload == True or ('library' not in sc.sticky[sc.doc.Path].keys()):
     # Starting from here dependent components are reloaded
     #sys.exit()
     sc.sticky[sc.doc.Path]['library'] = library
-    for obj in ghenv.Component.OnPingDocument().Objects:
-        if 'GhPython' in obj.ToString() and obj.Name != "Lizard_Component" and obj.Name != "WindowLibrary" and obj.Name != "Lizard_Construction" and obj.Name != "Lizard_Daily_Schedule"  and obj.Name != "Lizard_Weekly_Schedule" and obj.Name != "Lizard_Active_Slab_Layer" and obj.Name != "Lizard_Layer"  and obj.Name != "Lizard_Layer_Resistance" and obj.Name != "Lizard_Active_CC_Layer" and obj.Name != "Lizard_Annual_Schedule" and obj.Name != "Python Script" and obj.Name != "Lizard_Variant_Definition":
-            obj.ExpireSolution(True)
+    
+    # Only expire dependent components once per reload cycle to prevent infinite loop
+    if not sc.sticky[sc.doc.Path].get('lizard_reload_expired', False):
+        for obj in ghenv.Component.OnPingDocument().Objects:
+            if 'GhPython' in obj.ToString() and obj.Name != "Lizard_Component" and obj.Name != "WindowLibrary" and obj.Name != "Lizard_Construction" and obj.Name != "Lizard_Daily_Schedule"  and obj.Name != "Lizard_Weekly_Schedule" and obj.Name != "Lizard_Active_Slab_Layer" and obj.Name != "Lizard_Layer"  and obj.Name != "Lizard_Layer_Resistance" and obj.Name != "Lizard_Active_CC_Layer" and obj.Name != "Lizard_Annual_Schedule" and obj.Name != "Python Script" and obj.Name != "Lizard_Variant_Definition":
+                obj.ExpireSolution(True)
+        sc.sticky[sc.doc.Path]['lizard_reload_expired'] = True
 else:
     library = sc.sticky[sc.doc.Path]['library']
+    # Reset the reload flag when Reload is False, allowing next True to trigger expiration again
+    if sc.sticky[sc.doc.Path].get('lizard_reload_expired', False):
+        sc.sticky[sc.doc.Path]['lizard_reload_expired'] = False
 #Check layer library and add new layer definition
 if 'AddLayers' in locals() and AddLayers != None:
     delcoll = []
