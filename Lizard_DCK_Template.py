@@ -1224,3 +1224,9 @@ dck_template = new_library
 DckTemplate = dck_template
 dck_template = []
 new_library = []
+
+# Invalidate System component's template cache so next run picks up the new template
+import scriptcontext as sc
+if sc.doc and sc.doc.Path in sc.sticky:
+    if 'Template_dck' in sc.sticky[sc.doc.Path]:
+        del sc.sticky[sc.doc.Path]['Template_dck']
