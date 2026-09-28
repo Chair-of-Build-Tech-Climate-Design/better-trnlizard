@@ -631,8 +631,8 @@ def printbuitoppart(dataset):
                 item2.Name = dummy + '_' + item.Name
                 item2.Radiative = dummyrad + '_' + item.Name
                 item2.Convective = dummycon + '_' + item.Name
-                item2.Humidity   = 'SCHEDULE {0}*{1}'.format(item2.Hum2/item.Areaperperson , item2.Schedule)
-                #item2.Humidity   = '{0}'.format(item2.Hum2/item.Areaperperson)
+                # REGIME SCALE applies the people schedule to all gain channels, including humidity.
+                item2.Humidity   = '{0}'.format(item2.Hum2/item.Areaperperson)
                 lines.append(printsingledata(item2,'Gain'))
                 item2.Name = dummy.replace('_' + item.Name,'')
                 item2.Radiative = dummyrad.replace('_' + item.Name,'')
