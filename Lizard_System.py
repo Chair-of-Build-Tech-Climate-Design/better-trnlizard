@@ -74,6 +74,9 @@ Args:
     t395_udivnum (object): Script variable Thermal System
         Access: item
         Required: True
+    ShowPlotter (bool): True or not connected = draw the TRNSYS online plotters (Type65) while the simulation runs; False = keep them hidden (faster, for batch runs)
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -185,7 +188,9 @@ if "PrintSingleSimFiles" in locals():
 else:
     RunSingleAirnodes = 0
 
-Online = -1   #Type65 online plotters: -1 = hidden (default, keeps hidden batch runs fast), >=0 (e.g. 1) = shown
+Online = 0   #Type65 online plotters (deck constant showonline): 0 = shown, -1 = hidden. Input ShowPlotter: True or not connected = shown, False = hidden (faster batch runs)
+if "ShowPlotter" in locals() and ShowPlotter is not None and str(ShowPlotter).strip().lower() in ("false", "0", "no", "off"):
+    Online = -1
 Turn = 0
 #SystemComponents = [] #define as list input object
 WriteDaylightGrid = 1

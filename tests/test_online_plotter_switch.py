@@ -71,9 +71,13 @@ def execute_source_block(source, start, end, namespace):
     return run_source(block, SYSTEM_SOURCE, namespace)
 
 
-def default_online_switch(system_source):
-    """The module-level default of the online switch, executed from the real source."""
-    namespace = {}
+def default_online_switch(system_source, **inputs):
+    """The module-level online switch, executed from the real source.
+
+    ``inputs`` are the Grasshopper inputs present on the System component (an input port that does not exist is
+    simply absent from the namespace, exactly like in the GhPython script scope).
+    """
+    namespace = dict(inputs)
     execute_source_block(system_source, "Online = ", "Turn = 0", namespace)
     return namespace["Online"]
 
@@ -155,10 +159,11 @@ class OnlinePlotterSwitchTests(unittest.TestCase):
         plotters = "".join(self.print_online(name=name) for name in ONLINE_PLOTTER_NAMES)
         return equation, plotters
 
-    def test_default_deck_hides_online_plotters(self):
+    def test_default_deck_shows_online_plotters_when_showplotter_is_not_connected(self):
+        # ShowPlotter not connected (None) or the port not added at all: the plotters are drawn (showonline = 0)
         equation, plotters = self.render_deck()
 
-        self.assertRegex(equation, r"^showonline = -1\b")
+        self.assertRegex(equation, r"^showonline = 0\b")
         comment = equation.split("!", 1)[1]
         self.assertIn("-1", comment)
         self.assertIn(">=0", comment)
@@ -166,6 +171,29 @@ class OnlinePlotterSwitchTests(unittest.TestCase):
         switches = PARAMETER_9.findall(plotters)
         self.assertEqual(["showonline"] * len(ONLINE_PLOTTER_NAMES), switches)
         for switch in switches:
+            self.assertEqual(0, trnsys_constant(equation, switch))
+
+    def test_showplotter_input_controls_the_switch(self):
+        cases = [
+            ({}, 0),                          # port not added in Grasshopper
+            ({"ShowPlotter": None}, 0),       # port added but not connected
+            ({"ShowPlotter": True}, 0),
+            ({"ShowPlotter": False}, -1),
+            ({"ShowPlotter": "False"}, -1),   # e.g. a panel instead of a boolean toggle
+            ({"ShowPlotter": "true"}, 0),
+            ({"ShowPlotter": 0}, -1),
+            ({"ShowPlotter": 1}, 0),
+        ]
+        for inputs, expected in cases:
+            with self.subTest(inputs=inputs):
+                self.assertEqual(expected, default_online_switch(self.system_source, **inputs))
+
+    def test_showplotter_false_hides_every_online_plotter(self):
+        online = default_online_switch(self.system_source, ShowPlotter=False)
+        equation, plotters = self.render_deck(online)
+
+        self.assertRegex(equation, r"^showonline = -1\b")
+        for switch in PARAMETER_9.findall(plotters):
             self.assertEqual(-1, trnsys_constant(equation, switch))
 
     def test_explicitly_enabled_switch_shows_online_plotters(self):
