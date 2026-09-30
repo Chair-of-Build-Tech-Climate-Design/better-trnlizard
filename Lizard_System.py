@@ -185,7 +185,7 @@ if "PrintSingleSimFiles" in locals():
 else:
     RunSingleAirnodes = 0
 
-Online = 0   #set this value to -1 in order to turn off the visualisation for the online plotters
+Online = -1   #Type65 online plotters: -1 = hidden (default, keeps hidden batch runs fast), >=0 (e.g. 1) = shown
 Turn = 0
 #SystemComponents = [] #define as list input object
 WriteDaylightGrid = 1

@@ -141,7 +141,7 @@ CCONAMB_3    = 0
 CCONAMB_4    = 0 
 CCONAMB_5    = 0
 TRNFLOW      = @trnflow     !* NOT(GT(DAYTIME,8)*LT(DAYTIME,20))  !switch to turn TRNFLOW ON/OFF
-showonline = @online        !enable or disable to show the online plotter
+showonline = @online        !-1 = hide online plotters, >=0 = show
 CO2_amb = 430 !Volppm       !ambient CO2 level for simplified CO2 calculation of one airnode
 *$UNIT_NAME Environmental
 *$LAYER Main
