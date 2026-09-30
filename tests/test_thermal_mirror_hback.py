@@ -1,8 +1,9 @@
 """Regression checks for the back film (HBACK) of thermal (Type 56 only) mirror walls.
 
 In the DIN models the W/N/E walls face neighbouring rooms under the mirror assumption (boundary temperature = the
-zone's own TAIR).  Hygrothermal variants (Type 395, EXTCALBND, option A) give side 2 of such a wall an interior
-convective film of 11 kJ/(h m2 K) plus a longwave exchange with the room (4 sigma eps T^3 = 18.5 kJ/(h m2 K) at 20 C).
+zone's own TAIR).  Hygrothermal variants (Type 395, EXTCALBND, option A in its implicit form) give side 2 of such a wall ONE
+film coefficient hconv2: an interior convective film of 11 kJ/(h m2 K) plus the longwave exchange with the room linearised at
+20 C (4 sigma eps T^3 = 18.5 kJ/(h m2 K)), 29.51 kJ/(h m2 K) in all.
 The thermal variants carried the library default HBACK = 64 kJ/(h m2 K) (17.8 W/m2K, exterior convention, no longwave)
 on the same walls.  The generator now gives BOUNDARY walls whose boundary temperature is the own TAIR, and whose
 construction has the library default HBACK, the combined film of about 29.5 kJ/(h m2 K) through a derived wall type
@@ -474,42 +475,69 @@ class ThermalMirrorRuleTests(unittest.TestCase):
 
 
 class ThermalMirrorConsistencyTests(MirrorHelperCase):
-    """The thermal value and the rules are tied to option A (Type 395 side 2 of EXTCALBND)."""
+    """The thermal value and the rules are tied to option A (Type 395 side 2 of EXTCALBND, implicit form).
+
+    Option A renders ``hconv2 = h_c + 4*SIGMA*eps*T_ref^3`` (convective part plus linearised longwave film) and, for a mirror
+    wall, ``TB2 = (h_c*TAIR + h_r*TMR)/hconv2``; the mirror walls of the thermal variants get exactly that coefficient as HBACK.
+    """
+
+    # hconv2 = <h_c> + 4*SIGMA_S9*<eps>*<T_ref>^3
+    FILM = re.compile(r"^(?P<h_c>.+?) \+ 4\*SIGMA_S9\*(?P<eps>[\d.]+)\*(?P<t_ref>[\d.]+)\^3$")
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
         cls.template_lines = side2.load_template_lines()
 
-    def option_a_block(self, hback, boundarytemp="INPUT 1*TAIR_@ANAME", zone_name="A1"):
+    def option_a_block(self, hback, boundarytemp="INPUT 1*TAIR_@ANAME", zone_name="A1", namespace_out=None):
         walls_def = {"HHL_Wall": SimpleNamespace(Hback=hback, Abs_back="0.7")}
         surface = side2.make_surface(9, "EXTCALBND", boundarytemp, "HHL_Wall")
-        text = side2.render_hamt_block(self.template_lines, [surface], walls_def, zone_name)
+        text = side2.render_hamt_block(self.template_lines, [surface], walls_def, zone_name, namespace_out=namespace_out)
         return text, side2.equation_blocks(text)[0]
 
-    def test_back_film_is_option_a_convective_film_plus_its_longwave_film(self):
+    def film_parts(self, equations):
+        """(h_c text, eps, T_ref) of the rendered side-2 film ``hconv2 = h_c + 4*SIGMA*eps*T_ref^3``."""
+        match = self.FILM.match(equations["hconv2_S9"])
+        self.assertIsNotNone(match, equations["hconv2_S9"])
+        return match.group("h_c"), float(match.group("eps")), float(match.group("t_ref"))
+
+    def test_back_film_is_the_rendered_option_a_film_at_the_reference_temperature(self):
         text, (_, equations, _, _) = self.option_a_block("64.0")
-        h_conv = float(equations["hconv2_S9"])
-        eps = float(re.search(r"SIGMA_S9 \* ([\d.]+) \* \(\(273\.15 \+ TMR_C1\)", equations["qWG2_S9"]).group(1))
+        h_c, eps, t_ref = self.film_parts(equations)
         sigma = float(equations["SIGMA_S9"])
         h = self.helpers
-        self.assertEqual(h_conv, h["MIRROR_HCONV_INTERIOR"])
+        self.assertEqual(float(h_c), h["MIRROR_HCONV_INTERIOR"])
         self.assertEqual(eps, h["MIRROR_EPS"])
         self.assertEqual(sigma, h["MIRROR_SIGMA"])
+        self.assertEqual(t_ref, h["MIRROR_TREF_K"])
         self.assertEqual(64, h["MIRROR_HBACK_DEFAULT"])
-        # 11 + 4 sigma eps T^3 at 20 C, in kJ/(h m2 K)
-        expected = h_conv + 4 * sigma * eps * 293.15 ** 3
-        self.assertAlmostEqual(expected, h["mirror_hback_value"](), delta=0.005)
+        # the rendered hconv2 evaluated at T_ref (11 + 4 sigma eps T^3 at 20 C, in kJ/(h m2 K)) is the HBACK of the thermal mirror wall
+        film = side2.evaluate(equations["hconv2_S9"], SIGMA_S9=sigma)
+        self.assertEqual(29.51, round(film, 2))
+        self.assertAlmostEqual(film, h["mirror_hback_value"](), delta=0.005)
         self.assertEqual(29.51, h["mirror_hback_value"]())
         self.assertAlmostEqual(29.5, h["mirror_hback_value"](), delta=0.05)
         self.assertAlmostEqual(8.2, h["mirror_hback_value"]() / 3.6, delta=0.01)  # W/(m2 K)
+
+    def test_handler_constants_are_the_ones_of_the_mirror_helper(self):
+        # the e7 handler cannot use the module-level helper constants (it is executed stand-alone here): same values, checked
+        handler = {}
+        self.option_a_block("64.0", namespace_out=handler)
+        h = self.helpers
+        self.assertIn("t395_tref_k", handler, "the e7 handler has no reference temperature constant for the linearised longwave film")
+        self.assertEqual(293.15, handler["t395_tref_k"])  # Type 56 RTEMP
+        self.assertEqual(h["MIRROR_TREF_K"], handler["t395_tref_k"])
+        self.assertEqual(h["MIRROR_EPS"], handler["t395_eps_side2"])
+        self.assertEqual(h["MIRROR_HCONV_INTERIOR"], handler["t395_hconv_interior"])
+        self.assertEqual(h["MIRROR_HBACK_DEFAULT"], handler["t395_hconv_back_default"])
 
     def test_default_detection_agrees_with_option_a(self):
         # option A replaces exactly the library default (any numeric spelling) by the interior film of 11 and keeps an explicit value
         for hback in ("64.0", "64", 64, 64.0, "9999.0", "8.5", 20, "64.5", "29.5", "0.0001"):
             with self.subTest(hback=hback):
                 _, (_, equations, _, _) = self.option_a_block(hback)
-                option_a_replaces_it = equations["hconv2_S9"] == "11"
+                h_c = self.film_parts(equations)[0]
+                option_a_replaces_it = h_c == "11"
                 self.assertEqual(option_a_replaces_it, self.helpers["is_default_hback"](hback))
 
     def test_mirror_detection_agrees_with_option_a(self):
@@ -518,7 +546,7 @@ class ThermalMirrorConsistencyTests(MirrorHelperCase):
                              "INPUT 1*Tamb", "INPUT 1*18", "INPUT 1*-5", "Identical", "INPUT 1*TAIR_A1 + 2"):
             with self.subTest(boundarytemp=boundarytemp):
                 _, (_, equations, _, _) = self.option_a_block("64.0", boundarytemp)
-                option_a_mirror = "(273.15 + TMR_C1)^4" in equations["qWG2_S9"]
+                option_a_mirror = "TMR_C1" in equations["TB2_S9"]  # TB2 weights TAIR with this zone's TMR only for a mirror wall
                 self.assertEqual(option_a_mirror,
                                  self.helpers["is_mirror_boundary_surface"](surface_for(boundarytemp), "A1"))
 
