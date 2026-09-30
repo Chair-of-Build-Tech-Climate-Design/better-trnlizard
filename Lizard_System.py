@@ -1099,6 +1099,9 @@ def printbuiZonepart(dataset):
                     #dummylines=dummylines + ' : WAGAIN=INPUT 1*WGAIN_I_S@self.Surfnum : WAGAINO=INPUT 1*WGAIN_O_S@self.Surfnum'
                     ecal_surfaces.append(srfnum)
                     surfaces.Construction = 'HIGH_COND'
+                    # Type 395 input 7 is QABSI-QWG, so a user WAGAIN never reaches the HAMT wall, and a Type 395 output wired here counts the wall feedback twice
+                    if getattr(surfaces, "Wagain", None) or getattr(surfaces, "Wagaino", None):
+                        ghenv.Component.AddRuntimeMessage(w, "Surface %s (EXTCALBND, Type 395 wall): WAGAIN/WAGAINO is lost, Type 395 receives QABSI-QWG which excludes it, and a Type 395 output wired here would count the wall feedback twice (TSI395 is already the boundary temperature). Put wall heat into Type 395 (QheatKJ) instead."%srfnum)
                 if hasattr(surfaces,"Wagain") and surfaces.Wagain:
                     dummylines=dummylines + ' : WAGAIN=%s'%(surfaces.Wagain)
                 if hasattr(surfaces,"Wagaino") and surfaces.Wagaino:
@@ -3003,6 +3006,13 @@ def printdck():
                     variables['unitno']   = 800
                     unit395_counter = 200
                     hamt_zone_surfaces = {}
+                    # EXTCALBND side 2 (option A): the far side of an internal wall faces a neighbour room, not the weather.
+                    # Type 395 applies hconv2 ONCE and as a CONVECTIVE film only, so side 2 gets the interior convective
+                    # coefficient and its longwave exchange with the neighbour room enters through qWG2 (input 8) instead.
+                    t395_hconv_interior     = 11      # TRNBuild interior convective default [kJ/(h m2 K)], about 3 W/(m2 K)
+                    t395_hconv_back_default = 64      # library default HBACK = exterior convention, indistinguishable from "never set"
+                    t395_tmr                = 'TMR_C1'  # must equal Type 395 input 14 (side 1) in Lizard_DCK_Template.py; global comfort-1 name, not per zone
+                    t395_eps_side2          = 0.9     # same emissivity as the EXTCALEXT longwave terms and the Type 395 interior radiation film
                     for zone_item in zone:
                         if len(zone_item.Airnode.Ecalsurfaces) > 0:
                             zname395 = zone_item.Airnode.Name
@@ -3032,8 +3042,21 @@ def printdck():
                                             tbound = re.sub('@ANAME',zone_item.Airnode.Name,surface.Boundarytemp.split('*')[-1])
 
                                             variables['tbd']      = tbound
-                                            variables['hconvo']   = '%s'%walls_def[surface.Construction].Hback
-                                            variables['qwg2']     = 0
+                                            # interior convective coefficient, unless the wall definition explicitly carries another back-side value
+                                            hconv_bnd = t395_hconv_interior
+                                            try:
+                                                if abs(float(walls_def[surface.Construction].Hback) - t395_hconv_back_default) > 1e-9:
+                                                    hconv_bnd = walls_def[surface.Construction].Hback
+                                            except (TypeError, ValueError):
+                                                pass
+                                            variables['hconvo']   = '%s'%hconv_bnd
+                                            # side-2 longwave exchange with the neighbour room (kJ/h, into the wall). A mirror neighbour (TB2 = this
+                                            # zone's TAIR) has this zone's mean radiant temperature; for any other boundary temperature that
+                                            # temperature is the best available radiant reference and is used instead.
+                                            trad2 = t395_tmr if tbound.strip().upper() == 'TAIR_' + zone_item.Airnode.Name.upper() else tbound
+                                            if not re.match(r'^\w+$', trad2):
+                                                trad2 = '(%s)'%trad2
+                                            variables['qwg2']     = 'AREA395_S{0} * SIGMA_S{0} * {1} * ((273.15 + {2})^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, t395_eps_side2, trad2)
                                             variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
                                         variables['lu1'] = variables['unitno']
                                         variables['unit395'] = unit395_counter
