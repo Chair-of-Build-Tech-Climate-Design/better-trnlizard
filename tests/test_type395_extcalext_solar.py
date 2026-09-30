@@ -519,7 +519,11 @@ class ExtcalextSolarGainTests(unittest.TestCase):
         self.assertEqual("0.000000007*hconv2_S8/3.6", equations["beta2_S8"])
         for number in (9, 10, 11):
             self.assertNotIn("[15,", blocks[number][1]["qWG2_S%d" % number])
-            self.assertEqual("TAIR_A1", blocks[number][1]["TB2_S%d" % number])
+            # the boundary of the inner walls is the room (mirror: air and radiant temperature of the zone), never the weather;
+            # the exact side-2 film of these walls is pinned in test_type395_side2_boundary.py
+            tb2 = blocks[number][1]["TB2_S%d" % number]
+            self.assertIn("TAIR_A1", tb2)
+            self.assertNotIn("Tamb", tb2)
 
     def test_equation_counts_and_names_are_unchanged(self):
         # no equation is added (the Type 15 output is written inline as [15,k]), so the declared count still equals the assignments

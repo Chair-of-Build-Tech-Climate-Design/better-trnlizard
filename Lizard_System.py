@@ -394,10 +394,10 @@ def printheader(text_string):
     return [sep_line,'*  ' + text_string + '\n',sep_line]
 # ---- thermal mirror walls (begin)
 # Thermal (Type 56 only) variants: a BOUNDARY wall whose boundary temperature is the own airnode's TAIR (mirror neighbour room)
-# gets the back film that side 2 of the Type 395 walls (EXTCALBND, option A) has: interior convective film plus longwave exchange
-# with the room.  HBACK of a BOUNDARY wall is ONE combined coefficient (TRNBuild manual 5.2.7.2, BOUNDARY TEMPERATURE: a combined
-# coefficient when the boundary temperature is an air temperature) and Type 56 adds no longwave exchange on the back of a BOUNDARY
-# wall (5.4.1.11), so both parts are added:
+# gets the back film that side 2 of the Type 395 walls (EXTCALBND, option A, implicit form) has: interior convective film plus the
+# linearised longwave exchange with the room, in ONE coefficient (hconv2 of the e7 handler at T_ref).  HBACK of a BOUNDARY wall is
+# ONE combined coefficient (TRNBuild manual 5.2.7.2, BOUNDARY TEMPERATURE: a combined coefficient when the boundary temperature is an
+# air temperature) and Type 56 adds no longwave exchange on the back of a BOUNDARY wall (5.4.1.11), so both parts are added:
 #   11 kJ/(h m2 K) + 4 * 2.041e-7 * 0.9 * 293.15^3 kJ/(h m2 K) = 29.51 kJ/(h m2 K)   (8.2 W/(m2 K); the library default 64 is 17.8)
 # The library default HBACK 64 is the exterior convention and cannot be told from "never set"; any other explicit value, also a
 # keyword such as VERTICAL, is kept.  HBACK belongs to the WALL type and is shared with the exterior wall (which needs 64), so the
@@ -407,7 +407,7 @@ MIRROR_HCONV_INTERIOR = 11.0      # kJ/(h m2 K), same value as t395_hconv_interi
 MIRROR_HBACK_DEFAULT = 64         # kJ/(h m2 K), library default HBACK, same as t395_hconv_back_default in the e7 handler
 MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 handler
 MIRROR_SIGMA = 2.041e-07          # kJ/(h m2 K4), same literal as SIGMA_S@surface in Lizard_DCK_Template.py
-MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18)
+MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18), same value as t395_tref_k in the e7 handler
 MIRROR_SUFFIX = '_MIRROR'
 MIRROR_NAME_MAX = 25              # longest wall type name known to work in TRNBuild (HHL_Wall_Gipskartonplatte); raise it only when longer names are confirmed
 def mirror_hback_value():
@@ -3154,13 +3154,25 @@ def printdck():
                     variables['unitno']   = 800
                     unit395_counter = 200
                     hamt_zone_surfaces = {}
-                    # EXTCALBND side 2 (option A): the far side of an internal wall faces a neighbour room, not the weather.
-                    # Type 395 applies hconv2 ONCE and as a CONVECTIVE film only, so side 2 gets the interior convective
-                    # coefficient and its longwave exchange with the neighbour room enters through qWG2 (input 8) instead.
+                    # EXTCALBND side 2 (option A, IMPLICIT form): the far side of an internal wall faces a neighbour room, not the weather.
+                    # Type 395 applies hconv2 ONCE and as a CONVECTIVE film only, with no separate longwave film on side 2, so the convective
+                    # coefficient h_c and the longwave exchange with the neighbour room, linearised as h_r, go into that one film:
+                    #   hconv2 = h_c + h_r                 h_c = interior convective coefficient, or an explicit non-default Hback of the wall
+                    #                                      h_r = 4*SIGMA*eps*T_ref^3 = 18.51 kJ/(h m2 K) (eps 0.9, T_ref = 20 C)
+                    #   TB2    = (h_c*TAIR + h_r*TMR)/hconv2   mirror neighbour (TB2 = own TAIR); any other boundary temperature is its own radiant
+                    #                                      reference, so the weighted mean is that temperature itself (TB2 unchanged)
+                    #   qWG2   = 0
+                    #   beta2  = 7e-9*h_c/3.6              Lewis relation of the CONVECTIVE coefficient only (EXTCALEXT keeps its generic beta2)
+                    # Why not the explicit form, qWG2 = AREA*SIGMA*eps*((273.15 + TMR)^4 - (273.15 + TSO395)^4) with hconv2 = h_c?  It is the same physics,
+                    # but TSO395 is output 2 of the very Type 395 that takes qWG2 as input 8: an algebraic loop through TRNSYS (lagged iteration).
+                    # TRNSYS test on the DIN GKP deck, QWG2_STABILITY_TEST_2026-09-30.md (260528_DIN16798-1 Comparison/trnlizard_side2_optionA): the explicit
+                    # form costs 2.6x the run time and leaves 13 non-converged steps at STEP 0.1 h (185 at 0.25 h); the implicit form has the baseline run
+                    # time, 0 non-converged steps and results within 0.05 K (p99) of the explicit form.  The thermal mirror walls get the same film as HBACK.
                     t395_hconv_interior     = 11      # TRNBuild interior convective default [kJ/(h m2 K)], about 3 W/(m2 K)
                     t395_hconv_back_default = 64      # library default HBACK = exterior convention, indistinguishable from "never set"
                     t395_tmr                = 'TMR_C1'  # same name as Type 395 input 14 of the DETAILED/SIMPLE side-1 coupling in Lizard_DCK_Template.py; global comfort-1 name, not per zone
                     t395_eps_side2          = 0.9     # same emissivity as the EXTCALEXT longwave terms and the Type 395 interior radiation film
+                    t395_tref_k             = 293.15  # 20 C, reference temperature of the linearised longwave film = RTEMP of Type 56 (b18); same value as MIRROR_TREF_K
                     # Side 1 (room side) of a HAMT wall = the star-network link of Type 56, so that the zone and the wall exchange identical energy.
                     #   Type 56 (longwave STANDARD) exchanges heat with the wall surface as QCOMI = (Ts - TSTAR)/REQV [kJ/h] (manual Eq. 5.4.1-10: combined convection and
                     #   longwave to the other surfaces) and adds the absorbed gains QABSI at the surface node (Eq. 5.4.1-15). Type 395 with 11 inputs is ONE film, TB1 = TSTAR
@@ -3221,21 +3233,25 @@ def printdck():
                                             tbound = re.sub('@ANAME',zone_item.Airnode.Name,surface.Boundarytemp.split('*')[-1])
 
                                             variables['tbd']      = tbound
-                                            # interior convective coefficient, unless the wall definition explicitly carries another back-side value
+                                            # convective part h_c of the side-2 film: interior convective coefficient, unless the wall definition explicitly carries another back-side value
                                             hconv_bnd = t395_hconv_interior
                                             try:
                                                 if abs(float(walls_def[surface.Construction].Hback) - t395_hconv_back_default) > 1e-9:
                                                     hconv_bnd = walls_def[surface.Construction].Hback
                                             except (TypeError, ValueError):
                                                 pass
-                                            variables['hconvo']   = '%s'%hconv_bnd
-                                            # side-2 longwave exchange with the neighbour room (kJ/h, into the wall). A mirror neighbour (TB2 = this
-                                            # zone's TAIR) has this zone's mean radiant temperature; for any other boundary temperature that
-                                            # temperature is the best available radiant reference and is used instead.
-                                            trad2 = t395_tmr if tbound.strip().upper() == 'TAIR_' + zone_item.Airnode.Name.upper() else tbound
-                                            if not re.match(r'^\w+$', trad2):
-                                                trad2 = '(%s)'%trad2
-                                            variables['qwg2']     = 'AREA395_S{0} * SIGMA_S{0} * {1} * ((273.15 + {2})^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, t395_eps_side2, trad2)
+                                            # longwave part h_r of the side-2 film: the exchange with the neighbour room, linearised at T_ref (implicit, so no TSO395 term and no algebraic loop;
+                                            # see the comment above the zone loop)
+                                            hrad_bnd = '4*SIGMA_S{0}*{1}*{2}^3'.format(surface.Surfnum, t395_eps_side2, t395_tref_k)
+                                            variables['hconvo']   = '{0} + {1}'.format(hconv_bnd, hrad_bnd)
+                                            # TB2 = film-weighted mean of the two reference temperatures. A mirror neighbour (TB2 = this zone's TAIR) has this zone's mean radiant
+                                            # temperature. For any other boundary temperature that temperature is also the best available radiant reference, so the weighted mean
+                                            # is the temperature itself and TB2 stays as it is.
+                                            if tbound.strip().upper() == 'TAIR_' + zone_item.Airnode.Name.upper():
+                                                variables['tbd']  = '({0}*TAIR_{1} + {2}*{3}) / hconv2_S{4}'.format(hconv_bnd, zone_item.Airnode.Name, hrad_bnd, t395_tmr, surface.Surfnum)
+                                            variables['qwg2']     = 0
+                                            # vapour: Lewis relation of the convective coefficient h_c only, not of the combined hconv2
+                                            variables['mt2']      = '0.000000007*{0}/3.6'.format(hconv_bnd)
                                             variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
                                         variables['lu1'] = variables['unitno']
                                         # side-1 (room side) coupling, see the comment above the zone loop
