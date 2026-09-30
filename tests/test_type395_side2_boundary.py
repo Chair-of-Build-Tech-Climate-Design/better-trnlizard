@@ -27,9 +27,10 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
 TEMPLATE_SOURCE = REPO_ROOT / "Lizard_DCK_Template.py"
 
-# Reference lines of the generated DIN deck (Hygrothermisch_Big_GKP_WithFoil.d18, EXTCALEXT surface 8)
+# Longwave terms of the generated DIN deck (Hygrothermisch_Big_GKP_WithFoil.d18, EXTCALEXT surface 8). The exterior solar term in
+# front of them comes from a Type 15 tilted surface and is tested in test_type395_extcalext_solar.py; this harness maps none.
 REFERENCE_EXTCALEXT_QWG2 = (
-    "IT_S8 * 0.7 + AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + TSO395_S8)^4)"
+    "AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + TSO395_S8)^4)"
     " + AREA395_S8 * (1-0.5) * SIGMA_S8 * 0.9 * ((273.15 + Tamb)^4 - (273.15 + TSO395_S8)^4)"
 )
 
@@ -106,6 +107,8 @@ def make_surface(number, boundarycond, boundarytemp="INPUT 1*TAIR_@ANAME", const
         Construction=construction,
         Fsky=0.5,
         Filemat="GKP.idf",
+        Orientation="S_0_90",
+        Type="WALL",
     )
 
 
@@ -240,7 +243,7 @@ class Type395Side2BoundaryTests(unittest.TestCase):
         h_rad = (qwg2(20.0, 20.0) - qwg2(20.0, 20.1)) / 0.1 / area / 3.6
         self.assertAlmostEqual(4 * 5.670374419e-8 * 0.9 * 293.15 ** 3, h_rad, delta=0.05)
 
-    def test_extcalext_is_unchanged(self):
+    def test_extcalext_film_boundary_and_longwave_are_unchanged(self):
         _, blocks = self.render(self.din_surfaces())
         equations = blocks[8][1]
 
