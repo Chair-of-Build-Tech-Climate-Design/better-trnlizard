@@ -1091,11 +1091,14 @@ mflow_sup_@aname		! [equation] Mass flow rate of supply air
 @e5#
 @s7#
 *--------------------------------------------------------------------------------------
+* Side 1 (room side): heat through the star link of Type 56 (TB1 = TSTAR, hconv1 = 1/(REQV*A), no separate longwave film), absorbed gains qWG1 = QABSI - QWG,
+* moisture through the convective beta1 at the vapour pressure of the room air (RH1 is scaled so that RH1*psat(TSTAR) = RH*psat(TAIR)).
+* Longwave DETAILED/SIMPLE has no star node: TB1 = TAIR, HCONVI and TMR are added as inputs 12-14 (separated convection + longwave film).
 EQUATIONS 32
 SIGMA_S@surface               = 2.041e-007
-hconv1_S@surface    = (1/ MAX(REQV_S@surface*AREA395_S@surface,0.001)) 
+hconv1_S@surface    = @hconv1
 hconv2_S@surface    = @hconvo   
-TB1_S@surface       = TSTAR_@aname
+TB1_S@surface       = @tb1
 TAIR_MOIST1_S@surface = TAIR_@aname
 TB2_S@surface       = @tbd         
 T395_OUTPUT_1_S@surface            =  [@unit395,1]   
@@ -1113,7 +1116,7 @@ TSI395_S@surface    = [@unit395,1]
 TSO395_S@surface    = [@unit395,2]
 qWG1_NoRad_S@surface = QABSI_S@surface - QWG_S@surface
 qWG2_S@surface      = @qwg2
-RH1_S@surface       = Rh_@aname 
+RH1_S@surface       = @rh1
 RH2_S@surface       = @rh2 
 beta1_S@surface    = @mt1
 beta2_S@surface    = @mt2
@@ -1137,24 +1140,24 @@ AREA395_S@surface   ! 2 surface area
 @udivnum
 1  ! 1=Use BlockTridiagonal Solver
 
-INPUTS 14
-TAir_@aname ! TB1_S@surface		! [unconnected] TB1 - boundary temperature on side 1    ! TSTAR_A1 ! 
-TB2_S@surface ! TB2_S@surface		! [unconnected] TB2 - boundary temperature on side 2 
-RH_@aname ! RH1_S@surface       ! [unconnected] RH1 - relative humidity on side 1  ! 
-RH2_S@surface ! RH2_S@surface		! [unconnected] RH2 - relative humidity on side 2 
-hconv1_S@surface 	! [unconnected] h1 - heat transfer coefficent on side 1
-hconv2_S@surface	! [unconnected] h2 - heat transfer coefficent on side 2
-qWG1_NoRad_S@surface	    ! [unconnected] qWG1 - energy gain on side 1 ! qWG1_NoRad_S@surface
-qWG2_S@surface		! [unconnected] qWG2 - energy gain on side 2
-beta1_S@surface !
-beta2_S@surface
+INPUTS @nin395
+TB1_S@surface		! TB1 - side 1 heat reference temperature (TSTAR with longwave STANDARD, else TAIR)
+TB2_S@surface		! TB2 - boundary temperature on side 2
+RH1_S@surface		! RH1 - relative humidity on side 1 (scaled to the vapour pressure of the room air)
+RH2_S@surface		! RH2 - relative humidity on side 2
+hconv1_S@surface 	! h1 - heat transfer coefficent on side 1 (star link 1/(REQV*A) of Type 56)
+hconv2_S@surface	! h2 - heat transfer coefficent on side 2
+qWG1_NoRad_S@surface	    ! qWG1 - energy gain on side 1 (QABSI - QWG: absorbed gains, no longwave)
+qWG2_S@surface		! qWG2 - energy gain on side 2
+beta1_S@surface		! beta1 - vapour transport coefficient on side 1 (convective)
+beta2_S@surface		! beta2 - vapour transport coefficient on side 2
 QheatKJ_S@surface    !additional heat gain in userdefined cell depth
-TAIR_MOIST1_S@surface
-HCONVI_S@surface 
-TMR_C1
+TAIR_MOIST1_S@surface	! TAIR_MOIST1 - @d395
+HCONVI_S@surface 	! HCONVI - @d395
+TMR_C1			! TMR - @d395
 
 *** INITIAL INPUT VALUES
-20 20 50 50 11 11 0 0 0 0 0 20 7.0 20.0
+@init395
 *** External files
 DESIGNATE "@datafile1" @lu1
 *|? Which file contains the heat capacity of the pcm material, if the material temperature increases? |1000

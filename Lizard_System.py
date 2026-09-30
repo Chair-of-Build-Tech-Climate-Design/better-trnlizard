@@ -3058,12 +3058,32 @@ def printdck():
                     # coefficient and its longwave exchange with the neighbour room enters through qWG2 (input 8) instead.
                     t395_hconv_interior     = 11      # TRNBuild interior convective default [kJ/(h m2 K)], about 3 W/(m2 K)
                     t395_hconv_back_default = 64      # library default HBACK = exterior convention, indistinguishable from "never set"
-                    t395_tmr                = 'TMR_C1'  # must equal Type 395 input 14 (side 1) in Lizard_DCK_Template.py; global comfort-1 name, not per zone
+                    t395_tmr                = 'TMR_C1'  # same name as Type 395 input 14 of the DETAILED/SIMPLE side-1 coupling in Lizard_DCK_Template.py; global comfort-1 name, not per zone
                     t395_eps_side2          = 0.9     # same emissivity as the EXTCALEXT longwave terms and the Type 395 interior radiation film
+                    # Side 1 (room side) of a HAMT wall = the star-network link of Type 56, so that the zone and the wall exchange identical energy.
+                    #   Type 56 (longwave STANDARD) exchanges heat with the wall surface as QCOMI = (Ts - TSTAR)/REQV [kJ/h] (manual Eq. 5.4.1-10: combined convection and
+                    #   longwave to the other surfaces) and adds the absorbed gains QABSI at the surface node (Eq. 5.4.1-15). Type 395 with 11 inputs is ONE film, TB1 = TSTAR
+                    #   with hconv1 = 1/(REQV*A) and no separate longwave film (has_separate_radiant_int = false), plus qWG1 = QABSI - QWG (QABSI excludes the longwave
+                    #   exchange, which is inside the star link; QWG is a wall gain Type 56 has applied itself). Do NOT add QABSILW: with longwave STANDARD it is the radiative
+                    #   share of the star link, -QCOMI = HCONVI*A*(TAIR - TSI) + QABSILW (exact in the DIN runs), i.e. it would count the longwave exchange twice.
+                    #   In that mode Type 395 also takes the vapour pressure at the temperature of TB1 (hamt-core surface/boundary.rs: the interior Convection cell has one
+                    #   temperature for heat and vapour), so RH1 is scaled to RH1*psat(TSTAR) = RH*psat(TAIR): the vapour pressure of the room air. beta1 stays the convective
+                    #   Lewis coefficient of HCONVI. Longwave DETAILED / SIMPLE have no star node: the separated coupling (TAIR + HCONVI, TMR + linearised longwave film,
+                    #   14 inputs) is kept and a warning is raised.
+                    t395_magnus_a           = 17.62   # Magnus coefficients, saturation pressure over water; only their ratio is used (agrees with Hyland-Wexler to 2e-4 for |dT| <= 2 K between 10 and 30 C)
+                    t395_magnus_b           = 243.12
+                    if any(len(zone_item.Airnode.Ecalsurfaces) > 0 for zone_item in zone) and not any('@nin395' in template_line for template_line in blockdata):
+                        ghenv.Component.AddRuntimeMessage(w, "The Type 395 block of the DCK template is out of date (no side-1 coupling placeholders): press Reload on the DCK template component, otherwise the old TAIR/HCONVI/TMR coupling is written.")
                     for zone_item in zone:
                         if len(zone_item.Airnode.Ecalsurfaces) > 0:
                             zname395 = zone_item.Airnode.Name
                             hamt_zone_surfaces[zname395] = []
+                            # side-1 coupling of this zone's HAMT walls: the star link of Type 56 needs the star network (longwave STANDARD)
+                            longwave395 = str(getattr(zone_item.Airnode, 'Longwave', 'STANDARD')).strip().upper()
+                            star395 = (longwave395 == 'STANDARD')
+                            if not star395:
+                                simple_note395 = ' In SIMPLE mode the surface coefficients are combined (convection plus radiation) coefficients, so the longwave film is probably counted twice.' if longwave395 == 'SIMPLE' else ''
+                                ghenv.Component.AddRuntimeMessage(w, "Zone %s: longwave mode %s has no star network (no TSTAR/REQV), so its HAMT walls (Type 395, surfaces %s) keep the separated coupling: convection HCONVI to TAIR plus a linearised longwave film to TMR. Type 56 evaluates the same wall-room longwave exchange with its own model, so the zone and the wall do not exchange identical energy. Use longwave STANDARD for an energy-consistent coupling.%s"%(zname395, longwave395, ', '.join(str(x) for x in zone_item.Airnode.Ecalsurfaces), simple_note395))
                             for wall_item in zone_item.Airnode.Ecalsurfaces:
                                 for surface in zone_item.Airnode.Surfaces:
                                     if wall_item == surface.Surfnum:
@@ -3117,6 +3137,20 @@ def printdck():
                                             variables['qwg2']     = 'AREA395_S{0} * SIGMA_S{0} * {1} * ((273.15 + {2})^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, t395_eps_side2, trad2)
                                             variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
                                         variables['lu1'] = variables['unitno']
+                                        # side-1 (room side) coupling, see the comment above the zone loop
+                                        if star395:
+                                            variables['tb1']     = 'TSTAR_%s'%zname395
+                                            variables['hconv1']  = '(1/ MAX(REQV_S%s*AREA395_S%s,0.001))'%(surface.Surfnum,surface.Surfnum)
+                                            variables['rh1']     = 'Rh_{0}*EXP({1}*(TAIR_{0}/({2}+TAIR_{0})-TSTAR_{0}/({2}+TSTAR_{0})))'.format(zname395,t395_magnus_a,t395_magnus_b)
+                                            variables['nin395']  = 11
+                                            variables['init395'] = '20 20 50 50 11 11 0 0 0 0 0'
+                                        else:
+                                            variables['tb1']     = 'TAIR_%s'%zname395
+                                            variables['hconv1']  = 'HCONVI_S%s'%surface.Surfnum
+                                            variables['rh1']     = 'Rh_%s'%zname395
+                                            variables['nin395']  = 14
+                                            variables['init395'] = '20 20 50 50 11 11 0 0 0 0 0 20 7.0 20.0'
+                                            variables['d395']    = 'only with longwave DETAILED or SIMPLE'
                                         variables['unit395'] = unit395_counter
                                         unit395_counter = unit395_counter + 1
                                         hamt_zone_surfaces[zname395].append(surface.Surfnum)
@@ -3127,6 +3161,8 @@ def printdck():
                                         variables['aname']    = zone_item.Airnode.Name
                                         # write the @s7# block per HAMT surface (multi-surface support)
                                         for item in blockdata:
+                                            if star395 and '@d395' in item:
+                                                continue  # inputs 12-14 (TAIR_MOIST1, HCONVI, TMR) exist only in the DETAILED/SIMPLE coupling
                                             for variablename in list(set(re.findall('@(\w+)',item))):
                                                 item=re.sub('@'+variablename, str(variables[variablename]).encode('string-escape'), item)
                                             dckout.write(item)

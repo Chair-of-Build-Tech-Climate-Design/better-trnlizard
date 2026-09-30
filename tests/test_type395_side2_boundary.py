@@ -13,6 +13,7 @@ EXTCALEXT must stay exactly as it was.  The real ``@s7#...@e7#`` template block 
 of ``Lizard_System.py`` are executed with mock variables (no Grasshopper, no TRNSYS).
 """
 
+import math
 import re
 import sys
 import unittest
@@ -112,9 +113,17 @@ def make_surface(number, boundarycond, boundarytemp="INPUT 1*TAIR_@ANAME", const
     )
 
 
-def render_hamt_block(template_lines, surfaces, walls_def, zone_name="A1"):
-    """Execute the real ``e7`` handler of Lizard_System.py and return the rendered deck text."""
+def render_hamt_block(template_lines, surfaces, walls_def, zone_name="A1", longwave=None, messages=None, block=None):
+    """Execute the real ``e7`` handler of Lizard_System.py and return the rendered deck text.
+
+    ``longwave`` is the TRNBuild longwave mode of the zone (default: not set, i.e. the library default STANDARD),
+    ``messages`` collects the Grasshopper runtime messages, ``block`` replaces the template block lines.
+    """
     airnode = SimpleNamespace(Name=zone_name, Ecalsurfaces=[s.Surfnum for s in surfaces], Surfaces=surfaces)
+    if longwave is not None:
+        airnode.Longwave = longwave
+    if messages is None:
+        messages = []
     writer = DeckWriter()
     namespace = {
         "re": re,
@@ -122,10 +131,14 @@ def render_hamt_block(template_lines, surfaces, walls_def, zone_name="A1"):
         "variables": {},
         "zone": [SimpleNamespace(Airnode=airnode)],
         "walls_def": walls_def,
-        "blockdata": hamt_block_lines(template_lines),
+        "blockdata": block if block is not None else hamt_block_lines(template_lines),
         "dckout": writer,
         "t395_udepth": None,
         "t395_udivnum": 30,
+        "w": "WARNING",
+        "ghenv": SimpleNamespace(
+            Component=SimpleNamespace(AddRuntimeMessage=lambda level, text: messages.append((level, text)))
+        ),
     }
     source = SYSTEM_SOURCE.read_text(encoding="utf-8-sig")
     execute_source_block(
@@ -165,8 +178,9 @@ def equation_blocks(deck_text):
 
 
 def evaluate(expression, **values):
-    """Evaluate a TRNSYS equation right-hand side that only uses + - * / ^ and parentheses."""
-    return eval(expression.replace("^", "**"), {"__builtins__": {}}, values)
+    """Evaluate a TRNSYS equation right-hand side that only uses + - * / ^, parentheses, EXP, MAX and MIN."""
+    names = dict(values, EXP=math.exp, MAX=max, MIN=min)
+    return eval(expression.replace("^", "**"), {"__builtins__": {}}, names)
 
 
 class Type395Side2BoundaryTests(unittest.TestCase):
@@ -213,15 +227,28 @@ class Type395Side2BoundaryTests(unittest.TestCase):
                     blocks[number][1]["qWG2_S%d" % number],
                 )
 
-    def test_extcalbnd_side2_uses_the_same_radiant_temperature_variable_as_side_1(self):
+    def test_extcalbnd_side2_uses_the_comfort_radiant_temperature_of_the_zone(self):
         _, blocks = self.render(self.din_surfaces())
+
+        for number in (9, 10, 11):
+            with self.subTest(surface=number):
+                equations, inputs = blocks[number][1], blocks[number][3]
+                # known global-name limitation (comfort object 1), not made worse
+                self.assertIn("(273.15 + TMR_C1)^4", equations["qWG2_S%d" % number])
+                self.assertEqual("qWG2_S%d" % number, inputs[7])
+
+    def test_extcalbnd_side2_uses_the_same_radiant_temperature_variable_as_the_detailed_side_1(self):
+        # longwave DETAILED/SIMPLE keeps the separated side-1 coupling, whose input 14 is the same variable
+        surfaces = self.din_surfaces()
+        text = render_hamt_block(self.template_lines, surfaces, self.walls_def, longwave="DETAILED")
+        blocks = {surface.Surfnum: block for surface, block in zip(surfaces, equation_blocks(text))}
 
         for number in (9, 10, 11):
             with self.subTest(surface=number):
                 equations, inputs = blocks[number][1], blocks[number][3]
                 side_1_tmr = inputs[13]  # Type 395 input 14: mean radiant temperature for side 1
                 self.assertIn("(273.15 + %s)^4" % side_1_tmr, equations["qWG2_S%d" % number])
-                self.assertEqual("TMR_C1", side_1_tmr)  # known global-name limitation, not made worse
+                self.assertEqual("TMR_C1", side_1_tmr)
                 self.assertEqual("qWG2_S%d" % number, inputs[7])
 
     def test_extcalbnd_qwg2_has_the_sign_and_size_of_a_longwave_exchange(self):
@@ -298,7 +325,7 @@ class Type395Side2BoundaryTests(unittest.TestCase):
             with self.subTest(surface=number):
                 self.assertEqual(declared, len(order))
                 self.assertEqual(32, declared)
-                self.assertEqual(14, len(inputs))
+                self.assertEqual(11, len(inputs))  # side 1 = star link of Type 56 (longwave STANDARD)
 
     def test_no_equation_name_is_defined_twice_or_collides_with_type56_aliases(self):
         _, blocks = self.render(self.din_surfaces())
