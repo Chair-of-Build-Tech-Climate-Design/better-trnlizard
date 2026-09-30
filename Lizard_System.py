@@ -392,6 +392,94 @@ def printbuisingledata(data_collection, search_attr, replacing):
 def printheader(text_string):
     sep_line = '*--------------------------------------------------------------------------------\n'
     return [sep_line,'*  ' + text_string + '\n',sep_line]
+# ---- thermal mirror walls (begin)
+# Thermal (Type 56 only) variants: a BOUNDARY wall whose boundary temperature is the own airnode's TAIR (mirror neighbour room)
+# gets the back film that side 2 of the Type 395 walls (EXTCALBND, option A) has: interior convective film plus longwave exchange
+# with the room.  HBACK of a BOUNDARY wall is ONE combined coefficient (TRNBuild manual 5.2.7.2, BOUNDARY TEMPERATURE: a combined
+# coefficient when the boundary temperature is an air temperature) and Type 56 adds no longwave exchange on the back of a BOUNDARY
+# wall (5.4.1.11), so both parts are added:
+#   11 kJ/(h m2 K) + 4 * 2.041e-7 * 0.9 * 293.15^3 kJ/(h m2 K) = 29.51 kJ/(h m2 K)   (8.2 W/(m2 K); the library default 64 is 17.8)
+# The library default HBACK 64 is the exterior convention and cannot be told from "never set"; any other explicit value, also a
+# keyword such as VERTICAL, is kept.  HBACK belongs to the WALL type and is shared with the exterior wall (which needs 64), so the
+# mirror walls get a derived wall type <name>_MIRROR that is written only when a mirror wall needs it.  EXTERNAL, ADJACENT,
+# non-mirror BOUNDARY walls, the HAMT pseudo-walls (HIGH_COND, HIGH_RES) and all other categories are not touched.
+MIRROR_HCONV_INTERIOR = 11.0      # kJ/(h m2 K), same value as t395_hconv_interior in the e7 handler
+MIRROR_HBACK_DEFAULT = 64         # kJ/(h m2 K), library default HBACK, same as t395_hconv_back_default in the e7 handler
+MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 handler
+MIRROR_SIGMA = 2.041e-07          # kJ/(h m2 K4), same literal as SIGMA_S@surface in Lizard_DCK_Template.py
+MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18)
+MIRROR_SUFFIX = '_MIRROR'
+MIRROR_NAME_MAX = 25              # longest wall type name known to work in TRNBuild (HHL_Wall_Gipskartonplatte); raise it only when longer names are confirmed
+def mirror_hback_value():
+    """Combined back film of a mirror wall [kJ/(h m2 K)]: interior convective film plus the linearised longwave film."""
+    return round(MIRROR_HCONV_INTERIOR + 4 * MIRROR_SIGMA * MIRROR_EPS * MIRROR_TREF_K ** 3, 2)
+def is_default_hback(value):
+    """True for the library default HBACK in any numeric spelling; an explicit value, a keyword such as VERTICAL or anything else is False."""
+    try:
+        return abs(float(value) - MIRROR_HBACK_DEFAULT) <= 1e-9
+    except (TypeError, ValueError):
+        return False
+def is_mirror_boundary_surface(surface, airnode_name):
+    """BOUNDARY surface whose boundary temperature is the own airnode's TAIR (the mirror test of EXTCALBND in the e7 handler)."""
+    if surface.Boundarycond != 'BOUNDARY':
+        return False
+    tbound = str(surface.Boundarytemp).split('*')[-1].replace('@ANAME', str(airnode_name))
+    return tbound.strip().upper() == 'TAIR_' + str(airnode_name).upper()
+def mirror_type_name(original, taken, max_len=None):
+    """<original>_MIRROR within the name limit, shortened and numbered where needed so that it is not in ``taken`` (lower case names)."""
+    if max_len is None:
+        max_len = MIRROR_NAME_MAX
+    original = str(original)
+    candidate = original[:max(1, max_len - len(MIRROR_SUFFIX))] + MIRROR_SUFFIX
+    counter = 0
+    while candidate.lower() in taken:
+        counter += 1
+        tail = str(counter)
+        candidate = original[:max(1, max_len - len(MIRROR_SUFFIX) - len(tail))] + tail + MIRROR_SUFFIX
+    return candidate
+def plan_thermal_mirror_walls(dataset, wall_items):
+    """({construction name: derived wall type name}, [(surface number, airnode name, construction name)]) of the thermal mirror walls.
+    Pure function of the airnodes and the wall library, so the wall type definitions and the zone wall lines agree."""
+    walls = {}
+    taken = []
+    for wall_item in wall_items:
+        walls[wall_item.Name] = wall_item
+        taken.append(str(wall_item.Name).lower())
+    names = {}
+    affected = []
+    for airnode in dataset:
+        for surface in airnode.Surfaces:
+            if 'Virtual' in str(surface.Construction):
+                continue
+            if not is_mirror_boundary_surface(surface, airnode.Name):
+                continue
+            wall_item = walls.get(surface.Construction)
+            if wall_item is None or not is_default_hback(wall_item.Hback):
+                continue
+            affected.append((surface.Surfnum, airnode.Name, surface.Construction))
+            names[surface.Construction] = None
+    for original in sorted(names):
+        names[original] = mirror_type_name(original, taken)
+        taken.append(names[original].lower())
+    return names, affected
+def derive_mirror_wall(wall_item, name):
+    """Copy of a library wall type with the mirror back film; the shared library object itself is never modified."""
+    derived = copy.copy(wall_item)
+    derived.Name = name
+    derived.Hback = mirror_hback_value()
+    return derived
+def mirror_wall_message(names, affected):
+    """Runtime message that lists the walls which got a derived mirror wall type."""
+    groups = []
+    for original in sorted(names):
+        numbers = ['%s (%s)' % (number, airnode) for (number, airnode, construction) in affected if construction == original]
+        groups.append('%s (copy of %s): surface %s' % (names[original], original, ', '.join(numbers)))
+    return ('Thermal mirror walls (BOUNDARY = own TAIR): the library default HBACK %g was replaced by %.2f kJ/(h m2 K) = %g convective + %.2f longwave, '
+            'like side 2 of the Type 395 (EXTCALBND) walls. Wall types: %s. EXTERNAL, ADJACENT, non-mirror and HAMT walls are unchanged; '
+            'an explicit H_Back other than %g in the construction is kept.'
+            % (MIRROR_HBACK_DEFAULT, mirror_hback_value(), MIRROR_HCONV_INTERIOR, mirror_hback_value() - MIRROR_HCONV_INTERIOR,
+               '; '.join(groups), MIRROR_HBACK_DEFAULT))
+# ---- thermal mirror walls (end)
 @timing
 def printbuitoppart(dataset):
     global collmessages
@@ -540,10 +628,18 @@ def printbuitoppart(dataset):
                             wall2_item.Eps_front = wall_item.Eps_front
                             wall2_item.Eps_back = wall_item.Eps_back
     cleaned_walls = list(set(cleaned_walls))
+    # thermal mirror walls: derived wall type <name>_MIRROR, only for constructions that a BOUNDARY = own TAIR wall needs
+    mirror_wall_names, mirror_wall_surfaces = plan_thermal_mirror_walls(dataset, library.Walls)
+    mirror_wall_written = []
     for wall_item in library.Walls:
         for cleaned_item in cleaned_walls:
             if wall_item.Name == cleaned_item:
                 lines.append(printsingledata(wall_item,'Wall'))
+                if wall_item.Name in mirror_wall_names and wall_item.Name not in mirror_wall_written:
+                    mirror_wall_written.append(wall_item.Name)
+                    lines.append(printsingledata(derive_mirror_wall(wall_item, mirror_wall_names[wall_item.Name]),'Wall'))
+    if len(mirror_wall_surfaces) > 0:
+        ghenv.Component.AddRuntimeMessage(rem, mirror_wall_message(mirror_wall_names, mirror_wall_surfaces))
     # Intermediate part directly from the template
     lines.extend(printheader('W i n d o w s'))
     window_names = []
@@ -828,6 +924,8 @@ def printbuitoppart(dataset):
 @timing
 def printbuiZonepart(dataset):
     lines = []
+    # thermal mirror walls: derived wall type per construction, the same plan as the wall type definitions of printbuitoppart
+    thermal_mirror_names = plan_thermal_mirror_walls(dataset, library.Walls)[0]
     # Here the individual Zone definition is starting
     # Defines the Zones
     Zone_name_coll = []
@@ -1102,6 +1200,9 @@ def printbuiZonepart(dataset):
                     # Type 395 input 7 is QABSI-QWG, so a user WAGAIN never reaches the HAMT wall, and a Type 395 output wired here counts the wall feedback twice
                     if getattr(surfaces, "Wagain", None) or getattr(surfaces, "Wagaino", None):
                         ghenv.Component.AddRuntimeMessage(w, "Surface %s (EXTCALBND, Type 395 wall): WAGAIN/WAGAINO is lost, Type 395 receives QABSI-QWG which excludes it, and a Type 395 output wired here would count the wall feedback twice (TSI395 is already the boundary temperature). Put wall heat into Type 395 (QheatKJ) instead."%srfnum)
+                # thermal mirror wall (BOUNDARY = own TAIR): the derived wall type with the combined back film
+                if surfaces.Boundarycond == 'BOUNDARY' and ori_construction in thermal_mirror_names and is_mirror_boundary_surface(surfaces, Airnodes.Name):
+                    surfaces.Construction = thermal_mirror_names[ori_construction]
                 if hasattr(surfaces,"Wagain") and surfaces.Wagain:
                     dummylines=dummylines + ' : WAGAIN=%s'%(surfaces.Wagain)
                 if hasattr(surfaces,"Wagaino") and surfaces.Wagaino:
