@@ -392,6 +392,94 @@ def printbuisingledata(data_collection, search_attr, replacing):
 def printheader(text_string):
     sep_line = '*--------------------------------------------------------------------------------\n'
     return [sep_line,'*  ' + text_string + '\n',sep_line]
+# ---- thermal mirror walls (begin)
+# Thermal (Type 56 only) variants: a BOUNDARY wall whose boundary temperature is the own airnode's TAIR (mirror neighbour room)
+# gets the back film that side 2 of the Type 395 walls (EXTCALBND, option A, implicit form) has: interior convective film plus the
+# linearised longwave exchange with the room, in ONE coefficient (hconv2 of the e7 handler at T_ref).  HBACK of a BOUNDARY wall is
+# ONE combined coefficient (TRNBuild manual 5.2.7.2, BOUNDARY TEMPERATURE: a combined coefficient when the boundary temperature is an
+# air temperature) and Type 56 adds no longwave exchange on the back of a BOUNDARY wall (5.4.1.11), so both parts are added:
+#   11 kJ/(h m2 K) + 4 * 2.041e-7 * 0.9 * 293.15^3 kJ/(h m2 K) = 29.51 kJ/(h m2 K)   (8.2 W/(m2 K); the library default 64 is 17.8)
+# The library default HBACK 64 is the exterior convention and cannot be told from "never set"; any other explicit value, also a
+# keyword such as VERTICAL, is kept.  HBACK belongs to the WALL type and is shared with the exterior wall (which needs 64), so the
+# mirror walls get a derived wall type <name>_MIRROR that is written only when a mirror wall needs it.  EXTERNAL, ADJACENT,
+# non-mirror BOUNDARY walls, the HAMT pseudo-walls (HIGH_COND, HIGH_RES) and all other categories are not touched.
+MIRROR_HCONV_INTERIOR = 11.0      # kJ/(h m2 K), same value as t395_hconv_interior in the e7 handler
+MIRROR_HBACK_DEFAULT = 64         # kJ/(h m2 K), library default HBACK, same as t395_hconv_back_default in the e7 handler
+MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 handler
+MIRROR_SIGMA = 2.041e-07          # kJ/(h m2 K4), same literal as SIGMA_S@surface in Lizard_DCK_Template.py
+MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18), same value as t395_tref_k in the e7 handler
+MIRROR_SUFFIX = '_MIRROR'
+MIRROR_NAME_MAX = 25              # longest wall type name known to work in TRNBuild (HHL_Wall_Gipskartonplatte); raise it only when longer names are confirmed
+def mirror_hback_value():
+    """Combined back film of a mirror wall [kJ/(h m2 K)]: interior convective film plus the linearised longwave film."""
+    return round(MIRROR_HCONV_INTERIOR + 4 * MIRROR_SIGMA * MIRROR_EPS * MIRROR_TREF_K ** 3, 2)
+def is_default_hback(value):
+    """True for the library default HBACK in any numeric spelling; an explicit value, a keyword such as VERTICAL or anything else is False."""
+    try:
+        return abs(float(value) - MIRROR_HBACK_DEFAULT) <= 1e-9
+    except (TypeError, ValueError):
+        return False
+def is_mirror_boundary_surface(surface, airnode_name):
+    """BOUNDARY surface whose boundary temperature is the own airnode's TAIR (the mirror test of EXTCALBND in the e7 handler)."""
+    if surface.Boundarycond != 'BOUNDARY':
+        return False
+    tbound = str(surface.Boundarytemp).split('*')[-1].replace('@ANAME', str(airnode_name))
+    return tbound.strip().upper() == 'TAIR_' + str(airnode_name).upper()
+def mirror_type_name(original, taken, max_len=None):
+    """<original>_MIRROR within the name limit, shortened and numbered where needed so that it is not in ``taken`` (lower case names)."""
+    if max_len is None:
+        max_len = MIRROR_NAME_MAX
+    original = str(original)
+    candidate = original[:max(1, max_len - len(MIRROR_SUFFIX))] + MIRROR_SUFFIX
+    counter = 0
+    while candidate.lower() in taken:
+        counter += 1
+        tail = str(counter)
+        candidate = original[:max(1, max_len - len(MIRROR_SUFFIX) - len(tail))] + tail + MIRROR_SUFFIX
+    return candidate
+def plan_thermal_mirror_walls(dataset, wall_items):
+    """({construction name: derived wall type name}, [(surface number, airnode name, construction name)]) of the thermal mirror walls.
+    Pure function of the airnodes and the wall library, so the wall type definitions and the zone wall lines agree."""
+    walls = {}
+    taken = []
+    for wall_item in wall_items:
+        walls[wall_item.Name] = wall_item
+        taken.append(str(wall_item.Name).lower())
+    names = {}
+    affected = []
+    for airnode in dataset:
+        for surface in airnode.Surfaces:
+            if 'Virtual' in str(surface.Construction):
+                continue
+            if not is_mirror_boundary_surface(surface, airnode.Name):
+                continue
+            wall_item = walls.get(surface.Construction)
+            if wall_item is None or not is_default_hback(wall_item.Hback):
+                continue
+            affected.append((surface.Surfnum, airnode.Name, surface.Construction))
+            names[surface.Construction] = None
+    for original in sorted(names):
+        names[original] = mirror_type_name(original, taken)
+        taken.append(names[original].lower())
+    return names, affected
+def derive_mirror_wall(wall_item, name):
+    """Copy of a library wall type with the mirror back film; the shared library object itself is never modified."""
+    derived = copy.copy(wall_item)
+    derived.Name = name
+    derived.Hback = mirror_hback_value()
+    return derived
+def mirror_wall_message(names, affected):
+    """Runtime message that lists the walls which got a derived mirror wall type."""
+    groups = []
+    for original in sorted(names):
+        numbers = ['%s (%s)' % (number, airnode) for (number, airnode, construction) in affected if construction == original]
+        groups.append('%s (copy of %s): surface %s' % (names[original], original, ', '.join(numbers)))
+    return ('Thermal mirror walls (BOUNDARY = own TAIR): the library default HBACK %g was replaced by %.2f kJ/(h m2 K) = %g convective + %.2f longwave, '
+            'like side 2 of the Type 395 (EXTCALBND) walls. Wall types: %s. EXTERNAL, ADJACENT, non-mirror and HAMT walls are unchanged; '
+            'an explicit H_Back other than %g in the construction is kept.'
+            % (MIRROR_HBACK_DEFAULT, mirror_hback_value(), MIRROR_HCONV_INTERIOR, mirror_hback_value() - MIRROR_HCONV_INTERIOR,
+               '; '.join(groups), MIRROR_HBACK_DEFAULT))
+# ---- thermal mirror walls (end)
 @timing
 def printbuitoppart(dataset):
     global collmessages
@@ -540,10 +628,18 @@ def printbuitoppart(dataset):
                             wall2_item.Eps_front = wall_item.Eps_front
                             wall2_item.Eps_back = wall_item.Eps_back
     cleaned_walls = list(set(cleaned_walls))
+    # thermal mirror walls: derived wall type <name>_MIRROR, only for constructions that a BOUNDARY = own TAIR wall needs
+    mirror_wall_names, mirror_wall_surfaces = plan_thermal_mirror_walls(dataset, library.Walls)
+    mirror_wall_written = []
     for wall_item in library.Walls:
         for cleaned_item in cleaned_walls:
             if wall_item.Name == cleaned_item:
                 lines.append(printsingledata(wall_item,'Wall'))
+                if wall_item.Name in mirror_wall_names and wall_item.Name not in mirror_wall_written:
+                    mirror_wall_written.append(wall_item.Name)
+                    lines.append(printsingledata(derive_mirror_wall(wall_item, mirror_wall_names[wall_item.Name]),'Wall'))
+    if len(mirror_wall_surfaces) > 0:
+        ghenv.Component.AddRuntimeMessage(rem, mirror_wall_message(mirror_wall_names, mirror_wall_surfaces))
     # Intermediate part directly from the template
     lines.extend(printheader('W i n d o w s'))
     window_names = []
@@ -828,6 +924,8 @@ def printbuitoppart(dataset):
 @timing
 def printbuiZonepart(dataset):
     lines = []
+    # thermal mirror walls: derived wall type per construction, the same plan as the wall type definitions of printbuitoppart
+    thermal_mirror_names = plan_thermal_mirror_walls(dataset, library.Walls)[0]
     # Here the individual Zone definition is starting
     # Defines the Zones
     Zone_name_coll = []
@@ -1099,6 +1197,12 @@ def printbuiZonepart(dataset):
                     #dummylines=dummylines + ' : WAGAIN=INPUT 1*WGAIN_I_S@self.Surfnum : WAGAINO=INPUT 1*WGAIN_O_S@self.Surfnum'
                     ecal_surfaces.append(srfnum)
                     surfaces.Construction = 'HIGH_COND'
+                    # Type 395 input 7 is QABSI-QWG, so a user WAGAIN never reaches the HAMT wall, and a Type 395 output wired here counts the wall feedback twice
+                    if getattr(surfaces, "Wagain", None) or getattr(surfaces, "Wagaino", None):
+                        ghenv.Component.AddRuntimeMessage(w, "Surface %s (EXTCALBND, Type 395 wall): WAGAIN/WAGAINO is lost, Type 395 receives QABSI-QWG which excludes it, and a Type 395 output wired here would count the wall feedback twice (TSI395 is already the boundary temperature). Put wall heat into Type 395 (QheatKJ) instead."%srfnum)
+                # thermal mirror wall (BOUNDARY = own TAIR): the derived wall type with the combined back film
+                if surfaces.Boundarycond == 'BOUNDARY' and ori_construction in thermal_mirror_names and is_mirror_boundary_surface(surfaces, Airnodes.Name):
+                    surfaces.Construction = thermal_mirror_names[ori_construction]
                 if hasattr(surfaces,"Wagain") and surfaces.Wagain:
                     dummylines=dummylines + ' : WAGAIN=%s'%(surfaces.Wagain)
                 if hasattr(surfaces,"Wagaino") and surfaces.Wagaino:
@@ -2743,6 +2847,53 @@ def getbuiOutputs():
                 #print outputitem
             variables['outputs'] = outputs
         #print variables['outputs']
+# ----------------------------------------------------------------------------------------------------------------------
+# Exterior solar gain of HAMT walls (EXTCALEXT)
+# Type 56 handles an EXTCALEXT wall as a BOUNDARY surface (BOUNDARY = INPUT 1*TSI395_S<n>) and computes no incident
+# radiation for it (IT_S<n> = 0), so the exterior side of the Type 395 wall needs another source. Type 15 and Type 56 call the
+# same TRNSYS kernel routine (GetTiltedRadiation: same sky model, same ground reflectance), so the total radiation of a Type 15
+# tilted surface with the slope/azimuth of an orientation is Type 56's IT of an EXTERNAL surface of that orientation (checked to
+# 0.000 kJ/(h m2): a full year, Type 15 modes 1-5, eight building turns, orientations S, E, N and H_0_0). Type 15 therefore gets
+# one extra tilted surface per distinct EXTCALEXT orientation; surface 1 stays the horizontal plane that every deck has.
+TYPE15_FIRST_TILTED_OUTPUT = 24   # Type 15 output number of the total radiation on tilted surface 1 (outputs 24.. hold surfaces 1..n)
+def getType15TiltedOutput(kind, surface_no, surface_count):
+    """Type 15 output number of a per-surface result. kind: 0 total, 1 beam, 2 sky diffuse, 3 ground reflected, 4 total diffuse
+    (sky + ground), 5 incidence angle, 6 slope, 7 azimuth; each kind holds one output per tilted surface (n = surface_count)."""
+    return TYPE15_FIRST_TILTED_OUTPUT + kind * surface_count + surface_no - 1
+def getType15TiltedSurface(orientation, turn = 0):
+    """Slope and azimuth [deg] of a Type 15 tilted surface for an orientation name Y_azimuth_slope (for example S_0_90 or
+    E_270_90; azimuth: 0 facing the equator, 90 west, 180 pole-ward, 270 east, as in TRNSYS, slope 0..180), or None for a name
+    that does not follow this format. Type 56 receives the solar azimuth minus the building turn, so the surface is turned by +turn."""
+    match = re.match(r'^[A-Za-z]_(-?\d+(?:\.\d+)?)_(\d+(?:\.\d+)?)$', str(orientation).strip())
+    if match is None:
+        return None
+    slope = float(match.group(2))
+    if slope > 180:
+        return None
+    azimuth = (float(match.group(1)) + float(turn)) % 360.0
+    if azimuth > 180.0:
+        azimuth = azimuth - 360.0
+    return slope, azimuth
+def getHamtSolarOrientations(zones):
+    """Distinct orientations of the EXTCALEXT walls of all zones, in order of first appearance."""
+    orientations = []
+    for zone_item in zones:
+        for surface in zone_item.Airnode.Surfaces:
+            if surface.Boundarycond != 'EXTCALEXT' or surface.Type == 'WINDOW' or "Virtual" in surface.Construction:
+                continue
+            if str(surface.Orientation) not in orientations:
+                orientations.append(str(surface.Orientation))
+    return orientations
+def getType15TiltedLines(tilted):
+    """Parameter block of the extra Type 15 tilted surfaces. tilted: [(orientation, slope, azimuth)] (azimuth already turned).
+    Returns (number of Type 15 parameters, number of tilted surfaces including the horizontal plane, parameter lines)."""
+    lines = ''
+    for ti, (orientation, slope, azimuth) in enumerate(tilted):
+        first = 10 + 3 * ti
+        lines = lines + '1\t\t! {0} Tracking mode (exterior solar of the HAMT walls of orientation {1})\n'.format(first, orientation)
+        lines = lines + '{1:g}\t\t! {0} Slope of surface\n'.format(first + 1, slope)
+        lines = lines + '{1:g}\t\t! {0} Azimuth of surface\n'.format(first + 2, azimuth)
+    return 9 + 3 * len(tilted), 1 + len(tilted), lines
 @timing
 def printdck():
     #Convert the dck template into the final simulation file
@@ -3003,10 +3154,49 @@ def printdck():
                     variables['unitno']   = 800
                     unit395_counter = 200
                     hamt_zone_surfaces = {}
+                    # EXTCALBND side 2 (option A, IMPLICIT form): the far side of an internal wall faces a neighbour room, not the weather.
+                    # Type 395 applies hconv2 ONCE and as a CONVECTIVE film only, with no separate longwave film on side 2, so the convective
+                    # coefficient h_c and the longwave exchange with the neighbour room, linearised as h_r, go into that one film:
+                    #   hconv2 = h_c + h_r                 h_c = interior convective coefficient, or an explicit non-default Hback of the wall
+                    #                                      h_r = 4*SIGMA*eps*T_ref^3 = 18.51 kJ/(h m2 K) (eps 0.9, T_ref = 20 C)
+                    #   TB2    = (h_c*TAIR + h_r*TMR)/hconv2   mirror neighbour (TB2 = own TAIR); any other boundary temperature is its own radiant
+                    #                                      reference, so the weighted mean is that temperature itself (TB2 unchanged)
+                    #   qWG2   = 0
+                    #   beta2  = 7e-9*h_c/3.6              Lewis relation of the CONVECTIVE coefficient only (EXTCALEXT keeps its generic beta2)
+                    # Why not the explicit form, qWG2 = AREA*SIGMA*eps*((273.15 + TMR)^4 - (273.15 + TSO395)^4) with hconv2 = h_c?  It is the same physics,
+                    # but TSO395 is output 2 of the very Type 395 that takes qWG2 as input 8: an algebraic loop through TRNSYS (lagged iteration).
+                    # TRNSYS test on the DIN GKP deck, QWG2_STABILITY_TEST_2026-09-30.md (260528_DIN16798-1 Comparison/trnlizard_side2_optionA): the explicit
+                    # form costs 2.6x the run time and leaves 13 non-converged steps at STEP 0.1 h (185 at 0.25 h); the implicit form has the baseline run
+                    # time, 0 non-converged steps and results within 0.05 K (p99) of the explicit form.  The thermal mirror walls get the same film as HBACK.
+                    t395_hconv_interior     = 11      # TRNBuild interior convective default [kJ/(h m2 K)], about 3 W/(m2 K)
+                    t395_hconv_back_default = 64      # library default HBACK = exterior convention, indistinguishable from "never set"
+                    t395_tmr                = 'TMR_C1'  # same name as Type 395 input 14 of the DETAILED/SIMPLE side-1 coupling in Lizard_DCK_Template.py; global comfort-1 name, not per zone
+                    t395_eps_side2          = 0.9     # same emissivity as the EXTCALEXT longwave terms and the Type 395 interior radiation film
+                    t395_tref_k             = 293.15  # 20 C, reference temperature of the linearised longwave film = RTEMP of Type 56 (b18); same value as MIRROR_TREF_K
+                    # Side 1 (room side) of a HAMT wall = the star-network link of Type 56, so that the zone and the wall exchange identical energy.
+                    #   Type 56 (longwave STANDARD) exchanges heat with the wall surface as QCOMI = (Ts - TSTAR)/REQV [kJ/h] (manual Eq. 5.4.1-10: combined convection and
+                    #   longwave to the other surfaces) and adds the absorbed gains QABSI at the surface node (Eq. 5.4.1-15). Type 395 with 11 inputs is ONE film, TB1 = TSTAR
+                    #   with hconv1 = 1/(REQV*A) and no separate longwave film (has_separate_radiant_int = false), plus qWG1 = QABSI - QWG (QABSI excludes the longwave
+                    #   exchange, which is inside the star link; QWG is a wall gain Type 56 has applied itself). Do NOT add QABSILW: with longwave STANDARD it is the radiative
+                    #   share of the star link, -QCOMI = HCONVI*A*(TAIR - TSI) + QABSILW (exact in the DIN runs), i.e. it would count the longwave exchange twice.
+                    #   In that mode Type 395 also takes the vapour pressure at the temperature of TB1 (hamt-core surface/boundary.rs: the interior Convection cell has one
+                    #   temperature for heat and vapour), so RH1 is scaled to RH1*psat(TSTAR) = RH*psat(TAIR): the vapour pressure of the room air. beta1 stays the convective
+                    #   Lewis coefficient of HCONVI. Longwave DETAILED / SIMPLE have no star node: the separated coupling (TAIR + HCONVI, TMR + linearised longwave film,
+                    #   14 inputs) is kept and a warning is raised.
+                    t395_magnus_a           = 17.62   # Magnus coefficients, saturation pressure over water; only their ratio is used (agrees with Hyland-Wexler to 2e-4 for |dT| <= 2 K between 10 and 30 C)
+                    t395_magnus_b           = 243.12
+                    if any(len(zone_item.Airnode.Ecalsurfaces) > 0 for zone_item in zone) and not any('@nin395' in template_line for template_line in blockdata):
+                        ghenv.Component.AddRuntimeMessage(w, "The Type 395 block of the DCK template is out of date (no side-1 coupling placeholders): press Reload on the DCK template component, otherwise the old TAIR/HCONVI/TMR coupling is written.")
                     for zone_item in zone:
                         if len(zone_item.Airnode.Ecalsurfaces) > 0:
                             zname395 = zone_item.Airnode.Name
                             hamt_zone_surfaces[zname395] = []
+                            # side-1 coupling of this zone's HAMT walls: the star link of Type 56 needs the star network (longwave STANDARD)
+                            longwave395 = str(getattr(zone_item.Airnode, 'Longwave', 'STANDARD')).strip().upper()
+                            star395 = (longwave395 == 'STANDARD')
+                            if not star395:
+                                simple_note395 = ' In SIMPLE mode the surface coefficients are combined (convection plus radiation) coefficients, so the longwave film is probably counted twice.' if longwave395 == 'SIMPLE' else ''
+                                ghenv.Component.AddRuntimeMessage(w, "Zone %s: longwave mode %s has no star network (no TSTAR/REQV), so its HAMT walls (Type 395, surfaces %s) keep the separated coupling: convection HCONVI to TAIR plus a linearised longwave film to TMR. Type 56 evaluates the same wall-room longwave exchange with its own model, so the zone and the wall do not exchange identical energy. Use longwave STANDARD for an energy-consistent coupling.%s"%(zname395, longwave395, ', '.join(str(x) for x in zone_item.Airnode.Ecalsurfaces), simple_note395))
                             for wall_item in zone_item.Airnode.Ecalsurfaces:
                                 for surface in zone_item.Airnode.Surfaces:
                                     if wall_item == surface.Surfnum:
@@ -3026,16 +3216,62 @@ def printdck():
                                             #variables['hconvo']   = '1/ MAX(REQV_S%s,0.001)'%surface.Surfnum
                                             #variables['qwg2']  = 'IT_S%s * %s - QSKY_S%s'%(surface.Surfnum, walls_def[surface.Construction].Abs_back,surface.Surfnum)
                                             #print dir(surface)
-                                            variables['qwg2']  = 'IT_S{0} * {1} + AREA395_S{0} * {2} * SIGMA_S{0} * {3} * ((273.15 + Tsky)^4 - (273.15 + TSO395_S{0})^4) + AREA395_S{0} * (1-{2}) * SIGMA_S{0} * {3} * ((273.15 + Tamb)^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, walls_def[surface.Construction].Abs_back,surface.Fsky,0.9)
+                                            # Exterior solar: Type 56 gives a BOUNDARY-type wall no incident radiation (IT_S = 0), so the solar gain is the total radiation of the
+                                            # Type 15 tilted surface with this wall's orientation (same kernel routine as Type 56, see getHamtSolarOrientations) times ABS-BACK.
+                                            # The longwave emissivity is EPS-BACK, as in Type 56's outside heat balance (sigma * eps * (Tso^4 - Tfsky^4), Tfsky from Tsky, Tamb and Fsky).
+                                            try:
+                                                eps_exterior = float(walls_def[surface.Construction].Eps_back)
+                                            except (AttributeError, TypeError, ValueError):
+                                                eps_exterior = 0.9
+                                            solar_surface_no = variables.get('hamt_solar_output', {}).get(str(getattr(surface, 'Orientation', '')))
+                                            qwg2_solar = ''
+                                            if solar_surface_no is not None:
+                                                qwg2_solar = 'AREA395_S{0} * [15,{1}] * {2} + '.format(surface.Surfnum, getType15TiltedOutput(0, solar_surface_no, variables.get('hamt_solar_nsurf', 1)), walls_def[surface.Construction].Abs_back)
+                                            variables['qwg2']  = qwg2_solar + 'AREA395_S{0} * {1} * SIGMA_S{0} * {2:g} * ((273.15 + Tsky)^4 - (273.15 + TSO395_S{0})^4) + AREA395_S{0} * (1-{1}) * SIGMA_S{0} * {2:g} * ((273.15 + Tamb)^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, surface.Fsky, eps_exterior)
                                             variables['rh2']  = 'Rh_amb'
                                         elif surface.Boundarycond == 'EXTCALBND':
                                             tbound = re.sub('@ANAME',zone_item.Airnode.Name,surface.Boundarytemp.split('*')[-1])
 
                                             variables['tbd']      = tbound
-                                            variables['hconvo']   = '%s'%walls_def[surface.Construction].Hback
-                                            variables['qwg2']     = 0
+                                            # convective part h_c of the side-2 film: interior convective coefficient, unless the wall definition explicitly carries another back-side value
+                                            hconv_bnd = t395_hconv_interior
+                                            try:
+                                                if abs(float(walls_def[surface.Construction].Hback) - t395_hconv_back_default) > 1e-9:
+                                                    hconv_bnd = walls_def[surface.Construction].Hback
+                                            except (TypeError, ValueError):
+                                                pass
+                                            # longwave part h_r of the side-2 film: the exchange with the neighbour room, linearised at T_ref (implicit, so no TSO395 term and no algebraic loop;
+                                            # see the comment above the zone loop)
+                                            hrad_bnd = '4*SIGMA_S{0}*{1}*{2}^3'.format(surface.Surfnum, t395_eps_side2, t395_tref_k)
+                                            variables['hconvo']   = '{0} + {1}'.format(hconv_bnd, hrad_bnd)
+                                            # TB2 = film-weighted mean of the two reference temperatures. A mirror neighbour (TB2 = this zone's TAIR) has this zone's mean radiant
+                                            # temperature. For any other boundary temperature that temperature is also the best available radiant reference, so the weighted mean
+                                            # is the temperature itself and TB2 stays as it is.
                                             variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
+                                            if tbound.strip().upper() == 'TAIR_' + zone_item.Airnode.Name.upper():
+                                                variables['tbd']  = '({0}*TAIR_{1} + {2}*{3}) / hconv2_S{4}'.format(hconv_bnd, zone_item.Airnode.Name, hrad_bnd, t395_tmr, surface.Surfnum)
+                                                # Type 395 takes the side-2 vapour pressure as RH2*psat(TB2) (one temperature for heat and vapour, as on side 1).
+                                                # TB2 is now the weighted air/radiant temperature, so RH2 is scaled to keep the vapour pressure of the (mirror)
+                                                # room air: RH2*psat(TB2) = RH*psat(TAIR), the same Magnus ratio as RH1 of the side-1 star link
+                                                variables['rh2']  = 'Rh_{0}*EXP({1}*(TAIR_{0}/({2}+TAIR_{0})-TB2_S{3}/({2}+TB2_S{3})))'.format(zone_item.Airnode.Name, t395_magnus_a, t395_magnus_b, surface.Surfnum)
+                                            variables['qwg2']     = 0
+                                            # vapour: Lewis relation of the convective coefficient h_c only, not of the combined hconv2
+                                            variables['mt2']      = '0.000000007*{0}/3.6'.format(hconv_bnd)
                                         variables['lu1'] = variables['unitno']
+                                        # side-1 (room side) coupling, see the comment above the zone loop
+                                        if star395:
+                                            variables['tb1']     = 'TSTAR_%s'%zname395
+                                            variables['hconv1']  = '(1/ MAX(REQV_S%s*AREA395_S%s,0.001))'%(surface.Surfnum,surface.Surfnum)
+                                            variables['rh1']     = 'Rh_{0}*EXP({1}*(TAIR_{0}/({2}+TAIR_{0})-TSTAR_{0}/({2}+TSTAR_{0})))'.format(zname395,t395_magnus_a,t395_magnus_b)
+                                            variables['nin395']  = 11
+                                            variables['init395'] = '20 20 50 50 11 11 0 0 0 0 0'
+                                        else:
+                                            variables['tb1']     = 'TAIR_%s'%zname395
+                                            variables['hconv1']  = 'HCONVI_S%s'%surface.Surfnum
+                                            variables['rh1']     = 'Rh_%s'%zname395
+                                            variables['nin395']  = 14
+                                            variables['init395'] = '20 20 50 50 11 11 0 0 0 0 0 20 7.0 20.0'
+                                            variables['d395']    = 'only with longwave DETAILED or SIMPLE'
                                         variables['unit395'] = unit395_counter
                                         unit395_counter = unit395_counter + 1
                                         hamt_zone_surfaces[zname395].append(surface.Surfnum)
@@ -3046,6 +3282,8 @@ def printdck():
                                         variables['aname']    = zone_item.Airnode.Name
                                         # write the @s7# block per HAMT surface (multi-surface support)
                                         for item in blockdata:
+                                            if star395 and '@d395' in item:
+                                                continue  # inputs 12-14 (TAIR_MOIST1, HCONVI, TMR) exist only in the DETAILED/SIMPLE coupling
                                             for variablename in list(set(re.findall('@(\w+)',item))):
                                                 item=re.sub('@'+variablename, str(variables[variablename]).encode('string-escape'), item)
                                             dckout.write(item)
@@ -5076,6 +5314,10 @@ if WriteSimulationFiles:
                 shutil.copy(weather_file, variants_folder)
                 print 'Note: Weather copied to Variant folder'
             variables['weatherfile']    = weather_file_name
+            # Exterior solar of the EXTCALEXT walls: one extra Type 15 tilted surface per orientation (Type 15-3 layout: EPW, TMY2 and TMY3 weather files)
+            variables['hamt_solar_output'] = {}   # orientation -> Type 15 tilted surface number (1 = horizontal plane), read by the e7 handler
+            variables['hamt_solar_nsurf']  = 1
+            hamt_solar_oris = getHamtSolarOrientations(zone)
             if (".epw" in weather_file) or ("tm2" in weather_file) or ("tm3" in weather_file) or ("tmy3" in weather_file):
                 if ".epw" in weather_file:
                     mode = 3
@@ -5083,6 +5325,16 @@ if WriteSimulationFiles:
                     mode = 2
                 elif ".tm3" or "tmy3" in weather_file:
                     mode = 7
+                hamt_solar_tilted = []
+                for ori_name in hamt_solar_oris:
+                    tilted_surface = getType15TiltedSurface(ori_name, Turn)
+                    if tilted_surface is None:
+                        ghenv.Component.AddRuntimeMessage(w, "Orientation %s of an EXTCALEXT wall does not follow the Y_azimuth_slope format: its exterior solar gain is zero." % ori_name)
+                    else:
+                        hamt_solar_tilted.append((ori_name,) + tilted_surface)
+                        variables['hamt_solar_output'][ori_name] = len(hamt_solar_tilted) + 1
+                t15_npar, t15_nsurf, t15_extra = getType15TiltedLines(hamt_solar_tilted)
+                variables['hamt_solar_nsurf'] = t15_nsurf
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type15-3" (Type 15)
@@ -5092,17 +5344,17 @@ UNIT 15 TYPE 15	 Type15-3
 *$MODEL .\Weather Data Reading and Processing\Standard Format\Energy+ Weather Files (EPW)\Type15-3.tmf
 *$POSITION 330 31
 *$LAYER Weather - Data Files #
-PARAMETERS 9
+PARAMETERS {1}
 {0}		! 1 File Type
 36		! 2 Logical unit
 5		! 3 Tilted Surface Radiation Mode
 GRDREF		! 4 Ground reflectance - no snow
 0.2		! 5 Ground reflectance - snow cover
-1		! 6 Number of surfaces
+{2}		! 6 Number of surfaces
 1		! 7 Tracking mode
 0.0		! 8 Slope of surface
 0		! 9 Azimuth of surface
-""".format(mode)
+{3}""".format(mode, t15_npar, t15_nsurf, t15_extra)
                 variables['azen_link'] = '15,16'
                 variables['aazm_link'] = '15,17'
                 variables['rh_link']   = '15,7'
@@ -5115,6 +5367,8 @@ GRDREF		! 4 Ground reflectance - no snow
             elif (".dat" in weather_file) and 'TRY2015' in weather_file:
                 if "TRY2015" in weather_file:
                     mode = 10
+                if len(hamt_solar_oris) > 0:
+                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type15-10" (Type 15)
@@ -5145,6 +5399,8 @@ GRDREF		! 4 Ground reflectance - no snow
                 variables['wv_link']   = '15,8'
                 variables['wd_link']   = '15,9'
             else:
+                if len(hamt_solar_oris) > 0:
+                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type99-2" (Type 99)
@@ -5306,9 +5562,18 @@ GRDREF		! [unconnected] Ground reflectance
                         pass
                     else:
                         variables['radnr']      = variables['radnr'] + 3
-                        variables['radoutputs'] = variables['radoutputs'] + 'IT_{0} = IT_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
-                        variables['radoutputs'] = variables['radoutputs'] + 'IB_{0} = IB_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
-                        variables['radoutputs'] = variables['radoutputs'] + 'ID_{0} = ID_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                        # An EXTCALEXT wall is a BOUNDARY surface for Type 56 (IT_S = 0): show the Type 15 radiation of its orientation instead
+                        rep_is_hamt = False
+                        for rep_item in zone_item.Airnode.Surfaces:
+                            if rep_item.Surfnum == zone_item.Airnode.Extwallsurfaces[items] and rep_item.Boundarycond == 'EXTCALEXT':
+                                rep_is_hamt = True
+                        if rep_is_hamt and zone_item.Airnode.Extwallsurfacesori[items] in variables['hamt_solar_output']:
+                            for rad_prefix, rad_kind in (('IT', 0), ('IB', 1), ('ID', 4)):
+                                variables['radoutputs'] = variables['radoutputs'] + '{0}_{1} = [15,{2}]/3.6\n'.format(rad_prefix, zone_item.Airnode.Extwallsurfacesori[items], getType15TiltedOutput(rad_kind, variables['hamt_solar_output'][zone_item.Airnode.Extwallsurfacesori[items]], variables['hamt_solar_nsurf']))
+                        else:
+                            variables['radoutputs'] = variables['radoutputs'] + 'IT_{0} = IT_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                            variables['radoutputs'] = variables['radoutputs'] + 'IB_{0} = IB_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                            variables['radoutputs'] = variables['radoutputs'] + 'ID_{0} = ID_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
                         extwsurforicoll.append(zone_item.Airnode.Extwallsurfacesori[items])
                 for items in zone_item.Airnode.Winsurfaces:
                     for items2 in zone_item.Airnode.Surfaces:

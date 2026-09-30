@@ -69,6 +69,14 @@ For each `zone_item`, `variables['unitno'] = 800`, then for each `wall_item in z
 
 Then substitute and write (3006-3009).
 
+### Exterior solar gain of `EXTCALEXT` walls (`qWG2`, solar term)
+Type 56 handles an `EXTCALEXT` wall as a `BOUNDARY` surface (`ORI=... : BOUNDARY = INPUT 1*TSI395_S<n>`) and computes no incident radiation for it: `IT_S<n>` is 0 for the whole year, so the former term `IT_S<n> * ABS-BACK` never acted. The solar term is now
+`AREA395_S<n> * [15,<k>] * ABS-BACK`, with `[15,<k>]` the total radiation [kJ/(h m2)] of an extra Type 15 tilted surface that has the slope/azimuth of the wall's orientation (`getType15TiltedSurface`, rotated by the building turn). Type 15 and Type 56 call the same TRNSYS kernel routine, so this is Type 56's `IT` of an `EXTERNAL` surface of that orientation: identical to 0.000 kJ/(h m2) for a full year (Type 15 modes 1-5, several turns, orientations E/N/S/H).
+- Helpers next to `printdck()`: `getType15TiltedOutput`, `getType15TiltedSurface`, `getHamtSolarOrientations`, `getType15TiltedLines`. The weather-reader block of the deck writer adds one tilted surface per distinct `EXTCALEXT` orientation (surface 1 stays the horizontal plane) and stores `variables['hamt_solar_output']` (orientation -> Type 15 surface number), which the `e7` handler reads.
+- Only for EPW, TMY2 and TMY3 weather files (Type 15-3 parameter layout); with another weather reader the Runtime message says that the HAMT walls get no exterior solar gain.
+- The longwave emissivity of the two sky/ambient terms is `EPS-BACK` of the construction (was a constant 0.9); `ABS-BACK` was already taken from the construction.
+- Not included: external (geometric) shading of the wall. Type 56's `IT` is unshaded as well, but an `EXTERNAL` wall would receive `IBSHAD + IDSHAD`.
+
 ### e3 block — Type 399 PCM (lines 2834-2924)
 Same pattern: `variables['unitno'] = 800`, loop `Eficalsurfaces`, `lu1`/`lu2` = 800/820, template `UNIT 200 TYPE 399` (template line 921).
 
