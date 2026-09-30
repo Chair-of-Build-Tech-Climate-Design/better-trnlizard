@@ -3247,12 +3247,16 @@ def printdck():
                                             # TB2 = film-weighted mean of the two reference temperatures. A mirror neighbour (TB2 = this zone's TAIR) has this zone's mean radiant
                                             # temperature. For any other boundary temperature that temperature is also the best available radiant reference, so the weighted mean
                                             # is the temperature itself and TB2 stays as it is.
+                                            variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
                                             if tbound.strip().upper() == 'TAIR_' + zone_item.Airnode.Name.upper():
                                                 variables['tbd']  = '({0}*TAIR_{1} + {2}*{3}) / hconv2_S{4}'.format(hconv_bnd, zone_item.Airnode.Name, hrad_bnd, t395_tmr, surface.Surfnum)
+                                                # Type 395 takes the side-2 vapour pressure as RH2*psat(TB2) (one temperature for heat and vapour, as on side 1).
+                                                # TB2 is now the weighted air/radiant temperature, so RH2 is scaled to keep the vapour pressure of the (mirror)
+                                                # room air: RH2*psat(TB2) = RH*psat(TAIR), the same Magnus ratio as RH1 of the side-1 star link
+                                                variables['rh2']  = 'Rh_{0}*EXP({1}*(TAIR_{0}/({2}+TAIR_{0})-TB2_S{3}/({2}+TB2_S{3})))'.format(zone_item.Airnode.Name, t395_magnus_a, t395_magnus_b, surface.Surfnum)
                                             variables['qwg2']     = 0
                                             # vapour: Lewis relation of the convective coefficient h_c only, not of the combined hconv2
                                             variables['mt2']      = '0.000000007*{0}/3.6'.format(hconv_bnd)
-                                            variables['rh2']      = 'Rh_%s'%(zone_item.Airnode.Name)
                                         variables['lu1'] = variables['unitno']
                                         # side-1 (room side) coupling, see the comment above the zone loop
                                         if star395:

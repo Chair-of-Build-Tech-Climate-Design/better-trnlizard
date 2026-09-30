@@ -43,12 +43,14 @@ REFERENCE_EXTCALEXT_QWG2 = (
 
 # Side-2 equations of the implicit option A, copied from the deck that TRNSYS ran (QWG2_STABILITY_TEST_2026-09-30.md, variant
 # "implicit option A"): E:\HyHole\20260930_Calibration\qwg2_stability\optAimp_0.1h\Hygrothermisch_Big_GKP_WithFoil.d18, S9 lines
-# 1098, 1101, 1116, 1118 and 1120 (S10 and S11 are the same with their surface number). {0} = surface number, zone A1.
+# 1098, 1101, 1116 and 1120 (S10 and S11 are the same with their surface number). {0} = surface number, zone A1.
+# RH2 (line 1118 there: plain Rh_A1) was scaled afterwards so that RH2*psat(TB2) is the vapour pressure of the room air
+# (TB2 is the weighted air/radiant temperature; see REFERENCE_SIDE2_RH2 and the vapour-pressure test).
 REFERENCE_IMPLICIT_SIDE2 = {
     "hconv2_S{0}": "11 + 4*SIGMA_S{0}*0.9*293.15^3",
     "TB2_S{0}": "(11*TAIR_A1 + 4*SIGMA_S{0}*0.9*293.15^3*TMR_C1) / hconv2_S{0}",
     "qWG2_S{0}": "0",
-    "RH2_S{0}": "Rh_A1",
+    "RH2_S{0}": "Rh_A1*EXP(17.62*(TAIR_A1/(243.12+TAIR_A1)-TB2_S{0}/(243.12+TB2_S{0})))",
     "beta2_S{0}": "0.000000007*11/3.6",
 }
 
@@ -313,6 +315,32 @@ class Type395Side2BoundaryTests(unittest.TestCase):
                 with self.subTest(equation=name):
                     self.assertEqual(expected.format(number), blocks[number][1][name])
 
+    def test_extcalbnd_side2_vapour_pressure_is_that_of_the_room_air_although_tb2_is_the_weighted_temperature(self):
+        _, blocks = self.render(self.din_surfaces())
+        equations = blocks[9][1]
+
+        def psat_hyland_wexler(celsius):
+            """Saturation pressure [Pa] as in hamt-core physics::psy_psat_fn_temp (above freezing: over water)."""
+            t = celsius + 273.15
+            c8, c9, c10, c11, c12, c13 = -5800.2206, 1.3914993, -4.8640239e-2, 4.1764768e-5, -1.4452093e-8, 6.5459673
+            return math.exp(c8 / t + c9 + t * (c10 + t * (c11 + t * c12)) + c13 * math.log(t))
+
+        for tair in (10.0, 15.0, 20.0, 25.0, 30.0):
+            for tmr_minus_tair in (-2.0, -0.5, 0.0, 0.5, 1.5):
+                for rh in (30.0, 55.0, 80.0):
+                    with self.subTest(tair=tair, tmr_minus_tair=tmr_minus_tair, rh=rh):
+                        tmr = tair + tmr_minus_tair
+                        hconv2 = evaluate(equations["hconv2_S9"], SIGMA_S9=SIGMA)
+                        tb2 = evaluate(equations["TB2_S9"], TAIR_A1=tair, TMR_C1=tmr, SIGMA_S9=SIGMA, hconv2_S9=hconv2)
+                        rh2 = evaluate(equations["RH2_S9"], Rh_A1=rh, TAIR_A1=tair, TB2_S9=tb2)
+                        # Type 395 (boundary.rs): side-2 vapour pressure = RH2/100 * psat(TB2)
+                        ratio = (rh2 / 100.0 * psat_hyland_wexler(tb2)) / (rh / 100.0 * psat_hyland_wexler(tair))
+                        self.assertAlmostEqual(1.0, ratio, delta=3e-4)
+                        if tmr_minus_tair == 0.0:
+                            self.assertAlmostEqual(rh, rh2, places=9)
+        # unscaled, the vapour pressure would be off by about 6 % per kelvin of (TB2 - TAIR); TB2 moves 0.63 K per kelvin of TMR - TAIR
+        self.assertGreater(abs(psat_hyland_wexler(20.0 + 0.63) / psat_hyland_wexler(20.0) - 1.0), 0.02)
+
     def test_extcalbnd_side2_film_is_the_interior_convective_coefficient_plus_the_linearised_longwave_film(self):
         _, blocks = self.render(self.din_surfaces())
 
@@ -324,7 +352,7 @@ class Type395Side2BoundaryTests(unittest.TestCase):
                 hconv2 = evaluate(equations["hconv2_S%d" % number], **{"SIGMA_S%d" % number: SIGMA})
                 self.assertAlmostEqual(H_CONV + 4 * SIGMA * EPS * T_REF ** 3, hconv2, places=9)
                 self.assertAlmostEqual(29.51, hconv2, delta=0.005)
-                self.assertEqual("Rh_A1", equations["RH2_S%d" % number])
+                self.assertEqual("Rh_A1*EXP(17.62*(TAIR_A1/(243.12+TAIR_A1)-TB2_S{0}/(243.12+TB2_S{0})))".format(number), equations["RH2_S%d" % number])
 
     def test_extcalbnd_tb2_of_a_mirror_wall_is_the_film_weighted_mean_of_the_air_and_the_radiant_temperature(self):
         _, blocks = self.render(self.din_surfaces())
@@ -524,7 +552,7 @@ class Type395Side2BoundaryTests(unittest.TestCase):
 
         equations = blocks[9][1]
         self.assertEqual("(11*TAIR_Office + 4*SIGMA_S9*0.9*293.15^3*TMR_C1) / hconv2_S9", equations["TB2_S9"])
-        self.assertEqual("Rh_Office", equations["RH2_S9"])
+        self.assertEqual("Rh_Office*EXP(17.62*(TAIR_Office/(243.12+TAIR_Office)-TB2_S9/(243.12+TB2_S9)))", equations["RH2_S9"])
 
     # ------------------------------------------------------------------ block bookkeeping
 
