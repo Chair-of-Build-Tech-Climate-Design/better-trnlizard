@@ -2746,6 +2746,53 @@ def getbuiOutputs():
                 #print outputitem
             variables['outputs'] = outputs
         #print variables['outputs']
+# ----------------------------------------------------------------------------------------------------------------------
+# Exterior solar gain of HAMT walls (EXTCALEXT)
+# Type 56 handles an EXTCALEXT wall as a BOUNDARY surface (BOUNDARY = INPUT 1*TSI395_S<n>) and computes no incident
+# radiation for it (IT_S<n> = 0), so the exterior side of the Type 395 wall needs another source. Type 15 and Type 56 call the
+# same TRNSYS kernel routine (GetTiltedRadiation: same sky model, same ground reflectance), so the total radiation of a Type 15
+# tilted surface with the slope/azimuth of an orientation is Type 56's IT of an EXTERNAL surface of that orientation (checked to
+# 0.000 kJ/(h m2): a full year, Type 15 modes 1-5, eight building turns, orientations S, E, N and H_0_0). Type 15 therefore gets
+# one extra tilted surface per distinct EXTCALEXT orientation; surface 1 stays the horizontal plane that every deck has.
+TYPE15_FIRST_TILTED_OUTPUT = 24   # Type 15 output number of the total radiation on tilted surface 1 (outputs 24.. hold surfaces 1..n)
+def getType15TiltedOutput(kind, surface_no, surface_count):
+    """Type 15 output number of a per-surface result. kind: 0 total, 1 beam, 2 sky diffuse, 3 ground reflected, 4 total diffuse
+    (sky + ground), 5 incidence angle, 6 slope, 7 azimuth; each kind holds one output per tilted surface (n = surface_count)."""
+    return TYPE15_FIRST_TILTED_OUTPUT + kind * surface_count + surface_no - 1
+def getType15TiltedSurface(orientation, turn = 0):
+    """Slope and azimuth [deg] of a Type 15 tilted surface for an orientation name Y_azimuth_slope (for example S_0_90 or
+    E_270_90; azimuth: 0 facing the equator, 90 west, 180 pole-ward, 270 east, as in TRNSYS, slope 0..180), or None for a name
+    that does not follow this format. Type 56 receives the solar azimuth minus the building turn, so the surface is turned by +turn."""
+    match = re.match(r'^[A-Za-z]_(-?\d+(?:\.\d+)?)_(\d+(?:\.\d+)?)$', str(orientation).strip())
+    if match is None:
+        return None
+    slope = float(match.group(2))
+    if slope > 180:
+        return None
+    azimuth = (float(match.group(1)) + float(turn)) % 360.0
+    if azimuth > 180.0:
+        azimuth = azimuth - 360.0
+    return slope, azimuth
+def getHamtSolarOrientations(zones):
+    """Distinct orientations of the EXTCALEXT walls of all zones, in order of first appearance."""
+    orientations = []
+    for zone_item in zones:
+        for surface in zone_item.Airnode.Surfaces:
+            if surface.Boundarycond != 'EXTCALEXT' or surface.Type == 'WINDOW' or "Virtual" in surface.Construction:
+                continue
+            if str(surface.Orientation) not in orientations:
+                orientations.append(str(surface.Orientation))
+    return orientations
+def getType15TiltedLines(tilted):
+    """Parameter block of the extra Type 15 tilted surfaces. tilted: [(orientation, slope, azimuth)] (azimuth already turned).
+    Returns (number of Type 15 parameters, number of tilted surfaces including the horizontal plane, parameter lines)."""
+    lines = ''
+    for ti, (orientation, slope, azimuth) in enumerate(tilted):
+        first = 10 + 3 * ti
+        lines = lines + '1\t\t! {0} Tracking mode (exterior solar of the HAMT walls of orientation {1})\n'.format(first, orientation)
+        lines = lines + '{1:g}\t\t! {0} Slope of surface\n'.format(first + 1, slope)
+        lines = lines + '{1:g}\t\t! {0} Azimuth of surface\n'.format(first + 2, azimuth)
+    return 9 + 3 * len(tilted), 1 + len(tilted), lines
 @timing
 def printdck():
     #Convert the dck template into the final simulation file
@@ -3036,7 +3083,18 @@ def printdck():
                                             #variables['hconvo']   = '1/ MAX(REQV_S%s,0.001)'%surface.Surfnum
                                             #variables['qwg2']  = 'IT_S%s * %s - QSKY_S%s'%(surface.Surfnum, walls_def[surface.Construction].Abs_back,surface.Surfnum)
                                             #print dir(surface)
-                                            variables['qwg2']  = 'IT_S{0} * {1} + AREA395_S{0} * {2} * SIGMA_S{0} * {3} * ((273.15 + Tsky)^4 - (273.15 + TSO395_S{0})^4) + AREA395_S{0} * (1-{2}) * SIGMA_S{0} * {3} * ((273.15 + Tamb)^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, walls_def[surface.Construction].Abs_back,surface.Fsky,0.9)
+                                            # Exterior solar: Type 56 gives a BOUNDARY-type wall no incident radiation (IT_S = 0), so the solar gain is the total radiation of the
+                                            # Type 15 tilted surface with this wall's orientation (same kernel routine as Type 56, see getHamtSolarOrientations) times ABS-BACK.
+                                            # The longwave emissivity is EPS-BACK, as in Type 56's outside heat balance (sigma * eps * (Tso^4 - Tfsky^4), Tfsky from Tsky, Tamb and Fsky).
+                                            try:
+                                                eps_exterior = float(walls_def[surface.Construction].Eps_back)
+                                            except (AttributeError, TypeError, ValueError):
+                                                eps_exterior = 0.9
+                                            solar_surface_no = variables.get('hamt_solar_output', {}).get(str(getattr(surface, 'Orientation', '')))
+                                            qwg2_solar = ''
+                                            if solar_surface_no is not None:
+                                                qwg2_solar = 'AREA395_S{0} * [15,{1}] * {2} + '.format(surface.Surfnum, getType15TiltedOutput(0, solar_surface_no, variables.get('hamt_solar_nsurf', 1)), walls_def[surface.Construction].Abs_back)
+                                            variables['qwg2']  = qwg2_solar + 'AREA395_S{0} * {1} * SIGMA_S{0} * {2:g} * ((273.15 + Tsky)^4 - (273.15 + TSO395_S{0})^4) + AREA395_S{0} * (1-{1}) * SIGMA_S{0} * {2:g} * ((273.15 + Tamb)^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, surface.Fsky, eps_exterior)
                                             variables['rh2']  = 'Rh_amb'
                                         elif surface.Boundarycond == 'EXTCALBND':
                                             tbound = re.sub('@ANAME',zone_item.Airnode.Name,surface.Boundarytemp.split('*')[-1])
@@ -5099,6 +5157,10 @@ if WriteSimulationFiles:
                 shutil.copy(weather_file, variants_folder)
                 print 'Note: Weather copied to Variant folder'
             variables['weatherfile']    = weather_file_name
+            # Exterior solar of the EXTCALEXT walls: one extra Type 15 tilted surface per orientation (Type 15-3 layout: EPW, TMY2 and TMY3 weather files)
+            variables['hamt_solar_output'] = {}   # orientation -> Type 15 tilted surface number (1 = horizontal plane), read by the e7 handler
+            variables['hamt_solar_nsurf']  = 1
+            hamt_solar_oris = getHamtSolarOrientations(zone)
             if (".epw" in weather_file) or ("tm2" in weather_file) or ("tm3" in weather_file) or ("tmy3" in weather_file):
                 if ".epw" in weather_file:
                     mode = 3
@@ -5106,6 +5168,16 @@ if WriteSimulationFiles:
                     mode = 2
                 elif ".tm3" or "tmy3" in weather_file:
                     mode = 7
+                hamt_solar_tilted = []
+                for ori_name in hamt_solar_oris:
+                    tilted_surface = getType15TiltedSurface(ori_name, Turn)
+                    if tilted_surface is None:
+                        ghenv.Component.AddRuntimeMessage(w, "Orientation %s of an EXTCALEXT wall does not follow the Y_azimuth_slope format: its exterior solar gain is zero." % ori_name)
+                    else:
+                        hamt_solar_tilted.append((ori_name,) + tilted_surface)
+                        variables['hamt_solar_output'][ori_name] = len(hamt_solar_tilted) + 1
+                t15_npar, t15_nsurf, t15_extra = getType15TiltedLines(hamt_solar_tilted)
+                variables['hamt_solar_nsurf'] = t15_nsurf
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type15-3" (Type 15)
@@ -5115,17 +5187,17 @@ UNIT 15 TYPE 15	 Type15-3
 *$MODEL .\Weather Data Reading and Processing\Standard Format\Energy+ Weather Files (EPW)\Type15-3.tmf
 *$POSITION 330 31
 *$LAYER Weather - Data Files #
-PARAMETERS 9
+PARAMETERS {1}
 {0}		! 1 File Type
 36		! 2 Logical unit
 5		! 3 Tilted Surface Radiation Mode
 GRDREF		! 4 Ground reflectance - no snow
 0.2		! 5 Ground reflectance - snow cover
-1		! 6 Number of surfaces
+{2}		! 6 Number of surfaces
 1		! 7 Tracking mode
 0.0		! 8 Slope of surface
 0		! 9 Azimuth of surface
-""".format(mode)
+{3}""".format(mode, t15_npar, t15_nsurf, t15_extra)
                 variables['azen_link'] = '15,16'
                 variables['aazm_link'] = '15,17'
                 variables['rh_link']   = '15,7'
@@ -5138,6 +5210,8 @@ GRDREF		! 4 Ground reflectance - no snow
             elif (".dat" in weather_file) and 'TRY2015' in weather_file:
                 if "TRY2015" in weather_file:
                     mode = 10
+                if len(hamt_solar_oris) > 0:
+                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type15-10" (Type 15)
@@ -5168,6 +5242,8 @@ GRDREF		! 4 Ground reflectance - no snow
                 variables['wv_link']   = '15,8'
                 variables['wd_link']   = '15,9'
             else:
+                if len(hamt_solar_oris) > 0:
+                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type99-2" (Type 99)
@@ -5329,9 +5405,18 @@ GRDREF		! [unconnected] Ground reflectance
                         pass
                     else:
                         variables['radnr']      = variables['radnr'] + 3
-                        variables['radoutputs'] = variables['radoutputs'] + 'IT_{0} = IT_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
-                        variables['radoutputs'] = variables['radoutputs'] + 'IB_{0} = IB_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
-                        variables['radoutputs'] = variables['radoutputs'] + 'ID_{0} = ID_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                        # An EXTCALEXT wall is a BOUNDARY surface for Type 56 (IT_S = 0): show the Type 15 radiation of its orientation instead
+                        rep_is_hamt = False
+                        for rep_item in zone_item.Airnode.Surfaces:
+                            if rep_item.Surfnum == zone_item.Airnode.Extwallsurfaces[items] and rep_item.Boundarycond == 'EXTCALEXT':
+                                rep_is_hamt = True
+                        if rep_is_hamt and zone_item.Airnode.Extwallsurfacesori[items] in variables['hamt_solar_output']:
+                            for rad_prefix, rad_kind in (('IT', 0), ('IB', 1), ('ID', 4)):
+                                variables['radoutputs'] = variables['radoutputs'] + '{0}_{1} = [15,{2}]/3.6\n'.format(rad_prefix, zone_item.Airnode.Extwallsurfacesori[items], getType15TiltedOutput(rad_kind, variables['hamt_solar_output'][zone_item.Airnode.Extwallsurfacesori[items]], variables['hamt_solar_nsurf']))
+                        else:
+                            variables['radoutputs'] = variables['radoutputs'] + 'IT_{0} = IT_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                            variables['radoutputs'] = variables['radoutputs'] + 'IB_{0} = IB_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
+                            variables['radoutputs'] = variables['radoutputs'] + 'ID_{0} = ID_S{1}/(3.6*AREA_S{1}+0.00000001)\n'.format(zone_item.Airnode.Extwallsurfacesori[items],zone_item.Airnode.Extwallsurfaces[items])
                         extwsurforicoll.append(zone_item.Airnode.Extwallsurfacesori[items])
                 for items in zone_item.Airnode.Winsurfaces:
                     for items2 in zone_item.Airnode.Surfaces:
