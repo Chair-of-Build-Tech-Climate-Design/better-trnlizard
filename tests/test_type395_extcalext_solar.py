@@ -45,9 +45,10 @@ GRDREF\t\t! 4 Ground reflectance - no snow
 0\t\t! 9 Azimuth of surface
 """
 
+# [700,2]: outer surface temperature of the previous time step, output 2 of the Type 93 of wall 8 (Type 395 unit 200 + 500)
 LONGWAVE_ONLY_QWG2 = (
-    "AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + TSO395_S8)^4)"
-    " + AREA395_S8 * (1-0.5) * SIGMA_S8 * 0.9 * ((273.15 + Tamb)^4 - (273.15 + TSO395_S8)^4)"
+    "AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + [700,2])^4)"
+    " + AREA395_S8 * (1-0.5) * SIGMA_S8 * 0.9 * ((273.15 + Tamb)^4 - (273.15 + [700,2])^4)"
 )
 
 
@@ -238,8 +239,8 @@ def equation_blocks(deck_text):
 
 
 def evaluate(expression, **values):
-    """Evaluate a TRNSYS equation right-hand side; ``[15,25]`` is read from the value ``T15_25``."""
-    expression = re.sub(r"\[15,(\d+)\]", r"T15_\1", expression)
+    """Evaluate a TRNSYS equation right-hand side; a unit output such as ``[15,25]`` is read from the value ``T15_25``."""
+    expression = re.sub(r"\[(\d+),(\d+)\]", r"T\1_\2", expression)
     return eval(expression.replace("^", "**"), {"__builtins__": {}}, values)
 
 
@@ -449,7 +450,7 @@ class ExtcalextSolarGainTests(unittest.TestCase):
         _, blocks = self.render(self.din_zones(), variables=self.din_variables())
         expression = blocks[8][1]["qWG2_S8"]
         sigma = 2.041e-07
-        conditions = dict(AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=10.0, Tamb=25.0, TSO395_S8=40.0)
+        conditions = dict(AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=10.0, Tamb=25.0, T700_2=40.0)
 
         with_sun = evaluate(expression, T15_25=1800.0, **conditions)
         without_sun = evaluate(expression, T15_25=0.0, **conditions)
@@ -465,7 +466,7 @@ class ExtcalextSolarGainTests(unittest.TestCase):
                 _, blocks = self.render(self.din_zones(), walls_def, self.din_variables())
                 expression = blocks[8][1]["qWG2_S8"]
                 sigma = 2.041e-07
-                gain = evaluate(expression, T15_25=1000.0, AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=20.0, Tamb=20.0, TSO395_S8=20.0)
+                gain = evaluate(expression, T15_25=1000.0, AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=20.0, Tamb=20.0, T700_2=20.0)
                 self.assertAlmostEqual(8.0 * 1000.0 * float(abs_back), gain, places=6)
 
     def test_longwave_emissivity_comes_from_eps_back_of_the_construction(self):
@@ -476,7 +477,7 @@ class ExtcalextSolarGainTests(unittest.TestCase):
                 _, blocks = self.render(self.din_zones(), walls_def, self.din_variables())
                 expression = blocks[8][1]["qWG2_S8"]
                 # no sun; sky 0 C, air 10 C, wall 5 C, Fsky 0.5: sigma eps A [0.5 (Tsky^4 - Tso^4) + 0.5 (Tamb^4 - Tso^4)]
-                gain = evaluate(expression, T15_25=0.0, AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=0.0, Tamb=10.0, TSO395_S8=5.0)
+                gain = evaluate(expression, T15_25=0.0, AREA395_S8=8.0, SIGMA_S8=sigma, Tsky=0.0, Tamb=10.0, T700_2=5.0)
                 expected = 8.0 * sigma * float(eps_back) * (
                     0.5 * (273.15 ** 4 - 278.15 ** 4) + 0.5 * (283.15 ** 4 - 278.15 ** 4))
                 self.assertAlmostEqual(expected, gain, places=6)
@@ -558,6 +559,98 @@ class ExtcalextSolarGainTests(unittest.TestCase):
             output = int(re.search(r"\[15,(\d+)\]", expression).group(1))
             self.assertEqual(23 + tilted_surface, output)
             self.assertLessEqual(output, 23 + nsurf)   # inside the block of "total radiation on tilted surface i"
+
+
+class ExtcalextLaggedTsoTests(unittest.TestCase):
+    """The longwave terms of an EXTCALEXT wall read the outer surface temperature of the PREVIOUS time step from a Type 93.
+
+    With TSO395 of the current iteration they were an algebraic loop through TRNSYS (TSO395 is output 2 of the Type 395 that takes
+    qWG2 as input 8): 22 non-converged steps per year in the DIN GKP hygrothermal run of 2026-10-02, all at sunrise or sunset.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.template_lines = load_template_lines()
+
+    def render(self, zones):
+        walls_def = {"HHL_Wall": SimpleNamespace(Hback="64.0", Abs_back="0.7", Eps_back="0.9")}
+        variables = {"hamt_solar_output": {"S_0_90": 2, "E_270_90": 3}, "hamt_solar_nsurf": 3}
+        text = render_hamt_block(self.template_lines, zones, walls_def, variables)
+        surfaces = [s for z in zones for s in z.Airnode.Surfaces if s.Boundarycond in ("EXTCALEXT", "EXTCALBND")]
+        return text, {s.Surfnum: block for s, block in zip(surfaces, equation_blocks(text))}
+
+    def din_zones(self):
+        return [make_zone("A1", [
+            make_surface(8, "EXTCALEXT", "S_0_90"),
+            make_surface(9, "EXTCALBND", "W_90_90"),
+            make_surface(10, "EXTCALBND", "N_180_90"),
+            make_surface(11, "EXTCALBND", "E_270_90"),
+        ])]
+
+    def two_zones(self):
+        return self.din_zones() + [make_zone("A2", [make_surface(20, "EXTCALEXT", "E_270_90"), make_surface(21, "EXTCALEXT", "S_0_90")])]
+
+    @staticmethod
+    def type93_units(text):
+        """{unit number: {'parameters': [...], 'inputs': [...], 'initial': [...]}} of every Type 93 in the rendered deck text."""
+        lines = text.splitlines()
+        units = {}
+        for i, line in enumerate(lines):
+            unit = re.match(r"^UNIT\s+(\d+)\s+TYPE\s+93\b", line)
+            if unit is None:
+                continue
+            j = i
+            while not lines[j].startswith("PARAMETERS"):
+                j += 1
+            parameters = [lines[j + 1 + k].split()[0] for k in range(int(lines[j].split()[1]))]
+            while not lines[j].startswith("INPUTS"):
+                j += 1
+            inputs = [lines[j + 1 + k].split()[0] for k in range(int(lines[j].split()[1]))]
+            while not lines[j].startswith("*** INITIAL INPUT VALUES"):
+                j += 1
+            units[int(unit.group(1))] = {"parameters": parameters, "inputs": inputs, "initial": lines[j + 1].split()}
+        return units
+
+    def test_qwg2_reads_the_previous_time_step_not_the_current_iteration(self):
+        _, blocks = self.render(self.din_zones())
+        qwg2 = blocks[8][1]["qWG2_S8"]
+
+        self.assertNotIn("TSO395_S8", qwg2)
+        self.assertEqual(2, qwg2.count("(273.15 + [700,2])^4"))   # sky and ambient term
+        self.assertEqual("[200,2]", blocks[8][1]["TSO395_S8"])     # the Type 93 stores this value
+
+    def test_each_extcalext_wall_gets_one_type93_that_stores_its_own_tso395(self):
+        text, blocks = self.render(self.two_zones())
+        units = self.type93_units(text)
+
+        # Type 395 units 200..205 follow the surface order 8, 9, 10, 11, 20, 21; the Type 93 of an EXTCALEXT wall is its unit + 500
+        self.assertEqual({700: ["TSO395_S8"], 704: ["TSO395_S20"], 705: ["TSO395_S21"]}, {u: b["inputs"] for u, b in units.items()})
+        for number, unit in ((8, 700), (20, 704), (21, 705)):
+            with self.subTest(surface=number):
+                self.assertEqual("[%d,2]" % (unit - 500), blocks[number][1]["TSO395_S%d" % number])
+                self.assertIn("[%d,2]" % unit, blocks[number][1]["qWG2_S%d" % number])
+                self.assertEqual(["1", "2"], units[unit]["parameters"])   # one input, current and previous time step
+
+    def test_inner_walls_get_no_type93(self):
+        text, blocks = self.render(self.din_zones())
+
+        self.assertEqual([700], sorted(self.type93_units(text)))
+        for number in (9, 10, 11):
+            self.assertNotRegex(blocks[number][1]["qWG2_S%d" % number], r"\[\d+,\d+\]")
+
+    def test_the_initial_value_is_the_initial_wall_temperature_of_type395(self):
+        text, _ = self.render(self.din_zones())
+        initial_wall = re.search(r"^([-\d.]+)\s*!initial wall temperature", text, re.M).group(1)
+
+        self.assertEqual([initial_wall], self.type93_units(text)[700]["initial"])
+
+    def test_unit_numbers_are_unique_and_every_block_starts_on_its_own_line(self):
+        text, _ = self.render(self.two_zones())
+        units = re.findall(r"^UNIT\s+(\d+)\s+TYPE", text, re.M)
+
+        self.assertEqual(len(units), len(set(units)))
+        self.assertEqual(3, len(re.findall(r"\n\*-{78}\n\* TSO395_S\d+ of the previous time step", text)))
+        self.assertNotIn("@", text)
 
 
 class RadiationEquationTests(unittest.TestCase):
