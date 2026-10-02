@@ -414,7 +414,7 @@ MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 
 MIRROR_SIGMA = 2.041e-07          # kJ/(h m2 K4), same literal as SIGMA_S@surface in Lizard_DCK_Template.py
 MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18), same value as t395_tref_k in the e7 handler
 MIRROR_SUFFIX = '_MIRROR'
-MIRROR_NAME_MAX = 25              # longest wall type name known to work in TRNBuild (HHL_Wall_Gipskartonplatte); raise it only when longer names are confirmed
+MIRROR_NAME_MAX = 32              # confirmed 2026-10-02: TRNBuild accepts it, and a Type 56 run with HHL_Wall_Gipskartonplatte_MIRROR (32) gave results identical to the 25-character name
 def mirror_hback_value():
     """Combined back film of a mirror wall [kJ/(h m2 K)]: interior convective film plus the linearised longwave film."""
     return round(MIRROR_HCONV_INTERIOR + 4 * MIRROR_SIGMA * MIRROR_EPS * MIRROR_TREF_K ** 3, 2)

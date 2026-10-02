@@ -84,7 +84,7 @@ REFERENCE_CEILING_FLOOR_LINES = [
 ]
 # What the thermal DIN b18 must contain after the change (derived type, HBACK 29.51, three zone lines renamed)
 EXPECTED_MIRROR_WALL = [
-    "CONSTRUCTION HHL_Wall_Gipskarto_MIRROR",
+    "CONSTRUCTION HHL_Wall_Gipskartonplatte_MIRROR",
     " LAYERS   =  HHL_Gipskartonplatte HHL_Holzfaserdaemmmatte HHL_LivingBoard HHL_Zellulosedaemmstoff HHL_AGEPAN_THD",
     " THICKNESS=  0.022        0.06         0.015        0.24         0.035",
     " ABS-FRONT= 0.3   : ABS-BACK= 0.7",
@@ -92,9 +92,9 @@ EXPECTED_MIRROR_WALL = [
     " HFRONT   = 23.0 : HBACK= 29.51",
 ]
 EXPECTED_MIRROR_ZONE_LINES = [
-    "WALL  =HHL_Wall_Gipskarto_MIRROR : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.12",
-    "WALL  =HHL_Wall_Gipskarto_MIRROR : SURF=  69 : AREA=        14.0 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.106",
-    "WALL  =HHL_Wall_Gipskarto_MIRROR : SURF=  70 : AREA=        15.848 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.12",
+    "WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.12",
+    "WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  69 : AREA=        14.0 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.106",
+    "WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  70 : AREA=        15.848 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.12",
 ]
 
 # Syntax that IronPython 2.7 (Grasshopper) cannot parse or that its unqualified-exec functions reject
@@ -292,7 +292,7 @@ class ThermalMirrorDinRenderTests(unittest.TestCase):
         self.assertEqual(REFERENCE_CEILING_FLOOR_LINES, self.zone_lines[0:2])
 
     def test_mirror_walls_get_a_derived_wall_type_with_the_combined_back_film(self):
-        self.assertEqual(EXPECTED_MIRROR_WALL, block_of(self.definitions, "HHL_Wall_Gipskarto_MIRROR"))
+        self.assertEqual(EXPECTED_MIRROR_WALL, block_of(self.definitions, "HHL_Wall_Gipskartonplatte_MIRROR"))
 
     def test_the_original_wall_type_keeps_hback_64_for_the_exterior_wall(self):
         self.assertEqual(REFERENCE_WALL, block_of(self.definitions, "HHL_Wall_Gipskartonplatte"))
@@ -304,7 +304,7 @@ class ThermalMirrorDinRenderTests(unittest.TestCase):
     def test_only_one_derived_type_is_emitted_and_nothing_else_changes(self):
         names = [line.split()[1] for line in self.definitions if line.startswith("CONSTRUCTION ")]
         self.assertEqual(
-            ["HHL_Roof", "HHL_Floor", "HHL_Wall_Gipskartonplatte", "HHL_Wall_Gipskarto_MIRROR"], names
+            ["HHL_Roof", "HHL_Floor", "HHL_Wall_Gipskartonplatte", "HHL_Wall_Gipskartonplatte_MIRROR"], names
         )
         self.assertEqual(len(self.definitions), 3 + 12 + 6 + 6)
 
@@ -317,7 +317,7 @@ class ThermalMirrorDinRenderTests(unittest.TestCase):
         self.assertEqual(1, len(self.messages))
         level, text = self.messages[0]
         self.assertEqual("REMARK", level)
-        for expected in ("68 (A1)", "69 (A1)", "70 (A1)", "HHL_Wall_Gipskarto_MIRROR", "HHL_Wall_Gipskartonplatte", "29.51"):
+        for expected in ("68 (A1)", "69 (A1)", "70 (A1)", "HHL_Wall_Gipskartonplatte_MIRROR", "HHL_Wall_Gipskartonplatte", "29.51"):
             self.assertIn(expected, text)
         self.assertNotIn("67 (", text)  # the exterior wall
         self.assertNotIn("58 (", text)  # ceiling, explicit HBACK 9999
@@ -364,8 +364,8 @@ class ThermalMirrorRuleTests(unittest.TestCase):
         for hback in ("64.0", "64", 64, 64.0, " 64.0 "):
             with self.subTest(hback=hback):
                 definitions, messages, zone_lines = self.render(self.one_wall(), din_walls(hback))
-                self.assertEqual(29.51, hback_of(definitions, "HHL_Wall_Gipskarto_MIRROR"))
-                self.assertIn("WALL  =HHL_Wall_Gipskarto_MIRROR : SURF=  68", zone_lines[0])
+                self.assertEqual(29.51, hback_of(definitions, "HHL_Wall_Gipskartonplatte_MIRROR"))
+                self.assertIn("WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  68", zone_lines[0])
 
     def test_non_mirror_boundary_walls_are_untouched(self):
         for boundarytemp in ("INPUT 1*TAIR_A2", "INPUT 1*Tamb", "INPUT 1*18", "INPUT 1*-5", "18", "Identical",
@@ -398,10 +398,10 @@ class ThermalMirrorRuleTests(unittest.TestCase):
             make_surface(70, "BOUNDARY", "HHL_Wall_Gipskartonplatte", "INPUT 1*TAIR_A1", 15.848, 0.12),
         ])
         definitions, messages, zone_lines = self.render(airnode)
-        self.assertEqual(1, len([line for line in definitions if line == "CONSTRUCTION HHL_Wall_Gipskarto_MIRROR"]))
-        self.assertIn("=HHL_Wall_Gipskarto_MIRROR : SURF=  68", zone_lines[0])
+        self.assertEqual(1, len([line for line in definitions if line == "CONSTRUCTION HHL_Wall_Gipskartonplatte_MIRROR"]))
+        self.assertIn("=HHL_Wall_Gipskartonplatte_MIRROR : SURF=  68", zone_lines[0])
         self.assertIn("=HHL_Wall_Gipskartonplatte : SURF=  69", zone_lines[1])
-        self.assertIn("=HHL_Wall_Gipskarto_MIRROR : SURF=  70", zone_lines[2])
+        self.assertIn("=HHL_Wall_Gipskartonplatte_MIRROR : SURF=  70", zone_lines[2])
         self.assertIn("68 (A1), 70 (A1)", messages[0][1])
         self.assertNotIn("69 (", messages[0][1])
 
@@ -411,12 +411,12 @@ class ThermalMirrorRuleTests(unittest.TestCase):
             make_surface(10, "BOUNDARY", "HHL_Wall_Gipskartonplatte", "INPUT 1*TAIR_@ANAME", 14.0, 0.106),
         ])
         definitions, messages, zone_lines = self.render(airnode)
-        self.assertEqual(1, len([line for line in definitions if line == "CONSTRUCTION HHL_Wall_Gipskarto_MIRROR"]))
+        self.assertEqual(1, len([line for line in definitions if line == "CONSTRUCTION HHL_Wall_Gipskartonplatte_MIRROR"]))
         self.assertEqual(99999.0, hback_of(definitions, "HIGH_COND"))
         self.assertEqual(
             [
                 "WALL  =HIGH_COND : SURF=  9 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S9 : GEOSURF=0.12",
-                "WALL  =HHL_Wall_Gipskarto_MIRROR : SURF=  10 : AREA=        14.0 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.106",
+                "WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  10 : AREA=        14.0 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.106",
             ],
             zone_lines,
         )
@@ -429,8 +429,8 @@ class ThermalMirrorRuleTests(unittest.TestCase):
             with self.subTest(airnode=airnode_name, boundarytemp=boundarytemp):
                 airnode = make_airnode(airnode_name, [make_surface(68, "BOUNDARY", "HHL_Wall_Gipskartonplatte", boundarytemp)])
                 definitions, messages, zone_lines = self.render(airnode)
-                self.assertIn("CONSTRUCTION HHL_Wall_Gipskarto_MIRROR", definitions)
-                self.assertIn("=HHL_Wall_Gipskarto_MIRROR : SURF=  68", zone_lines[0])
+                self.assertIn("CONSTRUCTION HHL_Wall_Gipskartonplatte_MIRROR", definitions)
+                self.assertIn("=HHL_Wall_Gipskartonplatte_MIRROR : SURF=  68", zone_lines[0])
         # TAIR of another airnode of the zone is not a mirror
         airnode = make_airnode("A1", [make_surface(68, "BOUNDARY", "HHL_Wall_Gipskartonplatte", "INPUT 1*TAIR_A2")])
         self.assertNothingDerived(*self.render(airnode))
@@ -557,7 +557,7 @@ class ThermalMirrorNamingTests(MirrorHelperCase):
 
     def test_names_never_exceed_the_limit_and_keep_the_suffix(self):
         limit = self.helpers["MIRROR_NAME_MAX"]
-        self.assertEqual(25, limit)  # longest wall type name known to work in TRNBuild here
+        self.assertEqual(32, limit)  # confirmed in TRNBuild and in a Type 56 run (2026-10-02)
         for length in range(1, 60):
             with self.subTest(length=length):
                 original = "W" * length
@@ -571,15 +571,15 @@ class ThermalMirrorNamingTests(MirrorHelperCase):
                 else:
                     self.assertTrue(original.startswith(derived[:-len("_MIRROR")]))
 
-    def test_the_din_wall_names_are_shortened_to_the_limit(self):
+    def test_the_din_wall_names_keep_their_full_name(self):
         name = self.helpers["mirror_type_name"]
-        self.assertEqual("HHL_Wall_Gipskarto_MIRROR", name("HHL_Wall_Gipskartonplatte", []))
-        self.assertEqual("HHL_Wall_Lehmplatt_MIRROR", name("HHL_Wall_Lehmplatte_V1", []))  # LP V1 and V2 (separate models)
-        self.assertEqual("HHL_Wall_Lehmplatt_MIRROR", name("HHL_Wall_Lehmplatte_V2", []))
+        self.assertEqual("HHL_Wall_Gipskartonplatte_MIRROR", name("HHL_Wall_Gipskartonplatte", []))  # exactly 32
+        self.assertEqual("HHL_Wall_Lehmplatte_V1_MIRROR", name("HHL_Wall_Lehmplatte_V1", []))
+        self.assertEqual("HHL_Wall_Lehmplatte_V2_MIRROR", name("HHL_Wall_Lehmplatte_V2", []))
 
     def test_a_different_limit_can_be_passed(self):
-        self.assertEqual("HHL_Wall_Gipskartonplatte_MIRROR",
-                         self.helpers["mirror_type_name"]("HHL_Wall_Gipskartonplatte", [], 32))
+        self.assertEqual("HHL_Wall_Gipskarto_MIRROR",
+                         self.helpers["mirror_type_name"]("HHL_Wall_Gipskartonplatte", [], 25))
 
     def test_colliding_names_are_made_unique_case_insensitively(self):
         name = self.helpers["mirror_type_name"]
@@ -588,23 +588,23 @@ class ThermalMirrorNamingTests(MirrorHelperCase):
         third = name("HHL_Wall_Gipskartonplatte", [first.lower(), second.lower()])
         self.assertEqual(3, len({first.lower(), second.lower(), third.lower()}))
         for derived in (first, second, third):
-            self.assertLessEqual(len(derived), 25)
+            self.assertLessEqual(len(derived), self.helpers["MIRROR_NAME_MAX"])
             self.assertTrue(derived.endswith("_MIRROR"))
 
     def test_plan_gives_distinct_names_to_constructions_with_a_common_long_prefix(self):
         walls = din_walls()
         walls.append(make_wall("HHL_Wall_Gipskartonplatte_B", " GYPSUM", " 0.0125", "11", "64.0"))
-        walls.append(make_wall("HHL_Wall_Gipskarto_MIRROR", " GYPSUM", " 0.0125", "11", "64.0"))  # a user type of that name
+        walls.append(make_wall("HHL_Wall_Gipskartonplatte_MIRROR", " GYPSUM", " 0.0125", "11", "64.0"))  # a user type of that name
         airnode = make_airnode("A1", [
             make_surface(68, "BOUNDARY", "HHL_Wall_Gipskartonplatte", "INPUT 1*TAIR_A1"),
             make_surface(69, "BOUNDARY", "HHL_Wall_Gipskartonplatte_B", "INPUT 1*TAIR_A1"),
-            make_surface(70, "BOUNDARY", "HHL_Wall_Gipskarto_MIRROR", "INPUT 1*TAIR_A1"),
+            make_surface(70, "BOUNDARY", "HHL_Wall_Gipskartonplatte_MIRROR", "INPUT 1*TAIR_A1"),
         ])
         names = self.helpers["plan_thermal_mirror_walls"]([airnode], walls)[0]
         self.assertEqual(3, len(names))
         taken = [wall.Name.lower() for wall in walls]
         for derived in names.values():
-            self.assertLessEqual(len(derived), 25)
+            self.assertLessEqual(len(derived), self.helpers["MIRROR_NAME_MAX"])
             self.assertNotIn(derived.lower(), taken)
         self.assertEqual(3, len({derived.lower() for derived in names.values()}))
         # the result does not depend on the order of the surfaces
@@ -637,23 +637,23 @@ class ThermalMirrorStaticB18Tests(unittest.TestCase):
         self.assertEqual(len(names), len({name.lower() for name in names}))
         for name in names:
             self.assertTrue(re.match(r"^\w+$", name), name)
-            self.assertLessEqual(len(name), 25, name)  # the longest name known to work in TRNBuild here
+            self.assertLessEqual(len(name), 32, name)  # MIRROR_NAME_MAX, confirmed in TRNBuild and Type 56
 
     def test_derived_block_differs_from_the_original_only_in_name_and_hback(self):
         blocks = self.constructions()
-        original, derived = blocks["HHL_Wall_Gipskartonplatte"], blocks["HHL_Wall_Gipskarto_MIRROR"]
+        original, derived = blocks["HHL_Wall_Gipskartonplatte"], blocks["HHL_Wall_Gipskartonplatte_MIRROR"]
         self.assertEqual(len(original), len(derived))
         differing = [i for i, (a, b) in enumerate(zip(original, derived)) if a != b]
         self.assertEqual([0, 5], differing)
         self.assertEqual(original[5].replace("HBACK= 64.0", "HBACK= 29.51"), derived[5])
 
     def test_hback_is_a_positive_plain_number_and_the_block_keeps_the_keyword_layout(self):
-        block = self.constructions()["HHL_Wall_Gipskarto_MIRROR"]
+        block = self.constructions()["HHL_Wall_Gipskartonplatte_MIRROR"]
         keywords = [re.findall(r"([A-Z-]+)\s*=", line) for line in block[1:]]
         self.assertEqual([["LAYERS"], ["THICKNESS"], ["ABS-FRONT", "ABS-BACK"], ["EPS-FRONT", "EPS-BACK"],
                           ["HFRONT", "HBACK"]], keywords)
         self.assertRegex(block[5], r"^ HFRONT   = \d+(\.\d+)? : HBACK= \d+\.\d\d$")
-        self.assertGreater(hback_of(self.definitions, "HHL_Wall_Gipskarto_MIRROR"), 0)
+        self.assertGreater(hback_of(self.definitions, "HHL_Wall_Gipskartonplatte_MIRROR"), 0)
 
     def test_a_row_of_the_b18_stays_within_trnbuild_limit_of_400_characters(self):
         for line in self.definitions + self.zone_lines:
