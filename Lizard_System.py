@@ -414,7 +414,7 @@ MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 
 MIRROR_SIGMA = 2.041e-07          # kJ/(h m2 K4), same literal as SIGMA_S@surface in Lizard_DCK_Template.py
 MIRROR_TREF_K = 293.15            # 20 C, reference temperature of the linearised longwave film (RTEMP of the b18), same value as t395_tref_k in the e7 handler
 MIRROR_SUFFIX = '_MIRROR'
-MIRROR_NAME_MAX = 25              # longest wall type name known to work in TRNBuild (HHL_Wall_Gipskartonplatte); raise it only when longer names are confirmed
+MIRROR_NAME_MAX = 32              # confirmed 2026-10-02: TRNBuild accepts it, and a Type 56 run with HHL_Wall_Gipskartonplatte_MIRROR (32) gave results identical to the 25-character name
 def mirror_hback_value():
     """Combined back film of a mirror wall [kJ/(h m2 K)]: interior convective film plus the linearised longwave film."""
     return round(MIRROR_HCONV_INTERIOR + 4 * MIRROR_SIGMA * MIRROR_EPS * MIRROR_TREF_K ** 3, 2)
@@ -3190,6 +3190,16 @@ def printdck():
                     #   14 inputs) is kept and a warning is raised.
                     t395_magnus_a           = 17.62   # Magnus coefficients, saturation pressure over water; only their ratio is used (agrees with Hyland-Wexler to 2e-4 for |dT| <= 2 K between 10 and 30 C)
                     t395_magnus_b           = 243.12
+                    # EXTCALEXT side 2: the longwave exchange with sky and ambient in qWG2 uses the outer surface temperature of the PREVIOUS time step,
+                    # held by one Type 93 per wall (unit = Type 395 unit + t395_lag_unit_offset). With TSO395 of the current iteration the term is an
+                    # algebraic loop through TRNSYS (TSO395 is output 2 of the Type 395 that takes qWG2 as input 8). TRNSYS test on the DIN GKP
+                    # hygrothermal deck (2026-10-02, STEP 0.1 h, 260528_DIN16798-1 Comparison/trnlizard_fixes_20261002/extcalext_lag/REPORT.md):
+                    # the loop left 22 non-converged steps per year (Message 441, all at sunrise or sunset, each running to the 4000-iteration limit
+                    # while TSO swung by < 0.002 K) and took 1213 s; with the lag there are 0 non-converged steps and the run takes 681 s. Differences:
+                    # zone air <= 0.02 K, annual heating +0.0008 %, outer wall surface <= 0.68 K (RMS 0.07 K, at sunrise/sunset), wall water content
+                    # <= 0.05 %. A linearised implicit film as on EXTCALBND is not used here: it would put the cold sky into TB2, and the RH2 that
+                    # keeps RH2*psat(TB2) at the vapour pressure of the outdoor air could exceed 100 %.
+                    t395_lag_unit_offset    = 500     # 700, 701, ...: clear of the zone units (101 + 30 per zone), the plotters (65x) and the printers (95x)
                     if any(len(zone_item.Airnode.Ecalsurfaces) > 0 for zone_item in zone) and not any('@nin395' in template_line for template_line in blockdata):
                         ghenv.Component.AddRuntimeMessage(w, "The Type 395 block of the DCK template is out of date (no side-1 coupling placeholders): press Reload on the DCK template component, otherwise the old TAIR/HCONVI/TMR coupling is written.")
                     for zone_item in zone:
@@ -3215,6 +3225,7 @@ def printdck():
                                         variables['specload'] = "-Q_al_{0}*AREA_{0}/Area_al1_{0}".format(zone_item.Airnode.Name)
                                         variables['qaddon']         = '-QheatKJ_S%s'%(surface.Surfnum)
                                         variables['rh2']  = 'Rh_amb'
+                                        lag93_unit = None   # Type 93 unit with TSO395 of the previous time step (EXTCALEXT walls only)
                                         if surface.Boundarycond == 'EXTCALEXT':
                                             variables['tbd']      = 'Tamb'
                                             variables['hconvo']   = '%s'%walls_def[surface.Construction].Hback
@@ -3232,7 +3243,10 @@ def printdck():
                                             qwg2_solar = ''
                                             if solar_surface_no is not None:
                                                 qwg2_solar = 'AREA395_S{0} * [15,{1}] * {2} + '.format(surface.Surfnum, getType15TiltedOutput(0, solar_surface_no, variables.get('hamt_solar_nsurf', 1)), walls_def[surface.Construction].Abs_back)
-                                            variables['qwg2']  = qwg2_solar + 'AREA395_S{0} * {1} * SIGMA_S{0} * {2:g} * ((273.15 + Tsky)^4 - (273.15 + TSO395_S{0})^4) + AREA395_S{0} * (1-{1}) * SIGMA_S{0} * {2:g} * ((273.15 + Tamb)^4 - (273.15 + TSO395_S{0})^4)'.format(surface.Surfnum, surface.Fsky, eps_exterior)
+                                            # longwave terms with the outer surface temperature of the previous time step (see t395_lag_unit_offset)
+                                            lag93_unit = unit395_counter + t395_lag_unit_offset
+                                            tso_previous = '[{0},2]'.format(lag93_unit)
+                                            variables['qwg2']  = qwg2_solar + 'AREA395_S{0} * {1} * SIGMA_S{0} * {2:g} * ((273.15 + Tsky)^4 - (273.15 + {3})^4) + AREA395_S{0} * (1-{1}) * SIGMA_S{0} * {2:g} * ((273.15 + Tamb)^4 - (273.15 + {3})^4)'.format(surface.Surfnum, surface.Fsky, eps_exterior, tso_previous)
                                             variables['rh2']  = 'Rh_amb'
                                         elif surface.Boundarycond == 'EXTCALBND':
                                             tbound = re.sub('@ANAME',zone_item.Airnode.Name,surface.Boundarytemp.split('*')[-1])
@@ -3292,6 +3306,24 @@ def printdck():
                                             for variablename in list(set(re.findall('@(\w+)',item))):
                                                 item=re.sub('@'+variablename, str(variables[variablename]).encode('string-escape'), item)
                                             dckout.write(item)
+                                        if lag93_unit is not None:
+                                            # Type 93 (input value recall): output 2 = TSO395 of the previous time step, read by qWG2 of this wall.
+                                            # The initial value is the initial wall temperature of the Type 395 block (20 C).
+                                            dckout.write('\n'.join([
+                                                '*' + '-' * 78,
+                                                '* TSO395_S{0} of the previous time step for the longwave terms of qWG2_S{0} ([{1},2])'.format(surface.Surfnum, lag93_unit),
+                                                'UNIT {0} TYPE 93\t TSO lag S{1}'.format(lag93_unit, surface.Surfnum),
+                                                '*$UNIT_NAME TSO lag S{0}'.format(surface.Surfnum),
+                                                '*$MODEL .\\Obsolete\\Input Value Recall\\Type93.tmf',
+                                                'PARAMETERS 2',
+                                                '1\t\t! 1 Number of inputs to be stored',
+                                                '2\t\t! 2 Number of timesteps to be stored (including the current step)',
+                                                'INPUTS 1',
+                                                'TSO395_S{0}\t\t! outer surface temperature of the Type 395 wall (output 2)'.format(surface.Surfnum),
+                                                '*** INITIAL INPUT VALUES',
+                                                '20',
+                                                '',
+                                            ]))
                 if 'e8' in  match_search.group(0):
                     for zname395, surfs395 in hamt_zone_surfaces.items():
                         variables['aname']       = zname395

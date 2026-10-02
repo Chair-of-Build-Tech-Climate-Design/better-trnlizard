@@ -48,13 +48,16 @@ def psat_hyland_wexler(celsius):
 
 
 def initial_input_values(deck_text):
-    """The numbers of the ``*** INITIAL INPUT VALUES`` line of every Type 395 block."""
+    """The numbers of the ``*** INITIAL INPUT VALUES`` line of every Type 395 block (not of the Type 93 of an EXTCALEXT wall)."""
     lines = deck_text.splitlines()
-    return [
-        [float(value) for value in lines[i + 1].split()]
-        for i, line in enumerate(lines)
-        if line.startswith("*** INITIAL INPUT VALUES")
-    ]
+    values, unit_type = [], None
+    for i, line in enumerate(lines):
+        unit = re.match(r"^UNIT\s+\S+\s+TYPE\s+(\d+)", line)
+        if unit is not None:
+            unit_type = int(unit.group(1))
+        elif line.startswith("*** INITIAL INPUT VALUES") and unit_type == 395:
+            values.append([float(value) for value in lines[i + 1].split()])
+    return values
 
 
 def active_text(deck_text):

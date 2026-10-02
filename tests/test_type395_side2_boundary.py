@@ -36,9 +36,11 @@ TEMPLATE_SOURCE = REPO_ROOT / "Lizard_DCK_Template.py"
 
 # Longwave terms of the generated DIN deck (Hygrothermisch_Big_GKP_WithFoil.d18, EXTCALEXT surface 8). The exterior solar term in
 # front of them comes from a Type 15 tilted surface and is tested in test_type395_extcalext_solar.py; this harness maps none.
+# Since 2026-10-02 they read the outer surface temperature of the previous time step, [700,2] = output 2 of the Type 93 that stores
+# TSO395_S8 (unit 200 + 500), instead of TSO395_S8 of the current iteration (test_type395_extcalext_solar.py, ExtcalextLaggedTsoTests).
 REFERENCE_EXTCALEXT_QWG2 = (
-    "AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + TSO395_S8)^4)"
-    " + AREA395_S8 * (1-0.5) * SIGMA_S8 * 0.9 * ((273.15 + Tamb)^4 - (273.15 + TSO395_S8)^4)"
+    "AREA395_S8 * 0.5 * SIGMA_S8 * 0.9 * ((273.15 + Tsky)^4 - (273.15 + [700,2])^4)"
+    " + AREA395_S8 * (1-0.5) * SIGMA_S8 * 0.9 * ((273.15 + Tamb)^4 - (273.15 + [700,2])^4)"
 )
 
 # Side-2 equations of the implicit option A, copied from the deck that TRNSYS ran (QWG2_STABILITY_TEST_2026-09-30.md, variant
@@ -397,10 +399,12 @@ class Type395Side2BoundaryTests(unittest.TestCase):
         # an algebraic loop through TRNSYS (QWG2_STABILITY_TEST_2026-09-30.md: 2.6x run time, non-converged steps).
         _, blocks = self.render(self.din_surfaces())
 
-        # the check is not vacuous: the exterior wall (unchanged) still has its outer surface temperature in the longwave terms
+        # the check is not vacuous: the exterior wall reads a unit output in its longwave terms, but the outer surface temperature of
+        # the previous time step held by Type 93 ([700,2]), not TSO395 of the current iteration, so it has no loop either
         exterior = dependency_closure(self.side2_inputs(blocks[8], 8), blocks[8][1])
-        self.assertIn("tso395_s8", exterior)
-        self.assertTrue(reads_a_unit_output({name.lower(): e for name, e in blocks[8][1].items()}["tso395_s8"]))
+        self.assertNotIn("tso395_s8", exterior)
+        self.assertTrue(reads_a_unit_output(blocks[8][1]["qWG2_S8"]))
+        self.assertIn("[700,2]", blocks[8][1]["qWG2_S8"])
 
         for number in (9, 10, 11):
             with self.subTest(surface=number):
@@ -478,7 +482,7 @@ class Type395Side2BoundaryTests(unittest.TestCase):
                 # the combined coefficient 29.51 would give 2.7 times the vapour transfer
                 self.assertLess(evaluate(beta2), 0.5 * 7e-9 * 29.51 / 3.6)
 
-    def test_extcalext_film_boundary_and_longwave_are_unchanged(self):
+    def test_extcalext_film_and_boundary_are_unchanged_and_longwave_reads_the_previous_step(self):
         _, blocks = self.render(self.din_surfaces())
         equations = blocks[8][1]
 
