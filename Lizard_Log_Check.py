@@ -6,9 +6,7 @@ Args:
     Variant (object): Script input Folder.
         Access: item
         Required: True
-    start_time (object): Script input start_time.
-        Access: item
-        Required: True
+
 
 Returns:
     output (str): summary of the log files of the variant (variant name, daylight preprocessing and thermal simulation status, with the error lines of trnRAD.log / <variant>.lst); the same text as the component message, for a Panel
