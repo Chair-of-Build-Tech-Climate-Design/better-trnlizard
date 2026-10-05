@@ -15,9 +15,12 @@ Args:
     Schedule (object): select gain "use" schedule (refer to Schedule Library)
         Access: item
         Required: True
-    ConvectivePart (object): convective part of gain in Watts
+    ConvectivePart (object): convective part of the gain as a fraction (0-1) of its power (radiative part = 1 - ConvectivePart); not connected = 0.6
         Access: item
         Required: True
+    conv_part (float): convective part of the gain [-] (0..1, radiative part = 1 - conv_part), the input name of older copies of this component for ConvectivePart; ConvectivePart wins when both are connected; not connected = 0.6
+        Access: item
+        Required: False
     Humidity (object): Script variable Gains
         Access: item
         Required: True
@@ -99,12 +102,20 @@ MiscGain.Elpowerfrac = 1
 MiscGain.Context         = 'ABSOLUTE'
 # MiscGain.Frac_refarea = 1
 #Input Depending Settings
-if 'Power' in locals() and Power != None:
+if 'SpecificPower' in locals() and SpecificPower != None:
+    MiscGain.Specificpower = SpecificPower
+elif 'Power' in locals() and Power != None:   # input name of older copies of this component
     MiscGain.Specificpower = Power
 if 'Schedule' in locals() and Schedule != None:
     MiscGain.Schedule = Schedule
+# convective part: ConvectivePart, or conv_part (input name of older copies); ConvectivePart wins when both are connected
+misc_conv_part = None
+if 'conv_part' in locals() and conv_part != None:
+    misc_conv_part = conv_part
 if 'ConvectivePart' in locals() and ConvectivePart != None:
-    MiscGain.Convaux         = ConvectivePart
+    misc_conv_part = ConvectivePart
+if misc_conv_part != None:
+    MiscGain.Convaux         = misc_conv_part
     MiscGain.Convective = 'INPUT {0}*{1}'.format(round(MiscGain.Convaux,2) , 'Q_ADDON_KJ')
     MiscGain.Radiative = 'INPUT {0}*{1}'.format(round((1-MiscGain.Convaux),2) , 'Q_ADDON_KJ')
 if 'AnnualSchedule' in locals():

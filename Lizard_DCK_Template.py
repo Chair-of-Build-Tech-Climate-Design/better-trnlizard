@@ -1131,14 +1131,14 @@ UNIT @unit395 TYPE 395	 Type395
 PARAMETERS 10
 1		! 1 number of wall layers
 AREA395_S@surface   ! 2 surface area
-@lu1	! 3 logical unit cp-data file heat up
-20 !initial wall temperature     
-@udefdepth ! 4 user defined cell depth for additional heat load and output
-1 !print reports yes/no, 1/0
-1 !printing interval of results
-@unit395 !id for prefix of output filenames
-@udivnum
-1  ! 1=Use BlockTridiagonal Solver
+@lu1	! 3 logical unit of the material file (DESIGNATE below)
+20 ! 4 initial wall temperature [C]
+@udefdepth ! 5 depth [m] from the side-2 surface: cell of input 11 (QheatKJ) and of the userdef outputs 5-7
+@writereport ! 6 write the report files Type395_0<id>*.out: 1 = yes, -1 = no
+@reportinterval ! 7 report interval [h], rounded to 0.0001 h
+@unit395 ! 8 id of the output file names
+@layer_min_div ! 9 minimum number of cells per material layer (n_div)
+1 ! 10 solver: 1 = BlockTridiagonal, 0 = BlockJacobi
 
 INPUTS @nin395
 TB1_S@surface		! TB1 - side 1 heat reference temperature (TSTAR with longwave STANDARD, else TAIR)
