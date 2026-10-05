@@ -11,13 +11,7 @@ Args:
         Required: True
 
 Returns:
-    iteration_reached_timestep_count (object): Script output iteration_reached_timestep_count.
-        Access: item
-    total_warning_count (object): Script output total_warning_count.
-        Access: item
-    last_warning_timestep (object): Script output last_warning_timestep.
-        Access: item
-    running_time (object): Script output running_time.
+    output (str): summary of the log files of the variant (variant name, daylight preprocessing and thermal simulation status, with the error lines of trnRAD.log / <variant>.lst); the same text as the component message, for a Panel
         Access: item
 """
 
