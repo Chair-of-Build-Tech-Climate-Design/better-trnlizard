@@ -485,6 +485,17 @@ def mirror_wall_message(names, affected):
             % (MIRROR_HBACK_DEFAULT, mirror_hback_value(), MIRROR_HCONV_INTERIOR, mirror_hback_value() - MIRROR_HCONV_INTERIOR,
                '; '.join(groups), MIRROR_HBACK_DEFAULT))
 # ---- thermal mirror walls (end)
+# ---- HAMT gain of a zone
+# GAIN HAMT_Gain_<zone> (printbuitoppart) and its regime line (printbuiZonepart) are written for the same zones: those with a
+# Type 395 (HAMT) wall. Ecalsurfaces also lists the EXTCALC/BNDCALC surfaces of the external calculation, which are no HAMT walls.
+HAMT_GAIN_BOUNDARIES = ('EXTCALEXT', 'EXTCALBND')
+def has_hamt_surfaces(airnode):
+    """True for a zone with an EXTCALEXT or EXTCALBND surface (plain loop: the callers contain exec, see IronPython 2)."""
+    for surface in airnode.Surfaces:
+        if surface.Boundarycond in HAMT_GAIN_BOUNDARIES:
+            return True
+    return False
+# ---- HAMT gain of a zone (end)
 @timing
 def printbuitoppart(dataset):
     global collmessages
@@ -692,12 +703,7 @@ def printbuitoppart(dataset):
     # Auto-define HAMT gains for zones with EXTCALEXT/EXTCALBND surfaces (multi-HAMT support)
     existing_gain_names = [str(gain_item.Name) for gain_item in library.Gain]
     for item in dataset:
-        has_hamt = False
-        for subitems in item.Surfaces:
-            if subitems.Boundarycond in ('EXTCALEXT', 'EXTCALBND'):
-                has_hamt = True
-                break
-        if has_hamt and ('HAMT_Gain_' + item.Name) not in existing_gain_names:
+        if has_hamt_surfaces(item) and ('HAMT_Gain_' + item.Name) not in existing_gain_names:
             lines.append('GAIN HAMT_Gain_{0}\r\n CONVECTIVE=0 : RADIATIVE=0 : HUMIDITY=INPUT 1*HamtHumidityGain_KgPerHr_{0} : ELPOWERFRAC=0 :  ABSOLUTE : CATEGORY=MISCELLANEOUS\r\n'.format(item.Name))
     for item in dataset:
         for item2 in item.Gain:
@@ -1331,7 +1337,7 @@ def printbuiZonepart(dataset):
             if g.Name and 'HAMT_Gain' in str(g.Name):
                 hamt_gain_exists = True
                 break
-        if len(Airnodes.Ecalsurfaces) > 0 and not hamt_gain_exists:
+        if has_hamt_surfaces(Airnodes) and not hamt_gain_exists:   # the zones that get GAIN HAMT_Gain_<zone> in printbuitoppart
             regimelines= regimelines + 'GAIN = HAMT_Gain_{0} : SCALE= 1 : GEOPOS= 0 : SCALE2= 1 : FRAC_REFAREA= -1'.format(Airnodes.Name)
             regimelines = regimelines + '\r\n'
         if Airnodes.Comfort:
@@ -3202,6 +3208,11 @@ def printdck():
                     t395_lag_unit_offset    = 500     # 700, 701, ...: clear of the zone units (101 + 30 per zone), the plotters (65x) and the printers (95x)
                     if any(len(zone_item.Airnode.Ecalsurfaces) > 0 for zone_item in zone) and not any('@nin395' in template_line for template_line in blockdata):
                         ghenv.Component.AddRuntimeMessage(w, "The Type 395 block of the DCK template is out of date (no side-1 coupling placeholders): press Reload on the DCK template component, otherwise the old TAIR/HCONVI/TMR coupling is written.")
+                    # Per-surface settings of Lizard_Hygro (surface attributes, None = input not connected): parameters 5 (depth),
+                    # 6 (write report), 7 (report interval), 9 (minimum cells per layer) and the specific load in QheatKJ (input 11).
+                    # Templates written before these settings have literal 1s for parameters 6 and 7 (reported once below).
+                    t395_report_template = any('@writereport' in template_line for template_line in blockdata)
+                    t395_report_warned = False
                     for zone_item in zone:
                         if len(zone_item.Airnode.Ecalsurfaces) > 0:
                             zname395 = zone_item.Airnode.Name
@@ -3222,7 +3233,19 @@ def printdck():
                                         # variables['mt1']  = '0.000000007*hconv1_S%s/3.6'%(surface.Surfnum) ! Adaptation to use HCONVI (only the convection part)
                                         variables['mt1'] = '0.000000007*HCONVI_S%s/3.6' % (surface.Surfnum)
                                         variables['mt2']  = '0.000000007*hconv2_S%s/3.6'%(surface.Surfnum)
-                                        variables['specload'] = "-Q_al_{0}*AREA_{0}/Area_al1_{0}".format(zone_item.Airnode.Name)
+                                        t395_report   = getattr(surface, 'Writereport', None)
+                                        t395_interval = getattr(surface, 'Reportinterval', None)
+                                        t395_depth    = getattr(surface, 'Addheatdepth', None)
+                                        t395_heat     = getattr(surface, 'Addheat', None)
+                                        t395_mindiv   = getattr(surface, 'Layermindiv', None)
+                                        # QheatKJ (input 11) = specific load [W per m2 of wall] * AREA395 * 3.6: the total kJ/h of the wall, which Type 395
+                                        # puts into the cell at the depth of parameter 5 (hamt-core multiplies it by the interpolation weights of that
+                                        # cell only, not by the area). Default: the active-layer load of the zone; a Lizard_Hygro add_heat (a number, or a
+                                        # TRNSYS expression in parentheses) replaces it for this surface and is not booked in qaddon (getzonevariables).
+                                        if t395_heat is None:
+                                            variables['specload'] = "-Q_al_{0}*AREA_{0}/Area_al1_{0}".format(zone_item.Airnode.Name)
+                                        else:
+                                            variables['specload'] = t395_heat
                                         variables['qaddon']         = '-QheatKJ_S%s'%(surface.Surfnum)
                                         variables['rh2']  = 'Rh_amb'
                                         lag93_unit = None   # Type 93 unit with TSO395 of the previous time step (EXTCALEXT walls only)
@@ -3294,8 +3317,14 @@ def printdck():
                                         variables['unit395'] = unit395_counter
                                         unit395_counter = unit395_counter + 1
                                         hamt_zone_surfaces[zname395].append(surface.Surfnum)
-                                        variables['udefdepth'] = t395_udepth if t395_udepth is not None else 0.02
-                                        variables['udivnum'] = t395_udivnum if t395_udivnum is not None else 100
+                                        variables['udefdepth'] = t395_depth if t395_depth is not None else (t395_udepth if t395_udepth is not None else 0.02)
+                                        variables['layer_min_div'] = t395_mindiv if t395_mindiv is not None else (t395_udivnum if t395_udivnum is not None else 100)
+                                        variables['udivnum'] = variables['layer_min_div']   # parameter 9 placeholder of templates written before layer_min_div
+                                        variables['writereport'] = -1 if t395_report is False else 1   # Type 395 writes its reports only for a value > 0
+                                        variables['reportinterval'] = t395_interval if t395_interval is not None else 1
+                                        if (t395_report is not None or t395_interval is not None) and not t395_report_template and not t395_report_warned:
+                                            ghenv.Component.AddRuntimeMessage(w, "The Type 395 block of the DCK template is out of date (no @writereport/@reportinterval): press Reload on the DCK template component, otherwise write_report and report_interval of Lizard_Hygro are ignored (reports are written every 1 h).")
+                                            t395_report_warned = True
                                         variables['datafile1'] = surface.Filemat
                                         variables['unitno']   = variables['unitno'] + 1
                                         variables['aname']    = zone_item.Airnode.Name
@@ -3949,12 +3978,14 @@ def getzonevariables(zone_item):
     variables['qsiabceiling']      = 0
     variables['qsiabroof']         = 0
     variables['qaddon']         = '0'
-    for zitem in zone:
-        if len(zitem.Airnode.Ecalsurfaces) > 0:
-            for wall_item in zitem.Airnode.Ecalsurfaces:
-                for surface in zitem.Airnode.Surfaces:
-                    if wall_item == surface.Surfnum:
-                        variables['qaddon']  += '-QheatKJ_S%s'%(surface.Surfnum)
+    # add-on demand of THIS zone: the QheatKJ of its own HAMT walls (it used to collect the walls of every zone, so each zone of a
+    # multi-zone model reported the wall heat of all zones). QheatKJ of the active-layer load is add-on demand; a Lizard_Hygro
+    # add_heat is a source the user prescribes (heater, calibration source, ...) and is not booked as demand of the zone
+    for wall_item in zone_item.Airnode.Ecalsurfaces:
+        for surface in zone_item.Airnode.Surfaces:
+            if wall_item == surface.Surfnum:
+                if getattr(surface, 'Addheat', None) is None:
+                    variables['qaddon']  += '-QheatKJ_S%s'%(surface.Surfnum)
     #airnode definition
     variables['anr']            = "%02d" % (zone_item.Anr,)
     unitsperzone = 30

@@ -640,7 +640,7 @@ class ExtcalextLaggedTsoTests(unittest.TestCase):
 
     def test_the_initial_value_is_the_initial_wall_temperature_of_type395(self):
         text, _ = self.render(self.din_zones())
-        initial_wall = re.search(r"^([-\d.]+)\s*!initial wall temperature", text, re.M).group(1)
+        initial_wall = re.search(r"^([-\d.]+)\s*!\s*(?:4\s+)?initial wall temperature", text, re.M).group(1)  # Type 395 parameter 4
 
         self.assertEqual([initial_wall], self.type93_units(text)[700]["initial"])
 

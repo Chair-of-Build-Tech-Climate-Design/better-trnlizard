@@ -291,6 +291,13 @@ class GEOMETRY:
         self.Bndairnode = None
         self.Bndsearch = 0
         self.Filemat = None
+        # Type 395 (HAMT) settings of the surface from Lizard_Hygro; None = input not connected, the System component then
+        # writes the default of the deck
+        self.Writereport = None     # parameter 6: True/None = 1 (write the Type395_*.out reports), False = -1
+        self.Reportinterval = None  # parameter 7 [h], None = 1
+        self.Addheatdepth = None    # parameter 5 [m] from the side-2 surface, None = t395_udepth of the System component or 0.02
+        self.Addheat = None         # W per m2 of wall in QheatKJ (input 11): a number or '(TRNSYS expression)', None = active-layer load
+        self.Layermindiv = None     # parameter 9 = minimum cells per material layer, None = t395_udivnum of the System component or 100
         """
         self.Shd2 = None
         self.Shd3 = None
