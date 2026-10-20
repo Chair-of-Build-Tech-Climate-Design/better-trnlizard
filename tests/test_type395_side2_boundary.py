@@ -599,6 +599,10 @@ class ExtcalbndWallGainGuardTests(unittest.TestCase):
             "srfnum": 9,
             "dummylines": "WALL  =HHL_Wall",
             "ecal_surfaces": [],
+            # set by printbuiZonepart before this block: the original construction and the HAMT pseudo-wall plan
+            "ori_construction": "HHL_Wall",
+            "hamt_wall_names": {"HHL_Wall": "HHL_Wall_HAMT"},
+            "HAMT_WALL_BASE": "HIGH_COND",
             "w": "WARNING",
             "ghenv": SimpleNamespace(
                 Component=SimpleNamespace(AddRuntimeMessage=lambda level, text: messages.append((level, text)))
@@ -622,7 +626,7 @@ class ExtcalbndWallGainGuardTests(unittest.TestCase):
                 if "Wagaino" in attributes:
                     self.assertIn(" : WAGAINO=%s" % attributes["Wagaino"], namespace["dummylines"])
                 self.assertEqual([9], namespace["ecal_surfaces"])
-                self.assertEqual("HIGH_COND", namespace["surfaces"].Construction)
+                self.assertEqual("HHL_Wall_HAMT", namespace["surfaces"].Construction)
 
     def test_no_warning_without_a_user_wall_gain(self):
         for attributes in ({}, {"Wagain": None, "Wagaino": ""}, {"Wagain": 0}):

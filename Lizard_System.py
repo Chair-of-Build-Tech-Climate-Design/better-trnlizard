@@ -407,7 +407,7 @@ def printheader(text_string):
 # The library default HBACK 64 is the exterior convention and cannot be told from "never set"; any other explicit value, also a
 # keyword such as VERTICAL, is kept.  HBACK belongs to the WALL type and is shared with the exterior wall (which needs 64), so the
 # mirror walls get a derived wall type <name>_MIRROR that is written only when a mirror wall needs it.  EXTERNAL, ADJACENT,
-# non-mirror BOUNDARY walls, the HAMT pseudo-walls (HIGH_COND, HIGH_RES) and all other categories are not touched.
+# non-mirror BOUNDARY walls, the HAMT pseudo-walls (<construction>_HAMT, HIGH_COND, HIGH_RES) and all other categories are not touched.
 MIRROR_HCONV_INTERIOR = 11.0      # kJ/(h m2 K), same value as t395_hconv_interior in the e7 handler
 MIRROR_HBACK_DEFAULT = 64         # kJ/(h m2 K), library default HBACK, same as t395_hconv_back_default in the e7 handler
 MIRROR_EPS = 0.9                  # same emissivity as t395_eps_side2 in the e7 handler
@@ -485,6 +485,72 @@ def mirror_wall_message(names, affected):
             % (MIRROR_HBACK_DEFAULT, mirror_hback_value(), MIRROR_HCONV_INTERIOR, mirror_hback_value() - MIRROR_HCONV_INTERIOR,
                '; '.join(groups), MIRROR_HBACK_DEFAULT))
 # ---- thermal mirror walls (end)
+# ---- HAMT pseudo-walls (begin)
+# A Type 395 (HAMT) surface (EXTCALEXT, EXTCALBND) is written as a pseudo-wall of high conductance whose boundary temperature is the
+# Type 395 surface temperature (BOUNDARY = INPUT 1*TSI395_S<n>).  Its FRONT side is the room side of the real wall: Type 56 computes
+# HCONVI (beta1 of Type 395) and REQV (hconv1 of Type 395) of the surface with HFRONT, ABS-FRONT and EPS-FRONT of the wall type the
+# surface uses.  These films must therefore be the ones of the surface's own construction (Lizard_Construction, chosen in the Surface
+# Settings).  The single library wall HIGH_COND used before was overwritten construction by construction, so every HAMT surface got
+# the films of the construction handled last.  Now every construction used by a HAMT surface gets its own pseudo-wall type
+# <construction>_HAMT: a copy of the library HIGH_COND (layer DIRECT) with HFRONT, ABS-FRONT/BACK and EPS-FRONT/BACK of the construction
+# and HBACK 99999.  The library objects are never modified.  A construction missing in the library keeps the library HIGH_COND.
+HAMT_WALL_BOUNDARIES = ('EXTCALEXT', 'EXTCALBND')
+HAMT_WALL_BASE = 'HIGH_COND'      # library pseudo-wall the derived types are copied from; fallback for unknown constructions
+HAMT_WALL_SUFFIX = '_HAMT'
+HAMT_WALL_HBACK = 99999           # back side of the pseudo-wall: the boundary node is the Type 395 surface temperature
+def hamt_wall_type_name(original, taken, max_len=None):
+    """<original>_HAMT within the name limit of the derived wall types, shortened and numbered where needed so that it is not in ``taken`` (lower case names)."""
+    if max_len is None:
+        max_len = MIRROR_NAME_MAX
+    original = str(original)
+    candidate = original[:max(1, max_len - len(HAMT_WALL_SUFFIX))] + HAMT_WALL_SUFFIX
+    counter = 0
+    while candidate.lower() in taken:
+        counter += 1
+        tail = str(counter)
+        candidate = original[:max(1, max_len - len(HAMT_WALL_SUFFIX) - len(tail))] + tail + HAMT_WALL_SUFFIX
+    return candidate
+def plan_hamt_pseudo_walls(dataset, wall_items):
+    """{construction name: derived pseudo-wall type name} of the constructions used by HAMT surfaces.
+    Constructions missing in the library are not planned.  Pure function of the airnodes and the wall library (like
+    plan_thermal_mirror_walls), so the wall type definitions of printbuitoppart and the zone wall lines of printbuiZonepart agree."""
+    known = []
+    taken = []
+    for wall_item in wall_items:
+        known.append(wall_item.Name)
+        taken.append(str(wall_item.Name).lower())
+    names = {}
+    for airnode in dataset:
+        for surface in airnode.Surfaces:
+            if surface.Boundarycond in HAMT_WALL_BOUNDARIES and surface.Construction in known:
+                names[surface.Construction] = None
+    for original in sorted(names):
+        names[original] = hamt_wall_type_name(original, taken)
+        taken.append(names[original].lower())
+    return names
+def derive_hamt_wall(base_item, construction_item, name):
+    """Copy of the library pseudo-wall with the front and back films of the construction and HBACK 99999."""
+    derived = copy.copy(base_item)
+    derived.Name = name
+    derived.Hfront = construction_item.Hfront
+    derived.Hback = HAMT_WALL_HBACK
+    derived.Abs_front = construction_item.Abs_front
+    derived.Abs_back = construction_item.Abs_back
+    derived.Eps_front = construction_item.Eps_front
+    derived.Eps_back = construction_item.Eps_back
+    return derived
+def hamt_wall_message(names, wall_items):
+    """Runtime message that lists the derived HAMT pseudo-wall types and their front films."""
+    walls = {}
+    for wall_item in wall_items:
+        walls[wall_item.Name] = wall_item
+    groups = []
+    for original in sorted(names):
+        wall_item = walls[original]
+        groups.append('%s (from %s: HFRONT %s, ABS-FRONT %s, EPS-FRONT %s)' % (names[original], original, wall_item.Hfront,
+                                                                               wall_item.Abs_front, wall_item.Eps_front))
+    return 'HAMT walls (Type 395): one pseudo-wall type per construction, with the front films of the construction: %s.' % '; '.join(groups)
+# ---- HAMT pseudo-walls (end)
 # ---- HAMT gain of a zone
 # GAIN HAMT_Gain_<zone> (printbuitoppart) and its regime line (printbuiZonepart) are written for the same zones: those with a
 # Type 395 (HAMT) wall. Ecalsurfaces also lists the EXTCALC/BNDCALC surfaces of the external calculation, which are no HAMT walls.
@@ -632,21 +698,22 @@ def printbuitoppart(dataset):
                             wall2_item.Abs_back = wall_item.Abs_back
                             wall2_item.Eps_front = wall_item.Eps_front
                             wall2_item.Eps_back = wall_item.Eps_back
-                if subitems.Boundarycond == 'EXTCALEXT' or subitems.Boundarycond == 'EXTCALBND':
-                    cleaned_walls.append('HIGH_COND')
-                    for wall2_item in library.Walls:
-                        if wall2_item.Name == 'HIGH_COND':
-                            # JX Try to fix
-                            wall2_item.Hfront = wall_item.Hfront
-                            wall2_item.Hback = 99999
-                            wall2_item.Abs_front = wall_item.Abs_front
-                            wall2_item.Abs_back = wall_item.Abs_back
-                            wall2_item.Eps_front = wall_item.Eps_front
-                            wall2_item.Eps_back = wall_item.Eps_back
+    # HAMT walls (EXTCALEXT, EXTCALBND): derived pseudo-wall type <construction>_HAMT per construction, the same plan as the zone wall lines
+    hamt_wall_names = plan_hamt_pseudo_walls(dataset, library.Walls)
+    hamt_wall_base = None
+    for wall_item in library.Walls:
+        if wall_item.Name == HAMT_WALL_BASE:
+            hamt_wall_base = wall_item
+    for subitems in surfaceinfo:
+        if subitems.Boundarycond in HAMT_WALL_BOUNDARIES and subitems.Construction not in hamt_wall_names:
+            cleaned_walls.append(HAMT_WALL_BASE)
+    if len(hamt_wall_names) > 0 and hamt_wall_base is None:
+        ghenv.Component.AddRuntimeMessage(w, "The wall library has no %s, the pseudo-wall the HAMT (Type 395) wall types are copied from: the HAMT surfaces get no wall type." % HAMT_WALL_BASE)
     cleaned_walls = list(set(cleaned_walls))
     # thermal mirror walls: derived wall type <name>_MIRROR, only for constructions that a BOUNDARY = own TAIR wall needs
     mirror_wall_names, mirror_wall_surfaces = plan_thermal_mirror_walls(dataset, library.Walls)
     mirror_wall_written = []
+    hamt_wall_written = []
     for wall_item in library.Walls:
         for cleaned_item in cleaned_walls:
             if wall_item.Name == cleaned_item:
@@ -654,8 +721,13 @@ def printbuitoppart(dataset):
                 if wall_item.Name in mirror_wall_names and wall_item.Name not in mirror_wall_written:
                     mirror_wall_written.append(wall_item.Name)
                     lines.append(printsingledata(derive_mirror_wall(wall_item, mirror_wall_names[wall_item.Name]),'Wall'))
+                if wall_item.Name in hamt_wall_names and wall_item.Name not in hamt_wall_written and hamt_wall_base is not None:
+                    hamt_wall_written.append(wall_item.Name)
+                    lines.append(printsingledata(derive_hamt_wall(hamt_wall_base, wall_item, hamt_wall_names[wall_item.Name]),'Wall'))
     if len(mirror_wall_surfaces) > 0:
         ghenv.Component.AddRuntimeMessage(rem, mirror_wall_message(mirror_wall_names, mirror_wall_surfaces))
+    if len(hamt_wall_written) > 0:
+        ghenv.Component.AddRuntimeMessage(rem, hamt_wall_message(hamt_wall_names, library.Walls))
     # Intermediate part directly from the template
     lines.extend(printheader('W i n d o w s'))
     window_names = []
@@ -937,6 +1009,8 @@ def printbuiZonepart(dataset):
     lines = []
     # thermal mirror walls: derived wall type per construction, the same plan as the wall type definitions of printbuitoppart
     thermal_mirror_names = plan_thermal_mirror_walls(dataset, library.Walls)[0]
+    # HAMT walls: derived pseudo-wall type per construction, the same plan as the wall type definitions of printbuitoppart
+    hamt_wall_names = plan_hamt_pseudo_walls(dataset, library.Walls)
     # Here the individual Zone definition is starting
     # Defines the Zones
     Zone_name_coll = []
@@ -1085,7 +1159,8 @@ def printbuiZonepart(dataset):
                     # Changed
                     dummylines=dummylines + ' : ORI=@self.Orientation : BOUNDARY = INPUT 1*TSI395_S@self.Surfnum   : GEOSURF=@self.Geosurf' + appendstring
                     ecal_surfaces.append(srfnum)
-                    surfaces.Construction = 'HIGH_COND'
+                    # pseudo-wall type of the surface's own construction (front films), see plan_hamt_pseudo_walls
+                    surfaces.Construction = hamt_wall_names.get(ori_construction, HAMT_WALL_BASE)
                 elif surfaces.Boundarycond == 'EXTVERTF':
                     dummylines=dummylines + ' : EXTERNAL : ORI=VERTF : WAGAIN=0 : WAGAINO=INPUT 1*WGAIN_O_S@self.Surfnum : GEOSURF=@self.Geosurf' + appendstring
                     if "VERTF" in manual_ori:
@@ -1207,7 +1282,8 @@ def printbuiZonepart(dataset):
                 if surfaces.Boundarycond == 'EXTCALBND':
                     #dummylines=dummylines + ' : WAGAIN=INPUT 1*WGAIN_I_S@self.Surfnum : WAGAINO=INPUT 1*WGAIN_O_S@self.Surfnum'
                     ecal_surfaces.append(srfnum)
-                    surfaces.Construction = 'HIGH_COND'
+                    # pseudo-wall type of the surface's own construction (front films), see plan_hamt_pseudo_walls
+                    surfaces.Construction = hamt_wall_names.get(ori_construction, HAMT_WALL_BASE)
                     # Type 395 input 7 is QABSI-QWG, so a user WAGAIN never reaches the HAMT wall, and a Type 395 output wired here counts the wall feedback twice
                     if getattr(surfaces, "Wagain", None) or getattr(surfaces, "Wagaino", None):
                         ghenv.Component.AddRuntimeMessage(w, "Surface %s (EXTCALBND, Type 395 wall): WAGAIN/WAGAINO is lost, Type 395 receives QABSI-QWG which excludes it, and a Type 395 output wired here would count the wall feedback twice (TSI395 is already the boundary temperature). Put wall heat into Type 395 (QheatKJ) instead."%srfnum)

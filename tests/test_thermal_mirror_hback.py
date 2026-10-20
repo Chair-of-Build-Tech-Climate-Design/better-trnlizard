@@ -34,6 +34,8 @@ COMPONENT_SOURCE = REPO_ROOT / "Lizard_Component.py"
 
 HELPER_START = "# ---- thermal mirror walls (begin)"
 HELPER_END = "# ---- thermal mirror walls (end)"
+HAMT_HELPER_START = "# ---- HAMT pseudo-walls (begin)"
+HAMT_HELPER_END = "# ---- HAMT pseudo-walls (end)"
 WALLS_START = "    # Walls definition from the library\n    if TRNSYS == 17:"
 WALLS_END = "    # Intermediate part directly from the template\n    lines.extend(printheader('W i n d o w s'))"
 BOUNDARY_START = (
@@ -127,6 +129,8 @@ def load_helpers():
         return {}
     namespace = {"re": re, "copy": copy}
     run(source_slice(source, HELPER_START, HELPER_END), namespace)
+    # the walls block and the HAMT branches also need the HAMT pseudo-wall helpers (they use MIRROR_NAME_MAX)
+    run(source_slice(source, HAMT_HELPER_START, HAMT_HELPER_END), namespace)
     return namespace
 
 
@@ -225,6 +229,7 @@ def render_zone_lines(airnodes, walls, helpers):
     block = block[len("elif"):]
     block = "if" + block
     thermal_mirror_names = helpers["plan_thermal_mirror_walls"](airnodes, walls)[0] if helpers else {}
+    hamt_wall_names = helpers["plan_hamt_pseudo_walls"](airnodes, walls) if helpers else {}
     lines = []
     for airnode in airnodes:
         for surface in airnode.Surfaces:
@@ -243,6 +248,7 @@ def render_zone_lines(airnodes, walls, helpers):
                 "efical_surfaces": [],
                 "constructionlines": "",
                 "thermal_mirror_names": thermal_mirror_names,
+                "hamt_wall_names": hamt_wall_names,
                 "ghenv": recorder([]),
                 "w": "WARNING",
                 "rem": "REMARK",
@@ -384,10 +390,13 @@ class ThermalMirrorRuleTests(unittest.TestCase):
                 definitions, messages, zone_lines = self.render(self.one_wall(category))
                 self.assertEqual([], [line for line in definitions if "MIRROR" in line])
                 self.assertEqual([], [line for line in zone_lines if "MIRROR" in line])
-                self.assertEqual([], messages)
+                # no mirror message; a HAMT wall only reports its own pseudo-wall type (test_hamt_pseudo_walls.py)
+                self.assertEqual([], [text for (level, text) in messages if "mirror" in text.lower()])
         _, _, zone_lines = self.render(self.one_wall("EXTCALBND"))
+        # the HAMT wall uses the pseudo-wall type of its own construction (no longer the shared library HIGH_COND)
         self.assertEqual(
-            ["WALL  =HIGH_COND : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S68 : GEOSURF=0.12"], zone_lines
+            ["WALL  =HHL_Wall_Gipskartonplatte_HAMT : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S68 : GEOSURF=0.12"],
+            zone_lines,
         )
 
     def test_a_construction_used_by_mirror_and_non_mirror_walls_keeps_both_types(self):
@@ -412,16 +421,18 @@ class ThermalMirrorRuleTests(unittest.TestCase):
         ])
         definitions, messages, zone_lines = self.render(airnode)
         self.assertEqual(1, len([line for line in definitions if line == "CONSTRUCTION HHL_Wall_Gipskartonplatte_MIRROR"]))
-        self.assertEqual(99999.0, hback_of(definitions, "HIGH_COND"))
+        self.assertEqual(99999.0, hback_of(definitions, "HHL_Wall_Gipskartonplatte_HAMT"))
         self.assertEqual(
             [
-                "WALL  =HIGH_COND : SURF=  9 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S9 : GEOSURF=0.12",
+                "WALL  =HHL_Wall_Gipskartonplatte_HAMT : SURF=  9 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S9 : GEOSURF=0.12",
                 "WALL  =HHL_Wall_Gipskartonplatte_MIRROR : SURF=  10 : AREA=        14.0 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.106",
             ],
             zone_lines,
         )
-        self.assertIn("surface 10 (A1)", messages[0][1])
-        self.assertNotIn("9 (A1)", messages[0][1])
+        mirror_messages = [text for (level, text) in messages if "mirror" in text.lower()]
+        self.assertEqual(1, len(mirror_messages))
+        self.assertIn("surface 10 (A1)", mirror_messages[0])
+        self.assertNotIn("9 (A1)", mirror_messages[0])
 
     def test_mirror_is_the_walls_own_airnode_and_ignores_case(self):
         for airnode_name, boundarytemp in (("A1", "INPUT 1*TAIR_A1"), ("Office", "INPUT 1*Tair_Office"),
@@ -455,23 +466,36 @@ class ThermalMirrorRuleTests(unittest.TestCase):
                          zone_lines)
 
     def test_hygrothermal_din_model_is_unchanged(self):
-        # S wall EXTCALEXT, W/N/E EXTCALBND (HIGH_COND pseudo-wall), ceiling/floor BOUNDARY with explicit HBACK 9999
+        # S wall EXTCALEXT, W/N/E EXTCALBND (HAMT pseudo-wall), ceiling/floor BOUNDARY with explicit HBACK 9999.
+        # Physically unchanged: all four HAMT walls share one construction, so the pseudo-wall carries the same films as the former
+        # shared HIGH_COND of the DIN b18 (HFRONT 23.0, ABS 0.3/0.7, HBACK 99999); only its name is now <construction>_HAMT.
         airnode = din_airnode("EXTCALBND")
         airnode.Surfaces[0].Boundarycond = "EXTCALEXT"
         definitions, messages, zone_lines = self.render(airnode)
         self.assertEqual([], [line for line in definitions if "MIRROR" in line])
-        self.assertEqual([], messages)
+        self.assertEqual([], [text for (level, text) in messages if "mirror" in text.lower()])
         self.assertEqual(
             [
                 "CEILING  =HHL_Roof : SURF=  58 : AREA=        28.3 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0",
                 "FLOOR  =HHL_Floor : SURF=  56 : AREA=        28.3 : BOUNDARY=INPUT 1*TAIR_A1 : GEOSURF=0.6",
-                "WALL  =HIGH_COND : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S68 : GEOSURF=0.12",
-                "WALL  =HIGH_COND : SURF=  69 : AREA=        14.0 : BOUNDARY=INPUT 1*TSI395_S69 : GEOSURF=0.106",
-                "WALL  =HIGH_COND : SURF=  70 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S70 : GEOSURF=0.12",
+                "WALL  =HHL_Wall_Gipskartonplatte_HAMT : SURF=  68 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S68 : GEOSURF=0.12",
+                "WALL  =HHL_Wall_Gipskartonplatte_HAMT : SURF=  69 : AREA=        14.0 : BOUNDARY=INPUT 1*TSI395_S69 : GEOSURF=0.106",
+                "WALL  =HHL_Wall_Gipskartonplatte_HAMT : SURF=  70 : AREA=        15.848 : BOUNDARY=INPUT 1*TSI395_S70 : GEOSURF=0.12",
             ],
             zone_lines,
         )
-        self.assertEqual(99999.0, hback_of(definitions, "HIGH_COND"))
+        self.assertEqual(
+            [
+                "CONSTRUCTION HHL_Wall_Gipskartonplatte_HAMT",
+                " LAYERS   =  DIRECT",
+                " THICKNESS=  0.01",
+                " ABS-FRONT= 0.3   : ABS-BACK= 0.7",
+                " EPS-FRONT= 0.9   : EPS-BACK= 0.9",
+                " HFRONT   = 23.0 : HBACK= 99999",
+            ],
+            block_of(definitions, "HHL_Wall_Gipskartonplatte_HAMT"),
+        )
+        self.assertNotIn("CONSTRUCTION HIGH_COND", definitions)
 
 
 class ThermalMirrorConsistencyTests(MirrorHelperCase):
@@ -664,6 +688,7 @@ class ThermalMirrorStaticB18Tests(unittest.TestCase):
         self.assertTrue(HELPER_START in source, "helper block missing")
         blocks = {
             "helpers": source_slice(source, HELPER_START, HELPER_END),
+            "HAMT helpers": source_slice(source, HAMT_HELPER_START, HAMT_HELPER_END),
             "walls block": source_slice(source, WALLS_START, WALLS_END),
             "BOUNDARY branch": "if" + source_slice(source, BOUNDARY_START, BOUNDARY_END)[len("elif"):],
         }
