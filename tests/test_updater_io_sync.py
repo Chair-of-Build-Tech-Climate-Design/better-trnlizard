@@ -129,6 +129,15 @@ class UpdaterModuleTests(unittest.TestCase):
         self.assertIn("line 2", self.updater.firstDiff(code, "a = 1\nb = 3\n"))
         self.assertEqual(self.updater.getHash(""), self.updater.getHash(None))
 
+    def test_the_updater_warns_when_its_own_code_differs_from_its_script(self):
+        check = self.updater.selfCheckMessage
+        self.assertIsNone(check("a = 1\nb = 2\n", "\ufeffa = 1\r\nb = 2\r\n", "f.py"))
+        self.assertIsNone(check(None, "a = 1\n", "f.py"))   # own code not readable (Rhino 8 before SR18)
+        message = check("a = 1\nb = 2\n", "a = 1\nb = 3\n", r"C:\Lizard\Lizard_Updater.py")
+        self.assertIn(r"C:\Lizard\Lizard_Updater.py", message)
+        self.assertIn("line 2", message)
+        self.assertIn("by hand", message)
+
     # ------------------------------------------------------------------ insertion indices
 
     def test_new_params_go_right_after_their_docstring_predecessor(self):

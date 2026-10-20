@@ -11,6 +11,8 @@ params and wires for reference;
 - order-only differences: the params are kept, a note is logged;
 - inside clusters only additions are applied, anything else is reported as manual update needed.
 All document changes are made right after this solution, then the report of the finished update is shown.
+The updater never updates itself: when its own code differs from Lizard_Updater.py in sourceFolder, a warning is
+logged and listed under errors; paste the new code into this component by hand.
 Plain script for Rhino 7/8 GhPython (IronPython 2.7) and Rhino 8 Python 2/3 script components; it updates
 components of these three kinds (Rhino 8 script components need Rhino 8 SR18 or later).
 -
@@ -53,6 +55,7 @@ REPLACEMENT_OFFSET = 40                                   # canvas px right and 
 GROUP_ARGB = (150, 255, 0, 0)                             # red group around a replacement
 REPORT_KEY = 'Lizard_Updater_report_'                     # sc.sticky key + updater InstanceGuid
 UNDO_NAME = 'Lizard_Updater'
+UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in sourceFolder
 
 # docstring type -> (type hint id of legacy GhPython, .NET type for Rhino 8 script params, accepted hint names)
 TYPE_HINTS = {
@@ -95,6 +98,15 @@ def firstDiff(a, b):
         if la != lb:
             return u'line {0}: comp={1!r} vs file={2!r}'.format(i + 1, la[:60], lb[:60])
     return None
+
+
+def selfCheckMessage(ownCode, fileCode, path):
+    """Warning when the code of this updater differs from its script in the folder, None when they are equal or one
+    of them could not be read. The updater skips itself, so its own copy on the canvas only changes by hand."""
+    if ownCode is None or fileCode is None or getHash(ownCode) == getHash(fileCode):
+        return None
+    return (u'This Lizard_Updater runs other code than {0} (first diff {1}). The updater never updates itself: if the '
+            u'file is the newer one, paste it into this component by hand.').format(path, firstDiff(ownCode, fileCode))
 
 
 def parseDocstringIO(code):
@@ -750,6 +762,22 @@ def planComponent(comp, cluster, path, log):
     return 'action', action
 
 
+def checkSelf(updater, scripts, log, errors):
+    """Log and list as an error when the code of this updater differs from Lizard_Updater.py of the folder."""
+    path = scripts.get(UPDATER_SCRIPT)
+    if path is None:
+        return
+    updater = _impl(updater)
+    try:
+        message = selfCheckMessage(readComponentCode(updater, scriptKind(updater)), readScript(path), path)
+    except Exception as e:
+        log.append('Note: could not compare this updater with {0}: {1}'.format(path, e))
+        return
+    if message:
+        log.append('WARNING: ' + message)
+        errors.append(message)
+
+
 def runUpdater(sourceFolder, runUpdate):
     """Plan the update of every matching script component and schedule the document changes; (log, updated, skipped,
     errors). The run right after the scheduled changes shows the final report instead."""
@@ -776,6 +804,7 @@ def runUpdater(sourceFolder, runUpdate):
         log.append('No Python files found in source folder.')
         return log, updated, skipped, errors
     log.append('Found {0} Python files in source.'.format(len(scripts)))
+    checkSelf(updater, scripts, log, errors)
     components = collectScriptComponents(doc, updater.InstanceGuid, log)
     log.append('Found {0} Python script components in document.'.format(len(components)))
     actions = []
