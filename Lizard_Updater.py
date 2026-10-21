@@ -23,6 +23,14 @@ params and wires for reference;
 All document changes are made right after this solution, then the report of the finished update is shown.
 The updater never updates itself: when its own code differs from Lizard_Updater.py of the source, a warning is
 logged and listed under errors; paste the new code into this component by hand.
+Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
+TRNLizard of the Grasshopper UserObjects folder (switch it off with makeUserObjects = False). Each UserObject is built
+from the script alone: a new IronPython script component with the params of the docstring and the Name, NickName,
+Message, Category and SubCategory the script declares (defaults: file name, Lizard, 9 | Other). A Rhino 8 Python 3
+updater writes legacy GhPython UserObjects, since the TRNLizard scripts are IronPython 2 code. lizard_userobjects.json
+in that folder keeps the hash of each script: a UserObject is only rewritten when its script or the UserObject
+format changed or its file is missing; UserObjects of scripts that are gone are deleted (only files this updater
+wrote). Scripts without Args/Returns docstring and without ghenv.Component.Name get no UserObject.
 Plain script for Rhino 7/8 GhPython (IronPython 2.7) and Rhino 8 Python 2/3 script components; it updates
 components of these three kinds (Rhino 8 script components need Rhino 8 SR18 or later).
 -
@@ -35,6 +43,9 @@ Args:
     runUpdate (bool): True = update the script components of this document
         Access: item
         Required: True
+    makeUserObjects (bool): True or not connected = write a UserObject per script into <Grasshopper UserObjects folder>/TRNLizard; False = canvas update only
+        Access: item
+        Required: False
 
 Returns:
     log (str): report of the last update
@@ -82,6 +93,12 @@ RETRY_BACKOFF_S = 1.0                                     # wait before the 2nd 
 MAX_RETRY_WAIT_S = 10.0                                   # cap of all waits of one update
 USER_AGENT = 'TRNLizard-Updater'
 CACHE_SUBFOLDER = ('TRNLizard', 'source')                 # under the Grasshopper AppData folder
+USEROBJECT_SUBFOLDER = 'TRNLizard'                        # subfolder of the Grasshopper UserObjects folder
+USEROBJECT_STATE = 'lizard_userobjects.json'              # in that subfolder: {format, userObjects: {script: hash, file}}
+USEROBJECT_FORMAT = 1                                     # raise when the UserObject builder changes: rewrites them all
+LEGACY_GHPYTHON_ID = '410755b1-224a-4c1e-a407-bf32fb45ea7e'  # GhPython Script (legacy, IronPython 2.7)
+DEFAULT_CATEGORY = 'Lizard'                               # UserObject category of a script that declares none
+DEFAULT_SUBCATEGORY = '9 | Other'                         # UserObject subcategory of a script that declares none
 
 # docstring type -> (type hint id of legacy GhPython, .NET type for Rhino 8 script params, accepted hint names)
 TYPE_HINTS = {
@@ -324,6 +341,141 @@ def typeHintSpec(typeName):
         return None
     legacyId, clrType, names = TYPE_HINTS[key]
     return {'legacyId': legacyId, 'clrType': clrType, 'names': names}
+
+
+# UserObjects (pure logic; unit-tested in tests/test_updater_userobjects.py)
+
+_COMPONENT_INFO = re.compile(r'^ghenv\.Component\.(Name|NickName|Message|Category|SubCategory)[ \t]*=[ \t]*(.*?)[ \t]*$',
+                             re.MULTILINE)
+_STRING_LITERAL = re.compile(r'''^[uU]?(?:'((?:[^'\\]|\\.)*)'|"((?:[^"\\]|\\.)*)")\s*(?:#.*)?$''')
+_ESCAPES = {'n': u'\n', 't': u'\t', 'r': u'\r'}
+
+
+def stringLiteral(text):
+    """Value of a one-line string literal (a trailing comment allowed), None for anything else (e.g. an expression)."""
+    m = _STRING_LITERAL.match(text or u'')
+    if not m:
+        return None
+    raw = m.group(1) if m.group(1) is not None else m.group(2)
+    return re.sub(r'\\(.)', lambda e: _ESCAPES.get(e.group(1), e.group(1)), raw)
+
+
+def scriptDescription(code):
+    """First paragraph of the module docstring before its first '-' line; '' when the script has no module docstring."""
+    m = re.match(r'\s*(?:#[^\n]*\n\s*)*[uUrR]?"""(.*?)"""', (code or u'').replace(u'\r\n', u'\n'), re.DOTALL)
+    if not m:
+        return u''
+    lines = []
+    for line in m.group(1).split(u'\n'):
+        text = line.strip()
+        if text == u'-' or text in (u'Args:', u'Returns:'):
+            break
+        if not text:
+            if lines:
+                break
+            continue
+        lines.append(text)
+    return u'\n'.join(lines)
+
+
+def parseComponentInfo(code, baseName):
+    """Identity of the component of a script: dict name, nickName, category, subCategory, message, description.
+
+    Taken from the first unindented ghenv.Component.<X> = '<string literal>' line per member (commented-out lines,
+    indented lines and non-literal values such as 'VER %s' % version are ignored). Defaults: name = baseName,
+    nickName = name without 'Lizard_', category DEFAULT_CATEGORY, subCategory DEFAULT_SUBCATEGORY, message ''.
+    description = first paragraph of the module docstring, else 'TRNLizard component <name>'.
+    """
+    declared = {}
+    for member, value in _COMPONENT_INFO.findall((code or u'').replace(u'\r\n', u'\n')):
+        literal = stringLiteral(value)
+        if literal is not None and literal.strip() and member not in declared:
+            declared[member] = literal
+    name = declared.get('Name', baseName).strip()
+    nickName = declared.get('NickName')
+    if nickName is None:
+        nickName = name[len('Lizard_'):] if name.startswith('Lizard_') and len(name) > len('Lizard_') else name
+    return {'name': name, 'nickName': nickName,
+            'category': declared.get('Category', DEFAULT_CATEGORY),
+            'subCategory': declared.get('SubCategory', DEFAULT_SUBCATEGORY),
+            'message': declared.get('Message', u''),
+            'description': scriptDescription(code) or u'TRNLizard component ' + name}
+
+
+def declaresComponentName(code):
+    return any(member == 'Name' and stringLiteral(value)
+               for member, value in _COMPONENT_INFO.findall((code or u'').replace(u'\r\n', u'\n')))
+
+
+def isComponentScript(code):
+    """True when a script gets a UserObject: its docstring has an Args or Returns section, or it declares
+    ghenv.Component.Name."""
+    inputs, outputs = parseDocstringIO(code)
+    return inputs is not None or outputs is not None or declaresComponentName(code)
+
+
+def userObjectFileName(name):
+    """Safe .ghuser file name for a component name (letters, digits, space, '_', '-', '.'; anything else '_')."""
+    safe = re.sub(r'[^A-Za-z0-9_. -]', '_', name or u'').strip(u' .')
+    return (safe or u'Lizard_UserObject') + u'.ghuser'
+
+
+def isOwnUserObjectFile(fileName):
+    """A file name the state may point to: a plain .ghuser name in the UserObject folder (no path, no '..')."""
+    if not fileName or not isinstance(fileName, (type(u''), str)):
+        return False
+    return (fileName.lower().endswith('.ghuser') and '/' not in fileName and '\\' not in fileName
+            and ':' not in fileName and fileName.strip(u' .') == fileName)
+
+
+def planUserObjects(entries, state, existingFiles):
+    """Which UserObjects to (re)write, which are unchanged and which are stale.
+
+    entries: dicts with script (base name), name, file and sha256 for every component script; state: the loaded state
+    file {'format': n, 'userObjects': {script: {'sha256', 'file', ...}}} (anything else counts as empty);
+    existingFiles: file names in the UserObject folder. Returns a dict:
+      write: (entry, reason) for a new UserObject, a missing file, a changed script/name or another USEROBJECT_FORMAT
+      unchanged: entries whose file exists and whose hash and file name are the ones of the state
+      stale: (script, file) of state entries whose script is gone (or now writes another file); only files of the
+             state are listed, never other files of the folder
+      conflicts: (entry, script) when two scripts would write the same file; the later one is not written
+    """
+    previous = {}
+    if isinstance(state, dict) and isinstance(state.get('userObjects'), dict):
+        previous = state['userObjects']
+    sameFormat = isinstance(state, dict) and state.get('format') == USEROBJECT_FORMAT
+    existing = set(name.lower() for name in existingFiles)
+    plan = {'write': [], 'unchanged': [], 'stale': [], 'conflicts': []}
+    used = {}
+    for entry in sorted(entries, key=lambda e: e['script']):
+        key = entry['file'].lower()
+        if key in used:
+            plan['conflicts'].append((entry, used[key]))
+            continue
+        used[key] = entry['script']
+        old = previous.get(entry['script'])
+        if not isinstance(old, dict):
+            old = None
+        if old is None:
+            reason = 'new' if key not in existing else 'not in the state file'
+        elif key not in existing:
+            reason = 'file missing'
+        elif not sameFormat:
+            reason = 'UserObject format changed'
+        elif old.get('sha256') != entry['sha256']:
+            reason = 'script changed'
+        elif old.get('file') != entry['file']:
+            reason = 'component name changed'
+        else:
+            plan['unchanged'].append(entry)
+            continue
+        plan['write'].append((entry, reason))
+    for script in sorted(previous):
+        old = previous[script]
+        fileName = old.get('file') if isinstance(old, dict) else None
+        if isOwnUserObjectFile(fileName) and fileName.lower() not in used:
+            plan['stale'].append((script, fileName))
+    return plan
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -932,7 +1084,7 @@ def applyReplacement(doc, action, log):
     return notes
 
 
-def applyActions(doc, actions, report, reportKey, updater):
+def applyActions(doc, actions, report, reportKey, updater, userObjectsSummary=None):
     """ScheduleSolution callback: make the planned document changes and keep the final report for the next run."""
     log, updated, skipped, errors = report
     try:
@@ -955,6 +1107,8 @@ def applyActions(doc, actions, report, reportKey, updater):
         log.append('=== Update Summary ===')
         log.append('Updated: {0}'.format(len(updated)))
         log.append('Skipped: {0}'.format(len(skipped)))
+        if userObjectsSummary:
+            log.append(userObjectsSummary)
         log.append('Errors:  {0}'.format(len(errors)))
     finally:
         sc.sticky[reportKey] = (log, updated, skipped, errors)
@@ -1307,9 +1461,239 @@ def resolveSource(source, log, errors):
     return syncGitHubSource(info, log, errors)
 
 
-def runUpdater(source, runUpdate):
-    """Plan the update of every matching script component and schedule the document changes; (log, updated, skipped,
-    errors). The run right after the scheduled changes shows the final report instead."""
+def userObjectFolder():
+    """<Grasshopper UserObjects folder>/TRNLizard, None when this Grasshopper has no UserObject API."""
+    folders = getattr(Grasshopper, 'Folders', None)
+    root = getattr(folders, 'DefaultUserObjectFolder', None) if folders is not None else None
+    if not root or getattr(Grasshopper.Kernel, 'GH_UserObject', None) is None:
+        return None
+    return os.path.join(str(root), USEROBJECT_SUBFOLDER)
+
+
+def userObjectComponentGuid(updater, log):
+    """ComponentGuid of the script component type of the UserObjects: the kind of this updater when it runs
+    IronPython (legacy GhPython or Rhino 8 Python 2), legacy GhPython when it is a Rhino 8 Python 3 component (the
+    TRNLizard scripts are IronPython 2 code)."""
+    updater = _impl(updater)
+    kind = scriptKind(updater)
+    if kind in (KIND_GHPYTHON, KIND_IRONPYTHON2):
+        return updater.ComponentGuid
+    log.append('UserObjects: this updater is a {0} component; the UserObjects are legacy GhPython (IronPython 2.7) '
+               'components, as the TRNLizard scripts are IronPython 2 code.'.format(kind))
+    guid = System.Guid(LEGACY_GHPYTHON_ID)
+    if Grasshopper.Instances.ComponentServer.EmitObject(guid) is None:
+        raise RuntimeError('the legacy GhPython Script component ({0}) is not available in this Grasshopper: no '
+                           'UserObjects written'.format(LEGACY_GHPYTHON_ID))
+    return guid
+
+
+def buildUserObjectComponent(componentGuid, entry, notes):
+    """A new script component made from the script alone: default params removed (the code output 'out' kept),
+    params of the docstring added in docstring order (separators too), identity of the script set, code set."""
+    comp = Grasshopper.Instances.ComponentServer.EmitObject(componentGuid)
+    if comp is None:
+        raise RuntimeError('no component type registered for ' + str(componentGuid))
+    comp = _impl(comp)
+    comp.CreateAttributes()
+    kind = scriptKind(comp)
+    if kind is None:
+        raise RuntimeError('{0} is not a Python script component'.format(componentGuid))
+    if kind != KIND_GHPYTHON and not hasattr(comp, 'SetSource'):
+        raise RuntimeError('cannot set the code of a {0} component: Rhino 8 SR18 or later is needed'.format(kind))
+    standard = hasStandardOutput(comp)
+    for param in list(comp.Params.Input):
+        comp.Params.UnregisterInputParameter(param, True)
+    for param in list(comp.Params.Output)[1 if standard else 0:]:
+        comp.Params.UnregisterOutputParameter(param, True)
+    inputSpecs, outputSpecs = parseDocstringIO(entry['code'])
+    plan = planIOUpdate([], [STANDARD_OUTPUT] if standard else [],
+                        None if inputSpecs is None else [p['name'] for p in inputSpecs],
+                        None if outputSpecs is None else [p['name'] for p in outputSpecs], standard)
+    if plan['kind'] == 'ambiguous':
+        raise RuntimeError(plan['notes'][-1])
+    notes.extend(note for note in plan['notes'] if 'docstring has no' not in note)
+    action = {'plan': plan, 'inputSpecs': dict((p['name'], p) for p in inputSpecs or []),
+              'outputSpecs': dict((p['name'], p) for p in outputSpecs or [])}
+    applyParamChanges(comp, kind, action, notes)
+    info = entry['info']
+    comp.Name = info['name']
+    comp.NickName = info['nickName']
+    comp.Description = info['description']
+    comp.Category = info['category']
+    comp.SubCategory = info['subCategory']
+    if info['message']:
+        _setIfPresent(comp, 'Message', info['message'])
+    writeComponentCode(comp, kind, entry['code'])
+    return comp
+
+
+def saveUserObject(comp, info, path):
+    """Write the UserObject file of a component; returns the GH_UserObject."""
+    kernel = Grasshopper.Kernel
+    uo = kernel.GH_UserObject()
+    uo.Exposure = kernel.GH_Exposure.primary
+    try:
+        icon = comp.Icon_24x24
+    except Exception:
+        icon = None
+    if icon is not None:
+        _setIfPresent(uo, 'Icon', icon)
+    _setIfPresent(uo, 'BaseGuid', comp.ComponentGuid)
+    uo.SetDataFromObject(comp)
+    description = uo.Description  # set after SetDataFromObject, so the script's identity is the one saved
+    description.Name = info['name']
+    description.NickName = info['nickName']
+    description.Description = info['description']
+    description.Category = info['category']
+    description.SubCategory = info['subCategory']
+    uo.Path = path
+    if uo.SaveToFile() is False:
+        raise RuntimeError('GH_UserObject.SaveToFile failed for ' + path)
+    return uo
+
+
+def loadUserObjectState(path, log):
+    """The state file as a dict, None when it is missing or unreadable (every UserObject is then written)."""
+    if not os.path.isfile(path):
+        return None
+    try:
+        handle = io.open(path, 'r', encoding='utf-8')
+        try:
+            return json.loads(handle.read())
+        finally:
+            handle.close()
+    except Exception as e:
+        log.append('Note: could not read {0} ({1}): every UserObject is written again.'.format(path, e))
+        return None
+
+
+def saveUserObjectState(path, state):
+    text = json.dumps(state, indent=2, sort_keys=True)
+    if not isinstance(text, type(u'')):
+        text = text.decode('utf-8')
+    handle = io.open(path, 'w', encoding='utf-8')
+    try:
+        handle.write(text)
+    finally:
+        handle.close()
+
+
+def refreshRibbon(newUserObjects, log):
+    """Show new UserObjects in the ribbon without a restart, as far as this Grasshopper offers it."""
+    server = Grasshopper.Instances.ComponentServer
+    try:
+        if newUserObjects and hasattr(server, 'AddUserObject'):
+            for uo in newUserObjects:
+                server.AddUserObject(uo)
+        componentServer = getattr(Grasshopper.Kernel, 'GH_ComponentServer', None)
+        if componentServer is not None and hasattr(componentServer, 'UpdateRibbonUI'):
+            componentServer.UpdateRibbonUI()
+    except Exception as e:
+        log.append('Note: could not refresh the ribbon ({0}): restart Grasshopper to see the UserObjects.'.format(e))
+
+
+def writeUserObjects(scripts, updater, log, errors):
+    """Write a UserObject per component script into <UserObjects folder>/TRNLizard; returns the summary line.
+
+    Only new and changed scripts are written (lizard_userobjects.json); every failure goes to errors and never stops
+    the canvas update.
+    """
+    log.append('')
+    log.append('=== UserObjects ===')
+    folder = userObjectFolder()
+    if folder is None:
+        log.append('UserObjects not written: this Grasshopper has no UserObject folder/API.')
+        return 'UserObjects: not available'
+    log.append('UserObject folder: {0}'.format(folder))
+    entries = []
+    for script in sorted(scripts):
+        try:
+            code = readScript(scripts[script])
+            if not isComponentScript(code):
+                log.append('No UserObject for {0}.py: no Args/Returns docstring and no ghenv.Component.Name.'.format(script))
+                continue
+            info = parseComponentInfo(code, script)
+            entries.append({'script': script, 'name': info['name'], 'file': userObjectFileName(info['name']),
+                            'sha256': getHash(code), 'info': info, 'code': code})
+        except Exception as e:
+            errors.append('UserObject {0}: could not read the script: {1}'.format(script, e))
+    try:
+        if not os.path.isdir(folder):
+            os.makedirs(folder)
+        statePath = os.path.join(folder, USEROBJECT_STATE)
+        state = loadUserObjectState(statePath, log)
+        plan = planUserObjects(entries, state, os.listdir(folder))
+    except Exception as e:
+        errors.append('UserObjects not written: {0}'.format(e))
+        return 'UserObjects: failed'
+    previous = state.get('userObjects') if isinstance(state, dict) and isinstance(state.get('userObjects'), dict) else {}
+    records = {}
+    for entry in plan['unchanged']:
+        records[entry['script']] = previous[entry['script']]
+    for entry, other in plan['conflicts']:
+        errors.append('UserObject {0}: {1} would overwrite the UserObject of {2}.py; not written. Give the script '
+                      'another ghenv.Component.Name.'.format(entry['script'], entry['file'], other))
+
+    def keepPrevious(entry):
+        """A failed write keeps tracking the last written file, without a hash so that it is retried next time."""
+        old = previous.get(entry['script'])
+        if isinstance(old, dict) and old.get('file') == entry['file']:
+            records[entry['script']] = {'sha256': '', 'file': old['file'], 'name': old.get('name', entry['name'])}
+
+    componentGuid = None
+    if plan['write']:
+        try:
+            componentGuid = userObjectComponentGuid(updater, log)
+        except Exception as e:
+            errors.append('UserObjects not written: {0}'.format(e))
+    written, newUserObjects = 0, []
+    for entry, reason in plan['write'] if componentGuid is not None else []:
+        path = os.path.join(folder, entry['file'])
+        isNew = not os.path.isfile(path)
+        notes = []
+        try:
+            comp = buildUserObjectComponent(componentGuid, entry, notes)
+            uo = saveUserObject(comp, entry['info'], path)
+        except Exception as e:
+            errors.append('UserObject {0} not written: {1}'.format(entry['name'], e))
+            keepPrevious(entry)
+            continue
+        written += 1
+        if isNew:
+            newUserObjects.append(uo)
+        records[entry['script']] = {'sha256': entry['sha256'], 'file': entry['file'], 'name': entry['name']}
+        log.append('UserObject written: {0} -> {1} ({2}; {3} / {4}){5}'.format(
+            entry['name'], entry['file'], reason, entry['info']['category'], entry['info']['subCategory'],
+            ': ' + '; '.join(notes) if notes else ''))
+    for entry, reason in plan['write'] if componentGuid is None else []:
+        keepPrevious(entry)
+    removed = 0
+    for script, fileName in plan['stale']:
+        path = os.path.join(folder, fileName)
+        try:
+            if os.path.isfile(path):
+                os.remove(path)
+            removed += 1
+            log.append('UserObject removed: {0} (its script {1}.py is gone or now writes another file)'.format(fileName, script))
+        except Exception as e:
+            records[script] = previous[script]
+            errors.append('UserObject {0} of {1}.py is stale but could not be removed: {2}'.format(fileName, script, e))
+    try:
+        saveUserObjectState(statePath, {'format': USEROBJECT_FORMAT, 'userObjects': records})
+    except Exception as e:
+        errors.append('Could not write {0}: {1}'.format(statePath, e))
+    if written or removed:
+        refreshRibbon(newUserObjects, log)
+    summary = 'UserObjects: {0} written, {1} unchanged'.format(written, len(plan['unchanged']))
+    if removed:
+        summary += ', {0} removed'.format(removed)
+    return summary
+
+
+def runUpdater(source, runUpdate, makeUserObjects=None):
+    """Plan the update of every matching script component and schedule the document changes, and write the UserObjects
+    (unless makeUserObjects is False); (log, updated, skipped, errors). The run right after the scheduled changes shows
+    the final report instead."""
     updater = ghenv.Component  # noqa: F821 (global of every Grasshopper script component)
     reportKey = REPORT_KEY + str(updater.InstanceGuid)
     finished = sc.sticky.pop(reportKey, None)
@@ -1354,11 +1738,18 @@ def runUpdater(source, runUpdate):
         else:
             log.append(result)
             errors.append(result)
+    userObjectsSummary = None
+    if makeUserObjects is not False:
+        try:
+            userObjectsSummary = writeUserObjects(scripts, updater, log, errors)
+        except Exception as e:  # never stops the canvas update
+            errors.append('UserObjects not written: {0}'.format(e))
+            userObjectsSummary = 'UserObjects: failed'
     if actions:
         report = (log, updated, skipped, errors)
 
         def callback(document):
-            applyActions(document, actions, report, reportKey, updater)
+            applyActions(document, actions, report, reportKey, updater, userObjectsSummary)
         doc.ScheduleSolution(1, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
         log.append('')
         log.append('{0} component(s) are changed right after this solution; this report is then completed.'.format(len(actions)))
@@ -1367,9 +1758,12 @@ def runUpdater(source, runUpdate):
         log.append('=== Update Summary ===')
         log.append('Updated: 0')
         log.append('Skipped: {0}'.format(len(skipped)))
+        if userObjectsSummary:
+            log.append(userObjectsSummary)
         log.append('Errors:  {0}'.format(len(errors)))
     return log, updated, skipped, errors
 
 
 if 'ghenv' in globals():
-    log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'))
+    log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'),
+                                               globals().get('makeUserObjects'))
