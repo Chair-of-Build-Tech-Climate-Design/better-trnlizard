@@ -5463,12 +5463,20 @@ if WriteSimulationFiles:
                 shutil.copy(weather_file, variants_folder)
                 print 'Note: Weather copied to Variant folder'
             variables['weatherfile']    = weather_file_name
-            # Exterior solar of the EXTCALEXT walls: one extra Type 15 tilted surface per orientation (Type 15-3 layout: EPW, TMY2 and TMY3 weather files)
+            # Exterior solar of the EXTCALEXT walls: one extra Type 15 tilted surface per orientation (Type 15-3 layout: EPW, TMY2 and TMY3
+            # weather files; DWD TRY 2015 and TRY 2045, file type 10 "German TRY 2017", have the same parameter and output layout)
             variables['hamt_solar_output'] = {}   # orientation -> Type 15 tilted surface number (1 = horizontal plane), read by the e7 handler
             variables['hamt_solar_nsurf']  = 1
             hamt_solar_oris = getHamtSolarOrientations(zone)
-            if (".epw" in weather_file) or ("tm2" in weather_file) or ("tm3" in weather_file) or ("tmy3" in weather_file):
-                if ".epw" in weather_file:
+            is_dwd_try = (".dat" in weather_file) and (("TRY2015" in weather_file) or ("TRY2045" in weather_file))
+            if is_dwd_try or (".epw" in weather_file) or ("tm2" in weather_file) or ("tm3" in weather_file) or ("tmy3" in weather_file):
+                t15_name = 'Type15-3'
+                t15_tmf = 'Energy+ Weather Files (EPW)\\Type15-3.tmf'
+                if is_dwd_try:
+                    mode = 10
+                    t15_name = 'Type15-10'
+                    t15_tmf = 'German TRY 2017\\Type15-10.tmf'
+                elif ".epw" in weather_file:
                     mode = 3
                 elif ".tm2" in weather_file:
                     mode = 2
@@ -5486,11 +5494,11 @@ if WriteSimulationFiles:
                 variables['hamt_solar_nsurf'] = t15_nsurf
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
-* Model "Type15-3" (Type 15)
+* Model "{4}" (Type 15)
 *
-UNIT 15 TYPE 15	 Type15-3
-*$UNIT_NAME Type15-3
-*$MODEL .\Weather Data Reading and Processing\Standard Format\Energy+ Weather Files (EPW)\Type15-3.tmf
+UNIT 15 TYPE 15	 {4}
+*$UNIT_NAME {4}
+*$MODEL .\Weather Data Reading and Processing\Standard Format\{5}
 *$POSITION 330 31
 *$LAYER Weather - Data Files #
 PARAMETERS {1}
@@ -5503,41 +5511,7 @@ GRDREF		! 4 Ground reflectance - no snow
 1		! 7 Tracking mode
 0.0		! 8 Slope of surface
 0		! 9 Azimuth of surface
-{3}""".format(mode, t15_npar, t15_nsurf, t15_extra)
-                variables['azen_link'] = '15,16'
-                variables['aazm_link'] = '15,17'
-                variables['rh_link']   = '15,7'
-                variables['ith_link']  = '15,18'
-                variables['ibh_link']  = '15,19'
-                variables['idh_link']  = '15,20'
-                variables['ta_link']   = '15,1'
-                variables['wv_link']   = '15,8'
-                variables['wd_link']   = '15,9'
-            elif (".dat" in weather_file) and 'TRY2015' in weather_file:
-                if "TRY2015" in weather_file:
-                    mode = 10
-                if len(hamt_solar_oris) > 0:
-                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
-                variables['weather_data_reader'] = """
-*------------------------------------------------------------------------------
-* Model "Type15-10" (Type 15)
-*
-UNIT 15 TYPE 15	 Type15-10
-*$UNIT_NAME Type15-10
-*$MODEL .\Weather Data Reading and Processing\Standard Format\German TRY 2015\Type15-10.tmf
-*$POSITION 330 31
-*$LAYER Weather - Data Files #
-PARAMETERS 9
-{0}		! 1 File Type
-36		! 2 Logical unit
-5		! 3 Tilted Surface Radiation Mode
-GRDREF		! 4 Ground reflectance - no snow
-0.2		! 5 Ground reflectance - snow cover
-1		! 6 Number of surfaces
-1		! 7 Tracking mode
-0.0		! 8 Slope of surface
-0		! 9 Azimuth of surface
-""".format(mode)
+{3}""".format(mode, t15_npar, t15_nsurf, t15_extra, t15_name, t15_tmf)
                 variables['azen_link'] = '15,16'
                 variables['aazm_link'] = '15,17'
                 variables['rh_link']   = '15,7'
@@ -5549,7 +5523,7 @@ GRDREF		! 4 Ground reflectance - no snow
                 variables['wd_link']   = '15,9'
             else:
                 if len(hamt_solar_oris) > 0:
-                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2 or TMY3 weather file: the exterior solar gain of the HAMT walls is zero.")
+                    ghenv.Component.AddRuntimeMessage(w, "EXTCALEXT walls get their exterior solar gain from extra Type 15 tilted surfaces, which needs an EPW, TMY2, TMY3 or DWD TRY 2015/2045 weather file: the exterior solar gain of the HAMT walls is zero.")
                 variables['weather_data_reader'] = """
 *------------------------------------------------------------------------------
 * Model "Type99-2" (Type 99)

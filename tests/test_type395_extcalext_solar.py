@@ -398,13 +398,40 @@ class WeatherReaderTiltedSurfaceTests(unittest.TestCase):
         self.assertIn("SOUTH", messages[0][1])
         self.assertIn("PARAMETERS 12\n", variables["weather_data_reader"])
 
+    def test_dwd_try2015_and_try2045_files_use_type15_file_type_10_with_tilted_surfaces(self):
+        # DWD TRY 2015 and TRY 2045 (both published 2017) are Type 15 file type 10 "German TRY 2017"; its tilted
+        # surface parameters and outputs have the same layout as the EPW reader
+        for weather_file in ("C:\\W\\TRY2015_481494115642_Somm.dat", "C:\\W\\TRY2045_481494115642_Jahr.dat"):
+            with self.subTest(weather_file=weather_file):
+                variables, messages = render_weather_reader(weather_file, self.din_zones())
+                block = variables["weather_data_reader"]
+                self.assertEqual([], messages)
+                self.assertIn("UNIT 15 TYPE 15\t Type15-10\n", block)
+                self.assertIn("\\German TRY 2017\\Type15-10.tmf\n", block)
+                self.assertIn("PARAMETERS 12\n10\t\t! 1 File Type\n", block)
+                self.assertIn("2\t\t! 6 Number of surfaces\n", block)
+                self.assertEqual({"S_0_90": 2}, variables["hamt_solar_output"])
+                self.assertEqual(2, variables["hamt_solar_nsurf"])
+                self.assertEqual(("15,16", "15,17", "15,18", "15,19", "15,20", "15,1", "15,7"), tuple(
+                    variables[key] for key in ("azen_link", "aazm_link", "ith_link", "ibh_link", "idh_link", "ta_link",
+                                               "rh_link")))
+
+    def test_dwd_try_block_without_extcalext_walls_has_only_the_horizontal_plane(self):
+        variables, messages = render_weather_reader("C:\\W\\TRY2045_x_Somm.dat", [])
+        self.assertEqual([], messages)
+        self.assertEqual(TYPE15_BLOCK_WITHOUT_TILTED_SURFACES
+                         .replace("Type15-3", "Type15-10")
+                         .replace("Energy+ Weather Files (EPW)", "German TRY 2017")
+                         .replace("3\t\t! 1 File Type", "10\t\t! 1 File Type"),
+                         variables["weather_data_reader"])
+
     def test_weather_readers_without_type15_tilted_surface_support_warn_and_map_nothing(self):
-        for weather_file in ("C:\\W\\TRY2015_x.dat", "C:\\W\\user_format.csv"):
+        for weather_file in ("C:\\W\\user_format.csv",):
             with self.subTest(weather_file=weather_file):
                 variables, messages = render_weather_reader(weather_file, self.din_zones())
                 self.assertEqual({}, variables["hamt_solar_output"])
                 self.assertEqual(1, len(messages))
-                self.assertIn("EPW, TMY2 or TMY3", messages[0][1])
+                self.assertIn("EPW, TMY2, TMY3 or DWD TRY 2015/2045", messages[0][1])
                 variables, messages = render_weather_reader(weather_file, [])
                 self.assertEqual([], messages)
 
