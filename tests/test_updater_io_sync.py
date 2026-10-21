@@ -356,7 +356,7 @@ class UpdaterPortabilityTests(unittest.TestCase):
         self.assertNotIn("executingcomponent", self.source)
         updater = load_updater()
         inputs, outputs = updater.parseIONames(self.source)
-        self.assertEqual(["sourceFolder", "runUpdate"], inputs)
+        self.assertEqual(["sourceFolder", "runUpdate", "makeUserObjects"], inputs)
         self.assertEqual(["log", "updated", "skipped", "errors"], outputs)
         assigned = set()
         for node in self.tree.body:
