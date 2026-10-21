@@ -443,7 +443,7 @@ class UpdaterGlueTests(unittest.TestCase):
         spec.loader.exec_module(self.updater)
         # the updater itself: a script component whose script is in the folder too, it must never update itself
         shutil.copy(UPDATER_SOURCE, self.folder / "Lizard_Updater.py")
-        self.updater_component = LegacyGhPython("Lizard_Updater", [ScriptVariable("sourceFolder"), ScriptVariable("runUpdate")],
+        self.updater_component = LegacyGhPython("Lizard_Updater", [ScriptVariable("source"), ScriptVariable("runUpdate")],
                                                 [Param("log")], code=UPDATER_SOURCE.read_text(encoding="utf-8"))
 
     # ------------------------------------------------------------------ helpers

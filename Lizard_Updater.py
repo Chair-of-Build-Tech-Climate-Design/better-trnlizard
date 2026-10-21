@@ -1,8 +1,18 @@
 """
-Update the TRNLizard script components of this Grasshopper document from the .py files of a folder.
+Update the TRNLizard script components of this Grasshopper document from the TRNLizard scripts on GitHub or in a folder.
 -
-A script component is matched by its Name (every TRNLizard script sets it, e.g. Lizard_Hygro) to <Name>.py in
-sourceFolder. Its code is replaced when it differs from the file (line endings, a BOM and trailing white space are
+source tells where the scripts come from:
+- not connected or empty: the main branch of https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard;
+- a GitHub repository (https://github.com/<owner>/<repo>, github.com/<owner>/<repo> or git@github.com:<owner>/<repo>.git),
+optionally with /tree/<branch or tag> or /commit/<sha> (default: main). The updater reads trnlizard_manifest.json of the
+repository (SHA256 of every script) and downloads only new and changed scripts into its cache folder (Grasshopper AppData
+folder, TRNLizard/source/<owner>_<repo>_<ref>); scripts that left the manifest are deleted from the cache. Without a
+connection a complete cached copy is used. The branch is looked up as a commit on api.github.com; when that fails, the
+files come from the branch on raw.githubusercontent.com, which caches them for about 5 minutes: a change pushed just now
+may only show a few minutes later. Private repositories are not supported;
+- anything else: a local folder with the scripts <component Name>.py.
+A script component is matched by its Name (every TRNLizard script sets it, e.g. Lizard_Hygro) to <Name>.py of the
+source. Its code is replaced when it differs from the file (line endings, a BOM and trailing white space are
 ignored). Its inputs and outputs follow the Args/Returns docstring of the new script:
 - only additions: the new params are added to the component in place, at their docstring position;
 - any removal (a rename is a removal plus an addition): a copy of the component with the new code and IO is placed
@@ -11,7 +21,7 @@ params and wires for reference;
 - order-only differences: the params are kept, a note is logged;
 - inside clusters only additions are applied, anything else is reported as manual update needed.
 All document changes are made right after this solution, then the report of the finished update is shown.
-The updater never updates itself: when its own code differs from Lizard_Updater.py in sourceFolder, a warning is
+The updater never updates itself: when its own code differs from Lizard_Updater.py of the source, a warning is
 logged and listed under errors; paste the new code into this component by hand.
 Plain script for Rhino 7/8 GhPython (IronPython 2.7) and Rhino 8 Python 2/3 script components; it updates
 components of these three kinds (Rhino 8 script components need Rhino 8 SR18 or later).
@@ -19,9 +29,9 @@ components of these three kinds (Rhino 8 script components need Rhino 8 SR18 or 
 TRNLizard
 
 Args:
-    sourceFolder (str): folder with the TRNLizard scripts <component Name>.py
+    source (str): GitHub repository URL (optionally .../tree/<branch>) or folder of the scripts; empty = TRNLizard on GitHub
         Access: item
-        Required: True
+        Required: False
     runUpdate (bool): True = update the script components of this document
         Access: item
         Required: True
@@ -38,6 +48,7 @@ Returns:
 """
 import hashlib
 import io
+import json
 import os
 import re
 
@@ -55,7 +66,22 @@ REPLACEMENT_OFFSET = 40                                   # canvas px right and 
 GROUP_ARGB = (150, 255, 0, 0)                             # red group around a replacement
 REPORT_KEY = 'Lizard_Updater_report_'                     # sc.sticky key + updater InstanceGuid
 UNDO_NAME = 'Lizard_Updater'
-UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in sourceFolder
+UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
+DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
+DEFAULT_REF = 'main'                                      # branch when a GitHub URL names none
+MANIFEST_NAME = 'trnlizard_manifest.json'                 # at the repository root, made by tools/build_manifest.py
+MANIFEST_FORMAT = 1                                       # newest manifest format this updater reads
+RAW_HOST = 'https://raw.githubusercontent.com'
+API_HOST = 'https://api.github.com'
+SHA_MEDIA_TYPE = 'application/vnd.github.sha'             # Accept header: the commits API answers with the bare sha
+HTTP_TIMEOUT_MS = 30000
+RATE_LIMIT_STATUSES = (403, 429)                          # GitHub answers a rate limit with one of these
+RETRY_STATUSES = (429, 502, 503, 504)                     # raw downloads retried after a short wait
+RETRY_ATTEMPTS = 3                                        # tries per download in all
+RETRY_BACKOFF_S = 1.0                                     # wait before the 2nd try, doubled for each further one
+MAX_RETRY_WAIT_S = 10.0                                   # cap of all waits of one update
+USER_AGENT = 'TRNLizard-Updater'
+CACHE_SUBFOLDER = ('TRNLizard', 'source')                 # under the Grasshopper AppData folder
 
 # docstring type -> (type hint id of legacy GhPython, .NET type for Rhino 8 script params, accepted hint names)
 TYPE_HINTS = {
@@ -298,6 +324,247 @@ def typeHintSpec(typeName):
         return None
     legacyId, clrType, names = TYPE_HINTS[key]
     return {'legacyId': legacyId, 'clrType': clrType, 'names': names}
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Pure source logic: GitHub sources, manifest and cache plan (no Rhino/Grasshopper use; unit-tested in
+# tests/test_updater_github.py)
+# ---------------------------------------------------------------------------------------------------------------------
+
+class SourceError(Exception):
+    """A source that cannot be used; status: HTTP status of a failed request, None when there was no answer;
+    retryAfter: seconds of a Retry-After header, None when there was none."""
+
+    def __init__(self, message, status=None, retryAfter=None):
+        Exception.__init__(self, message)
+        self.status = status
+        self.retryAfter = retryAfter
+
+
+GITHUB_PREFIXES = (                                       # what clearly is GitHub; the repository path follows
+    r'^https?://(?:www\.)?github\.com(?::\d+)?(?=/|$)',
+    r'^ssh://git@github\.com(?::\d+)?(?=/|$)',
+    r'^git@github\.com:',
+    r'^(?:www\.)?github\.com(?=/|$)',
+)
+GITHUB_USAGE = 'use https://github.com/<owner>/<repo> or https://github.com/<owner>/<repo>/tree/<branch>'
+REPO_NAME_PATTERN = r'^[A-Za-z0-9_.-]+$'
+SCRIPT_NAME_PATTERN = r'^[A-Za-z0-9][A-Za-z0-9_.-]*\.py$'  # manifest entries: top-level scripts only, no paths
+
+
+def parseSource(source):
+    """Where the scripts come from: {'kind': 'github', 'owner', 'repo', 'ref'} or {'kind': 'folder', 'path'}.
+
+    Not connected or empty is DEFAULT_SOURCE. GitHub only when it clearly is: an http(s) URL with the host github.com,
+    git@github.com:<owner>/<repo>(.git) or github.com/<owner>/<repo>. The ref comes from a /tree/<ref> or /commit/<sha>
+    suffix, else DEFAULT_REF. Any other URL raises ValueError (only GitHub is supported); everything else, e.g. a
+    Windows path, a UNC path or a posix path, is a folder path (surrounding white space and quotes removed).
+    """
+    text = u'' if source is None else str(source).strip()
+    if len(text) >= 2 and text[0] == text[-1] and text[0] in u'"\'':
+        text = text[1:-1].strip()
+    if not text:
+        text = DEFAULT_SOURCE
+    for prefix in GITHUB_PREFIXES:
+        match = re.match(prefix, text, re.IGNORECASE)
+        if match:
+            return parseGitHubPath(text, text[match.end():])
+    if re.match(r'^[A-Za-z][A-Za-z0-9+.-]+://', text):
+        raise ValueError(u"Source '{0}' is a URL of another host: only GitHub repositories are supported ({1}), or a "
+                         u"local folder.".format(text, GITHUB_USAGE))
+    return {'kind': 'folder', 'path': text}
+
+
+def parseGitHubPath(source, path):
+    """{'kind': 'github', 'owner', 'repo', 'ref'} of the part of a GitHub source after the host; ValueError if invalid."""
+    path = re.split(r'[?#]', path, maxsplit=1)[0]
+    parts = [part for part in path.split(u'/') if part]
+    if len(parts) < 2:
+        raise ValueError(u"GitHub source '{0}' names no repository: {1}.".format(source, GITHUB_USAGE))
+    owner, repo = parts[0], parts[1]
+    if repo.lower().endswith(u'.git'):
+        repo = repo[:-4]
+    for name in (owner, repo):
+        if not re.match(REPO_NAME_PATTERN, name) or name in (u'.', u'..'):
+            raise ValueError(u"GitHub source '{0}': invalid owner or repository name '{1}'.".format(source, name))
+    rest = parts[2:]
+    if not rest:
+        ref = DEFAULT_REF
+    elif rest[0] == u'tree' and len(rest) > 1:
+        ref = u'/'.join(rest[1:])
+    elif rest[0] == u'commit' and len(rest) == 2 and re.match(r'^[0-9a-fA-F]{7,40}$', rest[1]):
+        ref = rest[1]
+    else:
+        raise ValueError(u"GitHub source '{0}': cannot tell the branch from '/{1}': {2}.".format(
+            source, u'/'.join(rest), GITHUB_USAGE))
+    if not isValidRef(ref):
+        raise ValueError(u"GitHub source '{0}': invalid branch, tag or commit '{1}'.".format(source, ref))
+    return {'kind': 'github', 'owner': owner, 'repo': repo, 'ref': ref}
+
+
+def isValidRef(ref):
+    """True for a plausible git branch, tag or commit name (no white space, no ~^:?*[\\, no '..')."""
+    return bool(ref) and re.match(r'^[^\s~^:?*\[\\]+$', ref) is not None and u'..' not in ref and u'@{' not in ref
+
+
+def isCommitSha(text):
+    """True for a full 40-digit commit sha."""
+    return re.match(r'^[0-9a-fA-F]{40}$', text or u'') is not None
+
+
+def sanitizeRef(ref):
+    """A folder-name-safe form of a ref; a short hash is appended when characters had to be replaced, so 'a/b' and 'a_b'
+    get different cache folders."""
+    safe = re.sub(r'[^A-Za-z0-9._-]', u'_', ref)[:60].rstrip(u'.')
+    if safe != ref:
+        safe = u'{0}-{1}'.format(safe, hashlib.sha1(ref.encode('utf-8')).hexdigest()[:8])
+    return safe
+
+
+def cacheFolderName(owner, repo, ref):
+    """Name of the cache folder of a GitHub source, e.g. Owner_repo_main."""
+    return u'{0}_{1}_{2}'.format(owner, repo, sanitizeRef(ref))
+
+
+def quoteUrlPath(text):
+    """Percent-encoded UTF-8 form of a URL path; '/' and the unreserved characters are kept."""
+    safe = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~/'
+    quoted = []
+    for byte in bytearray(text.encode('utf-8')):
+        char = chr(byte)
+        quoted.append(char if char in safe else '%{0:02X}'.format(byte))
+    return ''.join(quoted)
+
+
+def rawUrl(owner, repo, ref, path):
+    """URL of a file of a GitHub repository at a ref or commit on raw.githubusercontent.com."""
+    return '{0}/{1}/{2}/{3}/{4}'.format(RAW_HOST, owner, repo, quoteUrlPath(ref), quoteUrlPath(path))
+
+
+def commitApiUrl(owner, repo, ref):
+    """GitHub API URL that answers with the commit sha of a ref (Accept: SHA_MEDIA_TYPE)."""
+    return '{0}/repos/{1}/{2}/commits/{3}'.format(API_HOST, owner, repo, quoteUrlPath(ref))
+
+
+def describeHttpFailure(url, status, detail):
+    """Log text of a failed request; status None means there was no answer (no connection, timeout, TLS)."""
+    if status == 404:
+        return u'{0}: not found (HTTP 404): repository or ref not found, or the repository is private'.format(url)
+    if status in RATE_LIMIT_STATUSES:
+        return u'{0}: GitHub rate limit (HTTP {1}) - try again later or set source to a local folder'.format(url, status)
+    if status is None:
+        return u'{0}: no answer ({1})'.format(url, detail)
+    return u'{0}: HTTP {1} ({2})'.format(url, status, detail)
+
+
+def parseRetryAfter(value):
+    """Seconds of a Retry-After header value, None when it is missing or an HTTP date (then the backoff applies)."""
+    try:
+        seconds = float(str(value).strip())
+    except (TypeError, ValueError):
+        return None
+    return max(seconds, 0.0)
+
+
+def retryDelay(status, retryAfter, attempts, waited):
+    """Seconds to wait before the next try of a failed download, None for no retry.
+
+    Only RETRY_STATUSES are retried (rate limit and temporary server errors; a missing answer already took the
+    timeout), at most RETRY_ATTEMPTS tries in all; the delay is Retry-After when given, else RETRY_BACKOFF_S doubled
+    per try; no retry when the total wait would exceed MAX_RETRY_WAIT_S, so Grasshopper does not freeze for long.
+    attempts: tries made so far; waited: seconds already waited.
+    """
+    if status not in RETRY_STATUSES or attempts >= RETRY_ATTEMPTS:
+        return None
+    delay = retryAfter if retryAfter is not None else RETRY_BACKOFF_S * 2 ** (attempts - 1)
+    if waited + delay > MAX_RETRY_WAIT_S:
+        return None
+    return delay
+
+
+def canUseCache(status):
+    """True when a failed GitHub request may fall back to a complete cached copy: no answer, a rate limit or a server
+    error; not a 404 (wrong repository or ref, or a private repository) or another client error."""
+    return status is None or status in RATE_LIMIT_STATUSES or status >= 500
+
+
+def parseManifest(text):
+    """{'format', 'generated', 'files': {file name: {'sha256', 'size'}}} of a trnlizard_manifest.json text.
+
+    ValueError when the text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name
+    that is not a top-level script (no paths, no leading '_'), names that only differ in case, or a sha256 that is not
+    64 hex digits. sha256 is getHash of the script text; size (bytes of the normalized UTF-8 text) is informative only.
+    """
+    try:
+        data = json.loads(text)
+    except ValueError as e:
+        raise ValueError(u'not valid JSON ({0})'.format(e))
+    if not isinstance(data, dict):
+        raise ValueError(u'not a JSON object')
+    version = data.get('format')
+    if not isinstance(version, int) or isinstance(version, bool) or version < 1:
+        raise ValueError(u'no valid format number')
+    if version > MANIFEST_FORMAT:
+        raise ValueError(u'format {0} is newer than this updater reads ({1}): paste the new Lizard_Updater.py into this '
+                         u'component by hand'.format(version, MANIFEST_FORMAT))
+    files = data.get('files')
+    if not isinstance(files, dict) or not files:
+        raise ValueError(u'no files listed')
+    result = {}
+    for name in files:
+        entry = files[name]
+        if not isinstance(name, str) or not re.match(SCRIPT_NAME_PATTERN, name):
+            raise ValueError(u"invalid file name '{0}'".format(name))
+        if not isinstance(entry, dict):
+            raise ValueError(u'entry of {0} is not an object'.format(name))
+        sha = entry.get('sha256')
+        if not isinstance(sha, str) or not re.match(r'^[0-9a-fA-F]{64}$', sha):
+            raise ValueError(u'invalid sha256 of {0}'.format(name))
+        size = entry.get('size')
+        if size is not None and (not isinstance(size, int) or isinstance(size, bool) or size < 0):
+            raise ValueError(u'invalid size of {0}'.format(name))
+        result[name] = {'sha256': sha.lower(), 'size': size}
+    lowered = [name.lower() for name in result]
+    if len(set(lowered)) != len(lowered):
+        raise ValueError(u'file names that only differ in case')
+    generated = data.get('generated')
+    return {'format': version, 'generated': generated if isinstance(generated, str) else None, 'files': result}
+
+
+def planDownloads(files, cachedHashes):
+    """(file names to download, file names whose cached copy is up to date), both sorted.
+
+    files: manifest files; cachedHashes: {file name: getHash of the cached text, None when unreadable}. A file is
+    downloaded when its cached copy is missing, unreadable or has another hash than the manifest.
+    """
+    download, unchanged = [], []
+    for name in sorted(files):
+        if cachedHashes.get(name) == files[name]['sha256']:
+            unchanged.append(name)
+        else:
+            download.append(name)
+    return download, unchanged
+
+
+def planRemovals(files, cachedNames):
+    """Sorted cached .py file names that the manifest no longer lists (exact case: a file whose name changed case is
+    removed and downloaded again under its new name)."""
+    return sorted(name for name in cachedNames if name.endswith('.py') and name not in files)
+
+
+def verifyDownload(name, text, expected):
+    """None when getHash of a downloaded text is the manifest sha256, else the error text."""
+    actual = getHash(text)
+    if actual == expected:
+        return None
+    return (u'{0}: the download does not match the manifest (sha256 {1}... instead of {2}...), it was not written. The '
+            u'manifest may be out of date (tools/build_manifest.py) or raw.githubusercontent.com still serves an older '
+            u'copy: try again in a few minutes.').format(name, actual[:12], expected[:12])
+
+
+def cacheIsComplete(files, cachedHashes):
+    """True when every manifest file is cached with the manifest hash."""
+    return all(cachedHashes.get(name) == files[name]['sha256'] for name in files)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -778,7 +1045,269 @@ def checkSelf(updater, scripts, log, errors):
         errors.append(message)
 
 
-def runUpdater(sourceFolder, runUpdate):
+def sourceCacheRoot():
+    """Folder of the cached GitHub sources: TRNLizard/source in the Grasshopper AppData folder, else in %APPDATA% or in
+    the temp folder."""
+    base = None
+    try:
+        base = str(Grasshopper.Folders.AppDataFolder)
+    except Exception:
+        base = None
+    if not base:
+        base = os.environ.get('APPDATA')
+    if not base:
+        import tempfile
+        base = tempfile.gettempdir()
+    return os.path.join(base, *CACHE_SUBFOLDER)
+
+
+def cachedScriptHashes(folder):
+    """{file name: getHash of the text, None when unreadable} of the .py files of a cache folder (empty when it is missing)."""
+    hashes = {}
+    if not os.path.isdir(folder):
+        return hashes
+    for fileName in os.listdir(folder):
+        path = os.path.join(folder, fileName)
+        if fileName.endswith('.py') and os.path.isfile(path):
+            try:
+                hashes[fileName] = getHash(readScript(path))
+            except Exception:
+                hashes[fileName] = None
+    return hashes
+
+
+def readCachedManifest(folder):
+    """Parsed manifest of the last download into a cache folder, None when there is none or it is invalid."""
+    path = os.path.join(folder, MANIFEST_NAME)
+    if not os.path.isfile(path):
+        return None
+    try:
+        return parseManifest(readScript(path))
+    except Exception:
+        return None
+
+
+def writeTextFile(path, text):
+    """Write UTF-8 text (line endings as given) to a temporary file that then replaces path, so an interrupted write
+    never leaves half a file under the real name."""
+    tmp = path + '.tmp'
+    handle = io.open(tmp, 'w', encoding='utf-8', newline='')
+    try:
+        handle.write(text)
+    finally:
+        handle.close()
+    replace = getattr(os, 'replace', None)  # IronPython 2.7 has no os.replace, and os.rename does not overwrite on Windows
+    if replace is not None:
+        replace(tmp, path)
+    else:
+        if os.path.exists(path):
+            os.remove(path)
+        os.rename(tmp, path)
+
+
+def _webErrorDetails(error):
+    """(HTTP status or None, Retry-After seconds or None) of a .NET WebException."""
+    response = getattr(error, 'Response', None)
+    if response is None:
+        return None, None
+    response = _impl(response)
+    status, retryAfter = None, None
+    try:
+        status = int(response.StatusCode)
+        retryAfter = parseRetryAfter(response.Headers.Get('Retry-After'))
+    except Exception:
+        pass
+    finally:
+        try:
+            response.Close()
+        except Exception:
+            pass
+    return status, retryAfter
+
+
+def httpGetText(url, accept=None):
+    """GET a URL with .NET (HttpWebRequest, TLS 1.2, HTTP_TIMEOUT_MS) and return the response as text (UTF-8).
+
+    Raises SourceError with the HTTP status (None without an answer) and the Retry-After seconds.
+    """
+    from System.Net import ServicePointManager, SecurityProtocolType, WebException, WebRequest
+    from System.IO import StreamReader
+    from System.Text import Encoding
+    try:
+        current = ServicePointManager.SecurityProtocol
+        # .NET Framework apps may still default to TLS 1.0/1.1; SystemDefault (0) is left alone (the OS picks)
+        if int(current) != 0 and not int(current) & int(SecurityProtocolType.Tls12):
+            ServicePointManager.SecurityProtocol = current | SecurityProtocolType.Tls12
+    except Exception:
+        pass
+    try:
+        request = _impl(WebRequest.Create(url))  # an HttpWebRequest (pythonnet hands out the WebRequest view)
+        request.Method = 'GET'
+        request.Timeout = HTTP_TIMEOUT_MS
+        request.ReadWriteTimeout = HTTP_TIMEOUT_MS
+        request.UserAgent = USER_AGENT
+        if accept:
+            request.Accept = accept
+        response = _impl(request.GetResponse())
+    except WebException as e:
+        status, retryAfter = _webErrorDetails(e)
+        raise SourceError(describeHttpFailure(url, status, e.Message), status, retryAfter)
+    except Exception as e:
+        raise SourceError(describeHttpFailure(url, None, e))
+    try:
+        reader = StreamReader(response.GetResponseStream(), Encoding.UTF8)  # .NET decodes: same in IronPython and pythonnet
+        try:
+            return reader.ReadToEnd()
+        finally:
+            reader.Close()
+    except Exception as e:
+        raise SourceError(describeHttpFailure(url, None, e))
+    finally:
+        response.Close()
+
+
+def fetchWithRetry(fetch, url, log, waits, sleep=None):
+    """fetch(url, None) with retries after a rate limit or a temporary server error (see retryDelay); the last
+    SourceError is raised when every try failed. waits: [seconds waited], shared by all downloads of one update, so
+    MAX_RETRY_WAIT_S caps the waits of the whole update."""
+    if sleep is None:
+        import time
+        sleep = time.sleep
+    attempts = 0
+    while True:
+        try:
+            return fetch(url, None)
+        except SourceError as e:
+            attempts += 1
+            delay = retryDelay(e.status, e.retryAfter, attempts, waits[0])
+            if delay is None:
+                raise
+            log.append('Note: HTTP {0} for {1}, try {2} of {3} in {4:.1f} s'.format(e.status, url, attempts + 1,
+                                                                                  RETRY_ATTEMPTS, delay))
+            sleep(delay)
+            waits[0] += delay
+
+
+def resolveCommit(owner, repo, ref, fetch, log):
+    """Commit sha of a ref from api.github.com, so that the manifest and the scripts come from one commit; None when
+    the lookup fails (optional: e.g. the API rate limit of 60 requests per hour and IP), then the files come by ref."""
+    if isCommitSha(ref):
+        return ref.lower()
+    try:
+        sha = (fetch(commitApiUrl(owner, repo, ref), SHA_MEDIA_TYPE) or u'').strip()
+        if not isCommitSha(sha):
+            raise SourceError(u'unexpected answer of the GitHub API')
+    except SourceError as e:
+        log.append(u'Note: the commit of {0} could not be looked up ({1}); the files come by ref from '
+                   u'raw.githubusercontent.com, which caches them for about 5 minutes: a change pushed just now may '
+                   u'only show a few minutes later.'.format(ref, e))
+        return None
+    return sha.lower()
+
+
+def fallBackToCache(folder, failure, log, errors):
+    """The cache folder when GitHub cannot be used now but the last download is complete there, else None (error)."""
+    status = getattr(failure, 'status', None)
+    manifest = readCachedManifest(folder) if canUseCache(status) else None
+    if manifest is not None and cacheIsComplete(manifest['files'], cachedScriptHashes(folder)):
+        log.append(u'WARNING: {0}. Using the cached copy (manifest generated {1}) in {2}.'.format(
+            failure, manifest['generated'], folder))
+        return folder
+    message = u'{0}.'.format(failure)
+    if canUseCache(status):
+        message += u' No complete cached copy to fall back to in {0}.'.format(folder)
+    errors.append(message)
+    log.append(u'Error: ' + message)
+    return None
+
+
+def syncGitHubSource(info, log, errors, fetch=None, root=None):
+    """Bring the cache folder of a GitHub source up to date with its trnlizard_manifest.json; the folder or None.
+
+    Only missing and changed scripts are downloaded (getHash against the manifest); every download must match its
+    manifest hash, and nothing is written unless all downloads succeeded. Cached scripts the manifest no longer lists
+    are deleted (only .py files of this cache folder). Without a usable answer of GitHub a complete cached copy is used.
+    fetch(url, accept) -> text, raising SourceError (default httpGetText); root: cache root (default sourceCacheRoot()).
+    """
+    fetch = fetch or httpGetText
+    owner, repo, ref = info['owner'], info['repo'], info['ref']
+    folder = os.path.join(root or sourceCacheRoot(), cacheFolderName(owner, repo, ref))
+    log.append(u'Source: GitHub {0}/{1}, ref {2}'.format(owner, repo, ref))
+    commit = resolveCommit(owner, repo, ref, fetch, log)
+    if commit:
+        log.append(u'Commit: {0}'.format(commit))
+    fetchRef = commit or ref
+    waits = [0.0]  # seconds waited for retries in this update
+    manifestUrl = rawUrl(owner, repo, fetchRef, MANIFEST_NAME)
+    try:
+        manifestText = fetchWithRetry(fetch, manifestUrl, log, waits)
+    except SourceError as e:
+        if e.status == 404 and commit:  # the commit exists, only the manifest is missing
+            e = SourceError(u'{0} has no {1} at {2} (commit {3}): the branch predates the manifest, or '
+                            u'tools/build_manifest.py was not run and committed'.format(
+                                u'{0}/{1}'.format(owner, repo), MANIFEST_NAME, ref, commit[:12]), 404)
+        return fallBackToCache(folder, e, log, errors)
+    try:
+        manifest = parseManifest(manifestText)
+    except ValueError as e:
+        message = u'Invalid manifest {0}: {1}'.format(manifestUrl, e)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return None
+    files = manifest['files']
+    log.append(u'Manifest generated: {0} ({1} scripts)'.format(manifest['generated'], len(files)))
+    log.append(u'Cache folder: {0}'.format(folder))
+    cached = cachedScriptHashes(folder)
+    toDownload, unchanged = planDownloads(files, cached)
+    downloads = []
+    for name in toDownload:
+        try:
+            text = fetchWithRetry(fetch, rawUrl(owner, repo, fetchRef, name), log, waits)
+        except SourceError as e:
+            return fallBackToCache(folder, e, log, errors)
+        problem = verifyDownload(name, text, files[name]['sha256'])
+        if problem:
+            errors.append(problem)
+            log.append(u'Error: ' + problem)
+            return None
+        downloads.append((name, text))
+    removals = planRemovals(files, cached)
+    try:
+        if not os.path.isdir(folder):
+            os.makedirs(folder)
+        for name in removals:  # before the writes: a file whose name changed case is then written under its new name
+            os.remove(os.path.join(folder, name))
+        for name, text in downloads:
+            writeTextFile(os.path.join(folder, name), text)
+        writeTextFile(os.path.join(folder, MANIFEST_NAME), manifestText)  # last: it marks a complete cache
+    except Exception as e:
+        message = u'Could not update the cache folder {0}: {1}'.format(folder, e)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return None
+    log.append(u'Downloaded: {0}, unchanged: {1}, removed: {2}'.format(len(downloads), len(unchanged), len(removals)))
+    for name in removals:
+        log.append(u'Removed from the cache: {0}'.format(name))
+    return folder
+
+
+def resolveSource(source, log, errors):
+    """The folder with the scripts of the source input (see parseSource): a local folder as it is, a GitHub repository
+    through its cache folder (syncGitHubSource). None, with the reason in errors, when there is none."""
+    try:
+        info = parseSource(source)
+    except ValueError as e:
+        errors.append(str(e))
+        return None
+    if info['kind'] == 'folder':
+        if not os.path.isdir(info['path']):
+            errors.append(u'Invalid source folder path: {0}'.format(info['path']))
+            return None
+        return info['path']
+    return syncGitHubSource(info, log, errors)
+
+
+def runUpdater(source, runUpdate):
     """Plan the update of every matching script component and schedule the document changes; (log, updated, skipped,
     errors). The run right after the scheduled changes shows the final report instead."""
     updater = ghenv.Component  # noqa: F821 (global of every Grasshopper script component)
@@ -790,10 +1319,10 @@ def runUpdater(sourceFolder, runUpdate):
     if not runUpdate:
         log.append('Set runUpdate to True to execute the updater.')
         return log, updated, skipped, errors
-    if not sourceFolder or not os.path.isdir(sourceFolder):
-        errors.append('Invalid source folder path.')
-        return log, updated, skipped, errors
     log.append('=== TRNLizard Updater Started ===')
+    sourceFolder = resolveSource(source, log, errors)
+    if sourceFolder is None:
+        return log, updated, skipped, errors
     log.append('Source folder: {0}'.format(sourceFolder))
     doc = updater.OnPingDocument()
     if not doc:
@@ -843,4 +1372,4 @@ def runUpdater(sourceFolder, runUpdate):
 
 
 if 'ghenv' in globals():
-    log, updated, skipped, errors = runUpdater(globals().get('sourceFolder'), globals().get('runUpdate'))
+    log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'))
