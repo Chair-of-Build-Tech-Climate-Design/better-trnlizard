@@ -444,7 +444,7 @@ class UpdaterGlueTests(unittest.TestCase):
         # the updater itself: a script component whose script is in the folder too, it must never update itself
         shutil.copy(UPDATER_SOURCE, self.folder / "Lizard_Updater.py")
         self.updater_component = LegacyGhPython("Lizard_Updater", [ScriptVariable("sourceFolder"), ScriptVariable("runUpdate")],
-                                                [Param("log")], code="an older updater")
+                                                [Param("log")], code=UPDATER_SOURCE.read_text(encoding="utf-8"))
 
     # ------------------------------------------------------------------ helpers
 
@@ -648,8 +648,27 @@ class UpdaterGlueTests(unittest.TestCase):
         self.assertEqual(["Lizard_Hygro"], updated)
         self.assertEqual([], skipped + errors)
         self.assertFalse(any("_ignored" in line or "Processing: Lizard_Updater" in line for line in log))
+        self.assertFalse(any(line.startswith("WARNING") for line in log))
+        self.apply_scheduled(doc)
+        self.assertEqual(UPDATER_SOURCE.read_text(encoding="utf-8"), self.updater_component.Code)
+
+    def test_an_outdated_updater_says_so_and_still_updates_the_other_components(self):
+        self.updater_component.Code = "an older updater"
+        hygro = self.legacy_hygro()
+        doc = Document([hygro, self.updater_component])
+
+        log, updated, skipped, errors = self.run_updater(doc)
+        self.assertEqual(["Lizard_Hygro"], updated)
+        self.assertEqual(1, len(errors))
+        for fragment in ("Lizard_Updater.py", "never updates itself", "by hand", "line 1"):
+            self.assertIn(fragment, errors[0])
+        self.assertIn("WARNING: " + errors[0], log)
+
         self.apply_scheduled(doc)
         self.assertEqual("an older updater", self.updater_component.Code)
+        log, updated, skipped, errors = self.run_updater(doc, run=False)   # the final report keeps the warning
+        self.assertEqual(1, len(errors))
+        self.assertEqual(HYGRO_INPUTS_BEFORE + NEW_HYGRO_INPUTS, [p.Name for p in hygro.Params.Input])
 
 
 if __name__ == "__main__":
