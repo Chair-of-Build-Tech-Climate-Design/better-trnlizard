@@ -4491,7 +4491,7 @@ def getzonevariables(zone_item):
                 variables['maxach_sv2']  = ventilation_item.Maxach
                 variables['toutside_sv2']= ventilation_item.Toutside
                 variables['woutside_sv2']= ventilation_item.Humoutside
-                variables['humctrl_sv1'] = ventilation_item.Humctrl
+                variables['humctrl_sv2'] = ventilation_item.Humctrl
                 if ventilation_item.Tempctrl == "OPERATIVE":
                     variables['tempctrl_sv2'] = "TOP_"
                 else:
