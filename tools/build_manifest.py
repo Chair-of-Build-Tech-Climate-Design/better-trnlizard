@@ -1,7 +1,10 @@
-"""Write or check trnlizard_manifest.json, the list of the TRNLizard scripts that Lizard_Updater reads from GitHub.
+"""Write or check trnlizard_manifest.json, the list of the TRNLizard scripts that Lizard_Updater reads from GitHub,
+and trnlizard_icons.json, the UserObject icons of icons/<script base name>.png (24x24 PNG) as base64.
 
-    python tools/build_manifest.py            write the manifest of the repository root
-    python tools/build_manifest.py --check    exit 1 when the committed manifest is out of date
+    python tools/build_manifest.py            write the icons file and the manifest of the repository root
+    python tools/build_manifest.py --check    exit 1 when the committed icons file or manifest is out of date
+
+The manifest also lists trnlizard_icons.json (same hash rule), so the updater downloads it like a script.
 
 The manifest lists every top-level *.py of the repository that Lizard_Updater.findScripts picks up (not starting with
 '_') with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
@@ -14,6 +17,7 @@ checks that both agree.
 """
 
 import argparse
+import base64
 import datetime
 import hashlib
 import json
@@ -23,6 +27,9 @@ import sys
 
 MANIFEST_NAME = "trnlizard_manifest.json"
 MANIFEST_FORMAT = 1
+ICONS_NAME = "trnlizard_icons.json"
+ICONS_FOLDER = "icons"
+ICONS_FORMAT = 1
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -45,10 +52,26 @@ def scriptNames(root):
                   if name.endswith(".py") and not name.startswith("_") and os.path.isfile(os.path.join(root, name)))
 
 
+def buildIcons(root):
+    """Text of trnlizard_icons.json for icons/*.png of a folder, None when there is no icons folder."""
+    folder = os.path.join(root, ICONS_FOLDER)
+    if not os.path.isdir(folder):
+        return None
+    icons = {}
+    for name in sorted(os.listdir(folder)):
+        if name.lower().endswith(".png"):
+            with open(os.path.join(folder, name), "rb") as handle:
+                icons[os.path.splitext(name)[0]] = base64.b64encode(handle.read()).decode("ascii")
+    return json.dumps({"format": ICONS_FORMAT, "icons": icons}, indent=1, sort_keys=True) + "\n"
+
+
 def manifestFiles(root):
-    """{file name: {'sha256', 'size'}} of the scripts of a folder."""
+    """{file name: {'sha256', 'size'}} of the scripts (and trnlizard_icons.json) of a folder."""
     files = {}
-    for name in scriptNames(root):
+    names = scriptNames(root)
+    if os.path.isfile(os.path.join(root, ICONS_NAME)):
+        names.append(ICONS_NAME)
+    for name in names:
         with open(os.path.join(root, name), "rb") as handle:
             text = handle.read().decode("utf-8-sig")
         files[name] = {"sha256": getHash(text), "size": len(normalizeCode(text).encode("utf-8"))}
@@ -95,7 +118,17 @@ def main(argv=None):
     args = parser.parse_args(argv)
     path = os.path.join(args.root, MANIFEST_NAME)
     previous = readManifest(path)
+    iconsText = buildIcons(args.root)
+    iconsPath = os.path.join(args.root, ICONS_NAME)
+    try:
+        with open(iconsPath, "r", encoding="utf-8", newline="") as handle:
+            iconsCurrent = handle.read() == iconsText
+    except OSError:
+        iconsCurrent = iconsText is None
     if args.check:
+        if not iconsCurrent:
+            print("{0} is out of date; run: python tools/build_manifest.py".format(ICONS_NAME))
+            return 1
         stale = staleFiles(args.root, previous)
         if previous is None or stale:
             print("{0} is out of date ({1}); run: python tools/build_manifest.py".format(
@@ -103,6 +136,10 @@ def main(argv=None):
             return 1
         print("{0} is up to date ({1} scripts)".format(MANIFEST_NAME, len(previous["files"])))
         return 0
+    if not iconsCurrent and iconsText is not None:
+        with open(iconsPath, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(iconsText)
+        print("{0} written".format(ICONS_NAME))
     text = dumpManifest(buildManifest(args.root, previous))
     try:
         with open(path, "r", encoding="utf-8", newline="") as handle:

@@ -6,6 +6,7 @@ a temporary cache folder; the .NET download itself (httpGetText) needs Rhino and
 is checked against the updater's hash and the committed manifest.
 """
 
+import base64
 import importlib.util
 import json
 import os
@@ -240,6 +241,17 @@ class CachePlanTests(unittest.TestCase):
         self.assertEqual(["D.py", "_old.py", "a.py"], UPDATER.planRemovals(self.FILES, ["A.py", "a.py", "D.py", "_old.py"]))
         self.assertEqual([], UPDATER.planRemovals(self.FILES, ["A.py", "B.py"]))
 
+    def test_removal_plan_includes_an_unlisted_icons_file(self):
+        self.assertEqual(["trnlizard_icons.json"], UPDATER.planRemovals(self.FILES, ["A.py", "trnlizard_icons.json", "x.json"]))
+        files = dict(self.FILES, **{"trnlizard_icons.json": {"sha256": "4" * 64}})
+        self.assertEqual([], UPDATER.planRemovals(files, ["A.py", "trnlizard_icons.json"]))
+
+    def test_other_cache_folders(self):
+        caches = {"o_r_main", "o_r_feat_x-1234abcd", "other"}
+        self.assertEqual(["o_r_feat_x-1234abcd"],
+                         UPDATER.otherCacheFolders(["o_r_main", "o_r_feat_x-1234abcd", "other", "empty"], "o_r_main",
+                                                   lambda name: name in caches and name != "other"))
+
     def test_cache_complete(self):
         complete = {"A.py": "1" * 64, "B.py": "2" * 64, "C.py": "3" * 64, "extra.py": "5" * 64}
         self.assertTrue(UPDATER.cacheIsComplete(self.FILES, complete))
@@ -364,6 +376,27 @@ class FakeGitHub:
                       if url.startswith("https://raw.") and url.endswith(".py"))
 
 
+class IconsFileTests(unittest.TestCase):
+    def test_manifest_may_list_the_icons_file(self):
+        text = json.dumps({"format": 1, "files": {"A.py": {"sha256": "1" * 64}, "trnlizard_icons.json": {"sha256": "2" * 64}}})
+        self.assertIn("trnlizard_icons.json", UPDATER.parseManifest(text)["files"])
+        bad = json.dumps({"format": 1, "files": {"other.json": {"sha256": "2" * 64}}})
+        self.assertRaises(ValueError, UPDATER.parseManifest, bad)
+
+    def test_parse_icons(self):
+        self.assertEqual({"Lizard_A": "iVBORw0KGgo="}, UPDATER.parseIcons('{"format": 1, "icons": {"Lizard_A": "iVBORw0KGgo="}}'))
+        for text in ("[]", '{"icons": []}', '{"icons": {"A": "not base64!"}}', "nope"):
+            with self.subTest(text=text):
+                self.assertRaises(ValueError, UPDATER.parseIcons, text)
+
+    def test_committed_icons_cover_every_component_script(self):
+        icons = UPDATER.parseIcons((REPO_ROOT / "trnlizard_icons.json").read_text(encoding="utf-8"))
+        scripts = sorted(p.stem for p in REPO_ROOT.glob("Lizard_*.py"))
+        self.assertEqual([], [name for name in scripts if name not in icons])
+        for name, data in icons.items():
+            self.assertTrue(base64.b64decode(data).startswith(b"\x89PNG"), name)
+
+
 class GitHubSyncTests(unittest.TestCase):
     SCRIPTS = {"Lizard_A.py": "a = 1\r\n", "Lizard_B.py": "\ufeffb = '\u00e4'\n", "Lizard_Updater.py": "u = 1\n"}
 
@@ -399,6 +432,19 @@ class GitHubSyncTests(unittest.TestCase):
             self.assertIn(line, log)
         self.assertEqual(["Lizard_A", "Lizard_B", "Lizard_Updater"], sorted(UPDATER.findScripts(folder, [])))
         self.assertFalse([name for name in os.listdir(folder) if name.endswith(".tmp")])
+
+    def test_a_successful_sync_removes_the_caches_of_other_branches(self):
+        old = os.path.join(self.root, "o_r_feature")
+        foreign = os.path.join(self.root, "not_a_cache")
+        os.makedirs(old)
+        os.makedirs(foreign)
+        with open(os.path.join(old, "trnlizard_manifest.json"), "w") as handle:
+            handle.write("{}")
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertFalse(os.path.exists(old))
+        self.assertTrue(os.path.isdir(foreign))   # no manifest: not ours, left alone
+        self.assertIn("Removed the old cache folder o_r_feature", log)
 
     def test_second_sync_downloads_nothing(self):
         self.sync()

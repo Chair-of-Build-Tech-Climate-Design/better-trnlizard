@@ -63,7 +63,7 @@ Returns:
 ghenv.Component.Name = "Lizard_Plot_Settings"
 ghenv.Component.NickName = 'PlotSettings'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "5 | Tools"
 from collections import defaultdict
 import rhinoscriptsyntax as rs

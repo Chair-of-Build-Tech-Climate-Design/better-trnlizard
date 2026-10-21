@@ -25,7 +25,7 @@ version = '2.3.1'
 ghenv.Component.Name = "Lizard_Thermal_Bridge_Gain"
 ghenv.Component.NickName = 'TBR Gain'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "4 | Gains"
 """
 import scriptcontext as sc

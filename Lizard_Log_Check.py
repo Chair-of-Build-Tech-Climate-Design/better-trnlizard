@@ -24,7 +24,7 @@ import Grasshopper.Kernel as gh
 version = '2.3.1'
 ghenv.Component.Name = "Lizard_Log_Check"
 ghenv.Component.NickName = 'Log_Check'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Components"
 
 w = gh.GH_RuntimeMessageLevel.Warning

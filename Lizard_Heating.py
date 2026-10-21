@@ -47,7 +47,7 @@ Returns:
 """
 version = '2.3.1'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Regime"
 """
 ghenv.Component.Name = "Lizard_Heating"

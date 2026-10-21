@@ -37,7 +37,7 @@ version = '2.3.1'
 ghenv.Component.Name = "Lizard_Comfort"
 ghenv.Component.NickName = 'Comfort'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "5 | Tools"
 """
 import rhinoscriptsyntax as rs

@@ -40,7 +40,7 @@ version='2.2.1'
 ghenv.Component.Name = "Lizard_Misc_Gains"
 ghenv.Component.NickName = 'Gains'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "4 | Gains"
 """
 import scriptcontext as sc

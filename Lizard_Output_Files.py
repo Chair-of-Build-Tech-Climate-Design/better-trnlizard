@@ -38,7 +38,7 @@ Returns:
 version='2.2.1'
 ghenv.Component.Name = "Lizard_Output_Files"
 ghenv.Component.NickName = 'Output_Files'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Components"
 import re
 import scriptcontext as sc

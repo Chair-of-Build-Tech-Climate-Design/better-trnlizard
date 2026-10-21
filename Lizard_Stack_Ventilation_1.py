@@ -55,7 +55,7 @@ version = '2.3.1'
 ghenv.Component.Name = "Lizard_Stack_Ventilation_1"
 ghenv.Component.NickName = 'Stack Ventilation 1'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Regime"
 import re
 import scriptcontext as sc

@@ -34,7 +34,7 @@ version = '2.3.1'
 ghenv.Component.Name = "Lizard_Infiltration"
 ghenv.Component.NickName = 'Infiltration'
 ghenv.Component.Message = 'VER 2.2.1\n2020'
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Regime"
 """
 import scriptcontext as sc

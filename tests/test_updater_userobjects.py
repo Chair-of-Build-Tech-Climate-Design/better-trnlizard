@@ -76,6 +76,10 @@ class UserObjectFields:
         self.SubCategory = ""
         self.Message = ""
         self.Icon_24x24 = ICON
+        self.iconOverride = None
+
+    def SetIconOverride(self, bitmap):
+        self.iconOverride = bitmap
 
 
 class EmittedLegacy(glue.LegacyGhPython, UserObjectFields):
@@ -157,7 +161,7 @@ class UserObjectLogicTests(unittest.TestCase):
 
     def test_identity_comes_from_the_declared_string_literals(self):
         info = self.updater.parseComponentInfo(HYGRO_SOURCE.read_text(encoding="utf-8-sig"), "Lizard_Hygro")
-        self.assertEqual({"name": "Lizard_Hygro", "nickName": "Hygrothermal", "category": "Lizard",
+        self.assertEqual({"name": "Lizard_Hygro", "nickName": "Hygrothermal", "category": "TRNLizard",
                           "subCategory": "1 | Construction", "message": "VER 2.1.2\n2020"},
                          dict((k, info[k]) for k in ("name", "nickName", "category", "subCategory", "message")))
         self.assertEqual("Predefine active layer parameters for multiple active layer wall types considering "
@@ -175,26 +179,26 @@ class UserObjectLogicTests(unittest.TestCase):
         info = self.updater.parseComponentInfo(code, "Lizard_File")
         self.assertEqual("Lizard_Thing", info["name"])
         self.assertEqual("Thing", info["nickName"])
-        self.assertEqual("Lizard", info["category"])
+        self.assertEqual("TRNLizard", info["category"])
         self.assertEqual("9 | Other", info["subCategory"])
         self.assertEqual("later literal", info["message"])
         self.assertEqual("First line.\nSecond line.", info["description"])
 
     def test_a_script_without_identity_gets_the_file_name(self):
         info = self.updater.parseComponentInfo('x = 1\n', "Lizard_Window_Settings")
-        self.assertEqual(("Lizard_Window_Settings", "Window_Settings", "Lizard", "9 | Other", ""),
+        self.assertEqual(("Lizard_Window_Settings", "Window_Settings", "TRNLizard", "9 | Other", ""),
                          (info["name"], info["nickName"], info["category"], info["subCategory"], info["message"]))
         self.assertEqual("TRNLizard component Lizard_Window_Settings", info["description"])
 
     def test_identity_of_the_repo_scripts(self):
         expected = {
-            "Lizard_Comfort": ("Lizard_Comfort", "Comfort", "Lizard", "5 | Tools"),
+            "Lizard_Comfort": ("Lizard_Comfort", "Comfort", "TRNLizard", "5 | Tools"),
             "Lizard_Daily_Schedule": ("Lizard_Daily_Schedule", "Daily Schedule", "TRNLizard", "2 | Extras"),
-            "Lizard_Surface": ("Lizard_Surface", "Surface", "Lizard", "9 | Other"),
-            "Lizard_Surface_Settings": ("Lizard_Surface_Settings", "Surface Settings", "Lizard", "9 | Other"),
-            "Lizard_Weekly_Schedule": ("Lizard_Weekly_Schedule", "Weekly Schedule", "Lizard", "5 | Tools"),
-            "Lizard_DCK_Template": ("Lizard_DCK_Template", "DCK_Template", "Lizard", "9 | Other"),
-            "Lizard_b18_to_Rhino": ("Lizard_b18_to_Rhino", "b18_to_Rhino", "Lizard", "9 | Other"),
+            "Lizard_Surface": ("Lizard_Surface", "Surface", "TRNLizard", "9 | Other"),
+            "Lizard_Surface_Settings": ("Lizard_Surface_Settings", "Surface Settings", "TRNLizard", "9 | Other"),
+            "Lizard_Weekly_Schedule": ("Lizard_Weekly_Schedule", "Weekly Schedule", "TRNLizard", "5 | Tools"),
+            "Lizard_DCK_Template": ("Lizard_DCK_Template", "DCK_Template", "TRNLizard", "9 | Other"),
+            "Lizard_b18_to_Rhino": ("Lizard_b18_to_Rhino", "b18_to_Rhino", "TRNLizard", "9 | Other"),
         }
         for base, values in expected.items():
             with self.subTest(script=base):
@@ -342,11 +346,11 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual("bool", params["write_report"].TypeHint.TypeName)
         self.assertEqual("int", params["layer_min_div"].TypeHint.TypeName)
         self.assertTrue(params["write_report"].Description.startswith("True or not connected"))
-        self.assertEqual(("Lizard_Hygro", "Hygrothermal", "Lizard", "1 | Construction", "VER 2.1.2\n2020"),
+        self.assertEqual(("Lizard_Hygro", "Hygrothermal", "TRNLizard", "1 | Construction", "VER 2.1.2\n2020"),
                          (comp.Name, comp.NickName, comp.Category, comp.SubCategory, comp.Message))
         self.assertTrue(comp.Description.startswith("Predefine active layer"))
         d = hygro_uo.Description
-        self.assertEqual(("Lizard_Hygro", "Hygrothermal", "Lizard", "1 | Construction", comp.Description),
+        self.assertEqual(("Lizard_Hygro", "Hygrothermal", "TRNLizard", "1 | Construction", comp.Description),
                          (d.Name, d.NickName, d.Category, d.SubCategory, d.Description))
         self.assertEqual("primary", hygro_uo.Exposure)
         self.assertIs(ICON, hygro_uo.Icon)
@@ -466,6 +470,34 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertIn("UserObjects: 0 written, 0 unchanged", log)
 
     # ------------------------------------------------------------------ switches and failures
+
+    def test_the_icon_of_trnlizard_icons_json_is_used_and_a_new_icon_rewrites_the_userobject(self):
+        (self.folder / "trnlizard_icons.json").write_text(json.dumps({"format": 1, "icons": {"Lizard_Simple": "QUJD"}}),
+                                                          encoding="utf-8")
+        bitmaps = {}
+        self.updater.iconBitmap = lambda data: bitmaps.setdefault(data, object())
+        log, updated, skipped, errors = self.run_updater()
+        self.assertEqual([], errors)
+        simple = self.saved()["Lizard_Simple"]
+        self.assertIs(bitmaps["QUJD"], simple.Icon)
+        self.assertIs(bitmaps["QUJD"], simple.data.iconOverride)   # the placed component shows it too
+        self.assertIs(ICON, self.saved()["Lizard_Hygro"].Icon)      # no icon listed: the component's own
+
+        del GH_UserObject.SAVED[:]
+        log, updated, skipped, errors = self.run_updater()
+        self.assertIn("UserObjects: 0 written, 3 unchanged", log)
+        (self.folder / "trnlizard_icons.json").write_text(json.dumps({"format": 1, "icons": {"Lizard_Simple": "REVG"}}),
+                                                          encoding="utf-8")
+        log, updated, skipped, errors = self.run_updater()
+        self.assertEqual(["Lizard_Simple"], sorted(self.saved()))
+        self.assertIs(bitmaps["REVG"], self.saved()["Lizard_Simple"].Icon)
+
+    def test_a_broken_icons_file_is_noted_and_the_default_icons_are_kept(self):
+        (self.folder / "trnlizard_icons.json").write_text("{broken", encoding="utf-8")
+        log, updated, skipped, errors = self.run_updater()
+        self.assertEqual([], errors)
+        self.assertTrue(any(line.startswith("Note: trnlizard_icons.json not used") for line in log))
+        self.assertIs(ICON, self.saved()["Lizard_Simple"].Icon)
 
     def test_make_userobjects_false_is_a_canvas_update_only(self):
         log, updated, skipped, errors = self.run_updater(make=False)

@@ -7,7 +7,8 @@ source tells where the scripts come from:
 optionally with /tree/<branch or tag> or /commit/<sha> (default: main). The updater reads trnlizard_manifest.json of the
 repository (SHA256 of every script) and downloads only new and changed scripts into its cache folder (Grasshopper AppData
 folder, TRNLizard/source/<owner>_<repo>_<ref>); scripts that left the manifest are deleted from the cache. Without a
-connection a complete cached copy is used. The branch is looked up as a commit on api.github.com; when that fails, the
+connection a complete cached copy is used; after a successful download the cache folders of other repositories and
+branches are deleted. The branch is looked up as a commit on api.github.com; when that fails, the
 files come from the branch on raw.githubusercontent.com, which caches them for about 5 minutes: a change pushed just now
 may only show a few minutes later. Private repositories are not supported;
 - anything else: a local folder with the scripts <component Name>.py.
@@ -26,7 +27,8 @@ logged and listed under errors; paste the new code into this component by hand.
 Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
 TRNLizard of the Grasshopper UserObjects folder (switch it off with makeUserObjects = False). Each UserObject is built
 from the script alone: a new IronPython script component with the params of the docstring and the Name, NickName,
-Message, Category and SubCategory the script declares (defaults: file name, Lizard, 9 | Other). A Rhino 8 Python 3
+Message, Category and SubCategory the script declares (defaults: file name, TRNLizard, 9 | Other) and the icon of
+trnlizard_icons.json of the source (made from icons/<script>.png by tools/build_manifest.py). A Rhino 8 Python 3
 updater writes legacy GhPython UserObjects, since the TRNLizard scripts are IronPython 2 code. lizard_userobjects.json
 in that folder keeps the hash of each script: a UserObject is only rewritten when its script or the UserObject
 format changed or its file is missing; UserObjects of scripts that are gone are deleted (only files this updater
@@ -62,6 +64,7 @@ import io
 import json
 import os
 import re
+import shutil
 
 import System
 import Grasshopper
@@ -81,6 +84,7 @@ UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this sc
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
 DEFAULT_REF = 'main'                                      # branch when a GitHub URL names none
 MANIFEST_NAME = 'trnlizard_manifest.json'                 # at the repository root, made by tools/build_manifest.py
+ICONS_NAME = 'trnlizard_icons.json'                       # {format, icons: {script: base64 PNG 24x24}}, made from icons/*.png
 MANIFEST_FORMAT = 1                                       # newest manifest format this updater reads
 RAW_HOST = 'https://raw.githubusercontent.com'
 API_HOST = 'https://api.github.com'
@@ -95,9 +99,9 @@ USER_AGENT = 'TRNLizard-Updater'
 CACHE_SUBFOLDER = ('TRNLizard', 'source')                 # under the Grasshopper AppData folder
 USEROBJECT_SUBFOLDER = 'TRNLizard'                        # subfolder of the Grasshopper UserObjects folder
 USEROBJECT_STATE = 'lizard_userobjects.json'              # in that subfolder: {format, userObjects: {script: hash, file}}
-USEROBJECT_FORMAT = 1                                     # raise when the UserObject builder changes: rewrites them all
+USEROBJECT_FORMAT = 2                                     # raise when the UserObject builder changes: rewrites them all
 LEGACY_GHPYTHON_ID = '410755b1-224a-4c1e-a407-bf32fb45ea7e'  # GhPython Script (legacy, IronPython 2.7)
-DEFAULT_CATEGORY = 'Lizard'                               # UserObject category of a script that declares none
+DEFAULT_CATEGORY = 'TRNLizard'                              # UserObject category of a script that declares none
 DEFAULT_SUBCATEGORY = '9 | Other'                         # UserObject subcategory of a script that declares none
 
 # docstring type -> (type hint id of legacy GhPython, .NET type for Rhino 8 script params, accepted hint names)
@@ -665,7 +669,7 @@ def parseManifest(text):
     result = {}
     for name in files:
         entry = files[name]
-        if not isinstance(name, str) or not re.match(SCRIPT_NAME_PATTERN, name):
+        if not isinstance(name, str) or not (re.match(SCRIPT_NAME_PATTERN, name) or name == ICONS_NAME):
             raise ValueError(u"invalid file name '{0}'".format(name))
         if not isinstance(entry, dict):
             raise ValueError(u'entry of {0} is not an object'.format(name))
@@ -699,9 +703,38 @@ def planDownloads(files, cachedHashes):
 
 
 def planRemovals(files, cachedNames):
-    """Sorted cached .py file names that the manifest no longer lists (exact case: a file whose name changed case is
-    removed and downloaded again under its new name)."""
-    return sorted(name for name in cachedNames if name.endswith('.py') and name not in files)
+    """Sorted cached .py file names (and the icons file) that the manifest no longer lists (exact case: a file whose
+    name changed case is removed and downloaded again under its new name)."""
+    return sorted(name for name in cachedNames if (name.endswith('.py') or name == ICONS_NAME) and name not in files)
+
+
+def otherCacheFolders(names, current, hasManifest):
+    """Sorted cache folder names to delete after a successful download into current: every other folder of the cache
+    root that holds a trnlizard_manifest.json (hasManifest(name)), i.e. a cache of another repository or branch."""
+    return sorted(name for name in names if name != current and hasManifest(name))
+
+
+def parseIcons(text):
+    """{script base name: base64 PNG} of a trnlizard_icons.json text; ValueError when it is no valid icons file."""
+    try:
+        data = json.loads(text)
+    except ValueError as e:
+        raise ValueError(u'not valid JSON ({0})'.format(e))
+    icons = data.get('icons') if isinstance(data, dict) else None
+    if not isinstance(icons, dict):
+        raise ValueError(u'no icons listed')
+    result = {}
+    for name in icons:
+        value = icons[name]
+        if not isinstance(value, str) or not re.match(r'^[A-Za-z0-9+/]+={0,2}$', value):
+            raise ValueError(u'icon of {0} is not base64'.format(name))
+        result[name] = value
+    return result
+
+
+def userObjectHash(code, icon):
+    """Hash that decides whether a UserObject is rewritten: the script text, plus its icon when it has one."""
+    return getHash(code) if not icon else getHash(code + u'\n#icon ' + icon)
 
 
 def verifyDownload(name, text, expected):
@@ -1216,13 +1249,14 @@ def sourceCacheRoot():
 
 
 def cachedScriptHashes(folder):
-    """{file name: getHash of the text, None when unreadable} of the .py files of a cache folder (empty when it is missing)."""
+    """{file name: getHash of the text, None when unreadable} of the .py files and the icons file of a cache folder
+    (empty when it is missing)."""
     hashes = {}
     if not os.path.isdir(folder):
         return hashes
     for fileName in os.listdir(folder):
         path = os.path.join(folder, fileName)
-        if fileName.endswith('.py') and os.path.isfile(path):
+        if (fileName.endswith('.py') or fileName == ICONS_NAME) and os.path.isfile(path):
             try:
                 hashes[fileName] = getHash(readScript(path))
             except Exception:
@@ -1442,7 +1476,23 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
     log.append(u'Downloaded: {0}, unchanged: {1}, removed: {2}'.format(len(downloads), len(unchanged), len(removals)))
     for name in removals:
         log.append(u'Removed from the cache: {0}'.format(name))
+    removeOtherCaches(os.path.dirname(folder), os.path.basename(folder), log)
     return folder
+
+
+def removeOtherCaches(root, current, log):
+    """Delete the cache folders of other repositories and branches once the current one is complete; a folder that
+    cannot be deleted (e.g. a file in use) is only noted."""
+    try:
+        names = [name for name in os.listdir(root) if os.path.isdir(os.path.join(root, name))]
+    except Exception:
+        return
+    for name in otherCacheFolders(names, current, lambda n: os.path.isfile(os.path.join(root, n, MANIFEST_NAME))):
+        try:
+            shutil.rmtree(os.path.join(root, name))
+            log.append(u'Removed the old cache folder {0}'.format(name))
+        except Exception as e:
+            log.append(u'Note: could not remove the old cache folder {0}: {1}'.format(name, e))
 
 
 def resolveSource(source, log, errors):
@@ -1487,6 +1537,32 @@ def userObjectComponentGuid(updater, log):
     return guid
 
 
+def loadIcons(folder, log):
+    """{script base name: base64 PNG} of trnlizard_icons.json in the source folder; empty when there is none."""
+    path = os.path.join(folder, ICONS_NAME)
+    if not os.path.isfile(path):
+        log.append('No {0} in the source: UserObjects keep the default icon.'.format(ICONS_NAME))
+        return {}
+    try:
+        return parseIcons(readScript(path))
+    except Exception as e:
+        log.append('Note: {0} not used: {1}'.format(ICONS_NAME, e))
+        return {}
+
+
+def iconBitmap(base64Png):
+    """System.Drawing.Bitmap of a base64 PNG (a copy, so the stream can be closed)."""
+    stream = System.IO.MemoryStream(System.Convert.FromBase64String(base64Png))
+    try:
+        loaded = drawing().Bitmap(stream)
+        try:
+            return drawing().Bitmap(loaded)
+        finally:
+            loaded.Dispose()
+    finally:
+        stream.Dispose()
+
+
 def buildUserObjectComponent(componentGuid, entry, notes):
     """A new script component made from the script alone: default params removed (the code output 'out' kept),
     params of the docstring added in docstring order (separators too), identity of the script set, code set."""
@@ -1523,19 +1599,22 @@ def buildUserObjectComponent(componentGuid, entry, notes):
     comp.SubCategory = info['subCategory']
     if info['message']:
         _setIfPresent(comp, 'Message', info['message'])
+    if entry.get('icon') is not None and hasattr(comp, 'SetIconOverride'):
+        comp.SetIconOverride(entry['icon'])  # the component placed from the UserObject shows the icon too
     writeComponentCode(comp, kind, entry['code'])
     return comp
 
 
-def saveUserObject(comp, info, path):
-    """Write the UserObject file of a component; returns the GH_UserObject."""
+def saveUserObject(comp, info, path, icon=None):
+    """Write the UserObject file of a component (icon: a Bitmap, else the component's own); returns the GH_UserObject."""
     kernel = Grasshopper.Kernel
     uo = kernel.GH_UserObject()
     uo.Exposure = kernel.GH_Exposure.primary
-    try:
-        icon = comp.Icon_24x24
-    except Exception:
-        icon = None
+    if icon is None:
+        try:
+            icon = comp.Icon_24x24
+        except Exception:
+            icon = None
     if icon is not None:
         _setIfPresent(uo, 'Icon', icon)
     _setIfPresent(uo, 'BaseGuid', comp.ComponentGuid)
@@ -1592,12 +1671,13 @@ def refreshRibbon(newUserObjects, log):
         log.append('Note: could not refresh the ribbon ({0}): restart Grasshopper to see the UserObjects.'.format(e))
 
 
-def writeUserObjects(scripts, updater, log, errors):
+def writeUserObjects(scripts, updater, log, errors, icons=None):
     """Write a UserObject per component script into <UserObjects folder>/TRNLizard; returns the summary line.
 
-    Only new and changed scripts are written (lizard_userobjects.json); every failure goes to errors and never stops
-    the canvas update.
+    Only new and changed scripts (or icons) are written (lizard_userobjects.json); icons: {script: base64 PNG} of
+    trnlizard_icons.json. Every failure goes to errors and never stops the canvas update.
     """
+    icons = icons or {}
     log.append('')
     log.append('=== UserObjects ===')
     folder = userObjectFolder()
@@ -1614,7 +1694,8 @@ def writeUserObjects(scripts, updater, log, errors):
                 continue
             info = parseComponentInfo(code, script)
             entries.append({'script': script, 'name': info['name'], 'file': userObjectFileName(info['name']),
-                            'sha256': getHash(code), 'info': info, 'code': code})
+                            'sha256': userObjectHash(code, icons.get(script)), 'info': info, 'code': code,
+                            'iconData': icons.get(script)})
         except Exception as e:
             errors.append('UserObject {0}: could not read the script: {1}'.format(script, e))
     try:
@@ -1652,8 +1733,14 @@ def writeUserObjects(scripts, updater, log, errors):
         isNew = not os.path.isfile(path)
         notes = []
         try:
+            entry['icon'] = None
+            if entry['iconData']:
+                try:
+                    entry['icon'] = iconBitmap(entry['iconData'])
+                except Exception as e:
+                    notes.append('icon not used: {0}'.format(e))
             comp = buildUserObjectComponent(componentGuid, entry, notes)
-            uo = saveUserObject(comp, entry['info'], path)
+            uo = saveUserObject(comp, entry['info'], path, entry['icon'])
         except Exception as e:
             errors.append('UserObject {0} not written: {1}'.format(entry['name'], e))
             keepPrevious(entry)
@@ -1741,7 +1828,7 @@ def runUpdater(source, runUpdate, makeUserObjects=None):
     userObjectsSummary = None
     if makeUserObjects is not False:
         try:
-            userObjectsSummary = writeUserObjects(scripts, updater, log, errors)
+            userObjectsSummary = writeUserObjects(scripts, updater, log, errors, loadIcons(sourceFolder, log))
         except Exception as e:  # never stops the canvas update
             errors.append('UserObjects not written: {0}'.format(e))
             userObjectsSummary = 'UserObjects: failed'

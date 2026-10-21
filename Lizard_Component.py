@@ -104,7 +104,7 @@ Update:
 ghenv.Component.Name = "Lizard_Component"
 ghenv.Component.NickName = 'Lizard'
 ghenv.Component.Message = 'VER %s\n%s'%(version,date)
-ghenv.Component.Category = "Lizard"
+ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "0 | Lizard"
 try: ghenv.Component.AdditionalHelpFromDocStrings = "1"
 except: pass

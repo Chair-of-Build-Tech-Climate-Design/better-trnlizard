@@ -42,7 +42,7 @@ version='2.2.1'
 ghenv.Component.Name        = "Lizard_Hygro"
 ghenv.Component.NickName    = 'Hygrothermal'
 ghenv.Component.Message = 'VER 2.1.2\n2020'
-ghenv.Component.Category    = "Lizard"
+ghenv.Component.Category    = "TRNLizard"
 ghenv.Component.SubCategory = "1 | Construction"
 import rhinoscriptsyntax as rs
 import re
