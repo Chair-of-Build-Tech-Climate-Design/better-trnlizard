@@ -704,8 +704,12 @@ def printbuitoppart(dataset):
     for wall_item in library.Walls:
         if wall_item.Name == HAMT_WALL_BASE:
             hamt_wall_base = wall_item
+    # the library HIGH_COND only for surfaces whose zone wall line falls back to it: printbuiZonepart skips Virtual surfaces, and writes a
+    # WINDOW on an EXTCALEXT wall (Boundarycond copied from the wall, construction = window type) as a window, without a wall type
     for subitems in surfaceinfo:
-        if subitems.Boundarycond in HAMT_WALL_BOUNDARIES and subitems.Construction not in hamt_wall_names:
+        if (subitems.Boundarycond in HAMT_WALL_BOUNDARIES and subitems.Construction not in hamt_wall_names
+                and "Virtual" not in subitems.Construction
+                and not (subitems.Boundarycond == 'EXTCALEXT' and subitems.Type == 'WINDOW')):
             cleaned_walls.append(HAMT_WALL_BASE)
     if len(hamt_wall_names) > 0 and hamt_wall_base is None:
         ghenv.Component.AddRuntimeMessage(w, "The wall library has no %s, the pseudo-wall the HAMT (Type 395) wall types are copied from: the HAMT surfaces get no wall type." % HAMT_WALL_BASE)

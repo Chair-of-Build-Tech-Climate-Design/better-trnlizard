@@ -180,6 +180,38 @@ class PseudoWallRuleTests(HamtPseudoWallCase):
         self.assertTrue(zone_lines[0].startswith("WALL  =HIGH_COND : SURF=  2 "))
         self.assertTrue(zone_lines[1].startswith("WALL  =HHL_WC_TW_Lehm_HAMT : SURF=  3 "))
 
+    def test_a_window_on_an_exterior_hamt_wall_adds_no_library_high_cond(self):
+        # the window copies Boundarycond EXTCALEXT from its wall (Lizard_Component) but is written as a window, without a wall type
+        airnode = mirror.make_airnode("A1", [
+            mirror.make_surface(150, "EXTCALEXT", "HHL_WC_AW_Lehm", 0, 8.0, 0.06),
+            mirror.make_surface(140, "EXTCALEXT", "WIN_W1_3304_S_0_90", 0, 6.0, 0.0, "WINDOW"),
+        ])
+        definitions, messages, zone_lines = self.render(airnode, worstcase_walls())
+        self.assertEqual(["CONSTRUCTION HHL_WC_AW_Lehm", "CONSTRUCTION HHL_WC_AW_Lehm_HAMT"],
+                         [line for line in definitions if line.startswith("CONSTRUCTION")])
+
+    def test_a_virtual_hamt_surface_adds_no_library_high_cond(self):
+        airnode = mirror.make_airnode("A1", [
+            mirror.make_surface(2, "EXTCALBND", "Virtual_Opening", "INPUT 1*TAIR_@ANAME"),
+            mirror.make_surface(3, "EXTCALBND", "HHL_WC_TW_Lehm", "INPUT 1*TAIR_@ANAME"),
+        ])
+        definitions, messages, zone_lines = self.render(airnode, worstcase_walls())
+        self.assertNotIn("CONSTRUCTION HIGH_COND", definitions)
+        self.assertEqual(1, len(zone_lines))
+
+    def test_a_window_on_a_boundary_hamt_wall_keeps_the_library_high_cond(self):
+        # the BOUNDARY branch of printbuiZonepart does not skip windows, so such a window line names HIGH_COND
+        airnode = mirror.make_airnode("A1", [
+            mirror.make_surface(3, "EXTCALBND", "HHL_WC_TW_Lehm", "INPUT 1*TAIR_@ANAME"),
+            mirror.make_surface(4, "EXTCALBND", "WIN_W1_3304_S_0_90", "INPUT 1*TAIR_@ANAME", 2.0, 0.0, "WINDOW"),
+        ])
+        definitions, messages, zone_lines = self.render(airnode, worstcase_walls())
+        defined = [line.split()[1] for line in definitions if line.startswith("CONSTRUCTION ")]
+        self.assertIn("HIGH_COND", defined)
+        for line in zone_lines:
+            with self.subTest(line=line):
+                self.assertIn(line.split("=")[1].split(" :")[0], defined)
+
     def test_without_hamt_surfaces_nothing_is_derived(self):
         airnode = mirror.make_airnode("A1", [
             mirror.make_surface(2, "BOUNDARY", "HHL_WC_TW_Lehm", "INPUT 1*TAIR_A2"),
