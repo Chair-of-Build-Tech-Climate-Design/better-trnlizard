@@ -117,6 +117,7 @@ import re
 import ghpythonlib.parallel
 import scriptcontext as sc
 import os
+import math
 import os.path
 from subprocess import Popen
 import time
