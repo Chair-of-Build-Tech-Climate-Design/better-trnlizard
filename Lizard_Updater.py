@@ -645,11 +645,14 @@ def canUseCache(status):
 
 
 def parseManifest(text):
-    """{'format', 'generated', 'files': {file name: {'sha256', 'size'}}} of a trnlizard_manifest.json text.
+    """{'format', 'generated', 'files': {file name: {'sha256', 'size'}}, 'ignored': [file names]} of a
+    trnlizard_manifest.json text.
 
-    ValueError when the text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name
-    that is not a top-level script (no paths, no leading '_'), names that only differ in case, or a sha256 that is not
-    64 hex digits. sha256 is getHash of the script text; size (bytes of the normalized UTF-8 text) is informative only.
+    Files this updater does not know (neither a top-level script without leading '_' nor trnlizard_icons.json) are
+    left out and listed under 'ignored', so a newer manifest with new kinds of files still works. ValueError when the
+    text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name with a path, names
+    that only differ in case, or a sha256 that is not 64 hex digits. sha256 is getHash of the script text; size (bytes
+    of the normalized UTF-8 text) is informative only.
     """
     try:
         data = json.loads(text)
@@ -667,10 +670,14 @@ def parseManifest(text):
     if not isinstance(files, dict) or not files:
         raise ValueError(u'no files listed')
     result = {}
+    ignored = []
     for name in files:
         entry = files[name]
-        if not isinstance(name, str) or not (re.match(SCRIPT_NAME_PATTERN, name) or name == ICONS_NAME):
+        if not isinstance(name, str) or not name.strip() or re.search(r'[/\\:]', name) or name.strip('.') == '':
             raise ValueError(u"invalid file name '{0}'".format(name))
+        if not (re.match(SCRIPT_NAME_PATTERN, name) or name == ICONS_NAME):
+            ignored.append(name)
+            continue
         if not isinstance(entry, dict):
             raise ValueError(u'entry of {0} is not an object'.format(name))
         sha = entry.get('sha256')
@@ -680,11 +687,14 @@ def parseManifest(text):
         if size is not None and (not isinstance(size, int) or isinstance(size, bool) or size < 0):
             raise ValueError(u'invalid size of {0}'.format(name))
         result[name] = {'sha256': sha.lower(), 'size': size}
+    if not result:
+        raise ValueError(u'no files listed that this updater uses')
     lowered = [name.lower() for name in result]
     if len(set(lowered)) != len(lowered):
         raise ValueError(u'file names that only differ in case')
     generated = data.get('generated')
-    return {'format': version, 'generated': generated if isinstance(generated, str) else None, 'files': result}
+    return {'format': version, 'generated': generated if isinstance(generated, str) else None, 'files': result,
+            'ignored': sorted(ignored)}
 
 
 def planDownloads(files, cachedHashes):
@@ -1444,6 +1454,8 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
         return None
     files = manifest['files']
     log.append(u'Manifest generated: {0} ({1} scripts)'.format(manifest['generated'], len(files)))
+    if manifest['ignored']:
+        log.append(u'Note: files of the manifest this updater does not use: {0}'.format(u', '.join(manifest['ignored'])))
     log.append(u'Cache folder: {0}'.format(folder))
     cached = cachedScriptHashes(folder)
     toDownload, unchanged = planDownloads(files, cached)

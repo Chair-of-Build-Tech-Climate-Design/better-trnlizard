@@ -199,6 +199,13 @@ class ManifestTests(unittest.TestCase):
         self.assertEqual({"sha256": "a" * 64, "size": None}, UPDATER.parseManifest(upper)["files"]["X.py"])
         self.assertIsNone(UPDATER.parseManifest(upper)["generated"])
 
+    def test_unknown_files_are_ignored(self):
+        good = {"sha256": "a" * 64, "size": 1}
+        manifest = UPDATER.parseManifest(json.dumps({"format": 1, "files": {
+            "X.py": good, "_X.py": good, "notes.txt": "anything", "trnlizard_presets.json": good}}))
+        self.assertEqual(["X.py"], sorted(manifest["files"]))
+        self.assertEqual(["_X.py", "notes.txt", "trnlizard_presets.json"], manifest["ignored"])
+
     def test_invalid_manifests(self):
         good = {"sha256": "a" * 64, "size": 1}
         cases = {
@@ -213,8 +220,9 @@ class ManifestTests(unittest.TestCase):
             json.dumps({"format": 1, "files": {"../X.py": good}}): "invalid file name",
             json.dumps({"format": 1, "files": {"sub/X.py": good}}): "invalid file name",
             json.dumps({"format": 1, "files": {"sub\\X.py": good}}): "invalid file name",
-            json.dumps({"format": 1, "files": {"_X.py": good}}): "invalid file name",
-            json.dumps({"format": 1, "files": {"X.txt": good}}): "invalid file name",
+            json.dumps({"format": 1, "files": {"..": good}}): "invalid file name",
+            json.dumps({"format": 1, "files": {"C:X.py": good}}): "invalid file name",
+            json.dumps({"format": 1, "files": {"X.txt": good}}): "no files listed that this updater uses",
             json.dumps({"format": 1, "files": {"X.py": "abc"}}): "not an object",
             json.dumps({"format": 1, "files": {"X.py": {"sha256": "abc"}}}): "invalid sha256",
             json.dumps({"format": 1, "files": {"X.py": {"sha256": "g" * 64}}}): "invalid sha256",
