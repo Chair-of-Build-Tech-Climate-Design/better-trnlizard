@@ -38,7 +38,6 @@ Returns:
 """
 import hashlib
 import io
-import json
 import os
 import re
 
@@ -81,9 +80,42 @@ def writeText(path, text):
         handle.close()
 
 
+def toJson(value, indent=u''):
+    """JSON text with sorted keys and non-ASCII as \\uXXXX. Own writer: IronPython's json module decodes its (unicode)
+    strings as UTF-8 again and fails on characters such as the superscript 2 of m2."""
+    inner = indent + u' '
+    if value is None:
+        return u'null'
+    if value is True:
+        return u'true'
+    if value is False:
+        return u'false'
+    if isinstance(value, (int, float)):
+        return u'{0!r}'.format(value)
+    if isinstance(value, dict):
+        if not value:
+            return u'{}'
+        items = [u'{0}{1}: {2}'.format(inner, toJson(_str(k)), toJson(value[k], inner)) for k in sorted(value, key=_str)]
+        return u'{\n' + u',\n'.join(items) + u'\n' + indent + u'}'
+    if isinstance(value, (list, tuple)):
+        if not value:
+            return u'[]'
+        return u'[\n' + u',\n'.join(inner + toJson(v, inner) for v in value) + u'\n' + indent + u']'
+    text = value if isinstance(value, type(u'')) else _str(value)
+    out = []
+    for ch in text:
+        code = ord(ch)
+        if ch == u'"' or ch == u'\\':
+            out.append(u'\\' + ch)
+        elif code < 32 or code > 126:
+            out.append(u'\\u{0:04x}'.format(code))
+        else:
+            out.append(ch)
+    return u'"' + u''.join(out) + u'"'
+
+
 def writeJson(path, data):
-    text = json.dumps(data, indent=1, sort_keys=True, ensure_ascii=True)
-    writeText(path, u'' + text + u'\n')
+    writeText(path, toJson(data) + u'\n')
 
 
 def normalizeCode(content):
@@ -457,7 +489,10 @@ def runExport(presetFolder, outFolder, repoFolder, run):
         inRepo = None if known is None else known.get((name or '').lower())
         scripts.append({'name': name, 'repoScript': inRepo, 'variants': [
             {'hash': v['hash'], 'file': v['file'], 'kind': v['kind'], 'foundIn': v['foundIn']} for v in variants]})
-        writeJson(os.path.join(outFolder, 'scripts', '{0}.json'.format(safeName(name))), variants)
+        try:
+            writeJson(os.path.join(outFolder, 'scripts', '{0}.json'.format(safeName(name))), variants)
+        except Exception as e:
+            log.append(u'Error writing scripts/{0}.json: {1}'.format(safeName(name), e))
     missing = [s['name'] for s in scripts if known is not None and s['repoScript'] is None]
     writeJson(os.path.join(outFolder, 'index.json'), {
         'format': EXPORT_FORMAT, 'presets': presets, 'scripts': scripts, 'notInRepo': missing,
@@ -473,11 +508,29 @@ def runExport(presetFolder, outFolder, repoFolder, run):
     log.append(u'Round-trip probe (cluster from document.ghx): {0} of {1} identical'.format(len(good), len(ctx['probes'])))
     for probe in ctx['probes']:
         if probe not in good:
-            log.append(u'  probe differs: {0}'.format(json.dumps(probe, sort_keys=True)))
+            log.append(u'  probe differs: {0}'.format(toJson(probe)))
     log.append(u'Written to {0}'.format(outFolder))
     return log
 
 
+def main(presetFolder, outFolder, repoFolder, run):
+    """runExport, with any error and its traceback in the log, which is also written to outFolder/export_log.txt."""
+    lines = []
+    try:
+        lines = runExport(presetFolder, outFolder, repoFolder, run)
+    except Exception as e:
+        import traceback
+        lines.append(u'Export stopped: {0}'.format(e))
+        lines.append(_str(traceback.format_exc()))
+    text = u'\n'.join(_str(line) for line in lines)
+    if run and outFolder and os.path.isdir(outFolder):
+        try:
+            writeText(os.path.join(outFolder, 'export_log.txt'), text + u'\n')
+        except Exception:
+            pass
+    return text
+
+
 if 'ghenv' in globals():
-    log = u'\n'.join(runExport(globals().get('presetFolder'), globals().get('outFolder'), globals().get('repoFolder'),
-                               globals().get('run')))
+    log = main(globals().get('presetFolder'), globals().get('outFolder'), globals().get('repoFolder'),
+               globals().get('run'))
