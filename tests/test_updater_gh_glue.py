@@ -376,6 +376,7 @@ def fake_modules():
     kernel.GH_Component = GH_Component
     kernel.GH_ParameterSide = SimpleNamespace(Input="Input", Output="Output")
     kernel.GH_ParamAccess = SimpleNamespace(item="item", list="list", tree="tree")
+    kernel.GH_RuntimeMessageLevel = SimpleNamespace(Warning="Warning", Error="Error", Remark="Remark")
     kernel.GH_Document = SimpleNamespace(GH_ScheduleDelegate=lambda function: function)
     kernel.IGH_VariableParameterComponent = object
     kernel.Special = SimpleNamespace(GH_Cluster=GH_Cluster, GH_Group=GH_Group)
@@ -669,6 +670,30 @@ class UpdaterGlueTests(unittest.TestCase):
         log, updated, skipped, errors = self.run_updater(doc, run=False)   # the final report keeps the warning
         self.assertEqual(1, len(errors))
         self.assertEqual(HYGRO_INPUTS_BEFORE + NEW_HYGRO_INPUTS, [p.Name for p in hygro.Params.Input])
+
+    def test_an_outdated_updater_shows_a_warning_balloon_and_outdated_until_it_is_current(self):
+        messages = []
+        self.updater_component.AddRuntimeMessage = lambda level, text: messages.append((level, text))
+        self.updater_component.Message = ""
+        self.updater_component.Code = "an older updater"
+        doc = Document([self.legacy_hygro(), self.updater_component])
+
+        log, updated, skipped, errors = self.run_updater(doc)
+        self.assertEqual("OUTDATED", self.updater_component.Message)
+        self.assertEqual([("Warning", errors[0])], messages)
+        self.assertIn("new Lizard_Updater from the TRNLizard tab", errors[0])
+        del messages[:]
+        self.apply_scheduled(doc)
+        self.run_updater(doc, run=False)   # the report run and every later run keep showing it
+        self.run_updater(doc, run=False)
+        self.assertEqual(2, len(messages))
+        self.assertEqual("OUTDATED", self.updater_component.Message)
+
+        self.updater_component.Code = UPDATER_SOURCE.read_text(encoding="utf-8")   # replaced by the new one
+        del messages[:]
+        self.run_updater(doc)
+        self.assertEqual([], messages)
+        self.assertEqual("", self.updater_component.Message)
 
 
 if __name__ == "__main__":

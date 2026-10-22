@@ -79,6 +79,8 @@ PARAM_STRING_ID = '3ede854e-c753-40eb-84cb-b48008f14fd4'  # Param_String, the ty
 REPLACEMENT_OFFSET = 40                                   # canvas px right and down from the old component
 GROUP_ARGB = (150, 255, 0, 0)                             # red group around a replacement
 REPORT_KEY = 'Lizard_Updater_report_'                     # sc.sticky key + updater InstanceGuid
+OUTDATED_KEY = 'Lizard_Updater_outdated_'                 # sc.sticky key + updater InstanceGuid: last self check
+OUTDATED_MESSAGE = 'OUTDATED'                             # shown under the updater while its code is outdated
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -152,8 +154,10 @@ def selfCheckMessage(ownCode, fileCode, path):
     of them could not be read. The updater skips itself, so its own copy on the canvas only changes by hand."""
     if ownCode is None or fileCode is None or getHash(ownCode) == getHash(fileCode):
         return None
-    return (u'This Lizard_Updater runs other code than {0} (first diff {1}). The updater never updates itself: if the '
-            u'file is the newer one, paste it into this component by hand.').format(path, firstDiff(ownCode, fileCode))
+    return (u'This Lizard_Updater is outdated: it runs other code than {0} (first diff {1}). The updater never updates '
+            u'itself: replace this component by a new Lizard_Updater from the TRNLizard tab (its UserObject is rewritten '
+            u'unless makeUserObjects is False; restart Grasshopper if the tab still shows the old one), or paste the '
+            u'file into this component by hand.').format(path, firstDiff(ownCode, fileCode))
 
 
 def parseDocstringIO(code):
@@ -1227,19 +1231,38 @@ def planComponent(comp, cluster, path, log):
 
 
 def checkSelf(updater, scripts, log, errors):
-    """Log and list as an error when the code of this updater differs from Lizard_Updater.py of the folder."""
+    """Log and list as an error when the code of this updater differs from Lizard_Updater.py of the folder; returns
+    the message when it is outdated, '' when it is up to date, None when it could not be checked."""
     path = scripts.get(UPDATER_SCRIPT)
     if path is None:
-        return
+        return None
     updater = _impl(updater)
     try:
-        message = selfCheckMessage(readComponentCode(updater, scriptKind(updater)), readScript(path), path)
+        ownCode = readComponentCode(updater, scriptKind(updater))
+        message = selfCheckMessage(ownCode, readScript(path), path)
     except Exception as e:
         log.append('Note: could not compare this updater with {0}: {1}'.format(path, e))
-        return
+        return None
     if message:
         log.append('WARNING: ' + message)
         errors.append(message)
+        return message
+    return None if ownCode is None else u''
+
+
+def showSelfState(updater):
+    """Orange balloon and OUTDATED under the component while the last self check found this updater outdated (kept in
+    sc.sticky, as Grasshopper clears the runtime messages on every solution)."""
+    updater = _impl(updater)
+    message = sc.sticky.get(OUTDATED_KEY + str(updater.InstanceGuid))
+    try:
+        if message:
+            updater.AddRuntimeMessage(Grasshopper.Kernel.GH_RuntimeMessageLevel.Warning, message)
+            updater.Message = OUTDATED_MESSAGE
+        elif message is not None and getattr(updater, 'Message', None) == OUTDATED_MESSAGE:
+            updater.Message = ''
+    except Exception:
+        pass
 
 
 def sourceCacheRoot():
@@ -1792,7 +1815,14 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
 def runUpdater(source, runUpdate, makeUserObjects=None):
     """Plan the update of every matching script component and schedule the document changes, and write the UserObjects
     (unless makeUserObjects is False); (log, updated, skipped, errors). The run right after the scheduled changes shows
-    the final report instead."""
+    the final report instead. An outdated updater is marked on the canvas on every run."""
+    try:
+        return updateDocument(source, runUpdate, makeUserObjects)
+    finally:
+        showSelfState(ghenv.Component)  # noqa: F821
+
+
+def updateDocument(source, runUpdate, makeUserObjects):
     updater = ghenv.Component  # noqa: F821 (global of every Grasshopper script component)
     reportKey = REPORT_KEY + str(updater.InstanceGuid)
     finished = sc.sticky.pop(reportKey, None)
@@ -1816,7 +1846,9 @@ def runUpdater(source, runUpdate, makeUserObjects=None):
         log.append('No Python files found in source folder.')
         return log, updated, skipped, errors
     log.append('Found {0} Python files in source.'.format(len(scripts)))
-    checkSelf(updater, scripts, log, errors)
+    selfState = checkSelf(updater, scripts, log, errors)
+    if selfState is not None:
+        sc.sticky[OUTDATED_KEY + str(updater.InstanceGuid)] = selfState
     components = collectScriptComponents(doc, updater.InstanceGuid, log)
     log.append('Found {0} Python script components in document.'.format(len(components)))
     actions = []
