@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-22T13:50:33Z",
+  "generated": "2026-10-22T14:05:53Z",
   "files": {
     "Lizard_Active_CC_Layer.py": {
       "sha256": "a386fccd889ae6cca5fc671955595cb1bf853681c9ef0c2f8e0f2c940f4976fd",
@@ -223,8 +223,8 @@
       "size": 3232
     },
     "Lizard_Updater.py": {
-      "sha256": "08e9d00a6942397df0318476e743933121e4fa6af454cfb2abdd24dc9c7c2500",
-      "size": 90539
+      "sha256": "6d452d19d8292e912b470812d2b0423c9c2863ff304be05f6ab89f181427aec2",
+      "size": 104924
     },
     "Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",
@@ -269,6 +269,10 @@
     "trnlizard_icons.json": {
       "sha256": "af31b30b4f0e3c8adc16db7cfd5c4653858ad65f83d291a46711bb15c9d6289d",
       "size": 107990
+    },
+    "trnlizard_presets.json": {
+      "sha256": "2a2c554bf858447e34fb69abc3129e47cf4afd7d31083c63be5d642605ee8edf",
+      "size": 2822283
     }
   }
 }

@@ -1,0 +1,13 @@
+{
+ "aliases": [
+  "Database"
+ ],
+ "category": "TRNLizard",
+ "description": "TRNLizard shared cluster Lizard_Database",
+ "exposure": "primary",
+ "name": "Lizard_Database",
+ "nickName": "Lizard_Database",
+ "role": "keep",
+ "source": "TRNLizard_Template_Lite",
+ "subCategory": "1 | Advanced"
+}

@@ -33,6 +33,13 @@ updater writes legacy GhPython UserObjects, since the TRNLizard scripts are Iron
 in that folder keeps the hash of each script: a UserObject is only rewritten when its script or the UserObject
 format changed or its file is missing; UserObjects of scripts that are gone are deleted (only files this updater
 wrote). Scripts without Args/Returns docstring and without ghenv.Component.Name get no UserObject.
+The presets (trnlizard_presets.json of the source, made from presets/ by tools/build_manifest.py) are written as
+UserObjects too: each is rebuilt from its template cluster, with every script component inside brought to the
+scripts of the source (a component that lost params is swapped for a new copy, wires moved) and the shared clusters
+put in from their templates; a preset is rebuilt when its template or any script changed. Shared clusters with role
+'sync' (Lizard_Building_Template) are also replaced on the canvas when they are outdated (marker in their
+Description, wires moved, undo recorded); those with role 'keep' (Lizard_Database) are never replaced on the canvas,
+only the scripts inside are updated.
 Plain script for Rhino 7/8 GhPython (IronPython 2.7) and Rhino 8 Python 2/3 script components; it updates
 components of these three kinds (Rhino 8 script components need Rhino 8 SR18 or later).
 -
@@ -87,6 +94,9 @@ DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-t
 DEFAULT_REF = 'main'                                      # branch when a GitHub URL names none
 MANIFEST_NAME = 'trnlizard_manifest.json'                 # at the repository root, made by tools/build_manifest.py
 ICONS_NAME = 'trnlizard_icons.json'                       # {format, icons: {script: base64 PNG 24x24}}, made from icons/*.png
+PRESETS_NAME = 'trnlizard_presets.json'                   # preset templates of presets/ (tools/build_manifest.py)
+BUNDLE_NAMES = (ICONS_NAME, PRESETS_NAME)                 # files of the source besides the scripts
+SHARED_MARKER = u'[TRNLizard shared {0}]'                 # in the Description of a shared cluster: its template hash
 MANIFEST_FORMAT = 1                                       # newest manifest format this updater reads
 RAW_HOST = 'https://raw.githubusercontent.com'
 API_HOST = 'https://api.github.com'
@@ -679,7 +689,7 @@ def parseManifest(text):
         entry = files[name]
         if not isinstance(name, str) or not name.strip() or re.search(r'[/\\:]', name) or name.strip('.') == '':
             raise ValueError(u"invalid file name '{0}'".format(name))
-        if not (re.match(SCRIPT_NAME_PATTERN, name) or name == ICONS_NAME):
+        if not (re.match(SCRIPT_NAME_PATTERN, name) or name in BUNDLE_NAMES):
             ignored.append(name)
             continue
         if not isinstance(entry, dict):
@@ -719,7 +729,7 @@ def planDownloads(files, cachedHashes):
 def planRemovals(files, cachedNames):
     """Sorted cached .py file names (and the icons file) that the manifest no longer lists (exact case: a file whose
     name changed case is removed and downloaded again under its new name)."""
-    return sorted(name for name in cachedNames if (name.endswith('.py') or name == ICONS_NAME) and name not in files)
+    return sorted(name for name in cachedNames if (name.endswith('.py') or name in BUNDLE_NAMES) and name not in files)
 
 
 def otherCacheFolders(names, current, hasManifest):
@@ -749,6 +759,83 @@ def parseIcons(text):
 def userObjectHash(code, icon):
     """Hash that decides whether a UserObject is rewritten: the script text, plus its icon when it has one."""
     return getHash(code) if not icon else getHash(code + u'\n#icon ' + icon)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Pure preset logic (trnlizard_presets.json; unit-tested in tests/test_updater_presets.py)
+# ---------------------------------------------------------------------------------------------------------------------
+
+def _text(value, default=u''):
+    return value if isinstance(value, str) and value else default
+
+
+def parsePresets(text):
+    """{'presets': {name: entry}, 'shared': {name: entry}} of a trnlizard_presets.json text; ValueError when invalid.
+
+    entry: name, nickName, description, category, subCategory, xml (GH_Archive XML of the cluster, the template),
+    icon (base64 PNG or None); a shared cluster also has role ('sync': presets and canvas copies follow the template;
+    'keep': presets get the template, a canvas copy is never replaced) and aliases (its other nick names).
+    """
+    try:
+        data = json.loads(text)
+    except ValueError as e:
+        raise ValueError(u'not valid JSON ({0})'.format(e))
+    if not isinstance(data, dict):
+        raise ValueError(u'not a JSON object')
+    result = {}
+    for group in ('presets', 'shared'):
+        entries = data.get(group) or {}
+        if not isinstance(entries, dict):
+            raise ValueError(u'{0} is not an object'.format(group))
+        result[group] = {}
+        for name in entries:
+            entry = entries[name]
+            if not isinstance(entry, dict) or not _text(entry.get('xml')).strip():
+                raise ValueError(u'{0} {1} has no template'.format(group, name))
+            role = entry.get('role')
+            if group == 'shared' and role not in ('sync', 'keep'):
+                raise ValueError(u"shared {0} has no role 'sync' or 'keep'".format(name))
+            aliases = entry.get('aliases') if isinstance(entry.get('aliases'), list) else []
+            result[group][name] = {
+                'name': _text(entry.get('name'), name), 'nickName': _text(entry.get('nickName'), name),
+                'description': _text(entry.get('description')), 'category': _text(entry.get('category'), DEFAULT_CATEGORY),
+                'subCategory': _text(entry.get('subCategory'), DEFAULT_SUBCATEGORY), 'xml': entry['xml'],
+                'icon': entry.get('icon') if _text(entry.get('icon')) else None, 'role': role,
+                'aliases': [alias for alias in aliases if isinstance(alias, str)]}
+    return result
+
+
+def sharedNameOf(nickName, shared):
+    """Name of the shared cluster a cluster with this nick name is a copy of, None for any other cluster."""
+    for name in sorted(shared or {}):
+        if nickName == name or nickName in shared[name]['aliases']:
+            return name
+    return None
+
+
+def scriptsFingerprint(hashes):
+    """One hash of all scripts ({base name: hash}): a preset is rebuilt when any script changed."""
+    return getHash(u'\n'.join(u'{0}:{1}'.format(name, hashes[name]) for name in sorted(hashes)))
+
+
+def presetHash(entry, shared, fingerprint):
+    """Hash that decides whether a preset UserObject is rewritten: its template and icon, the shared templates it may
+    contain and the scripts."""
+    parts = [entry['xml'], entry.get('icon') or u'', fingerprint] + [shared[name]['xml'] for name in sorted(shared or {})]
+    return getHash(u'\n#part\n'.join(parts))
+
+
+def sharedMarker(entry):
+    """Text in the Description of a shared cluster made from this template; a canvas copy without it is outdated."""
+    return SHARED_MARKER.format(getHash(entry['xml'])[:12])
+
+
+def pairParams(oldNames, newNames):
+    """(old index, new index) to rewire: by position when both sides have the same names in the same order (also with
+    repeated names such as Data, Data), else by the names that occur once on both sides."""
+    if list(oldNames) == list(newNames):
+        return [(index, index) for index in range(len(oldNames))]
+    return [(oldIndex, newIndex) for name, oldIndex, newIndex in wiringPlan(oldNames, newNames)]
 
 
 def verifyDownload(name, text, expected):
@@ -1141,6 +1228,8 @@ def applyActions(doc, actions, report, reportKey, updater, userObjectsSummary=No
             try:
                 if action['what'] == 'replace':
                     notes = applyReplacement(doc, action, log)
+                elif action['what'] == 'sync':
+                    notes = applySharedSync(doc, action)
                 else:
                     notes = applyInPlace(doc, action, log)
                 log.append('Done: {0} ({1}){2}'.format(action['name'], action['what'], ': ' + '; '.join(notes) if notes else ''))
@@ -1289,7 +1378,7 @@ def cachedScriptHashes(folder):
         return hashes
     for fileName in os.listdir(folder):
         path = os.path.join(folder, fileName)
-        if (fileName.endswith('.py') or fileName == ICONS_NAME) and os.path.isfile(path):
+        if (fileName.endswith('.py') or fileName in BUNDLE_NAMES) and os.path.isfile(path):
             try:
                 hashes[fileName] = getHash(readScript(path))
             except Exception:
@@ -1598,6 +1687,174 @@ def iconBitmap(base64Png):
         stream.Dispose()
 
 
+def loadPresets(folder, log):
+    """Parsed trnlizard_presets.json of the source folder, None when there is none or it is invalid."""
+    path = os.path.join(folder, PRESETS_NAME)
+    if not os.path.isfile(path):
+        log.append('No {0} in the source: no preset UserObjects.'.format(PRESETS_NAME))
+        return None
+    try:
+        return parsePresets(readScript(path))
+    except Exception as e:
+        log.append('Note: {0} not used: {1}'.format(PRESETS_NAME, e))
+        return None
+
+
+def loadClusterXml(xml):
+    """A new GH_Cluster restored from the GH_Archive XML of a preset template."""
+    try:
+        import clr
+        clr.AddReference('GH_IO')
+    except Exception:
+        pass
+    from GH_IO.Serialization import GH_Archive
+    reader = GH_Archive()
+    if not reader.Deserialize_Xml(xml):
+        raise RuntimeError('GH_Archive could not read the template')
+    cluster = Grasshopper.Kernel.Special.GH_Cluster()
+    cluster.CreateAttributes()
+    if not reader.ExtractObject(cluster, 'Object'):
+        raise RuntimeError('the template holds no cluster')
+    return cluster
+
+
+def rewire(doc, old, new):
+    """Move the wires of an old object to its replacement (inputs: same sources; outputs: recipients moved)."""
+    oldIn, newIn = list(old.Params.Input), list(new.Params.Input)
+    for oldIndex, newIndex in pairParams(paramNames(oldIn), paramNames(newIn)):
+        for source in list(oldIn[oldIndex].Sources):
+            newIn[newIndex].AddSource(source)
+    oldOut, newOut = list(old.Params.Output), list(new.Params.Output)
+    for oldIndex, newIndex in pairParams(paramNames(oldOut), paramNames(newOut)):
+        for recipient in list(oldOut[oldIndex].Recipients):
+            recordUndo(doc, recipient, 'wire')
+            moveSource(recipient, oldOut[oldIndex], newOut[newIndex])
+
+
+def joinGroups(doc, old, new):
+    """Put the replacement into every group of the old object."""
+    for obj in doc.Objects:
+        obj = _impl(obj)
+        if isinstance(obj, Grasshopper.Kernel.Special.GH_Group):
+            try:
+                if any(str(guid) == str(old.InstanceGuid) for guid in obj.ObjectIDs):
+                    obj.AddObject(new.InstanceGuid)
+            except Exception:
+                pass
+
+
+def swapObject(doc, old, new):
+    """Put new where old is (position, wires, groups) and remove old from the document."""
+    new.Attributes.Pivot = old.Attributes.Pivot
+    new.Attributes.ExpireLayout()
+    doc.AddObject(new, False)
+    rewire(doc, old, new)
+    joinGroups(doc, old, new)
+    doc.RemoveObject(old, False)
+
+
+def updateTemplateDocument(doc, scripts, shared, counts):
+    """Bring the script components of a template document (and of its nested clusters) to the scripts of the source
+    and put the template of every shared cluster in place. A script that lost params is swapped for a new copy (the
+    template keeps no old one). counts: {'scripts': n, 'shared': n, 'errors': [...]}."""
+    for obj in list(doc.Objects):
+        obj = _impl(obj)
+        name = str(getattr(obj, 'Name', ''))
+        try:
+            if isinstance(obj, Grasshopper.Kernel.Special.GH_Cluster):
+                sharedName = sharedNameOf(str(obj.NickName), shared)
+                if sharedName is not None:
+                    swapObject(doc, obj, buildSharedCluster(shared[sharedName], scripts, counts))
+                    counts['shared'] += 1
+                else:
+                    inner = obj.Document('')
+                    if inner is not None:
+                        updateTemplateDocument(inner, scripts, shared, counts)
+                continue
+            if scriptKind(obj) is None or name not in scripts:
+                continue
+            status, result = planComponent(obj, None, scripts[name], [])
+            if status == 'error':
+                counts['errors'].append(result)
+                continue
+            if status != 'action':
+                continue
+            notes = []
+            if result['what'] == 'replace':
+                new = copyComponent(obj)
+                applyParamChanges(new, result['kind'], result, notes)
+                writeComponentCode(new, result['kind'], result['code'])
+                swapObject(doc, obj, new)
+            else:
+                if result['what'] == 'add':
+                    applyParamChanges(obj, result['kind'], result, notes)
+                if result['codeChanged']:
+                    writeComponentCode(obj, result['kind'], result['code'])
+            counts['scripts'] += 1
+        except Exception as e:
+            counts['errors'].append(u'{0}: {1}'.format(name, e))
+
+
+def buildSharedCluster(entry, scripts, counts):
+    """A shared cluster from its template, scripts updated, marked with its template hash."""
+    cluster = loadClusterXml(entry['xml'])
+    inner = cluster.Document('')
+    if inner is not None:
+        updateTemplateDocument(inner, scripts, None, counts)
+    cluster.Description = u'{0} {1}'.format(entry['description'], sharedMarker(entry)).strip()
+    return cluster
+
+
+def buildPresetCluster(entry, scripts, shared, counts):
+    """A preset cluster from its template: shared clusters put in place, scripts updated."""
+    cluster = loadClusterXml(entry['xml'])
+    inner = cluster.Document('')
+    if inner is None:
+        raise RuntimeError('the template cluster has no document (password protected?)')
+    updateTemplateDocument(inner, scripts, shared, counts)
+    return cluster
+
+
+def planSharedSync(doc, shared, scripts, log, updated, skipped):
+    """Actions that replace the outdated canvas copies of shared clusters with role 'sync' by their template."""
+    actions = []
+    for obj in doc.Objects:
+        obj = _impl(obj)
+        if not isinstance(obj, Grasshopper.Kernel.Special.GH_Cluster):
+            continue
+        name = sharedNameOf(str(obj.NickName), shared)
+        if name is None:
+            continue
+        if shared[name]['role'] != 'sync':
+            log.append('Shared cluster {0}: kept as it is (your data); only the scripts inside are updated.'.format(name))
+            continue
+        if sharedMarker(shared[name]) in str(obj.Description or ''):
+            log.append('Shared cluster {0} is up to date.'.format(name))
+            skipped.append(name)
+            continue
+        log.append('Planned: shared cluster {0} replaced by the repository copy (wires moved).'.format(name))
+        actions.append({'name': name, 'what': 'sync', 'component': obj, 'entry': shared[name], 'scripts': scripts})
+        updated.append(name)
+    return actions
+
+
+def applySharedSync(doc, action):
+    """Replace a canvas copy of a shared cluster by its template: same place, wires and groups moved, old removed."""
+    old = action['component']
+    counts = {'scripts': 0, 'shared': 0, 'errors': []}
+    new = buildSharedCluster(action['entry'], action['scripts'], counts)
+    new.NewInstanceGuid()
+    notes = list(counts['errors'])
+    try:
+        doc.UndoUtil.RecordRemoveObjectEvent(UNDO_NAME, old)
+    except Exception:
+        notes.append('no undo record for the removal')
+    swapObject(doc, old, new)
+    recordUndo(doc, new, 'add')
+    new.ExpireSolution(False)
+    return notes
+
+
 def buildUserObjectComponent(componentGuid, entry, notes):
     """A new script component made from the script alone: default params removed (the code output 'out' kept),
     params of the docstring added in docstring order (separators too), identity of the script set, code set."""
@@ -1706,11 +1963,13 @@ def refreshRibbon(newUserObjects, log):
         log.append('Note: could not refresh the ribbon ({0}): restart Grasshopper to see the UserObjects.'.format(e))
 
 
-def writeUserObjects(scripts, updater, log, errors, icons=None):
+def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None):
     """Write a UserObject per component script into <UserObjects folder>/TRNLizard; returns the summary line.
 
     Only new and changed scripts (or icons) are written (lizard_userobjects.json); icons: {script: base64 PNG} of
-    trnlizard_icons.json. Every failure goes to errors and never stops the canvas update.
+    trnlizard_icons.json. presets: parsed trnlizard_presets.json; every preset and shared cluster is written as a
+    UserObject too, rebuilt from its template with the scripts of the source whenever a template or a script changed.
+    Every failure goes to errors and never stops the canvas update.
     """
     icons = icons or {}
     log.append('')
@@ -1733,6 +1992,17 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
                             'iconData': icons.get(script)})
         except Exception as e:
             errors.append('UserObject {0}: could not read the script: {1}'.format(script, e))
+    if presets:
+        fingerprint = scriptsFingerprint(dict((e['script'], getHash(e['code'])) for e in entries))
+        for group, kind in (('presets', 'preset'), ('shared', 'shared')):
+            for key in sorted(presets[group]):
+                preset = presets[group][key]
+                info = dict((field, preset[field]) for field in ('name', 'nickName', 'description', 'category',
+                                                                  'subCategory'))
+                entries.append({'script': kind + ':' + key, 'kind': kind, 'name': preset['name'],
+                                'file': userObjectFileName(preset['name']), 'info': info, 'preset': preset,
+                                'sha256': presetHash(preset, presets['shared'] if kind == 'preset' else {}, fingerprint),
+                                'iconData': preset['icon']})
     try:
         if not os.path.isdir(folder):
             os.makedirs(folder)
@@ -1757,13 +2027,16 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
             records[entry['script']] = {'sha256': '', 'file': old['file'], 'name': old.get('name', entry['name'])}
 
     componentGuid = None
-    if plan['write']:
+    if any(entry.get('kind') is None for entry, reason in plan['write']):
         try:
             componentGuid = userObjectComponentGuid(updater, log)
         except Exception as e:
-            errors.append('UserObjects not written: {0}'.format(e))
+            errors.append('UserObjects of the scripts not written: {0}'.format(e))
     written, newUserObjects = 0, []
-    for entry, reason in plan['write'] if componentGuid is not None else []:
+    for entry, reason in plan['write']:
+        if entry.get('kind') is None and componentGuid is None:
+            keepPrevious(entry)
+            continue
         path = os.path.join(folder, entry['file'])
         isNew = not os.path.isfile(path)
         notes = []
@@ -1774,7 +2047,18 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
                     entry['icon'] = iconBitmap(entry['iconData'])
                 except Exception as e:
                     notes.append('icon not used: {0}'.format(e))
-            comp = buildUserObjectComponent(componentGuid, entry, notes)
+            if entry.get('kind') is None:
+                comp = buildUserObjectComponent(componentGuid, entry, notes)
+            else:
+                counts = {'scripts': 0, 'shared': 0, 'errors': []}
+                if entry['kind'] == 'preset':
+                    comp = buildPresetCluster(entry['preset'], scripts, presets['shared'], counts)
+                else:
+                    comp = buildSharedCluster(entry['preset'], scripts, counts)
+                notes.append('{0} script components updated, {1} shared clusters put in'.format(
+                    counts['scripts'], counts['shared']))
+                for problem in counts['errors']:
+                    errors.append(u'Preset {0}: {1}'.format(entry['name'], problem))
             uo = saveUserObject(comp, entry['info'], path, entry['icon'])
         except Exception as e:
             errors.append('UserObject {0} not written: {1}'.format(entry['name'], e))
@@ -1787,8 +2071,6 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
         log.append('UserObject written: {0} -> {1} ({2}; {3} / {4}){5}'.format(
             entry['name'], entry['file'], reason, entry['info']['category'], entry['info']['subCategory'],
             ': ' + '; '.join(notes) if notes else ''))
-    for entry, reason in plan['write'] if componentGuid is None else []:
-        keepPrevious(entry)
     removed = 0
     for script, fileName in plan['stale']:
         path = os.path.join(folder, fileName)
@@ -1796,10 +2078,10 @@ def writeUserObjects(scripts, updater, log, errors, icons=None):
             if os.path.isfile(path):
                 os.remove(path)
             removed += 1
-            log.append('UserObject removed: {0} (its script {1}.py is gone or now writes another file)'.format(fileName, script))
+            log.append('UserObject removed: {0} ({1} is gone or now writes another file)'.format(fileName, script))
         except Exception as e:
             records[script] = previous[script]
-            errors.append('UserObject {0} of {1}.py is stale but could not be removed: {2}'.format(fileName, script, e))
+            errors.append('UserObject {0} of {1} is stale but could not be removed: {2}'.format(fileName, script, e))
     try:
         saveUserObjectState(statePath, {'format': USEROBJECT_FORMAT, 'userObjects': records})
     except Exception as e:
@@ -1869,10 +2151,16 @@ def updateDocument(source, runUpdate, makeUserObjects):
         else:
             log.append(result)
             errors.append(result)
+    presets = loadPresets(sourceFolder, log)
+    if presets:
+        try:
+            actions.extend(planSharedSync(doc, presets['shared'], scripts, log, updated, skipped))
+        except Exception as e:
+            errors.append('Shared clusters not checked: {0}'.format(e))
     userObjectsSummary = None
     if makeUserObjects is not False:
         try:
-            userObjectsSummary = writeUserObjects(scripts, updater, log, errors, loadIcons(sourceFolder, log))
+            userObjectsSummary = writeUserObjects(scripts, updater, log, errors, loadIcons(sourceFolder, log), presets)
         except Exception as e:  # never stops the canvas update
             errors.append('UserObjects not written: {0}'.format(e))
             userObjectsSummary = 'UserObjects: failed'

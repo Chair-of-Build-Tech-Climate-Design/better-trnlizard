@@ -1,0 +1,5490 @@
+{
+ "objects": [
+  {
+   "id": "612902c9-ab1e-4c39-87af-6556da90d355",
+   "kind": "native",
+   "members": [
+    "4d8e8f21-b86f-4fba-a4c2-005ee5424413",
+    "d10568de-4f86-426d-b211-8f1b04d4dd31",
+    "7fc72023-b584-4b03-a527-f0098010b131",
+    "d7a624f6-69b0-48b7-9da4-2b944af03c71",
+    "f51e8c96-f632-4adc-a7f1-e6738b512ff9",
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "36494f50-709a-4d2b-8828-5db842466517",
+    "a11980a0-f8f1-4a42-bbe2-b8268b2e995a",
+    "6955b15b-1c5a-49b4-934d-2f9ca888d41c",
+    "dbb33013-31d3-4032-b971-039e3894c9dc",
+    "98bd2237-4a9a-438d-9ede-064119225279",
+    "11cc3b28-9993-4dba-b869-6ead2e49e200",
+    "9631747f-573a-4fd1-afb1-6709a5833944",
+    "fc02d804-5c0f-4920-8bb8-54960f12c6b1",
+    "a0f4cfec-5554-475d-b66f-3c7675268c76",
+    "f4d4b5de-0907-4b9e-b0f4-3841373afc80",
+    "a0f44d19-e47b-43c3-8fb0-d5447fbad913",
+    "9121cf05-4fb8-4f95-9528-5475cf029b5a",
+    "01b153d9-db4e-4302-9da6-be5797c64552",
+    "f57d22c9-c732-4d8d-85c7-d1f4ccb46b42",
+    "1100d796-c674-4659-9570-89db1e8b306a",
+    "9d51f26d-7b84-4305-b0cc-a1d35886c3c7",
+    "d55d3d89-be69-40ec-9111-338fc6fac7ff",
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "60e04fed-d077-448d-8c4d-428fe26ee2d5",
+    "da4f6cb3-9fe7-414f-a735-5d22b048b726",
+    "d1676acd-e94e-48da-9faf-abd54564047c",
+    "fb7932d9-8a7c-4f69-9c8d-08c6b4305b10",
+    "4211928b-bcf0-48c1-a7be-da17690087e3",
+    "63e4b24a-41ad-4534-a4fa-639ee84f76bc",
+    "12d5b85e-9534-42d1-83b4-d0f4a236dd60",
+    "7ce8d8eb-a446-419f-b902-7ee77c760369",
+    "132e418d-f9f7-48f1-ba32-f5cd0222b783",
+    "694ef4c3-3b8a-4206-b4af-f9968df3d2a5",
+    "b31fbf92-ec27-4438-96f4-981ea8679c22",
+    "1a44ca85-a9dc-4a41-81de-56a907a39b5b",
+    "8ca16bac-b659-45a6-8f9b-90d9283f0820",
+    "dec06fa1-ba34-4014-822d-2fd55169ccbe",
+    "3473c96d-fbc0-46ac-b391-7c1f16282103",
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "739fa118-f652-452a-bb88-921fbb19bfce",
+    "9bc09a2a-c91b-48a3-99a6-9a61a734f167",
+    "af792ec1-3574-4c15-a8e1-937f30700d6b",
+    "564a241b-1463-45a8-a1b6-77bc5cc7ad4b",
+    "234b6069-05f3-4091-b115-f71bcca0cea3",
+    "ccc5f5f1-9465-40f0-b8c5-649a878cf82e",
+    "eba6a621-e7a3-4251-90af-bf01ce97af94",
+    "8b4d88fc-902a-4764-b1f9-91a011ef1186",
+    "47d9f8ef-85ec-4865-bfe3-9cd9bde604fd",
+    "f562232f-fa00-49e6-afc6-52fd524a281f",
+    "a2af510a-fedb-47dc-a8b7-be3b963c995d",
+    "757542aa-6718-46ac-92ff-95158e2b17ed",
+    "43b0ecdc-cfdb-4e25-8e2b-dea403d25f55",
+    "d1cca0b1-1595-4ebc-87c8-1bb7186184f5",
+    "0043a712-ffe6-4cbc-9d31-e2f6b31bc674",
+    "eca8ec7e-4842-4164-a779-00b9f2778e8e",
+    "b4f29c8d-faf8-44b5-a7fb-3177d38c7b19",
+    "a5a73fbc-78a8-48d0-94df-71d9cce866ba",
+    "4cb55371-10b6-4b40-8d0a-6da89e78196b",
+    "2c933588-fc39-4df1-94be-851ce1d20c89",
+    "d4408e95-0926-4dd6-b450-3656770e4bf8",
+    "feeedb90-4816-4581-be4d-0350258758e9",
+    "e2ea1f9f-4925-4ac9-9e98-d6fb55825d3e",
+    "1b185339-d420-4cf3-9611-4007cfefe784",
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "7b66d261-f561-417f-b576-585b65aaaa62",
+    "c8012232-5061-4717-b74f-e74bd8d867f1",
+    "5fbd1471-85b5-4c20-8258-15b0a6337079",
+    "4181c35d-92be-405b-bfde-6cad90aa11c9",
+    "790f2051-3500-4b13-bb3c-05cf3bf8efec",
+    "e7eef820-7cac-4779-ab6b-a936042c154b",
+    "cc9a9bb0-7bff-4f74-ac13-67ba68c0406c",
+    "9342fb40-667e-4781-a57e-2204c399836e",
+    "66c6231d-3a7c-4a30-b6bc-4599d17e9caa",
+    "4c0855af-312e-420d-9d83-caad70762129",
+    "b4c43dd5-8508-48b6-9123-05e6f1485239",
+    "bd6c2dfb-e637-43fe-ac0b-5ef8f9fc0b55",
+    "56161217-6279-4e13-bfa8-7c8b3a9d59ba",
+    "b58b3740-d6f2-431b-9dfe-9d9259252091",
+    "96d25a86-3810-4bcd-9ce1-b936f0ea8ad5",
+    "cdeb21d9-9b43-4b11-a76e-09ab3d0daec1",
+    "0107efd1-6bbb-49d5-8249-8171ae1a2704",
+    "5629f112-a2a0-45f9-8b9e-cc7f99823260",
+    "e187f4c5-6f06-4416-8390-5463ba541728",
+    "8a8ef2b5-7386-47cb-9184-098454557d7e",
+    "702c3eb1-b0aa-4219-a168-3f49e54b41c2",
+    "8924f984-b0f7-4ddf-ba8b-3afb471b27e2",
+    "7ebfcedf-0978-4ad9-8b28-ca7659b0662c",
+    "ec4a706b-1bb8-4117-93d5-534c08447aa5",
+    "3a780370-1def-46c8-95ec-3e101302a86d",
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "7a1262e2-d3a1-49de-9fc4-1efa2c141268",
+    "2c445f10-d7d5-4f7f-8e02-2f34179d364b",
+    "a8427a79-06d8-4e67-8ea4-02247296eedd",
+    "58e4b4fc-cdf1-4884-be39-f75439dea2b8",
+    "762cd837-56cc-4453-a462-cb81758e9975",
+    "3d3861b6-1ddc-4f1a-af80-ad49c0715506",
+    "0f4dcb22-3bfc-4891-947c-a40ccf74f7c3",
+    "ed64af43-4457-4165-b5f1-f69b7ce08340",
+    "26af9c7a-7d0c-431d-b039-7e850d44620a",
+    "d5d66365-6709-4d29-aa20-bcb2516b5c50",
+    "31af5078-5f01-4c4f-bfad-f9fd07d8093b",
+    "05eb4f03-b0b7-47ea-bb4d-eba1cd5ff980",
+    "cb4d2ed8-ad83-4e2f-86fc-4ba2a8583fe0",
+    "0fa556a3-7475-4358-93f6-978bcc051a42",
+    "db985e33-975d-4a1c-9013-3d6b35913961",
+    "fa7cc720-3204-4571-b72a-20f997d40cb0",
+    "9a7a1d52-fa13-42f7-8c81-8fc685a90a21",
+    "10f66a2c-4bbe-436c-8ce2-f7fa0b0fce75",
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "8553cbee-736b-49ef-8d04-dde54ece3d04",
+    "458176a2-0683-4dc8-8328-95102e32a4e1",
+    "39cf7900-6fb8-4126-b99b-2517adbc309f",
+    "94a43785-ec0e-4d0a-8dcd-9bdc80073641",
+    "216db469-06b6-4287-8ca7-2dda7982e754",
+    "2dfc7c21-a79e-4ca8-8ed2-30c88f55baa2",
+    "cfa26d8e-84ec-4a0a-9cd7-e1f63afed93e",
+    "501d28aa-9b66-4c02-8631-57e14097f088",
+    "4c5b09b1-04e8-48ae-be90-b9f2344f129c",
+    "e4b16c01-72a5-44ab-a108-e5c8a461409f",
+    "c2dc5af6-e8c9-4ac4-9f65-ba7f320714ba",
+    "90569460-60ee-40aa-9dbe-94179ae22373",
+    "051a68ea-3ac5-474d-a680-9a96d5ad4b1d",
+    "e9968be1-1ee3-4477-bf6c-27c0a28a28bd",
+    "32147e28-be36-4ae8-993d-35e285580669",
+    "89bf6950-47eb-4fd7-afd4-0dbdf691439b",
+    "4a20af3b-dce0-4611-8a61-78687fe05548",
+    "0f6df65f-f9a9-4e87-aacb-ac18679ec36e",
+    "826b542d-4a85-4aca-9079-2b00533b917d",
+    "091c0418-ead4-4f1e-85c6-c3b8466b15d0",
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "7c68f643-2ea3-4122-abd0-c2ab331cbe0d",
+    "4371f6de-82de-4824-8bb3-30356d89e268",
+    "5d808576-be07-4361-b28c-81f3de61155a",
+    "362e7f26-cdf8-4c2a-9852-1789110b1840",
+    "ded80400-8029-4900-b6ec-ba3feb48efd5",
+    "6f949e54-c7a6-44f0-bdd9-730d75cb5680",
+    "40d157a0-6894-4f54-80a3-ef31b1d18d48",
+    "88ee0b61-6502-4869-9f0a-36bf06d8cfc9",
+    "44e7de8d-59d4-4387-b15c-82adc74b7f54",
+    "2de9e97c-2159-4e2c-b7cb-066ce791b9b2",
+    "b05e3f05-ecd1-42c0-a797-91e722aaf9c7",
+    "59925f4b-0af3-4790-8456-d66401d0861b",
+    "44feb017-bda1-4c8e-ae64-3f9cc07c05aa",
+    "10f24841-4695-4b94-a64f-28333dc7d8e3",
+    "6c111dc6-d407-4bb3-b445-6c5a7cda2abb",
+    "d953d7a2-bf1e-4160-aca9-1425fd377b5a",
+    "0789fa1a-8506-4a3d-9865-cf0f27ea5900",
+    "632c03b9-4497-4d60-853a-52fe44f89ede",
+    "bbc11ba1-fd11-4b64-8df3-fd91b4987f7b",
+    "7fb58dc6-f998-4ea4-a967-44ed5189e513",
+    "9c8bd2e4-e601-4553-a921-2ef83d0a6428",
+    "1fa3c70a-6dd3-43a3-b083-546da281f80f",
+    "d937ebce-96fd-4dfb-ae06-d68c67e408fb",
+    "7dca44ba-523d-4a57-ad26-27dd78502edb",
+    "b140885d-c0e3-4abe-8198-f4b6b82459f7",
+    "b5f892fa-56b1-4559-8425-058966e260cc",
+    "51f9e28f-68f9-4a47-abb6-5996ea9c9c10",
+    "1eff3e5b-71f0-45c7-ad3f-53476e2d73e2",
+    "1c379e85-4bec-444b-84c7-0722af5a0fb9",
+    "89374721-3fcd-4b8b-866f-cc1145df9c0d",
+    "9aa66be8-d56d-4c66-a217-bd5f0dbd23c6",
+    "74939260-6aac-451c-9f8c-a2e89bcac45e",
+    "a17d2259-9b59-486e-b7d6-921d8b189d19",
+    "4881fb5d-a50b-42cb-9787-2467f095050e",
+    "9e4f16d8-b3b1-4d16-8332-4ac8132615e7",
+    "33a17bc9-2aa0-469d-98d3-bbac843d604f",
+    "254375ed-1b8c-4e9a-80c2-4f1cb7c952eb",
+    "aad0ba65-7025-4206-942f-2a5c3c3ee331",
+    "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+    "f6697613-5073-4557-b013-cff9822b3485",
+    "8b479620-3a7c-4f1b-bc7f-326770c67994",
+    "b73b6c3d-88a7-4c9b-80ce-e22bf500e482",
+    "beb80f6a-b467-4121-b4da-a9ca644d9c77",
+    "886837e3-59e2-45a7-a9c0-dff8b302cdd8",
+    "3cf576e0-756a-4ddf-bea8-9f1db7249bec",
+    "b7a312b0-1f7e-4a09-b2ee-96611f4d1951",
+    "055e8361-ac6a-48ab-8716-ccf34ef9d6eb",
+    "022a9f5f-36a3-456f-a730-4872e264286d",
+    "421370c2-0039-4226-900a-bfb288b29f36",
+    "3a61a8ac-20b2-41ed-9126-6e14cb64e58e",
+    "6a5214da-5f7e-41a9-b540-a072fad51ef2",
+    "dfaf9354-5ceb-4fad-b694-de3b69ec50d0",
+    "98d6f4af-280f-4531-84aa-20b92005fb74",
+    "2060cd66-6d2c-4a3e-9b4a-8a28a11f2e9d",
+    "fcd07593-69e5-4784-b0ce-85365c8412cb",
+    "a92c59c8-982f-4cb3-b69a-4bffb281e8b7",
+    "6cb86cdd-2d81-4813-8506-9979efbeed76",
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "a1518ac7-940e-466b-b112-dacb1d0131f2",
+   "kind": "native",
+   "members": [
+    "aa2916b1-f547-4906-8c8d-abb107fe5759",
+    "c5a1ec02-1336-4182-ae76-11f0f52e017f",
+    "64094492-06e0-4277-9048-b2528e542cd9",
+    "6b07afa4-19d2-463d-a88f-185393a9dc84",
+    "75a9494a-c2e9-49a9-bc34-74a5c21be601",
+    "7fad9011-5573-407f-b8ba-26bd6d299394"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "aa2916b1-f547-4906-8c8d-abb107fe5759",
+   "kind": "native",
+   "members": [
+    "6b07afa4-19d2-463d-a88f-185393a9dc84",
+    "c5a1ec02-1336-4182-ae76-11f0f52e017f",
+    "6bf32663-1888-48f8-a829-6cf6eb89208e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "c5a1ec02-1336-4182-ae76-11f0f52e017f",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    331.26953125,
+    630.52587890625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "6b07afa4-19d2-463d-a88f-185393a9dc84",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    333.8095703125,
+    543.595947265625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "6bf32663-1888-48f8-a829-6cf6eb89208e",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    332.51953125,
+    610.9560546875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "d10568de-4f86-426d-b211-8f1b04d4dd31",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    3017.0,
+    889.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "7fc72023-b584-4b03-a527-f0098010b131",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.990234375,
+    1212.48388671875
+   ],
+   "text": "Temperature",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d7a624f6-69b0-48b7-9da4-2b944af03c71",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.869140625,
+    1257.0810546875
+   ],
+   "text": "Day of the Year",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f51e8c96-f632-4adc-a7f1-e6738b512ff9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.150390625,
+    1294.05810546875
+   ],
+   "text": " ",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "7609ed6a-d829-47a0-a290-171d1cacfe09",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    1397.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "36494f50-709a-4d2b-8828-5db842466517",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    1490.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "a11980a0-f8f1-4a42-bbe2-b8268b2e995a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.779296875,
+    1330.5048828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6955b15b-1c5a-49b4-934d-2f9ca888d41c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2226.66015625,
+    1357.76708984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "dbb33013-31d3-4032-b971-039e3894c9dc",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.130859375,
+    1411.5400390625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "98bd2237-4a9a-438d-9ede-064119225279",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.25,
+    1437.944091796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "11cc3b28-9993-4dba-b869-6ead2e49e200",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.44921875,
+    1383.8349609375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9631747f-573a-4fd1-afb1-6709a5833944",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.650390625,
+    1464.9580078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "fc02d804-5c0f-4920-8bb8-54960f12c6b1",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    1519.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "a0f4cfec-5554-475d-b66f-3c7675268c76",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.91015625,
+    2798.72509765625
+   ],
+   "text": "Q_tot_ht",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f4d4b5de-0907-4b9e-b0f4-3841373afc80",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.8603515625,
+    2880.61279296875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "a0f44d19-e47b-43c3-8fb0-d5447fbad913",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    1548.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "9121cf05-4fb8-4f95-9528-5475cf029b5a",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    3366.94921875,
+    823.49609375
+   ],
+   "text": "Double click to edit panel content…",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "01b153d9-db4e-4302-9da6-be5797c64552",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    1577.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "f57d22c9-c732-4d8d-85c7-d1f4ccb46b42",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.849609375,
+    1607.26708984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1100d796-c674-4659-9570-89db1e8b306a",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.26953125,
+    2716.748046875
+   ],
+   "text": "Load Curve",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "9d51f26d-7b84-4305-b0cc-a1d35886c3c7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.349609375,
+    2761.35986328125
+   ],
+   "text": "Hours [h]",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d55d3d89-be69-40ec-9111-338fc6fac7ff",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.830078125,
+    2797.55419921875
+   ],
+   "text": "Load [W/m²]",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "900f13f7-6199-406f-89d9-1e13e9053b16",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    2936.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "60e04fed-d077-448d-8c4d-428fe26ee2d5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    2992.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "da4f6cb3-9fe7-414f-a735-5d22b048b726",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.44921875,
+    2834.6162109375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d1676acd-e94e-48da-9faf-abd54564047c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2226.0703125,
+    2860.85302734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "fb7932d9-8a7c-4f69-9c8d-08c6b4305b10",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.810546875,
+    2913.4970703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4211928b-bcf0-48c1-a7be-da17690087e3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.919921875,
+    2940.51708984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "63e4b24a-41ad-4534-a4fa-639ee84f76bc",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.130859375,
+    2887.1767578125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "12d5b85e-9534-42d1-83b4-d0f4a236dd60",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.330078125,
+    2967.14404296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7ce8d8eb-a446-419f-b902-7ee77c760369",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    3020.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "132e418d-f9f7-48f1-ba32-f5cd0222b783",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    3049.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "694ef4c3-3b8a-4206-b4af-f9968df3d2a5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    3077.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "b31fbf92-ec27-4438-96f4-981ea8679c22",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.529296875,
+    3107.52783203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1a44ca85-a9dc-4a41-81de-56a907a39b5b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1344.0595703125,
+    2832.44384765625
+   ],
+   "text": "Heating",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8ca16bac-b659-45a6-8f9b-90d9283f0820",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.19921875,
+    1711.306884765625
+   ],
+   "text": "Temperaturverlauf Sommertag",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "dec06fa1-ba34-4014-822d-2fd55169ccbe",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.080078125,
+    1755.904052734375
+   ],
+   "text": "Stunden des Jahres [h]",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "3473c96d-fbc0-46ac-b391-7c1f16282103",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.359375,
+    1792.883056640625
+   ],
+   "text": "Temperatur [C]",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    1910.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "739fa118-f652-452a-bb88-921fbb19bfce",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    1988.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "9bc09a2a-c91b-48a3-99a6-9a61a734f167",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.990234375,
+    1829.326904296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "af792ec1-3574-4c15-a8e1-937f30700d6b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2226.880859375,
+    1856.589111328125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "564a241b-1463-45a8-a1b6-77bc5cc7ad4b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.330078125,
+    1910.363037109375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "234b6069-05f3-4091-b115-f71bcca0cea3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.44921875,
+    1936.77001953125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ccc5f5f1-9465-40f0-b8c5-649a878cf82e",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.66015625,
+    1882.660888671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "eba6a621-e7a3-4251-90af-bf01ce97af94",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.859375,
+    1963.783935546875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8b4d88fc-902a-4764-b1f9-91a011ef1186",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    2017.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "47d9f8ef-85ec-4865-bfe3-9cd9bde604fd",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    2046.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "f562232f-fa00-49e6-afc6-52fd524a281f",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    2075.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "a2af510a-fedb-47dc-a8b7-be3b963c995d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.060546875,
+    2106.093017578125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "757542aa-6718-46ac-92ff-95158e2b17ed",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.3798828125,
+    1955.97412109375
+   ],
+   "text": "Top",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "43b0ecdc-cfdb-4e25-8e2b-dea403d25f55",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.919921875,
+    1992.30908203125
+   ],
+   "text": "Operative Temp.",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d1cca0b1-1595-4ebc-87c8-1bb7186184f5",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.4501953125,
+    2027.736083984375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "0043a712-ffe6-4cbc-9d31-e2f6b31bc674",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.669921875,
+    1847.469970703125
+   ],
+   "text": "Tamb",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "eca8ec7e-4842-4164-a779-00b9f2778e8e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.4501953125,
+    1878.720947265625
+   ],
+   "text": "Aussenlufttemperatur",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b4f29c8d-faf8-44b5-a7fb-3177d38c7b19",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.6103515625,
+    1913.98291015625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "a5a73fbc-78a8-48d0-94df-71d9cce866ba",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.580078125,
+    1334.299072265625
+   ],
+   "text": "Tamb",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "4cb55371-10b6-4b40-8d0a-6da89e78196b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.3798828125,
+    1367.134033203125
+   ],
+   "text": "Ambient Temperature",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2c933588-fc39-4df1-94be-851ce1d20c89",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.91015625,
+    1401.81591796875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "d4408e95-0926-4dd6-b450-3656770e4bf8",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.830078125,
+    2147.958984375
+   ],
+   "text": "Q_tot_cl",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "feeedb90-4816-4581-be4d-0350258758e9",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.1904296875,
+    2231.449951171875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "e2ea1f9f-4925-4ac9-9e98-d6fb55825d3e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.5703125,
+    2244.60400390625
+   ],
+   "text": "Thermal Load",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "1b185339-d420-4cf3-9611-4007cfefe784",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.130859375,
+    2289.986083984375
+   ],
+   "text": "[kWh/(m2.a)]",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    2423.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "7b66d261-f561-417f-b576-585b65aaaa62",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    2491.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "c8012232-5061-4717-b74f-e74bd8d867f1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.75,
+    2327.087890625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5fbd1471-85b5-4c20-8258-15b0a6337079",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2226.369140625,
+    2354.364013671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4181c35d-92be-405b-bfde-6cad90aa11c9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.109375,
+    2410.0830078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "790f2051-3500-4b13-bb3c-05cf3bf8efec",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.23046875,
+    2437.14208984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "e7eef820-7cac-4779-ab6b-a936042c154b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.419921875,
+    2382.72607421875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cc9a9bb0-7bff-4f74-ac13-67ba68c0406c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.630859375,
+    2464.81103515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9342fb40-667e-4781-a57e-2204c399836e",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    2520.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "66c6231d-3a7c-4a30-b6bc-4599d17e9caa",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    2550.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "4c0855af-312e-420d-9d83-caad70762129",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    2579.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "b4c43dd5-8508-48b6-9123-05e6f1485239",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.830078125,
+    2610.388916015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bd6c2dfb-e637-43fe-ac0b-5ef8f9fc0b55",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1344.3798828125,
+    2183.280029296875
+   ],
+   "text": "Cooling",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "56161217-6279-4e13-bfa8-7c8b3a9d59ba",
+   "kind": "native",
+   "members": [
+    "b58b3740-d6f2-431b-9dfe-9d9259252091"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b58b3740-d6f2-431b-9dfe-9d9259252091",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1212.8203125,
+    539.1719970703125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "96d25a86-3810-4bcd-9ce1-b936f0ea8ad5",
+   "kind": "native",
+   "name": "Data",
+   "nickName": "Data",
+   "pivot": [
+    3099.5703125,
+    819.238037109375
+   ],
+   "type": "Param_GenericObject"
+  },
+  {
+   "id": "cdeb21d9-9b43-4b11-a76e-09ab3d0daec1",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.830078125,
+    2282.958984375
+   ],
+   "text": "Q_tot_ht",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "0107efd1-6bbb-49d5-8249-8171ae1a2704",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.1904296875,
+    2366.449951171875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "5629f112-a2a0-45f9-8b9e-cc7f99823260",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1344.3798828125,
+    2318.280029296875
+   ],
+   "text": "Heating",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "e187f4c5-6f06-4416-8390-5463ba541728",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.830078125,
+    2410.56005859375
+   ],
+   "text": "Q_tot_el",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8a8ef2b5-7386-47cb-9184-098454557d7e",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.1904296875,
+    2494.051025390625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "702c3eb1-b0aa-4219-a168-3f49e54b41c2",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1344.3798828125,
+    2445.882080078125
+   ],
+   "text": "Electricity",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8924f984-b0f7-4ddf-ba8b-3afb471b27e2",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2768.830078125,
+    835.05810546875
+   ],
+   "text": "c:\\TRNSYS18\\Building\\trnPLOT\\trnPLOT.exe",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7ebfcedf-0978-4ad9-8b28-ca7659b0662c",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.91015625,
+    688.804931640625
+   ],
+   "text": "Operative Temperatur waehrend der Nutzungszeit",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "ec4a706b-1bb8-4117-93d5-534c08447aa5",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.7890625,
+    732.324951171875
+   ],
+   "text": "Aussenlufttemperatur [C]",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "3a780370-1def-46c8-95ec-3e101302a86d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.080078125,
+    768.22509765625
+   ],
+   "text": "Operative Temperatur [C]",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    884.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "7a1262e2-d3a1-49de-9fc4-1efa2c141268",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    957.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "2c445f10-d7d5-4f7f-8e02-2f34179d364b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.69921875,
+    804.593994140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a8427a79-06d8-4e67-8ea4-02247296eedd",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2226.599609375,
+    829.780029296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "58e4b4fc-cdf1-4884-be39-f75439dea2b8",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.060546875,
+    881.39990234375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "762cd837-56cc-4453-a462-cb81758e9975",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.169921875,
+    907.72607421875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3d3861b6-1ddc-4f1a-af80-ad49c0715506",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.380859375,
+    855.77197265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "0f4dcb22-3bfc-4891-947c-a40ccf74f7c3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.580078125,
+    932.6630859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ed64af43-4457-4165-b5f1-f69b7ce08340",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    985.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "26af9c7a-7d0c-431d-b039-7e850d44620a",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    1013.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "d5d66365-6709-4d29-aa20-bcb2516b5c50",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    1041.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "31af5078-5f01-4c4f-bfad-f9fd07d8093b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.279296875,
+    1069.839111328125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "05eb4f03-b0b7-47ea-bb4d-eba1cd5ff980",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.51953125,
+    924.68310546875
+   ],
+   "text": "ATop",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "cb4d2ed8-ad83-4e2f-86fc-4ba2a8583fe0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.080078125,
+    957.51708984375
+   ],
+   "text": "Operative Temp.",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "0fa556a3-7475-4358-93f6-978bcc051a42",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.849609375,
+    992.198974609375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "db985e33-975d-4a1c-9013-3d6b35913961",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1612.4697265625,
+    885.02197265625
+   ],
+   "text": "Tamb",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fa7cc720-3204-4571-b72a-20f997d40cb0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.330078125,
+    3209.26708984375
+   ],
+   "text": "Statistik",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "9a7a1d52-fa13-42f7-8c81-8fc685a90a21",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.2109375,
+    3253.2470703125
+   ],
+   "text": "Temperatur",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "10f66a2c-4bbe-436c-8ce2-f7fa0b0fce75",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.5,
+    3289.60888671875
+   ],
+   "text": "Stunden",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    3449.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "8553cbee-736b-49ef-8d04-dde54ece3d04",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2298.0,
+    3482.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "458176a2-0683-4dc8-8328-95102e32a4e1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.130859375,
+    3325.43798828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "39cf7900-6fb8-4126-b99b-2517adbc309f",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2227.01953125,
+    3352.0859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "94a43785-ec0e-4d0a-8dcd-9bdc80073641",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.48046875,
+    3404.62890625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "216db469-06b6-4287-8ca7-2dda7982e754",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.599609375,
+    3430.4189453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "2dfc7c21-a79e-4ca8-8ed2-30c88f55baa2",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.7890625,
+    3378.541015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cfa26d8e-84ec-4a0a-9cd7-e1f63afed93e",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2220.0,
+    3456.81689453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "501d28aa-9b66-4c02-8631-57e14097f088",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    3510.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "4c5b09b1-04e8-48ae-be90-b9f2344f129c",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    3538.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "e4b16c01-72a5-44ab-a108-e5c8a461409f",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    3566.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "c2dc5af6-e8c9-4ac4-9f65-ba7f320714ba",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.240234375,
+    3595.72900390625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "90569460-60ee-40aa-9dbe-94179ae22373",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.099609375,
+    3410.47509765625
+   ],
+   "text": "Top",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "051a68ea-3ac5-474d-a680-9a96d5ad4b1d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.650390625,
+    3446.80908203125
+   ],
+   "text": "Operative Temp.",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "e9968be1-1ee3-4477-bf6c-27c0a28a28bd",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.16015625,
+    3482.23583984375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "32147e28-be36-4ae8-993d-35e285580669",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.400390625,
+    3301.97119140625
+   ],
+   "text": "Tamb",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "89bf6950-47eb-4fd7-afd4-0dbdf691439b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.16015625,
+    3333.22216796875
+   ],
+   "text": "Aussenlufttemperatur",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "4a20af3b-dce0-4611-8a61-78687fe05548",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.330078125,
+    3368.48291015625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "0f6df65f-f9a9-4e87-aacb-ac18679ec36e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.3203125,
+    3770.759765625
+   ],
+   "text": "Load Sequence",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "826b542d-4a85-4aca-9079-2b00533b917d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.19921875,
+    3815.35595703125
+   ],
+   "text": "Hour of the Year [h]",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "091c0418-ead4-4f1e-85c6-c3b8466b15d0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2243.48046875,
+    3852.3349609375
+   ],
+   "text": "Load [W/m²]",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "3d2cfbcadf9f",
+   "id": "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+   "inputs": [
+    "Title",
+    "Xlabel",
+    "Ylabel",
+    "Ystart",
+    "Ystop",
+    "Ydticks",
+    "Xstart",
+    "Xstop",
+    "Xdticks",
+    "Data",
+    "Type",
+    "Comfort",
+    "Fill",
+    "Image",
+    "Width"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Settings",
+   "nickName": "PlotSettings",
+   "outputs": [
+    "out",
+    "Settings_"
+   ],
+   "pivot": [
+    2528.0,
+    3962.0
+   ],
+   "script": "Lizard_Plot_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "7c68f643-2ea3-4122-abd0-c2ab331cbe0d",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2302.0,
+    4049.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "4371f6de-82de-4824-8bb3-30356d89e268",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.109375,
+    3889.77783203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5d808576-be07-4361-b28c-81f3de61155a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ystop",
+   "pivot": [
+    2227.0,
+    3916.041015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "362e7f26-cdf8-4c2a-9852-1789110b1840",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    2226.44921875,
+    3969.81396484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ded80400-8029-4900-b6ec-ba3feb48efd5",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xstop",
+   "pivot": [
+    2226.580078125,
+    3997.22119140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6f949e54-c7a6-44f0-bdd9-730d75cb5680",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Ydticks",
+   "pivot": [
+    2220.779296875,
+    3943.11181640625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "40d157a0-6894-4f54-80a3-ef31b1d18d48",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Xdticks",
+   "pivot": [
+    2219.98046875,
+    4023.23388671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "88ee0b61-6502-4869-9f0a-36bf06d8cfc9",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2255.0,
+    4078.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "44e7de8d-59d4-4387-b15c-82adc74b7f54",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2308.0,
+    4107.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "2de9e97c-2159-4e2c-b7cb-066ce791b9b2",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    2322.0,
+    4136.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "b05e3f05-ecd1-42c0-a797-91e722aaf9c7",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Width",
+   "pivot": [
+    2225.169921875,
+    4165.544921875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "59925f4b-0af3-4790-8456-d66401d0861b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.76953125,
+    4144.33203125
+   ],
+   "text": "Q_intgain",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "44feb017-bda1-4c8e-ae64-3f9cc07c05aa",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1309.0400390625,
+    4180.66796875
+   ],
+   "text": "Internal Gains",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "10f24841-4695-4b94-a64f-28333dc7d8e3",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.5703125,
+    4216.09619140625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "6c111dc6-d407-4bb3-b445-6c5a7cda2abb",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1411.7900390625,
+    4035.828125
+   ],
+   "text": "Q_solabs",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d953d7a2-bf1e-4160-aca9-1425fd377b5a",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.5703125,
+    4067.078125
+   ],
+   "text": "Solar Gains",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "0789fa1a-8506-4a3d-9865-cf0f27ea5900",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.73046875,
+    4102.341796875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "632c03b9-4497-4d60-853a-52fe44f89ede",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.16015625,
+    4261.2119140625
+   ],
+   "text": "Q_surf",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "bbc11ba1-fd11-4b64-8df3-fd91b4987f7b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.4501953125,
+    4297.546875
+   ],
+   "text": "Surface Heat Exchange",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7fb58dc6-f998-4ea4-a967-44ed5189e513",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.9599609375,
+    4332.97509765625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "9c8bd2e4-e601-4553-a921-2ef83d0a6428",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1389.0,
+    4389.61083984375
+   ],
+   "text": "Q_inf",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "1fa3c70a-6dd3-43a3-b083-546da281f80f",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.2900390625,
+    4425.94580078125
+   ],
+   "text": "Infiltration",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d937ebce-96fd-4dfb-ae06-d68c67e408fb",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.8095703125,
+    4461.375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "7dca44ba-523d-4a57-ad26-27dd78502edb",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.41015625,
+    4510.01318359375
+   ],
+   "text": "Q_vent",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b140885d-c0e3-4abe-8198-f4b6b82459f7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.6904296875,
+    4546.34814453125
+   ],
+   "text": "Ventilation",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b5f892fa-56b1-4559-8425-058966e260cc",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.2001953125,
+    4581.77490234375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "51f9e28f-68f9-4a47-abb6-5996ea9c9c10",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.3701171875,
+    4644.81298828125
+   ],
+   "text": "Q_coup",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "1eff3e5b-71f0-45c7-ad3f-53476e2d73e2",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.650390625,
+    4681.14697265625
+   ],
+   "text": "Coupling",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "1c379e85-4bec-444b-84c7-0722af5a0fb9",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.16015625,
+    4716.576171875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "89374721-3fcd-4b8b-866f-cc1145df9c0d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1389.0400390625,
+    4754.64990234375
+   ],
+   "text": "Q_solair",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "9aa66be8-d56d-4c66-a217-bd5f0dbd23c6",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.330078125,
+    4790.98583984375
+   ],
+   "text": "Solair",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "74939260-6aac-451c-9f8c-a2e89bcac45e",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.849609375,
+    4826.4169921875
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "a17d2259-9b59-486e-b7d6-921d8b189d19",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.849609375,
+    4874.2509765625
+   ],
+   "text": "Q_tot_ht",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "4881fb5d-a50b-42cb-9787-2467f095050e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.1298828125,
+    4910.5859375
+   ],
+   "text": "Heating",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "9e4f16d8-b3b1-4d16-8332-4ac8132615e7",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1389.650390625,
+    4946.01708984375
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "id": "33a17bc9-2aa0-469d-98d3-bbac843d604f",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1388.25,
+    4991.1298828125
+   ],
+   "text": "Q_tot_cl",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "254375ed-1b8c-4e9a-80c2-4f1cb7c952eb",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1308.5302734375,
+    5027.4658203125
+   ],
+   "text": "Cooling",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "aad0ba65-7025-4206-942f-2a5c3c3ee331",
+   "kind": "native",
+   "name": "Colour Swatch",
+   "nickName": "Swatch",
+   "pivot": [
+    1390.0400390625,
+    5062.89697265625
+   ],
+   "type": "GH_ColourSwatch"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1630.0,
+    969.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    916.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    1294.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    1789.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "e0b676ae-94b9-428c-893a-505e31df7fdc",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    2236.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    2763.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "139ab503-3d55-45f9-86da-75300b74aca4",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    3349.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "c048df6dc0a8",
+   "id": "bab44d87-fff1-442b-badc-fc7b595fe779",
+   "inputs": [
+    "FilePath",
+    "ShortVariantName",
+    "AirnodeName",
+    "XOutput",
+    "YOutput"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data",
+   "nickName": "PlotData",
+   "outputs": [
+    "out",
+    "Data_"
+   ],
+   "pivot": [
+    1924.0,
+    3955.0
+   ],
+   "script": "Lizard_Plot_Data",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "a9d16a5a9e37",
+   "id": "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+   "inputs": [
+    "Settings",
+    "ScriptPath",
+    "OutputFilePath",
+    "Plot"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plotter",
+   "nickName": "Plot",
+   "outputs": [
+    "out"
+   ],
+   "pivot": [
+    3274.0,
+    866.0
+   ],
+   "script": "Lizard_Plotter",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "f7672c0a200e",
+   "id": "7fad9011-5573-407f-b8ba-26bd6d299394",
+   "inputs": [
+    "Variants",
+    "FocusAirnode"
+   ],
+   "kind": "script",
+   "name": "Lizard_Output_Files",
+   "nickName": "Output_Files",
+   "outputs": [
+    "out",
+    "Building",
+    "BuildingInfo",
+    "Temperature",
+    "Power",
+    "Additional",
+    "PlotPath",
+    "FocusAirnode",
+    "VariantName"
+   ],
+   "pivot": [
+    480.0,
+    933.0
+   ],
+   "script": "Lizard_Output_Files",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "061eab8d-3c23-4bca-94c1-0a92072e8360",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1636.0,
+    1348.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "d9c59e0d-6966-4c4b-8926-f45cf5dfa218",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1629.0,
+    1818.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "92c5bf59-227f-4056-bbc1-d79d4de9f522",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1630.0,
+    1988.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "d85202dd-6bfb-4752-9a6a-d7dedaee7b35",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1631.0,
+    2203.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "dd8684e6-860e-4885-b8e2-a44a9b3a854c",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1628.0,
+    2326.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "c76bec5c-55e8-4c7e-a213-1f617328e4e7",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1626.0,
+    2457.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "eb5f627b-593d-46a9-b8d5-34072112536c",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1641.0,
+    2806.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "261a3681-9767-4ec5-89b6-a7d00fa7f4f7",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1627.0,
+    3334.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "a25a4ab9-2046-42e5-b958-a43404e4be6a",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1626.0,
+    3450.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "7166b57c-7ab7-4933-a4ca-28eaceab3a0d",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1636.0,
+    4083.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "44cacb0c-ab63-407d-8ecd-04347a6b563a",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1638.0,
+    4198.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "95293f9b-ef2e-4629-8ba4-72cb59eeb90b",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1637.0,
+    4317.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "b888485c-67f5-4cd6-a04e-e35639fe84ec",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1633.0,
+    4432.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "df7fca87-29af-448a-8f1d-8c147dcc7afd",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1633.0,
+    4576.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "0adc401e-07e1-4bc2-a7f7-084e756cbe6a",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1634.0,
+    4701.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "24a0593a-07bb-4e10-8f43-317564e91d66",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1634.0,
+    4820.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "0b8e3cd9-89fb-45b1-90cf-f18fd604f20a",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1635.0,
+    4921.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "4fa86404ceca",
+   "id": "3ec8d7a5-1261-4ffa-8990-f20d8d0a59c7",
+   "inputs": [
+    "Output",
+    "Label",
+    "Color"
+   ],
+   "kind": "script",
+   "name": "Lizard_Plot_Data_Settings",
+   "nickName": "PlotDataSet",
+   "outputs": [
+    "out",
+    "Output_"
+   ],
+   "pivot": [
+    1637.0,
+    5043.0
+   ],
+   "script": "Lizard_Plot_Data_Settings",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "7fc72023-b584-4b03-a527-f0098010b131",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "d7a624f6-69b0-48b7-9da4-2b944af03c71",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "f51e8c96-f632-4adc-a7f1-e6738b512ff9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a11980a0-f8f1-4a42-bbe2-b8268b2e995a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "6955b15b-1c5a-49b4-934d-2f9ca888d41c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "11cc3b28-9993-4dba-b869-6ead2e49e200",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "dbb33013-31d3-4032-b971-039e3894c9dc",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "98bd2237-4a9a-438d-9ede-064119225279",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "9631747f-573a-4fd1-afb1-6709a5833944",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "Data_",
+    1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "36494f50-709a-4d2b-8828-5db842466517",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "fc02d804-5c0f-4920-8bb8-54960f12c6b1",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "a0f44d19-e47b-43c3-8fb0-d5447fbad913",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "01b153d9-db4e-4302-9da6-be5797c64552",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "f57d22c9-c732-4d8d-85c7-d1f4ccb46b42",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "7609ed6a-d829-47a0-a290-171d1cacfe09",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+    "out",
+    0
+   ],
+   "to": [
+    "9121cf05-4fb8-4f95-9528-5475cf029b5a",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "1100d796-c674-4659-9570-89db1e8b306a",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "9d51f26d-7b84-4305-b0cc-a1d35886c3c7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "d55d3d89-be69-40ec-9111-338fc6fac7ff",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "da4f6cb3-9fe7-414f-a735-5d22b048b726",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "d1676acd-e94e-48da-9faf-abd54564047c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "63e4b24a-41ad-4534-a4fa-639ee84f76bc",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "fb7932d9-8a7c-4f69-9c8d-08c6b4305b10",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "4211928b-bcf0-48c1-a7be-da17690087e3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "12d5b85e-9534-42d1-83b4-d0f4a236dd60",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "Data_",
+    1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "60e04fed-d077-448d-8c4d-428fe26ee2d5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "7ce8d8eb-a446-419f-b902-7ee77c760369",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "132e418d-f9f7-48f1-ba32-f5cd0222b783",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "694ef4c3-3b8a-4206-b4af-f9968df3d2a5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "b31fbf92-ec27-4438-96f4-981ea8679c22",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "900f13f7-6199-406f-89d9-1e13e9053b16",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "8ca16bac-b659-45a6-8f9b-90d9283f0820",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "dec06fa1-ba34-4014-822d-2fd55169ccbe",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "3473c96d-fbc0-46ac-b391-7c1f16282103",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "9bc09a2a-c91b-48a3-99a6-9a61a734f167",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "af792ec1-3574-4c15-a8e1-937f30700d6b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "ccc5f5f1-9465-40f0-b8c5-649a878cf82e",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "564a241b-1463-45a8-a1b6-77bc5cc7ad4b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "234b6069-05f3-4091-b115-f71bcca0cea3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "eba6a621-e7a3-4251-90af-bf01ce97af94",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "Data_",
+    1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "739fa118-f652-452a-bb88-921fbb19bfce",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "8b4d88fc-902a-4764-b1f9-91a011ef1186",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "47d9f8ef-85ec-4865-bfe3-9cd9bde604fd",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "f562232f-fa00-49e6-afc6-52fd524a281f",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "a2af510a-fedb-47dc-a8b7-be3b963c995d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3462f5a2-7e5e-45be-ac5f-1beb0e30e4b0",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "e2ea1f9f-4925-4ac9-9e98-d6fb55825d3e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "1b185339-d420-4cf3-9611-4007cfefe784",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "c8012232-5061-4717-b74f-e74bd8d867f1",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "5fbd1471-85b5-4c20-8258-15b0a6337079",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "e7eef820-7cac-4779-ab6b-a936042c154b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "4181c35d-92be-405b-bfde-6cad90aa11c9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "790f2051-3500-4b13-bb3c-05cf3bf8efec",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "cc9a9bb0-7bff-4f74-ac13-67ba68c0406c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "Data_",
+    1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "7b66d261-f561-417f-b576-585b65aaaa62",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "9342fb40-667e-4781-a57e-2204c399836e",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "66c6231d-3a7c-4a30-b6bc-4599d17e9caa",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "4c0855af-312e-420d-9d83-caad70762129",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "b4c43dd5-8508-48b6-9123-05e6f1485239",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c4143e6d-6d34-4ace-9d9f-7c47c20a833c",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Settings_",
+    1
+   ],
+   "to": [
+    "96d25a86-3810-4bcd-9ce1-b936f0ea8ad5",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "7ebfcedf-0978-4ad9-8b28-ca7659b0662c",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "ec4a706b-1bb8-4117-93d5-534c08447aa5",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "3a780370-1def-46c8-95ec-3e101302a86d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "2c445f10-d7d5-4f7f-8e02-2f34179d364b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "a8427a79-06d8-4e67-8ea4-02247296eedd",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "3d3861b6-1ddc-4f1a-af80-ad49c0715506",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "58e4b4fc-cdf1-4884-be39-f75439dea2b8",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "762cd837-56cc-4453-a462-cb81758e9975",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "0f4dcb22-3bfc-4891-947c-a40ccf74f7c3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "Data_",
+    1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "7a1262e2-d3a1-49de-9fc4-1efa2c141268",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "ed64af43-4457-4165-b5f1-f69b7ce08340",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "26af9c7a-7d0c-431d-b039-7e850d44620a",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "d5d66365-6709-4d29-aa20-bcb2516b5c50",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "31af5078-5f01-4c4f-bfad-f9fd07d8093b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "60411063-3bdd-4acc-95c9-ad4ab30ae881",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "fa7cc720-3204-4571-b72a-20f997d40cb0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "9a7a1d52-fa13-42f7-8c81-8fc685a90a21",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "10f66a2c-4bbe-436c-8ce2-f7fa0b0fce75",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "458176a2-0683-4dc8-8328-95102e32a4e1",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "39cf7900-6fb8-4126-b99b-2517adbc309f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "2dfc7c21-a79e-4ca8-8ed2-30c88f55baa2",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "94a43785-ec0e-4d0a-8dcd-9bdc80073641",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "216db469-06b6-4287-8ca7-2dda7982e754",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "cfa26d8e-84ec-4a0a-9cd7-e1f63afed93e",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "Data_",
+    1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "8553cbee-736b-49ef-8d04-dde54ece3d04",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "501d28aa-9b66-4c02-8631-57e14097f088",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "4c5b09b1-04e8-48ae-be90-b9f2344f129c",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "e4b16c01-72a5-44ab-a108-e5c8a461409f",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "c2dc5af6-e8c9-4ac4-9f65-ba7f320714ba",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1a03ee73-e7ee-4210-b8b1-ed4387931136",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "0f6df65f-f9a9-4e87-aacb-ac18679ec36e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Title",
+    0
+   ]
+  },
+  {
+   "from": [
+    "826b542d-4a85-4aca-9079-2b00533b917d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Xlabel",
+    1
+   ]
+  },
+  {
+   "from": [
+    "091c0418-ead4-4f1e-85c6-c3b8466b15d0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Ylabel",
+    2
+   ]
+  },
+  {
+   "from": [
+    "4371f6de-82de-4824-8bb3-30356d89e268",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Ystart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "5d808576-be07-4361-b28c-81f3de61155a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Ystop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "6f949e54-c7a6-44f0-bdd9-730d75cb5680",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Ydticks",
+    5
+   ]
+  },
+  {
+   "from": [
+    "362e7f26-cdf8-4c2a-9852-1789110b1840",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Xstart",
+    6
+   ]
+  },
+  {
+   "from": [
+    "ded80400-8029-4900-b6ec-ba3feb48efd5",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Xstop",
+    7
+   ]
+  },
+  {
+   "from": [
+    "40d157a0-6894-4f54-80a3-ef31b1d18d48",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Xdticks",
+    8
+   ]
+  },
+  {
+   "from": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "Data_",
+    1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Data",
+    9
+   ]
+  },
+  {
+   "from": [
+    "7c68f643-2ea3-4122-abd0-c2ab331cbe0d",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Type",
+    10
+   ]
+  },
+  {
+   "from": [
+    "88ee0b61-6502-4869-9f0a-36bf06d8cfc9",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Comfort",
+    11
+   ]
+  },
+  {
+   "from": [
+    "44e7de8d-59d4-4387-b15c-82adc74b7f54",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Fill",
+    12
+   ]
+  },
+  {
+   "from": [
+    "2de9e97c-2159-4e2c-b7cb-066ce791b9b2",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Image",
+    13
+   ]
+  },
+  {
+   "from": [
+    "b05e3f05-ecd1-42c0-a797-91e722aaf9c7",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "53a639d6-541a-4eec-9dd4-884d7d6ce6a9",
+    "Width",
+    14
+   ]
+  },
+  {
+   "from": [
+    "05eb4f03-b0b7-47ea-bb4d-eba1cd5ff980",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "cb4d2ed8-ad83-4e2f-86fc-4ba2a8583fe0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "0fa556a3-7475-4358-93f6-978bcc051a42",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Temperature",
+    3
+   ],
+   "to": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "db985e33-975d-4a1c-9013-3d6b35913961",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "XOutput",
+    3
+   ]
+  },
+  {
+   "from": [
+    "fa66774e-bd52-4ab3-b338-a73ac5217fd8",
+    "Output_",
+    1
+   ],
+   "to": [
+    "86e1f2f7-2349-4ff4-b2ea-11ead18d08bc",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Temperature",
+    3
+   ],
+   "to": [
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "061eab8d-3c23-4bca-94c1-0a92072e8360",
+    "Output_",
+    1
+   ],
+   "to": [
+    "07aa0cb5-cb76-4c1d-a19d-bde35af5da41",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Temperature",
+    3
+   ],
+   "to": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "d9c59e0d-6966-4c4b-8926-f45cf5dfa218",
+    "Output_",
+    1
+   ],
+   "to": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "92c5bf59-227f-4056-bbc1-d79d4de9f522",
+    "Output_",
+    1
+   ],
+   "to": [
+    "c3de8442-a24d-4f0c-ab10-8d6009d262db",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Power",
+    4
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "dd8684e6-860e-4885-b8e2-a44a9b3a854c",
+    "Output_",
+    1
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "d85202dd-6bfb-4752-9a6a-d7dedaee7b35",
+    "Output_",
+    1
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "c76bec5c-55e8-4c7e-a213-1f617328e4e7",
+    "Output_",
+    1
+   ],
+   "to": [
+    "e0b676ae-94b9-428c-893a-505e31df7fdc",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Power",
+    4
+   ],
+   "to": [
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "eb5f627b-593d-46a9-b8d5-34072112536c",
+    "Output_",
+    1
+   ],
+   "to": [
+    "c67a14a5-9fd4-4304-a045-140a4eca86f3",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Temperature",
+    3
+   ],
+   "to": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a25a4ab9-2046-42e5-b958-a43404e4be6a",
+    "Output_",
+    1
+   ],
+   "to": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "261a3681-9767-4ec5-89b6-a7d00fa7f4f7",
+    "Output_",
+    1
+   ],
+   "to": [
+    "139ab503-3d55-45f9-86da-75300b74aca4",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "Power",
+    4
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "FilePath",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "VariantName",
+    8
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "ShortVariantName",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "FocusAirnode",
+    7
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "AirnodeName",
+    2
+   ]
+  },
+  {
+   "from": [
+    "7166b57c-7ab7-4933-a4ca-28eaceab3a0d",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "44cacb0c-ab63-407d-8ecd-04347a6b563a",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "95293f9b-ef2e-4629-8ba4-72cb59eeb90b",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "b888485c-67f5-4cd6-a04e-e35639fe84ec",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "df7fca87-29af-448a-8f1d-8c147dcc7afd",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "0adc401e-07e1-4bc2-a7f7-084e756cbe6a",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "24a0593a-07bb-4e10-8f43-317564e91d66",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "0b8e3cd9-89fb-45b1-90cf-f18fd604f20a",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "3ec8d7a5-1261-4ffa-8990-f20d8d0a59c7",
+    "Output_",
+    1
+   ],
+   "to": [
+    "bab44d87-fff1-442b-badc-fc7b595fe779",
+    "YOutput",
+    4
+   ]
+  },
+  {
+   "from": [
+    "96d25a86-3810-4bcd-9ce1-b936f0ea8ad5",
+    "Data",
+    -1
+   ],
+   "to": [
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+    "Settings",
+    0
+   ]
+  },
+  {
+   "from": [
+    "8924f984-b0f7-4ddf-ba8b-3afb471b27e2",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+    "ScriptPath",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fad9011-5573-407f-b8ba-26bd6d299394",
+    "PlotPath",
+    6
+   ],
+   "to": [
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+    "OutputFilePath",
+    2
+   ]
+  },
+  {
+   "from": [
+    "d10568de-4f86-426d-b211-8f1b04d4dd31",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "29bbc58f-528a-4267-a36a-fa8531c74ce0",
+    "Plot",
+    3
+   ]
+  },
+  {
+   "from": [
+    "a5a73fbc-78a8-48d0-94df-71d9cce866ba",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "061eab8d-3c23-4bca-94c1-0a92072e8360",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "4cb55371-10b6-4b40-8d0a-6da89e78196b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "061eab8d-3c23-4bca-94c1-0a92072e8360",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "2c933588-fc39-4df1-94be-851ce1d20c89",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "061eab8d-3c23-4bca-94c1-0a92072e8360",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "0043a712-ffe6-4cbc-9d31-e2f6b31bc674",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d9c59e0d-6966-4c4b-8926-f45cf5dfa218",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "eca8ec7e-4842-4164-a779-00b9f2778e8e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d9c59e0d-6966-4c4b-8926-f45cf5dfa218",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "b4f29c8d-faf8-44b5-a7fb-3177d38c7b19",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "d9c59e0d-6966-4c4b-8926-f45cf5dfa218",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "757542aa-6718-46ac-92ff-95158e2b17ed",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "92c5bf59-227f-4056-bbc1-d79d4de9f522",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "43b0ecdc-cfdb-4e25-8e2b-dea403d25f55",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "92c5bf59-227f-4056-bbc1-d79d4de9f522",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "d1cca0b1-1595-4ebc-87c8-1bb7186184f5",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "92c5bf59-227f-4056-bbc1-d79d4de9f522",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "d4408e95-0926-4dd6-b450-3656770e4bf8",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d85202dd-6bfb-4752-9a6a-d7dedaee7b35",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "bd6c2dfb-e637-43fe-ac0b-5ef8f9fc0b55",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d85202dd-6bfb-4752-9a6a-d7dedaee7b35",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "feeedb90-4816-4581-be4d-0350258758e9",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "d85202dd-6bfb-4752-9a6a-d7dedaee7b35",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "cdeb21d9-9b43-4b11-a76e-09ab3d0daec1",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "dd8684e6-860e-4885-b8e2-a44a9b3a854c",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "5629f112-a2a0-45f9-8b9e-cc7f99823260",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "dd8684e6-860e-4885-b8e2-a44a9b3a854c",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "0107efd1-6bbb-49d5-8249-8171ae1a2704",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "dd8684e6-860e-4885-b8e2-a44a9b3a854c",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "e187f4c5-6f06-4416-8390-5463ba541728",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "c76bec5c-55e8-4c7e-a213-1f617328e4e7",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "702c3eb1-b0aa-4219-a168-3f49e54b41c2",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "c76bec5c-55e8-4c7e-a213-1f617328e4e7",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "8a8ef2b5-7386-47cb-9184-098454557d7e",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "c76bec5c-55e8-4c7e-a213-1f617328e4e7",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a0f4cfec-5554-475d-b66f-3c7675268c76",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "eb5f627b-593d-46a9-b8d5-34072112536c",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "1a44ca85-a9dc-4a41-81de-56a907a39b5b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "eb5f627b-593d-46a9-b8d5-34072112536c",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "f4d4b5de-0907-4b9e-b0f4-3841373afc80",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "eb5f627b-593d-46a9-b8d5-34072112536c",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "32147e28-be36-4ae8-993d-35e285580669",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "261a3681-9767-4ec5-89b6-a7d00fa7f4f7",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "89bf6950-47eb-4fd7-afd4-0dbdf691439b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "261a3681-9767-4ec5-89b6-a7d00fa7f4f7",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "4a20af3b-dce0-4611-8a61-78687fe05548",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "261a3681-9767-4ec5-89b6-a7d00fa7f4f7",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "90569460-60ee-40aa-9dbe-94179ae22373",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "a25a4ab9-2046-42e5-b958-a43404e4be6a",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "051a68ea-3ac5-474d-a680-9a96d5ad4b1d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "a25a4ab9-2046-42e5-b958-a43404e4be6a",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "e9968be1-1ee3-4477-bf6c-27c0a28a28bd",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "a25a4ab9-2046-42e5-b958-a43404e4be6a",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "6c111dc6-d407-4bb3-b445-6c5a7cda2abb",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7166b57c-7ab7-4933-a4ca-28eaceab3a0d",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "d953d7a2-bf1e-4160-aca9-1425fd377b5a",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7166b57c-7ab7-4933-a4ca-28eaceab3a0d",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "0789fa1a-8506-4a3d-9865-cf0f27ea5900",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "7166b57c-7ab7-4933-a4ca-28eaceab3a0d",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "59925f4b-0af3-4790-8456-d66401d0861b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "44cacb0c-ab63-407d-8ecd-04347a6b563a",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "44feb017-bda1-4c8e-ae64-3f9cc07c05aa",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "44cacb0c-ab63-407d-8ecd-04347a6b563a",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "10f24841-4695-4b94-a64f-28333dc7d8e3",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "44cacb0c-ab63-407d-8ecd-04347a6b563a",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "632c03b9-4497-4d60-853a-52fe44f89ede",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "95293f9b-ef2e-4629-8ba4-72cb59eeb90b",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "bbc11ba1-fd11-4b64-8df3-fd91b4987f7b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "95293f9b-ef2e-4629-8ba4-72cb59eeb90b",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fb58dc6-f998-4ea4-a967-44ed5189e513",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "95293f9b-ef2e-4629-8ba4-72cb59eeb90b",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "9c8bd2e4-e601-4553-a921-2ef83d0a6428",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "b888485c-67f5-4cd6-a04e-e35639fe84ec",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "1fa3c70a-6dd3-43a3-b083-546da281f80f",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "b888485c-67f5-4cd6-a04e-e35639fe84ec",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "d937ebce-96fd-4dfb-ae06-d68c67e408fb",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "b888485c-67f5-4cd6-a04e-e35639fe84ec",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "7dca44ba-523d-4a57-ad26-27dd78502edb",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "df7fca87-29af-448a-8f1d-8c147dcc7afd",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "b140885d-c0e3-4abe-8198-f4b6b82459f7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "df7fca87-29af-448a-8f1d-8c147dcc7afd",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "b5f892fa-56b1-4559-8425-058966e260cc",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "df7fca87-29af-448a-8f1d-8c147dcc7afd",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "51f9e28f-68f9-4a47-abb6-5996ea9c9c10",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0adc401e-07e1-4bc2-a7f7-084e756cbe6a",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "1eff3e5b-71f0-45c7-ad3f-53476e2d73e2",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0adc401e-07e1-4bc2-a7f7-084e756cbe6a",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "1c379e85-4bec-444b-84c7-0722af5a0fb9",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "0adc401e-07e1-4bc2-a7f7-084e756cbe6a",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "89374721-3fcd-4b8b-866f-cc1145df9c0d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "24a0593a-07bb-4e10-8f43-317564e91d66",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "9aa66be8-d56d-4c66-a217-bd5f0dbd23c6",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "24a0593a-07bb-4e10-8f43-317564e91d66",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "74939260-6aac-451c-9f8c-a2e89bcac45e",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "24a0593a-07bb-4e10-8f43-317564e91d66",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a17d2259-9b59-486e-b7d6-921d8b189d19",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0b8e3cd9-89fb-45b1-90cf-f18fd604f20a",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "4881fb5d-a50b-42cb-9787-2467f095050e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0b8e3cd9-89fb-45b1-90cf-f18fd604f20a",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "9e4f16d8-b3b1-4d16-8332-4ac8132615e7",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "0b8e3cd9-89fb-45b1-90cf-f18fd604f20a",
+    "Color",
+    2
+   ]
+  },
+  {
+   "from": [
+    "33a17bc9-2aa0-469d-98d3-bbac843d604f",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "3ec8d7a5-1261-4ffa-8990-f20d8d0a59c7",
+    "Output",
+    0
+   ]
+  },
+  {
+   "from": [
+    "254375ed-1b8c-4e9a-80c2-4f1cb7c952eb",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "3ec8d7a5-1261-4ffa-8990-f20d8d0a59c7",
+    "Label",
+    1
+   ]
+  },
+  {
+   "from": [
+    "aad0ba65-7025-4206-942f-2a5c3c3ee331",
+    "Colour Swatch",
+    -1
+   ],
+   "to": [
+    "3ec8d7a5-1261-4ffa-8990-f20d8d0a59c7",
+    "Color",
+    2
+   ]
+  }
+ ]
+}

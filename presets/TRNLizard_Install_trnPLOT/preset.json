@@ -1,0 +1,8 @@
+{
+ "category": "TRNLizard",
+ "description": "The components in this cluster will allow you to automatically download trnPLOT to visualize simulation results",
+ "exposure": "primary",
+ "name": "TRNLizard_Install_trnPLOT",
+ "nickName": "Install_trnPLOT",
+ "subCategory": "2 | Extras"
+}

@@ -1,0 +1,1226 @@
+{
+ "objects": [
+  {
+   "id": "263e6db5-de53-475e-96a1-4a08957ca202",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    94.087890625,
+    201.660888671875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "505ccf5b-0115-4de2-8eca-131b09141d87",
+   "kind": "native",
+   "members": [
+    "ac6cdcaa-5f31-417e-8b0e-b0f94fc82e7a",
+    "04ea3f8b-0473-4a37-9d8b-87d407c6a001",
+    "2dfe803a-097f-4481-8608-de2ed8fa564d",
+    "7fcea7eb-cdc3-4074-880a-ffa1b1a3efbc",
+    "fd958065-477e-4cb8-aa4e-4be1a0e53bfd",
+    "91c74a18-1a85-4a46-b845-6512f4e78e7b",
+    "eaf4dda9-e217-4a83-9839-d041fcc31553",
+    "8f4f08c8-6575-4cac-8b31-94a7923c9856",
+    "4cd46d82-3842-43f2-8adc-0af3a16cd3d7",
+    "a9eb20c0-3ecc-4304-a9c5-349366f49a7b",
+    "5a8c9f09-e0de-4b0e-a466-f468a171944b",
+    "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+    "235c7c2c-b600-42b6-bbae-f0d4ce86bd60",
+    "b73fb3c0-a32b-4ea3-97e1-d23a7f1c4bad",
+    "12e44749-b449-4712-9145-2b1186ee6194",
+    "32b0cb64-13a1-4572-b260-38a67d534058",
+    "9835a737-8906-429e-9758-0bb9ac9f9401",
+    "09d3029b-8357-4680-ad5c-c822e33b5c7c",
+    "82363c8a-89c9-450f-b6ae-b8cf2c13c85c",
+    "4dbc4d3c-0d62-40cc-ac69-5e405bfd0ac0",
+    "75c511ec-2b02-48d8-bc3e-76e204d7aeb1",
+    "32d0088f-b1a6-445f-81bf-a89525c9e7b0",
+    "f0a759a8-fb1a-41b6-b6b8-c1eb631585d3",
+    "b9fadf78-425d-4fa2-bdd8-f36b2a8a5b1e",
+    "0014702d-e123-4908-8367-4363aa347e00",
+    "4b45d159-c2b4-423b-a5a2-b4d927626789",
+    "6d88f16c-548d-419a-af07-143a7ad5d158",
+    "4e0e4add-f9a8-4418-8fd4-7e0864947f59",
+    "b18e00d3-2f46-4908-b4ca-388af0d4b9a2",
+    "a3ff311c-5e58-4e42-97fd-808e05cecc40",
+    "cb6751f7-cc17-4f78-907f-406d77e178c5",
+    "73f6a15d-b116-48ec-8480-f25ba453eea0",
+    "d748ec62-9e33-40b6-b414-801f9a88369c",
+    "b80acdd8-3e9e-40b9-9d94-1b0cda7e39eb",
+    "85124c94-f365-4b83-ae28-7d840555cdda",
+    "c084493b-47d5-4e34-9731-502a88ee5bec",
+    "febb1569-e3be-4274-bceb-3300bcaf3348",
+    "d2a568e9-839c-4491-9460-5bc9f13eec7b",
+    "e7b8b996-1067-4667-b153-bf710d1072df",
+    "bb951bf0-6e42-4741-b7ba-b321ca82c05d",
+    "6cf6d9f0-17d9-473e-8793-ec68c1b98c9b",
+    "4649c50c-4884-4a65-aec8-c396423c9f04",
+    "f5dbfdac-cf9a-4172-9c83-b1b95022cf48",
+    "53cfc977-2ce2-45ba-aa90-edda8932606b",
+    "a5787354-b002-4376-9e81-b096c1b96f0b",
+    "ecabb545-6f1f-4cd1-964a-df709c4ca16f",
+    "d2f60927-6c98-4580-b986-1b32a304f3bf",
+    "bd285e3e-8a7c-4791-9a80-a6ee0a95e3df",
+    "52e2ddc4-d11a-4877-8b3a-183fd2850ae5",
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "bc67886c-08d9-4601-9d54-c13882345682",
+    "e59bf332-c4e5-4ec2-89d2-beaec54081a2",
+    "be4161b3-5c2a-40e7-8e13-04ae1042fd80",
+    "3f9fcc15-4ff2-4d63-9962-19b33510e74b",
+    "2e8298f2-d519-4ea8-878b-c4201f887814",
+    "f0ec9814-932d-40e2-85e0-d184009d2684",
+    "b3162747-0a63-4fd5-a947-a6de606d7d8d",
+    "7e4f5476-1985-43ce-8de9-421f9437d665",
+    "c6e233f2-fdf6-4377-a07e-3d8b2bb8aacd",
+    "2e25f4ab-6a5c-406c-b87c-58f0f1cf9573",
+    "6880072e-a6ec-48a8-a26b-80841a26f661",
+    "887852e8-f997-460d-a906-7de6185e63f2",
+    "40568783-db13-4d10-81b5-42b3783dc6fc",
+    "ebe63118-cc6f-4f00-b00a-6946c2c0fc6d",
+    "31b2cece-7c21-41a8-8755-600407e0cb67",
+    "da9de27e-6d6e-474f-a50f-0666009d726b"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "ac6cdcaa-5f31-417e-8b0e-b0f94fc82e7a",
+   "kind": "native",
+   "members": [
+    "04ea3f8b-0473-4a37-9d8b-87d407c6a001",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "d71e2083-71ea-4a0f-aec7-b8c319a1b79f",
+    "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+    "b73fb3c0-a32b-4ea3-97e1-d23a7f1c4bad",
+    "2dfe803a-097f-4481-8608-de2ed8fa564d",
+    "0e464877-b3cf-42d7-8ff0-027977337b89",
+    "6e819ad2-ee89-4b4b-a991-48284f2359eb",
+    "9c2c75ef-9c00-4fac-aed8-21416df61ebb",
+    "263e6db5-de53-475e-96a1-4a08957ca202"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "04ea3f8b-0473-4a37-9d8b-87d407c6a001",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    208.078125,
+    87.02029418945312
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "2dfe803a-097f-4481-8608-de2ed8fa564d",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    207.4482421875,
+    180.15609741210938
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "5a8c9f09-e0de-4b0e-a466-f468a171944b",
+   "kind": "native",
+   "members": [
+    "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+    "bafe4d70-d10f-4db4-a7e3-3671e35c6389"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    129.4677734375,
+    96.60137939453125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "235c7c2c-b600-42b6-bbae-f0d4ce86bd60",
+   "kind": "native",
+   "members": [
+    "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+    "bafe4d70-d10f-4db4-a7e3-3671e35c6389"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b73fb3c0-a32b-4ea3-97e1-d23a7f1c4bad",
+   "kind": "native",
+   "members": [
+    "7c57f346-64e8-40b9-87f8-9d7ead3930a4",
+    "bafe4d70-d10f-4db4-a7e3-3671e35c6389"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "c084493b-47d5-4e34-9731-502a88ee5bec",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Write System Files",
+   "pivot": [
+    251.0,
+    384.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "febb1569-e3be-4274-bceb-3300bcaf3348",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Run Simulation",
+   "pivot": [
+    265.0,
+    484.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "d2a568e9-839c-4491-9460-5bc9f13eec7b",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    888.1279296875,
+    481.4499816894531
+   ],
+   "text": "0\tBase1\tLizard\tp:\\Darmstadt_Alnatura\\Sim-Thermal\\\\140930_Multizone\\\\Model\\Base1\\",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "bb951bf0-6e42-4741-b7ba-b321ca82c05d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Timestep",
+   "pivot": [
+    196.337890625,
+    518.0457763671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "2e8298f2-d519-4ea8-878b-c4201f887814",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Run Daylight Preprocessing",
+   "pivot": [
+    206.0,
+    417.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "f0ec9814-932d-40e2-85e0-d184009d2684",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Run Thermal Preprocessing",
+   "pivot": [
+    207.0,
+    450.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "b3162747-0a63-4fd5-a947-a6de606d7d8d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Day of Month",
+   "pivot": [
+    209.1279296875,
+    548.7332153320312
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7e4f5476-1985-43ce-8de9-421f9437d665",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Month",
+   "pivot": [
+    292.0,
+    579.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "c6e233f2-fdf6-4377-a07e-3d8b2bb8aacd",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Day of Month",
+   "pivot": [
+    209.1279296875,
+    613.3333129882812
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6880072e-a6ec-48a8-a26b-80841a26f661",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Month",
+   "pivot": [
+    292.0,
+    644.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "codeHash": "d7bd6de9ceae",
+   "id": "db0884bb-82b9-4e3e-bee1-a26c66327d2c",
+   "inputs": [
+    "Variant"
+   ],
+   "kind": "script",
+   "name": "Lizard_Log_Check",
+   "nickName": "Log_Check",
+   "outputs": [
+    "-------------------------------------log file outputs---------------------------------------------------------------------"
+   ],
+   "pivot": [
+    945.0,
+    587.0
+   ],
+   "script": "Lizard_Log_Check",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "cluster": {
+    "objects": [
+     {
+      "codeHash": "aa48f44bbce0",
+      "id": "72c343f0-3236-4780-979a-b876c341f6bd",
+      "inputs": [
+       "geometry",
+       "construction",
+       "wall",
+       "window",
+       "shading",
+       "insulation",
+       "schedules",
+       "artificial_lighting",
+       "internal_gains",
+       "other_gains",
+       "thermal_bridge",
+       "heating",
+       "cooling",
+       "active_layer",
+       "infiltration",
+       "ventilation",
+       "hybrid_ventilation",
+       "stack_ventilation1",
+       "stack_ventilation2",
+       "results",
+       "short_summary"
+      ],
+      "kind": "script",
+      "name": "Python Script",
+      "nickName": "Python",
+      "outputs": [
+       "out",
+       "template_report"
+      ],
+      "pivot": [
+       8630.0,
+       1493.0
+      ],
+      "script": "Python Script",
+      "type": "ZuiPythonComponent"
+     },
+     {
+      "id": "2f548348-637b-43e3-abfd-31ec5c762145",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Ventilation Template",
+      "pivot": [
+       7827.32080078125,
+       2245.52099609375
+      ],
+      "text": "\nLüftung\n-----------\n\nMechanische Lüftung\n=================================== ===================================\nZulufttemperatur:                   @twinter_mv °C (Winter) \nZulufttemperatur:                   @tsummer_mv °C (Sommer)\nMax. absolute Feuchte (Sommer):     @hummax_mv g/kg\nMin. absolute Feuchte (Winter):     @hummin_mv g/kg\nSensible Wärmerückgewinnung:        @hrcsenspc %\nLatente Wärmerückgewinnung:         @hrclatpc %\nMax. Luftwechsel:                   @acr_mv 1/h\nMax. spez. Volumenstrom:            @svf_mv (m³/h)/m² \nVolumenstrom pro Person:            @vf_ppers m³/h per person \t\t\nSpecific Lüfterstrombedarf:         @sfp_mv W/(m³.h)\nNutzungsprofil:                     @schedule_mv\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "2b1145b1-82ed-4768-8a65-483642cd5484",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Infiltration Template",
+      "pivot": [
+       7827.27978515625,
+       2173.111083984375
+      ],
+      "text": "Infiltration\n=================================== ===================================\nLuftwechsel:                        @ach_inf 1/h\nMin. Luftwechsel:                   @min_inf\nNutzungsprofil:                     @schedule_inf\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "efb6871a-8d2e-4742-ae14-a020f352afaa",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Stackventilation 1 Template",
+      "pivot": [
+       7829.80419921875,
+       2497.89404296875
+      ],
+      "text": "Ablüftung 1\n=================================== ===================================\nEffektive Lüftungsfläche (oben):    @aeff1top m²\nEffektive Lüftungsfläche (unten):   @aeff1bot m²\nHöhendifferenz:                     @hdiff_sv1 m\nNutzungsprofil:                     @schedule_sv1\n2-Punkt-Regelung (AN):              Raumlufttemp. > @tairon_sv1 °C\n2-Punkt-Regelung (AUS):             Raumlufttemp. < @tairoff_sv1 °C\nFreigabe:                           Aussenlufttemp. > @tambon_sv1 °C\nund Freigabe:                       mittl. Aussenlufttemp. (24h) > @tamb24on_sv1 °C\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "0f57ecec-2272-478a-bef4-82f3ee35e5a0",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Heating Template",
+      "pivot": [
+       7820.69384765625,
+       1638.5030517578125
+      ],
+      "text": "\nStat. Heizung\n--------------\n\nHeizung\n=================================== ===================================\nSolltemperatur (Nutzungsprofil):    @T_set_ht °C\nNachtabsenkung:                     @Deltatht K\nFreigabe:                           mittlere Aussenlufttemp. (24h) < @tamb24h_htbui °C\nNutzungsprofil:                     @schedule_ht\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "98472a7e-5c2e-4d6c-9ee6-ed6c94bcfb81",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Active Layer Template",
+      "pivot": [
+       7825.69384765625,
+       1873.9100341796875
+      ],
+      "text": "\nAkt. Fläche\n---------------\n\nHeizung\n=================================== ===================================\nVorlauftemperatur:                  max. @twinter °C\nFreigabe:                           mittl. Aussenlufttemp. (24h) > @tamb24h_alht°C\nFluidseitige Leistungsbegrenzung:   max. @shp_al W/(m².aktive Fläche)\nSpez. Massenstrom:                  @smflow kg/h/(m².aktive Fläche) \n2-Punkt-Regelung (AN):              @thton_al °C\n2-Punkt-Regelung (AUS):             @thtoff_al °C\nNutzungsprofil:                     @schedule_alht\n=================================== ===================================\n\nKühlung\n=================================== ===================================\nVorlauftemperatur:                  max. @tsummer °C\nFreigabe:                           mittl. Aussenlufttemp. (24h) > @tamb24h_alcl°C\nFluidseitige Leistungsbegrenzung:   max. @shp_al W/(m².aktive Fläche)\nSpez. Massenstrom:                  @smflow kg/h/(m².aktive Fläche) \n2-Punkt-Regelung (AN):              @tclon_al °C\n2-Punkt-Regelung (AUS):             @tcloff_al °C\nNutzungsprofil:                     @schedule_alcl\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "05189e8b-3c1a-49c7-a24a-2e1ebe05859a",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Internal Gains Template",
+      "pivot": [
+       7822.97509765625,
+       1361.1510009765625
+      ],
+      "text": "\nInterne Lasten\n----------------\n\nPersonen\n=================================== ===================================\nNutzungsprofil:                     @sched_occ\nSpez. sensible Wärmeleistung:       @power_pers W/(m²_ref Fläche)  \nBelegungsdichte:                    @appers m²_ref Fläche/Person\n=================================== ===================================\n\nEquipment\n=================================== ===================================\nNutzungsprofil:                     @sched_comp\nspez. Leistung:                     @power_comp W/(m²_ref Fläche)\nabsolute Leistung:                  @power_comp_tot W pro Person\n=================================== ===================================\n\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "ed793142-dbf6-4824-b7af-38d3d56943cb",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Other Gains Template",
+      "pivot": [
+       7822.17578125,
+       1474.4300537109375
+      ],
+      "text": "Sonst. Gewinne\n=================================== ===================================\nNutzungsprofil:                     @sched_og\nSpez. Leistung:                     @power_og W/m²_ref. Fläche\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "02ff88ea-46c4-41a7-87e8-a84a0d57859e",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Artificial Lighting Template",
+      "pivot": [
+       7823.27587890625,
+       1251.8699951171875
+      ],
+      "text": "Kunstlicht\n=================================== ===================================\nNutzungsprofil:                     @sched_light                 \nSollbeleuchtungsstärke:             @luxlevel lx\nInstallierte el. Leistung:          @power_light W/m²\nRegelung:                           @ctrl_light\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "fc3e0d48-2483-4816-977b-7c172ff9de5a",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Insulation Template",
+      "pivot": [
+       7820.8330078125,
+       1027.532958984375
+      ],
+      "text": "  - insulation quality:\n      - heat conductivity of insulation: 0.035 W/m/K\n      - cold bridge: \n\n\n      - insulation thickness: \n          - external wall (AWD) : 0.25 m \n        \n      - heat transfer coefficient: \n          - AWD_L :    0.13 W/m²/K",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "f1e4f266-2f9b-4fd8-b263-22d2f285f1da",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Project Template",
+      "pivot": [
+       7829.26513671875,
+       612.788330078125
+      ],
+      "text": "Zone @zname Airnode @aname \n-----------------------------------\n=================================== ===================================\nVariantenname:                      @variantname\nBeschreibung:                       @longvarname\nWetterdatensatz:                    @weatherfile\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "b8964fe9-01dd-4294-93aa-84ec9be5c036",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Cooling Template",
+      "pivot": [
+       7820.69384765625,
+       1762.4620361328125
+      ],
+      "text": "\nStat. Kühlung\n--------------\n\nKühlung\n=================================== ===================================\nSolltemperatur (Nutzungsprofil):    @T_set_cl °C\nNachterhöhung:                      @Deltatcl K\nNutzungsprofil:                     @schedule_cl\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "0e6907a6-0a4a-468e-9cab-966e022550e1",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Wall Template",
+      "pivot": [
+       7825.66015625,
+       687.7722778320312
+      ],
+      "text": "@orientation_item @type_item @assembly_item: @area_item m²: U-Wert = @uwall_item W/(m².K)",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "89577355-e11b-4b54-9360-be6fb2ef7052",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Shading Template",
+      "pivot": [
+       7828.365234375,
+       763.27587890625
+      ],
+      "text": " Sonnenschutz: beweglich\n  Position: @position_item  \n  Aktiver Flächenanteil : @fraction_item %\n  AN wenn Einstrahlung auf die Fassade: >= @on_item W/m²\n  AUS wenn Einstrahlung auf die Fassade: < @off_item W/m²\n  AUS wenn Lufttemperatur (Raum): < @off2_item °C",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "ba5ccdfa-0bb1-4c06-a862-816fac9ef435",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Window Template",
+      "pivot": [
+       7821.85693359375,
+       886.002685546875
+      ],
+      "text": "@orientation_item @type_item @name_item: @area_item m²\n Ug-Wert Glas (DIN EN 673): @uglas_item W/m²/K \n g-Wert Glas (DIN EN 410): @shgc_item \n Tvis Glas (DIN EN 410): @tvis_item \n Rahmenanteil: @framefrac_item % (ref. Fensterfläche)\n Uf-Wert Rahmen: @uframe_item W/m²/K",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "2d55e1ba-b1ce-46f8-9f8b-8759f20a7a23",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Stackventilation 2 Template",
+      "pivot": [
+       7830.990234375,
+       2677.875
+      ],
+      "text": "Ablüftung 2\n=================================== ===================================\nEffektive Lüftungsfläche (oben):    @aeff2top m²\nEffektive Lüftungsfläche (unten):   @aeff2bot m²\nHöhendifferenz:                     @hdiff_sv2 m\nNutzungsprofil:                     Ausserhalb der Zeit von Ablüftung 1\n2-Punkt-Regelung (AN):              Raumlufttemp. > @tairon_sv2 °C\n2-Punkt-Regelung (AUS):             Raumlufttemp. < @tairoff_sv2 °C\nFreigabe:                           Aussenlufttemp. > @tambon_sv2 °C\nund Freigabe:                       mittl. Aussenlufttemp. (24h) > @tamb24on_sv2 °C\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "8a76b477-8623-4b2d-a4b4-9375e976d85b",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Hybrid Ventilation Template",
+      "pivot": [
+       7828.3408203125,
+       2405.669921875
+      ],
+      "text": "Hybridlüftung\n=================================== ===================================\nnatürl. Mode:                       AN wenn @THYB_lo_hi °C < T_Außen\n                                    und T_Außen < @THYB_up_hi °C\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "aefae15a-0182-49a6-a562-743081cdab92",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Thermal Bridge Template",
+      "pivot": [
+       7820.65576171875,
+       1554.18994140625
+      ],
+      "text": "Wärmebrücken\n=================================== ===================================\nWärmebrückenzuschlag:               @thb_gain W/(m².K_Außenfläche)\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "379e5675-a131-475e-9a1a-c9d5c5bb79f2",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "",
+      "pivot": [
+       7378.11279296875,
+       1129.18896484375
+      ],
+      "text": "\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "b40d3086-b5bb-4485-a46d-7c40fe2c57bd",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Schedules Template",
+      "pivot": [
+       7820.0,
+       1142.56298828125
+      ],
+      "text": "\n|@schedname|\n\n.. |@schedname| image:: png\\@filename.png\n   :width: 500pt\n   :height: 300pt\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "05a89840-5b7f-42b3-b974-7f3c8046397a",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Geometry Template",
+      "pivot": [
+       7825.04296875,
+       418.34051513671875
+      ],
+      "text": "Geometrie \n-----------------------------\n\nSimulationsmodell\n=================================== ===================================\nBodenfläche:                        @area_floor m²\nDeckenfläche:                       @area_ceiling m²\nAktive Deckenfläche:                @area_cl_act m² (@areafrac_cl_act % der Decke)\nWandfläche:                         @area_wall m²\nFensterfläche                       @area_window m²\nHüllfläche:                         @area_outside m²\nReferenzfläche (Raumvolumen):       @refarea m² (@volume m³)\n=================================== ===================================\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "1355c532-8c51-4e29-ad56-9b95489bfe90",
+      "kind": "native",
+      "name": "template_report",
+      "nickName": "template_report",
+      "pivot": [
+       8773.0,
+       1581.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "c1d01b8a-4071-456c-b276-4ec7dfc90346",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Summary",
+      "pivot": [
+       7823.373046875,
+       3033.279052734375
+      ],
+      "text": "\nVariant\n-----------\n\nComponents\n###########\n\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  @hybr                                                     |   @pers                                                    |   @idht                                                    |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  @vent                                                     |   @equi                                                    |   @idcl                                                    |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  @sve1                                                     |   @ligh                                                    |   @alht                                                    |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  @sve2                                                     |   @othe                                                    |   @alcl                                                    |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  @infi                                                     |                                                            |                                                            |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n\n\nResults\n########\n\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n|  |map|                                                     |   |scatter|                                                |   |thermalload|                                            |\n+------------------------------------------------------------+------------------------------------------------------------+------------------------------------------------------------+\n\n.. |intro| image:: png\\Intro_@aname.png\n    :width: 350pt\n    :height: 200pt\n\n.. |map| image:: png\\@projvar_MAP.png\n   :width: 350pt\n   :height: 150pt\n\n.. |scatter| image:: png\\@projvar_SCATTER.png\n   :width: 350pt\n   :height: 200pt\n\n.. |thermalload| image:: png\\@projvar_TL.png\n   :width: 350pt\n   :height: 100pt\n\n.. |sv1| replace:: |sv1ico| Stack Ventilation 1\n\n.. |sv2| replace:: |sv2ico| Stack Ventilation 2\n\n.. |ven| replace:: |venico| Mechanical Ventilation\n\n.. |hyb| replace:: |hybico| Hybride Ventilation\n\n.. |inf| replace:: |infico| Infiltration\n\n.. |per| replace:: |perico| Persons Gain\n\n.. |equ| replace:: |equico| Equipment Gain\n\n.. |aux| replace:: |auxico| Other Gain\n\n.. |lig| replace:: |ligico| Lighting Gain\n\n.. |idh| replace:: |idhico| Static Heating\n\n.. |idc| replace:: |idcico| Static Cooling\n\n.. |alh| replace:: |alhico| Active Layer Heating\n\n.. |alc| replace:: |alcico| Active Layer Cooling\n\n.. |alcico| image:: png\\ACCL.png\n\n.. |sv1ico| image:: png\\SV1.png\n\n.. |alhico| image:: png\\ACHT.png\n\n.. |idcico| image:: png\\IDCL.png\n\n.. |idhico| image:: png\\IDHT.png\n\n.. |ligico| image:: png\\LIGH.png\n\n.. |auxico| image:: png\\AUXI.png\n\n.. |equico| image:: png\\EQUI.png\n\n.. |perico| image:: png\\PEOP.png\n\n.. |infico| image:: png\\INFI.png\n\n.. |hybico| image:: png\\HYBR.png\n\n.. |venico| image:: png\\VENT.png\n\n.. |sv2ico| image:: png\\SV2.png\n\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "c5c773e7-066f-4943-80a8-d7f95408180e",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Summary",
+      "pivot": [
+       7810.93896484375,
+       3343.842041015625
+      ],
+      "text": "\nZone: @aname - Variante: @longvarname\n--------------------------------------------------------------\n\n|intro@aname|\n\nGeometrie \n##############################\n\n============================== ======================================================================\nBodenfläche:                    @area_floor m² (@areafrac_fl_act % aktiviert)\nDeckenfläche:                   @area_ceiling m² (@areafrac_cl_act % aktiviert)\nFensterfläche                   @area_window m² (S = @area_win_s m², W = @area_win_w m², N = @area_win_n m², O = @area_win_e m²)\nAussenwandfläche:               @area_outwall m² (S = @area_out_s m², W = @area_out_w m², N = @area_out_n m², O = @area_out_e m²) \nReferenzfläche (Raumvolumen):   @refarea m² (@volume m³)\n============================== ======================================================================\n\nErgebnisse - Komfort\n##############################\n\n|scatter@aname|\n\n==================== ============================================================\nAtop =               Operative Temperatur (Nutzungszeit)\n-------------------- ------------------------------------------------------------\n\n==================== ============================================================\n\nErgebnisse - Energiebedarf\n##############################\n\n|thermalload@aname|\n\n==================== ============================================================\nHeizung =            Heizenergiebedarf - Lüftung, Konvektor, Flächenheizung\nKuehlung =           Kühlenergiebedarf - Lüftung, Konvektor, Flächenkühlung\nStrom =              Strombedarf - Lüftung, Flächenheizung, Kunstlicht, Geräte\n==================== ============================================================\n\nErgebnisse - Winterwoche\n##################################\n\n|wtsequ@aname|\n\n|wpsequ@aname|\n\n==================== ============================================================\nTamb =               Aussenlufttemperatur\nTop, Tdp =           Operative Temperatur, Taupunkttemperatur \nQ_heat =             Konvektorheizung\nQ_alfl_ht =          Flächenheizung\nQ_ahu_sen_ht =       Heizung Zuluft mech. Lüftung\n==================== ============================================================\n\nErgebnisse - Sommerwoche\n##################################\n\n|stsequ@aname|\n\n|spsequ@aname|\n\n==================== ============================================================\nTinal1 =             Vorlauftemperatur akt. Fläche\nToutal =             Rücklauftemperatur akt. Fläche\nQ_cool =             Konvektorkühlung\nQ_alfl_cl =          Flächenkühlung\nQ_ahu_sen_cl =       Kühlung Zuluft mech. Lüftung\n==================== ============================================================\n\n.. |intro@aname| image:: png\\Intro_@aname.png\n    :width: 400pt\n    :height: 400pt\n\n.. |scatter@aname| image:: png\\@projvar_SCATTER.png\n   :width: 500pt\n   :height: 300pt\n\n.. |thermalload@aname| image:: png\\@projvar_TL.png\n   :width: 460pt\n   :height: 110pt\n\n.. |wtsequ@aname| image:: png\\@projvar_WT_SEQU.png\n   :width: 435pt\n   :height: 263pt\n\n.. |wpsequ@aname| image:: png\\@projvar_WP_SEQU.png\n   :width: 435pt\n   :height: 263pt\n\n.. |stsequ@aname| image:: png\\@projvar_ST_SEQU.png\n   :width: 435pt\n   :height: 263pt\n\n.. |spsequ@aname| image:: png\\@projvar_SP_SEQU.png\n   :width: 435pt\n   :height: 263pt\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "324bf6da-6b92-4c9a-a099-66d2d190d4ce",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "Results",
+      "pivot": [
+       7828.251953125,
+       2854.22509765625
+      ],
+      "text": "\nResults\n-----------\n\nMap\n####\n\n.. image:: png\\@projvar_MAP.png\n   :width: 500pt\n   :height: 200pt\n\nScatter\n########\n\n.. image:: png\\@projvar_SCATTER.png\n   :width: 500pt\n   :height: 300pt\n\nThermal Load\n#############\n\n.. image:: png\\@projvar_TL.png\n   :width: 500pt\n   :height: 125pt\n",
+      "type": "GH_Panel"
+     },
+     {
+      "id": "3f299b02-6f4b-4021-a68d-8a2b442dcfcd",
+      "kind": "native",
+      "name": "Panel",
+      "nickName": "",
+      "pivot": [
+       7307.0,
+       3056.0
+      ],
+      "text": "",
+      "type": "GH_Panel"
+     }
+    ],
+    "outerInputs": [],
+    "outerOutputs": [
+     "template_report"
+    ],
+    "wires": [
+     {
+      "from": [
+       "05a89840-5b7f-42b3-b974-7f3c8046397a",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "f1e4f266-2f9b-4fd8-b263-22d2f285f1da",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "construction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0e6907a6-0a4a-468e-9cab-966e022550e1",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "wall",
+       2
+      ]
+     },
+     {
+      "from": [
+       "ba5ccdfa-0bb1-4c06-a862-816fac9ef435",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "window",
+       3
+      ]
+     },
+     {
+      "from": [
+       "89577355-e11b-4b54-9360-be6fb2ef7052",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "shading",
+       4
+      ]
+     },
+     {
+      "from": [
+       "fc3e0d48-2483-4816-977b-7c172ff9de5a",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "insulation",
+       5
+      ]
+     },
+     {
+      "from": [
+       "b40d3086-b5bb-4485-a46d-7c40fe2c57bd",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "schedules",
+       6
+      ]
+     },
+     {
+      "from": [
+       "02ff88ea-46c4-41a7-87e8-a84a0d57859e",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "artificial_lighting",
+       7
+      ]
+     },
+     {
+      "from": [
+       "05189e8b-3c1a-49c7-a24a-2e1ebe05859a",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "internal_gains",
+       8
+      ]
+     },
+     {
+      "from": [
+       "ed793142-dbf6-4824-b7af-38d3d56943cb",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "other_gains",
+       9
+      ]
+     },
+     {
+      "from": [
+       "aefae15a-0182-49a6-a562-743081cdab92",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "thermal_bridge",
+       10
+      ]
+     },
+     {
+      "from": [
+       "0f57ecec-2272-478a-bef4-82f3ee35e5a0",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "heating",
+       11
+      ]
+     },
+     {
+      "from": [
+       "b8964fe9-01dd-4294-93aa-84ec9be5c036",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "cooling",
+       12
+      ]
+     },
+     {
+      "from": [
+       "98472a7e-5c2e-4d6c-9ee6-ed6c94bcfb81",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "active_layer",
+       13
+      ]
+     },
+     {
+      "from": [
+       "2b1145b1-82ed-4768-8a65-483642cd5484",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "infiltration",
+       14
+      ]
+     },
+     {
+      "from": [
+       "2f548348-637b-43e3-abfd-31ec5c762145",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "ventilation",
+       15
+      ]
+     },
+     {
+      "from": [
+       "8a76b477-8623-4b2d-a4b4-9375e976d85b",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "hybrid_ventilation",
+       16
+      ]
+     },
+     {
+      "from": [
+       "efb6871a-8d2e-4742-ae14-a020f352afaa",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "stack_ventilation1",
+       17
+      ]
+     },
+     {
+      "from": [
+       "2d55e1ba-b1ce-46f8-9f8b-8759f20a7a23",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "stack_ventilation2",
+       18
+      ]
+     },
+     {
+      "from": [
+       "324bf6da-6b92-4c9a-a099-66d2d190d4ce",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "results",
+       19
+      ]
+     },
+     {
+      "from": [
+       "c5c773e7-066f-4943-80a8-d7f95408180e",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "short_summary",
+       20
+      ]
+     },
+     {
+      "from": [
+       "379e5675-a131-475e-9a1a-c9d5c5bb79f2",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "fc3e0d48-2483-4816-977b-7c172ff9de5a",
+       "Panel",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "379e5675-a131-475e-9a1a-c9d5c5bb79f2",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "b40d3086-b5bb-4485-a46d-7c40fe2c57bd",
+       "Panel",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "72c343f0-3236-4780-979a-b876c341f6bd",
+       "template_report",
+       1
+      ],
+      "to": [
+       "1355c532-8c51-4e29-ad56-9b95489bfe90",
+       "template_report",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "3f299b02-6f4b-4021-a68d-8a2b442dcfcd",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "c1d01b8a-4071-456c-b276-4ec7dfc90346",
+       "Panel",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "3f299b02-6f4b-4021-a68d-8a2b442dcfcd",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "c5c773e7-066f-4943-80a8-d7f95408180e",
+       "Panel",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "3f299b02-6f4b-4021-a68d-8a2b442dcfcd",
+       "Panel",
+       -1
+      ],
+      "to": [
+       "324bf6da-6b92-4c9a-a099-66d2d190d4ce",
+       "Panel",
+       -1
+      ]
+     }
+    ]
+   },
+   "id": "d89326b6-5ccf-40a0-99e2-444ad6c39de5",
+   "inputs": [],
+   "kind": "cluster",
+   "name": "Cluster",
+   "nickName": "Report Template",
+   "outputs": [
+    "template_report"
+   ],
+   "pivot": [
+    278.0,
+    320.0
+   ],
+   "type": "GH_Cluster"
+  },
+  {
+   "codeHash": "f1a8aceb363c",
+   "id": "da9de27e-6d6e-474f-a50f-0666009d726b",
+   "inputs": [],
+   "kind": "script",
+   "name": "Lizard_DCK_Template",
+   "nickName": "DCK Template",
+   "outputs": [
+    "DckTemplate"
+   ],
+   "pivot": [
+    319.0,
+    359.0
+   ],
+   "script": "Lizard_DCK_Template",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "f399d22b62fd",
+   "id": "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+   "inputs": [
+    "Reload",
+    "ReportTemplate",
+    "DckTemplate",
+    "Multizone",
+    "WriteSimulationFiles",
+    "RunDaylightPreprocessing",
+    "RunThermalPreprocessing",
+    "RunThermalSimulation",
+    "SimTimestep",
+    "StartDay",
+    "StartMonth",
+    "StopDay",
+    "StopMonth",
+    "UserEquations",
+    "UserOutputs",
+    "ResFocusAirnode",
+    "SystemComponents"
+   ],
+   "kind": "script",
+   "name": "Lizard_System",
+   "nickName": "Thermal System",
+   "outputs": [
+    "out",
+    "Variant"
+   ],
+   "pivot": [
+    706.0,
+    501.0
+   ],
+   "script": "Lizard_System",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "Variant",
+    1
+   ],
+   "to": [
+    "d2a568e9-839c-4491-9460-5bc9f13eec7b",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "Variant",
+    1
+   ],
+   "to": [
+    "db0884bb-82b9-4e3e-bee1-a26c66327d2c",
+    "Variant",
+    0
+   ]
+  },
+  {
+   "from": [
+    "d89326b6-5ccf-40a0-99e2-444ad6c39de5",
+    "template_report",
+    0
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "ReportTemplate",
+    1
+   ]
+  },
+  {
+   "from": [
+    "da9de27e-6d6e-474f-a50f-0666009d726b",
+    "DckTemplate",
+    0
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "DckTemplate",
+    2
+   ]
+  },
+  {
+   "from": [
+    "c084493b-47d5-4e34-9731-502a88ee5bec",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "WriteSimulationFiles",
+    4
+   ]
+  },
+  {
+   "from": [
+    "c084493b-47d5-4e34-9731-502a88ee5bec",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "RunDaylightPreprocessing",
+    5
+   ]
+  },
+  {
+   "from": [
+    "c084493b-47d5-4e34-9731-502a88ee5bec",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "RunThermalPreprocessing",
+    6
+   ]
+  },
+  {
+   "from": [
+    "c084493b-47d5-4e34-9731-502a88ee5bec",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "RunThermalSimulation",
+    7
+   ]
+  },
+  {
+   "from": [
+    "bb951bf0-6e42-4741-b7ba-b321ca82c05d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "SimTimestep",
+    8
+   ]
+  },
+  {
+   "from": [
+    "b3162747-0a63-4fd5-a947-a6de606d7d8d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "StartDay",
+    9
+   ]
+  },
+  {
+   "from": [
+    "7e4f5476-1985-43ce-8de9-421f9437d665",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "StartMonth",
+    10
+   ]
+  },
+  {
+   "from": [
+    "c6e233f2-fdf6-4377-a07e-3d8b2bb8aacd",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "StopDay",
+    11
+   ]
+  },
+  {
+   "from": [
+    "6880072e-a6ec-48a8-a26b-80841a26f661",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "bcac64d1-c664-47c9-8fa3-1341d87f25ce",
+    "StopMonth",
+    12
+   ]
+  }
+ ]
+}

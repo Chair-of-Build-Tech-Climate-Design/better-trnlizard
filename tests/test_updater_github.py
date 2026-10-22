@@ -202,9 +202,9 @@ class ManifestTests(unittest.TestCase):
     def test_unknown_files_are_ignored(self):
         good = {"sha256": "a" * 64, "size": 1}
         manifest = UPDATER.parseManifest(json.dumps({"format": 1, "files": {
-            "X.py": good, "_X.py": good, "notes.txt": "anything", "trnlizard_presets.json": good}}))
+            "X.py": good, "_X.py": good, "notes.txt": "anything", "trnlizard_future.json": good}}))
         self.assertEqual(["X.py"], sorted(manifest["files"]))
-        self.assertEqual(["_X.py", "notes.txt", "trnlizard_presets.json"], manifest["ignored"])
+        self.assertEqual(["_X.py", "notes.txt", "trnlizard_future.json"], manifest["ignored"])
 
     def test_invalid_manifests(self):
         good = {"sha256": "a" * 64, "size": 1}

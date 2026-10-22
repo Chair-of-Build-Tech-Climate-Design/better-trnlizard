@@ -1,0 +1,235 @@
+{
+ "objects": [
+  {
+   "id": "b204db37-d6f0-4153-a961-797d38fbe6f3",
+   "kind": "native",
+   "members": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "d5b447a3-3b33-42be-9b9b-c1dc87c01622",
+    "b1d796d7-324d-4663-92c9-091c37a52fae",
+    "3c8e2aaf-4c32-490f-994a-a61917fd6be3",
+    "1e2c1c61-4d71-4aef-bb7e-fe99958598b3",
+    "84e1086d-da55-43f5-834b-10fba9c6d4a2",
+    "88ec2d2d-8241-4826-a5a9-215497a7a0a2",
+    "721f751a-f98b-4886-8dac-ffbef2f332f0",
+    "569724bf-a482-495d-b56a-108ffd13439d",
+    "399671d5-f46d-4257-bf98-a4c8d5b6acb9"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "codeHash": "a0abff8593f5",
+   "id": "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+   "inputs": [
+    "AirFlowDirection",
+    "Type",
+    "ACRInversion",
+    "ACRPermanent",
+    "TempCtrlStackVent",
+    "ScalingFactor"
+   ],
+   "kind": "script",
+   "name": "Lizard_Coupling",
+   "nickName": "Coupling",
+   "outputs": [
+    "out",
+    "coupling"
+   ],
+   "pivot": [
+    579.0,
+    326.0
+   ],
+   "script": "Lizard_Coupling",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "d5b447a3-3b33-42be-9b9b-c1dc87c01622",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    232.33984375,
+    258.81292724609375
+   ],
+   "text": "from Z1 to Z2",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b1d796d7-324d-4663-92c9-091c37a52fae",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    299.0,
+    298.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "3c8e2aaf-4c32-490f-994a-a61917fd6be3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "ACR Permanent [1/h]",
+   "pivot": [
+    157.439453125,
+    354.7027587890625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1e2c1c61-4d71-4aef-bb7e-fe99958598b3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "ACR Inversion [1/h]",
+   "pivot": [
+    164.9794921875,
+    328.2528076171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "84e1086d-da55-43f5-834b-10fba9c6d4a2",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Scaling Factor [%/100]",
+   "pivot": [
+    151.51953125,
+    408.3028564453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "88ec2d2d-8241-4826-a5a9-215497a7a0a2",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "",
+   "pivot": [
+    327.0,
+    378.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "721f751a-f98b-4886-8dac-ffbef2f332f0",
+   "kind": "native",
+   "members": [
+    "569724bf-a482-495d-b56a-108ffd13439d",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "cb4e1477-1928-4606-bf3d-30aac48edf3c",
+    "399671d5-f46d-4257-bf98-a4c8d5b6acb9",
+    "917e1878-a23a-448e-bd35-de2d98939fcb"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "569724bf-a482-495d-b56a-108ffd13439d",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    95.6494140625,
+    104.26318359375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "399671d5-f46d-4257-bf98-a4c8d5b6acb9",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    92.9599609375,
+    200.69329833984375
+   ],
+   "type": "GH_Scribble"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "d5b447a3-3b33-42be-9b9b-c1dc87c01622",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "AirFlowDirection",
+    0
+   ]
+  },
+  {
+   "from": [
+    "b1d796d7-324d-4663-92c9-091c37a52fae",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "Type",
+    1
+   ]
+  },
+  {
+   "from": [
+    "1e2c1c61-4d71-4aef-bb7e-fe99958598b3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "ACRInversion",
+    2
+   ]
+  },
+  {
+   "from": [
+    "3c8e2aaf-4c32-490f-994a-a61917fd6be3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "ACRPermanent",
+    3
+   ]
+  },
+  {
+   "from": [
+    "88ec2d2d-8241-4826-a5a9-215497a7a0a2",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "TempCtrlStackVent",
+    4
+   ]
+  },
+  {
+   "from": [
+    "84e1086d-da55-43f5-834b-10fba9c6d4a2",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "49c2eff4-d33e-4132-a0cb-133e21feb5f6",
+    "ScalingFactor",
+    5
+   ]
+  }
+ ]
+}

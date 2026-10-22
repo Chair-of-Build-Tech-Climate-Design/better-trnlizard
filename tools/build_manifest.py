@@ -4,7 +4,9 @@ and trnlizard_icons.json, the UserObject icons of icons/<script base name>.png (
     python tools/build_manifest.py            write the icons file and the manifest of the repository root
     python tools/build_manifest.py --check    exit 1 when the committed icons file or manifest is out of date
 
-The manifest also lists trnlizard_icons.json (same hash rule), so the updater downloads it like a script.
+The manifest also lists trnlizard_icons.json (same hash rule), so the updater downloads it like a script, and
+trnlizard_presets.json, the preset templates of presets/<preset>/ and presets/_shared/<cluster>/ (preset.json,
+object.xml, icon.png; see tools/import_presets.py) in one file.
 
 The manifest lists every top-level *.py of the repository that Lizard_Updater.findScripts picks up (not starting with
 '_') with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
@@ -30,6 +32,10 @@ MANIFEST_FORMAT = 1
 ICONS_NAME = "trnlizard_icons.json"
 ICONS_FOLDER = "icons"
 ICONS_FORMAT = 1
+PRESETS_NAME = "trnlizard_presets.json"
+PRESETS_FOLDER = "presets"
+PRESETS_FORMAT = 1
+SHARED_FOLDER = "_shared"
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -65,12 +71,38 @@ def buildIcons(root):
     return json.dumps({"format": ICONS_FORMAT, "icons": icons}, indent=1, sort_keys=True) + "\n"
 
 
+def buildPresets(root):
+    """Text of trnlizard_presets.json for presets/ of a folder, None when there is no presets folder."""
+    folder = os.path.join(root, PRESETS_FOLDER)
+    if not os.path.isdir(folder):
+        return None
+    presets, shared = {}, {}
+    for parent, target in ((folder, presets), (os.path.join(folder, SHARED_FOLDER), shared)):
+        if not os.path.isdir(parent):
+            continue
+        for name in sorted(os.listdir(parent)):
+            path = os.path.join(parent, name)
+            if name == SHARED_FOLDER or not os.path.isfile(os.path.join(path, "object.xml")):
+                continue
+            with open(os.path.join(path, "preset.json"), encoding="utf-8") as handle:
+                entry = json.load(handle)
+            with open(os.path.join(path, "object.xml"), encoding="utf-8-sig") as handle:
+                entry["xml"] = handle.read()
+            icon = os.path.join(path, "icon.png")
+            if os.path.isfile(icon):
+                with open(icon, "rb") as handle:
+                    entry["icon"] = base64.b64encode(handle.read()).decode("ascii")
+            target[name] = entry
+    return json.dumps({"format": PRESETS_FORMAT, "presets": presets, "shared": shared}, indent=1, sort_keys=True) + "\n"
+
+
 def manifestFiles(root):
     """{file name: {'sha256', 'size'}} of the scripts (and trnlizard_icons.json) of a folder."""
     files = {}
     names = scriptNames(root)
-    if os.path.isfile(os.path.join(root, ICONS_NAME)):
-        names.append(ICONS_NAME)
+    for extra in (ICONS_NAME, PRESETS_NAME):
+        if os.path.isfile(os.path.join(root, extra)):
+            names.append(extra)
     for name in names:
         with open(os.path.join(root, name), "rb") as handle:
             text = handle.read().decode("utf-8-sig")
@@ -118,16 +150,19 @@ def main(argv=None):
     args = parser.parse_args(argv)
     path = os.path.join(args.root, MANIFEST_NAME)
     previous = readManifest(path)
-    iconsText = buildIcons(args.root)
-    iconsPath = os.path.join(args.root, ICONS_NAME)
-    try:
-        with open(iconsPath, "r", encoding="utf-8", newline="") as handle:
-            iconsCurrent = handle.read() == iconsText
-    except OSError:
-        iconsCurrent = iconsText is None
+    bundles = []
+    for bundleName, bundleText in ((ICONS_NAME, buildIcons(args.root)), (PRESETS_NAME, buildPresets(args.root))):
+        bundlePath = os.path.join(args.root, bundleName)
+        try:
+            with open(bundlePath, "r", encoding="utf-8", newline="") as handle:
+                current = handle.read() == bundleText
+        except OSError:
+            current = bundleText is None
+        bundles.append((bundleName, bundlePath, bundleText, current))
     if args.check:
-        if not iconsCurrent:
-            print("{0} is out of date; run: python tools/build_manifest.py".format(ICONS_NAME))
+        stale = [name for name, path, text, current in bundles if not current]
+        if stale:
+            print("{0} out of date; run: python tools/build_manifest.py".format(", ".join(stale)))
             return 1
         stale = staleFiles(args.root, previous)
         if previous is None or stale:
@@ -136,10 +171,11 @@ def main(argv=None):
             return 1
         print("{0} is up to date ({1} scripts)".format(MANIFEST_NAME, len(previous["files"])))
         return 0
-    if not iconsCurrent and iconsText is not None:
-        with open(iconsPath, "w", encoding="utf-8", newline="\n") as handle:
-            handle.write(iconsText)
-        print("{0} written".format(ICONS_NAME))
+    for bundleName, bundlePath, bundleText, current in bundles:
+        if not current and bundleText is not None:
+            with open(bundlePath, "w", encoding="utf-8", newline="\n") as handle:
+                handle.write(bundleText)
+            print("{0} written".format(bundleName))
     text = dumpManifest(buildManifest(args.root, previous))
     try:
         with open(path, "r", encoding="utf-8", newline="") as handle:

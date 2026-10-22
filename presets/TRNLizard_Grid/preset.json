@@ -1,0 +1,8 @@
+{
+ "category": "TRNLizard",
+ "description": "Contains a cluster of Grasshopper components",
+ "exposure": "primary",
+ "name": "TRNLizard_Grid",
+ "nickName": "Grid",
+ "subCategory": "2 | Extras"
+}

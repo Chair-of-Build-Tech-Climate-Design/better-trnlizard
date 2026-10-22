@@ -1,0 +1,292 @@
+{
+ "objects": [
+  {
+   "id": "1e58a650-1818-4ce5-80fa-f971274fcf7a",
+   "kind": "native",
+   "members": [
+    "b4923a5d-3a52-4403-9d9f-6a438959c0b6",
+    "2972aa25-afc0-4029-abc0-ac9a1cd0fc77",
+    "a7cc4b00-9240-4f69-b14a-1b60127e3738",
+    "c783df04-b398-4a23-b345-b5108b3f791e",
+    "4cb6aca2-3e38-4274-a544-2623fc151ce2",
+    "771508be-c3f5-43b7-aaaa-98b4999c9bba",
+    "ddd8776f-16e5-4587-83c5-d22a9e999bd6",
+    "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf",
+    "b21c1d2c-9cfe-436b-b023-eb1d114877c6",
+    "6a09e51e-1f50-4749-a99d-e49103f3c6a6",
+    "f70a2d2c-5240-4260-aeb7-e804f7688b2d",
+    "d039c1b9-ef13-4b76-a4f4-d79f27185bf3",
+    "da32565a-2f31-44d0-82a3-71e262c86bbe",
+    "9aa6cef3-aead-419d-8838-728bef284697",
+    "7337c45e-1017-409e-9a18-ccdd865f38c6",
+    "d36d4143-9131-4d93-a7f9-e6c480f9a783"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b4923a5d-3a52-4403-9d9f-6a438959c0b6",
+   "kind": "native",
+   "name": "Custom Preview",
+   "nickName": "Preview",
+   "pivot": [
+    674.0,
+    183.0
+   ],
+   "type": "GH_CustomPreviewComponent"
+  },
+  {
+   "id": "2972aa25-afc0-4029-abc0-ac9a1cd0fc77",
+   "kind": "native",
+   "name": "Custom Preview",
+   "nickName": "Preview",
+   "pivot": [
+    674.0,
+    249.0
+   ],
+   "type": "GH_CustomPreviewComponent"
+  },
+  {
+   "id": "a7cc4b00-9240-4f69-b14a-1b60127e3738",
+   "kind": "native",
+   "name": "Custom Preview",
+   "nickName": "Preview",
+   "pivot": [
+    674.0,
+    315.0
+   ],
+   "type": "GH_CustomPreviewComponent"
+  },
+  {
+   "id": "c783df04-b398-4a23-b345-b5108b3f791e",
+   "kind": "native",
+   "name": "Custom Preview",
+   "nickName": "Preview",
+   "pivot": [
+    674.0,
+    448.0
+   ],
+   "type": "GH_CustomPreviewComponent"
+  },
+  {
+   "id": "771508be-c3f5-43b7-aaaa-98b4999c9bba",
+   "kind": "native",
+   "name": "Custom Preview",
+   "nickName": "Preview",
+   "pivot": [
+    674.0,
+    381.0
+   ],
+   "type": "GH_CustomPreviewComponent"
+  },
+  {
+   "id": "ddd8776f-16e5-4587-83c5-d22a9e999bd6",
+   "kind": "native",
+   "members": [
+    "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    175.0428924560547,
+    35.826141357421875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "b21c1d2c-9cfe-436b-b023-eb1d114877c6",
+   "kind": "native",
+   "members": [
+    "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "6a09e51e-1f50-4749-a99d-e49103f3c6a6",
+   "kind": "native",
+   "members": [
+    "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "f70a2d2c-5240-4260-aeb7-e804f7688b2d",
+   "kind": "native",
+   "members": [
+    "a6a2fafa-08cd-4945-88fc-f49aa8b8a3bf"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "da32565a-2f31-44d0-82a3-71e262c86bbe",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "PtsFile Path",
+   "pivot": [
+    100.25520324707031,
+    305.2738952636719
+   ],
+   "text": "",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7337c45e-1017-409e-9a18-ccdd865f38c6",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "RadFile Path",
+   "pivot": [
+    99.90289306640625,
+    247.16610717773438
+   ],
+   "text": "",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "64b7d9f1f91a",
+   "id": "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+   "inputs": [
+    "RadFile",
+    "PtsFile"
+   ],
+   "kind": "script",
+   "name": "Lizard_B18_RAD",
+   "nickName": "Python",
+   "outputs": [
+    "out",
+    "Surfaces",
+    "Windows",
+    "Shader",
+    "Other",
+    "Points"
+   ],
+   "pivot": [
+    494.0,
+    301.0
+   ],
+   "script": "Lizard_B18_RAD",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "Surfaces",
+    1
+   ],
+   "to": [
+    "b4923a5d-3a52-4403-9d9f-6a438959c0b6",
+    "Geometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "Windows",
+    2
+   ],
+   "to": [
+    "2972aa25-afc0-4029-abc0-ac9a1cd0fc77",
+    "Geometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "Shader",
+    3
+   ],
+   "to": [
+    "a7cc4b00-9240-4f69-b14a-1b60127e3738",
+    "Geometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "Points",
+    5
+   ],
+   "to": [
+    "c783df04-b398-4a23-b345-b5108b3f791e",
+    "Geometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "Other",
+    4
+   ],
+   "to": [
+    "771508be-c3f5-43b7-aaaa-98b4999c9bba",
+    "Geometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "7337c45e-1017-409e-9a18-ccdd865f38c6",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "RadFile",
+    0
+   ]
+  },
+  {
+   "from": [
+    "da32565a-2f31-44d0-82a3-71e262c86bbe",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0e8c7bf1-9eb7-427b-a98e-a9dfe1d93d9d",
+    "PtsFile",
+    1
+   ]
+  }
+ ]
+}

@@ -1,0 +1,1077 @@
+{
+ "objects": [
+  {
+   "id": "21969acf-5967-4105-ae21-e87457e24842",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Massive Layer Template",
+   "pivot": [
+    3137.0859375,
+    3026.6650390625
+   ],
+   "text": "LAYER @self.Name\n CONDUCTIVITY=    @self.Conductivity : CAPACITY=      @self.Capacity : DENSITY=   @self.Density  : PERT=      @self.Pert : PENRT=      @self.Penrt\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7c9bc4db-1cf3-461d-98cd-d1f9e12d7041",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Massless Layer Template",
+   "pivot": [
+    3137.52392578125,
+    3092.6650390625
+   ],
+   "text": "LAYER @self.Name\n RESISTANCE=     @self.Resistance  : PERT=      @self.Pert : PENRT=      @self.Penrt\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "94b674e1-8971-4481-a360-1d4dac0b23a0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Active Layer Template",
+   "pivot": [
+    3137.64892578125,
+    3158.7900390625
+   ],
+   "text": "LAYER @self.Name\n PSPACING=   @self.Pspacing : PDIAMETER= @self.Pdiameter : PWALLTHICKNESS= @self.Pwallthickness : PCONDUCTIVITY=  @self.Pconductivity : CPFLUID= @self.Cpfluid  : PERT=      @self.Pert : PENRT=      @self.Penrt\n",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "1d8f91e006c8",
+   "id": "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+   "inputs": [
+    "headertempl",
+    "inputstempl",
+    "windowstempl",
+    "BSDFwindowstempl",
+    "comforttempl",
+    "infiltrationtempl",
+    "ventilationtempl",
+    "heatingtempl",
+    "coolingtempl",
+    "dctrltempl",
+    "zonesoritempl",
+    "zonetempl",
+    "airnodetempl",
+    "constrtempl",
+    "massivelayertempl",
+    "masslesslayertempl",
+    "activelayertempl",
+    "chilledceilingtempl",
+    "gaintempl",
+    "dailyscheduletempl",
+    "weeklyscheduletempl",
+    "annualscheduletempl",
+    "walltempl",
+    "outputtempl",
+    "winoutputtempl",
+    "bsdfoutputtempl",
+    "walloutputtempl",
+    "tbdoutputtempl",
+    "ecaloutputtempl",
+    "eficaloutputtempl",
+    "baloutputtempl",
+    "comfortoutputtempl",
+    "daylightoutputtempl",
+    "geo3dtempl",
+    "trnflowtempl",
+    "pollutantstempl",
+    "largeopeningstempl",
+    "externalnodestempl",
+    "thermalzonestempl",
+    "windvelocityprofiletempl",
+    "airlinknetworktempl"
+   ],
+   "kind": "script",
+   "name": "Python Script",
+   "nickName": "Templates",
+   "outputs": [
+    "out",
+    "template"
+   ],
+   "pivot": [
+    4396.0,
+    2717.0
+   ],
+   "script": "Python Script",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "6a2c8994-f297-4b15-9513-f29d81b0d2b1",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Daily Schedule Template",
+   "pivot": [
+    3136.06005859375,
+    3383.93994140625
+   ],
+   "text": "SCHEDULE @self.Name\n HOURS =@self.Hours\n VALUES=@self.Values\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "69245d82-2737-42c0-bf0e-3d48105cfa8d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Weekly Schedule Template",
+   "pivot": [
+    3137.6220703125,
+    3455.343017578125
+   ],
+   "text": "SCHEDULE @self.Name\n DAYS=@self.Days\n HOURLY=@self.Hourly \n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "560677d3-28b8-4a9c-a253-966c4f1177c7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Wall Template",
+   "pivot": [
+    3138.1220703125,
+    3610.76806640625
+   ],
+   "text": "CONSTRUCTION @self.Name\n LAYERS   = @self.Layers\n THICKNESS= @self.Thickness\n ABS-FRONT= @self.Abs_front   : ABS-BACK= @self.Abs_back  \n EPS-FRONT= @self.Eps_front   : EPS-BACK= @self.Eps_back  \n HFRONT   = @self.Hfront : HBACK= @self.Hback\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "262dc9b0-854e-409b-a9cc-407d99aab86a",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Zones_Ori Template",
+   "pivot": [
+    3139.427001953125,
+    2644.385986328125
+   ],
+   "text": "*-------------------------\n*  Z o n e s\n*-------------------------\nZONES @Zones\n*-------------------------\n*  O r i e n t a t i o n s\n*-------------------------\nHEMISPHERE @Hemisphere\nORIENTATIONS @Orientations\nINTERNAL_CALCULATION @Intcalcori\n*\n*+++++++++++++++++++++++++\nBUILDING\n*+++++++++++++++++++++++++\n*\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "efcf3c62-f977-4422-b057-ce2bc26d0e84",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Airnode Template",
+   "pivot": [
+    3136.7548828125,
+    2861.830078125
+   ],
+   "text": "AIRNODE @self.Name\n@constructiondef\n REGIME\n@regimedef\n CAPACITANCE = @self.Capacitance     : VOLUME= @self.Volume      : REFAREA= @self.Refarea       : TINITIAL= 20      : PHINITIAL= 50      : WCAPR= 3",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7517d448-80f3-42fe-bec8-95709fc176f7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Construction Template",
+   "pivot": [
+    3138.248046875,
+    2977.551025390625
+   ],
+   "text": "@self.Type  =@self.Construction : SURF=  @self.Surfnum : AREA=        @self.Area",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2f5fe249-3205-45ae-9a3a-27c5561518dc",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Output Template",
+   "pivot": [
+    3141.60693359375,
+    3724.801025390625
+   ],
+   "text": "*------------------\n*  O u t p u t s\n*------------------\nOUTPUTS\n TRANSFER : TIMEBASE=@timebase\n AIRNODES = @airnodes\n NTYPES =   1 : TAIR - air temperature of airnode\n        =   2 : QSENS - sensible energy demand of airnode, heating(-), cooling(+)\n        =   4 : QINF - sensible infiltration energy gain of airnode\n        =   5 : QVENT - sensible ventilation energy gain of airnode\n        =   7 : QGCONV - internal convective gains of airnode\n        =   9 : RELHUM - relativ humidity of airnode air\n        =  29 : ABSHUM - absolute humidity of airnode air\n        =  10 : QLATD - latent energy demand of airnode, humidification(-), dehumidifcation (+)\n        =  12 : QSOLTR - total shortwave solar radiation transmitted through external windows of airnode (but not kept 100 % in airnode)\n        =  13 : QGRAD - defined internal radiative gain of airnode (Rad, gains are distributed over zones!)\n        =  25 : TOP - obsolete use new comfort outputs\n        = 151 : QGLIGHT - Sensible energy gains from \"lights\" gains of airnode [kJ/hr]\n        = 152 : QGEQUIP - Sensible energy gains from  \"equipment\" gains of airnode [kJ/hr]\n        = 153 : QGMISC - Sensible energy gains from  \"miscellaneous\" gains of airnode [kJ/hr]\n        = 154 : QGPEOPLE - Sensible energy gains from \"people\" gains of airnode [kJ/hr]\n        = 155 : QELLIGHT - Electric energy demand of \"lights\" gains of airnode [kJ/hr]\n        = 156 : QELEQUIP - Electric energy demand of \"equipment\" gains of airnode [kJ/hr]\n        = 157 : QELMISC - Electric energy demand of \"miscellaneous\" gains of airnode [kJ/hr]\n        = 159 : QELHEAT - Electric energy demand of heating of airnode [kJ/hr]\n        = 160 : QELCOOL - Electric energy demand of cooling of airnode [kJ/hr]\n        = 161 : QELVENT - Electric energy demand of ventilation of airnode [kJ/hr]\n        = 164 : QGTHB - Sensible energy gain from \"thermal bridge\" gains/losses of airnode [kJ/hr]\n        = 400 : ILLUM_H - Global horizontal illuminance outside the building (without shading effects) [lux]\n        = 170 : QAHU_H - total heating power to condition supply air to set point conditions [kJ/h]\n        = 171 : QAHU_C - total cooling power to condition supply air to set point conditions [kJ/h]\n        = 172 : QAHU_SENSH - heating power to condition supply air to reach set point temperature after HX, Dehum [kJ/h]\n        = 173 : QAHU_SENSC - cooling power to condition supply air to reach set point temperature after HX [kJ/h]\n        = 174 : QAHU_HRSENSH - heating power provided by heat recovery unit [kJ/h]\n        = 175 : QAHU_HRSENSC - cooling power provided by heat recovery unit [kJ/h]\n        = 176 : QAHU_HUMH - heating power for humidification process [kJ/h]\n        = 177 : QAHU_DEHUMC - cooling power for dehumidification process [kJ/h]\n        = 178 : QAHU_REHEATH - heating power to condition supply air to reach set point temperature after dehumdification process  [kJ/h]\n        = 180 : TAIR_WB - wet bulb temperature of airnode [C]\n        = 181 : TAIR_DP - dew point temperature of airnode [C]\n        = 185 : TAHU_HR - dry bulb temperature after heat recovery of 1st ventilation with supply air conditioning [C]\n        = 188 : RHAHU_HR - rel. humidity of air after heat recovery of 1st ventilation with supply air conditioning [%]\n        = 189 : WAHU_HR - Humidity ratio of air after heat recovery of 1st ventilation with supply air conditioning [kg/kg]\n        = 117 : QSOLAIR - Solar radiation entering all windows of airnode which is immediately transformed in a convective heat flow rate for the internal air     [kJ/hr]\n        =   6 : QCOUP - sensible coupling energy gain of airnode\n*\n\n AIRNODES = @singleairnode\n NTYPES =   28 : SCHEDULE = @addschedules : values of all schedules\n@addactivelayer\n@addcomfort\n@adddaylight\n@windowoutput\n@bsdfoutput\n@walloutput\n@tbdoutput\n@ecaloutput\n@eficaloutput\n@baloutput\n@addoutput\n\n*-------------------\n@trnflowdef\n*-------------------\nEND\n\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a1225651-7d3c-4096-9ce1-a81020236a1e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "3D Template",
+   "pivot": [
+    3151.56298828125,
+    4655.26513671875
+   ],
+   "text": "\n_EXTENSION_BuildingGeometry_START_\n@BuildingGeometry\n_EXTENSION_BuildingGeometry_END_\n\n\n_EXTENSION_VirtualSurfaceGeometry_START_\n@VirtualGeometry\n_EXTENSION_VirtualSurfaceGeometry_END_\n\n\n_EXTENSION_ExternalShadingGeometry_START_\n@ShadingGeometry\n_EXTENSION_ExternalShadingGeometry_END_\n\n\n_EXTENSION_GeoPositionGeometry_START_\n@ComfortGeometry\n_EXTENSION_GeoPositionGeometry_END_\n\n\n_EXTENSION_DaylightSensorPoints_START_\n@DaylightSensors\n_EXTENSION_DaylightSensorPoints_END_\n\n\n_EXTENSION_AdditionalDaylightGeometry_START_\n@DaylightGeometry\n_EXTENSION_AdditionalDaylightGeometry_END_\n\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "36932499-f7d5-4be5-8bed-eb5b49bcf752",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Inputs Template",
+   "pivot": [
+    3139.875,
+    1735.56396484375
+   ],
+   "text": "*------------------------------------\n*  I n p u t s\n*------------------------------------\nINPUTS @addinputs\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b8e7a3d2-02ac-41ef-967e-be62018da4b9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Gains Template",
+   "pivot": [
+    3139.884033203125,
+    3314.303955078125
+   ],
+   "text": "GAIN @self.Name\n CONVECTIVE=@self.Convective : RADIATIVE=@self.Radiative : HUMIDITY=@self.Humidity : ELPOWERFRAC=@self.Elpowerfrac :  @self.Context : CATEGORY=@self.Category\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "6e667241-b201-4e17-b61a-2c6825683100",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Comfort Template",
+   "pivot": [
+    3141.904052734375,
+    2090.9560546875
+   ],
+   "text": "COMFORT @self.Name\n CLOTHING=@self.Clothing : MET=@self.Met : WORK=@self.Work : VELOCITY=@self.Velocity : ELV_AIRSPEED=@self.Elvairspeed : FSHADE=@self.Fshade : FPROJECT=@self.Fproject\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "e77b57ce-c349-4a68-a300-175cb59f46f9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Heating Template",
+   "pivot": [
+    3142.423095703125,
+    2316.1220703125
+   ],
+   "text": "HEATING @self.Name\n ON=@self.On\n POWER=@self.Power\n HUMIDITY=@self.Humidity\n RRAD=@self.Rrad\n ELPOWERFRAC=@self.Elpowerfrac\n AREA_RELATED_POWER=@self.Area_related_power\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "281dd068-47f1-4bd0-a7d7-3599dc681018",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Windows Template",
+   "pivot": [
+    3143.52099609375,
+    1832.35302734375
+   ],
+   "text": "WINDOW @self.Construction\n WINID=@self.Winid : HINSIDE=@self.Hinside : HOUTSIDE=@self.Houtside : SLOPE=@self.Slope : SPACID=@self.Spacid : WWID=@self.Wwid : WHEIG=@self.Wheig : FFRAME=@self.Framefrac : UFRAME=@self.Cframe : ABSFRAME=0.6 : RISHADE=0 : RESHADE=0 : REFLISHADE=0.5 : REFLOSHADE=0.5 : CCISHADE=0.5 : EPSFRAME=0.9 : EPSISHADE=0.9 : ITSHADECLOSE=@self.Shadeclose : ITSHADEOPEN=@self.Shadeopen : FLOWTOAIRNODE=@self.Flowtoairnode : PERT=@self.Pert : PENRT=@self.Penrt : RADMATERIAL=@self.Radmaterial0 : RADMATERIAL_SHD1=@self.Radmaterial1\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "25489d6b-1314-486d-b32f-75f139d1989d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Cooling Template",
+   "pivot": [
+    3142.68994140625,
+    2420.662109375
+   ],
+   "text": "COOLING @self.Name\n ON=@self.On\n POWER=@self.Power\n HUMIDITY=@self.Humidity\n ELPOWERFRAC=@self.Elpowerfrac\n AREA_RELATED_POWER=@self.Area_related_power\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7cb75f42-7bc6-4b7e-a38f-2ee180572952",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Infiltration Template",
+   "pivot": [
+    3143.85888671875,
+    2156.576904296875
+   ],
+   "text": "INFILTRATION @self.Name\n AIRCHANGE=@self.Airchange\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a14ebb4e-63ca-403a-a653-32fe367ef5fb",
+   "kind": "native",
+   "name": "template",
+   "nickName": "template",
+   "pivot": [
+    4504.0,
+    2810.0
+   ],
+   "type": "GH_ClusterOutputHook"
+  },
+  {
+   "id": "6c8f573a-aee8-48a2-ae60-81bb06228147",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Window Output Template",
+   "pivot": [
+    3144.287109375,
+    3883.552978515625
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 119 : SURF = @winsurfaces  : SHADCNTRL - shading control signal of radiation depending control (0 or 1, 0 if not used)\n        = 103 : SURF = @winsurfaces  : IBSHAD - Total direct radiation on outside of external surface incl. shading effects\n        = 104 : SURF = @winsurfaces  : IDSHAD - Total diffuse radiation on outside of external surface incl. shading effects\n        = 113 : SURF = @winsurfaces  : AREA - surface area\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "660f08a1-6aee-44e2-a815-2abd06fd0e62",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Comfort Output Template",
+   "pivot": [
+    3147.740966796875,
+    4459.01416015625
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 120 : COMFID = @comfort_points  : TMR - Mean radiant temperature (longwave only)\n        = 124 : COMFID = @comfort_points  : PMV - Predicted mean vote (longwave only)\n*        = 126 : COMFID = @comfort_points  : PPD - Percentage of person dissatisfied (longwave only)\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "6964322a-4fe1-4d07-814f-1a8327d472b2",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Wall Output Template",
+   "pivot": [
+    3143.251953125,
+    4058.343017578125
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 114 : SURF = @wallsurfaces  : IB - Incident direct radiation on outside of external surfaces (no shading effects)    [kJ/hr]\n        = 115 : SURF = @wallsurfaces  : ID - Incident diffuse radiation on outside of external surfaces (no shading effects)   [kJ/hr]\n        = 116 : SURF = @wallsurfaces  : IT - Incident total radiation on outside of external surfaces (no shading effects)     [kJ/hr]\n        = 113 : SURF = @wallsurfaces  : AREA - surface area\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "29ff3920-67e3-4fb4-b07e-f1ddda7d397c",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Tbd Output Template",
+   "pivot": [
+    3142.251953125,
+    4135.3427734375
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 110 : SURF = @tbdsurfaces  : QABSILW - Energy absorbed on inside surface by longwave radiation exchange\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "af397022-34a9-4702-81c8-254585cb62ee",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "BSDF Windows Template",
+   "pivot": [
+    3143.927001953125,
+    1940.616943359375
+   ],
+   "text": "WINDOW @self.Construction\n WINID=@self.Winid : WINMODEL=DETAILED : BASECONFIGID=@self.Baseconfigid : HINSIDE=@self.Hinside : HOUTSIDE=@self.Houtside : PSIEDGE=@self.Psiedge : SLOPE=@self.Slope : SPACID=1 : WWID=@self.Wwid : WHEIG=@self.Wheig : CONFIGIDS=@self.Configids : FFRAME=@self.Fframe : UFRAME=@self.Cframe : ABSFRAME=@self.Absframe : GAPVENT1=@self.Gapvent1 : GAPMFLOW1=@self.Gapmflow1 : GAPINTEMP1=@self.Gapintemp1 : GAPVENT2=0 : GAPMFLOW2=0 : GAPINTEMP2=18 : FLOWTOAIRNODE=0 : ITSHADECLOSE=@self.Shadeclose : ITSHADEOPEN=@self.Shadeopen : PERT=0 : PENRT=0 : RADMATERIAL=@self.Radmaterial0 : RADMATERIAL_SHD1=@self.Radmaterial1 : FNAME_BSDF1=@self.Fname_bsdf1 : FNAME_BSDF2=@self.Fname_bsdf2\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "c8d0f829-89c0-4b93-9c5e-ed9803ca7b8c",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Zone Template",
+   "pivot": [
+    3136.02001953125,
+    2729.405029296875
+   ],
+   "text": "ZONE @zone\nRADIATIONMODE\n BEAM=@beam : DIFFUSE=@diffuse : LONGWAVE=@longwave : GEOMODE=@geomode : FSOLAIR=@fsolair\nDAYLIGHTMODE\n DLSHADE =@dlshade\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "30abb954-82e2-4582-a635-3df8b742bdcd",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Chilled Ceiling Template",
+   "pivot": [
+    3138.68896484375,
+    3230.22998046875
+   ],
+   "text": "LAYER @self.Name\n CC_PSPACING= @self.Cc_pspacing : CC_PIDIAMETER= @self.Cc_pidiameter : CC_CPFLUID=@self.Cpfluid : SP_NORMPOWER= @self.Sp_normpower : SP_NORMMFLOW= @self.Sp_normmflow : NORMAREA= @self.Normarea : NORMNLOOP=  @self.Normnloop : UCOMB= @self.Ucomb : UWRX= @self.Uwrx : DTSURFNORM= @self.Dtsurfnorm  : PERT=      @self.Pert : PENRT=      @self.Penrt\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "683cdf45-bb23-4dd3-b5e6-be9ea0ea6297",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Ecal Output Template",
+   "pivot": [
+    3145.251953125,
+    4208.3427734375
+   ],
+   "text": " AIRNODES = @airnodes\n NTYPES =  23 : TSTAR - star node temperature of airnode\n        =  17 : SURF = @ecalsurfaces  : TSI - inside surface temperature\n        =  18 : SURF = @ecalsurfaces  : TSO - outside surface temperature\n        =  86 : SURF = @ecalsurfaces  : REQV - equivalent resistance between the surface and the starnode\n        =  83 : SURF = @ecalsurfaces  : QSKY - radiation to sky of outside surfaces of external walls or windows of airnode\n        =  21 : SURF = @ecalsurfaces  : QABSI - total radiation absorbed (and transmitted) at all inside surf. of airnode (inc. solar gains, radiative heat and int. rad. gains, but not l-wave radiation from other walls\n        =  22 : SURF = @ecalsurfaces  : QABSO - total radiation absorbed (and transmitted) at all outside surf. of airnode (inc. solar gains, radiative heat and int. rad. gains, but not l-wave radiation from other walls or Tsky\n        =  82 : SURF = @ecalsurfaces  : QWG - wall gain on inside surface of wall or window\n        =  84 : SURF = @ecalsurfaces  : QRGAB - internal radiative gains absorbed on inside surface of wall or window\n        =  79 : SURF = @ecalsurfaces  : QSIAB - solar (direkt+diffuse) radiation being absorbed at inside surface\n        = 110 : SURF = @ecalsurfaces  : QABSILW - Energy absorbed on inside surface by longwave radiation exchange\n        = 116 : SURF = @ecalsurfaces  : IT - Incident total radiation on outside of external surfaces (no shading effects)     [kJ/hr]\n        = 107 : SURF = @ecalsurfaces  : HCONVO - eff. outside conv. heat transfer coeff (BACK)\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f143390a-5a30-40de-b200-66174024cfd5",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Efical Output Template",
+   "pivot": [
+    3147.251953125,
+    4288.7421875
+   ],
+   "text": " AIRNODES = @airnodes\n NTYPES =  23 : TSTAR - star node temperature of airnode\n        =  17 : SURF = @eficalsurfaces  : TSI - inside surface temperature\n        =  86 : SURF = @eficalsurfaces  : Requiv - equivalent resistance between the surface and the starnode\n        =  83 : SURF = @eficalsurfaces  : QSKY - radiation to sky of outside surfaces of external walls or windows of airnode\n        =  21 : SURF = @eficalsurfaces  : QABSI - total radiation absorbed (and transmitted) at all inside surf. of airnode (inc. solar gains, radiative heat and int. rad. gains, but not l-wave radiation from other walls\n        =  84 : SURF = @eficalsurfaces  : QRGAB - internal radiative gains absorbed on inside surface of wall or window\n        =  79 : SURF = @eficalsurfaces  : QSIAB - solar (direkt+diffuse) radiation being absorbed at inside surface\n        = 110 : SURF = @eficalsurfaces  : QABSILW - Energy absorbed on inside surface by longwave radiation exchange\n        = 107 : SURF = @eficalsurfaces  : HCONVO - eff. outside conv. heat transfer coeff (BACK)\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2d433c6c-a50c-4c09-be9a-29a7a10823b0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Skeleton",
+   "pivot": [
+    3152.62109375,
+    4836.97314453125
+   ],
+   "text": "*--------------------------------------------------------------------------------\n*  T R N F L O W Multizone Airflow Network (Model COMIS 3.1)\n*--------------------------------------------------------------------------------\n\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nMULTIZONE_AIRFLOW_NETWORK\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n*\nCALCFLOWS=1\n*--------------------------------------------------------------------------------\n*  A d d  T R N F L O W  C o m m a n d s\n*--------------------------------------------------------------------------------\n*\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nPOLLUTANTS\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n*\n@Pollutants\n*\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nLINKTYPES\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n*\n*--------------------------------------------------------------------------------\n*  C r a c k s\n*--------------------------------------------------------------------------------\n@Cracks\n*--------------------------------------------------------------------------------\n*  F a n s\n*--------------------------------------------------------------------------------\n@Fans\n*--------------------------------------------------------------------------------\n*  S t r a i g h t   D u c t s\n*--------------------------------------------------------------------------------\n@Straightducts\n*--------------------------------------------------------------------------------\n*  F l o w   C o n t r o l l e r s\n*--------------------------------------------------------------------------------\n@Flowcontrollers\n*--------------------------------------------------------------------------------\n*  L a r g e    V e r t i c a l   Openings (Windows+Doors)\n*--------------------------------------------------------------------------------\n@Largeopenings\n*--------------------------------------------------------------------------------\n*  T e s t   D a t a   C o m p o n e n t s\n*--------------------------------------------------------------------------------\n@Testdata\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNODETYPES\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n*\n*--------------------------------------------------------------------------------\n*  E x t e r n a l   N o d e s  (CP VALUES)\n*--------------------------------------------------------------------------------\n@Externalnodes\n*--------------------------------------------------------------------------------\n*  A u x i l i a r y   N o d e s\n*--------------------------------------------------------------------------------\n@Auxiliarynodes\n*--------------------------------------------------------------------------------\n*  T h e r m a l  Z o n e s   N o d e s\n*--------------------------------------------------------------------------------\n@Thermalzones\n*--------------------------------------------------------------------------------\n*  W i n d   v e  l o c i t y   p r o f i l e\n*--------------------------------------------------------------------------------\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nWIND_VELOPROF\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n@Windvelocityprofile\n*--------------------------------------------------------------------------------\n*  A i r l i n k   N e t w o r k\n*--------------------------------------------------------------------------------\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nAIRLINK_NETWORK\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n@Airlinknetwork\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "aea0ad08-fed5-4a60-8158-e1cfb71fa2ca",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Pollutants",
+   "pivot": [
+    3153.8349609375,
+    4961.26513671875
+   ],
+   "text": "POLLUTANT @self.Name\n MOLMASS= @self.Molmass     : DECAY= @self.Decay    \n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8e654109-2fa1-4698-82bd-ff7f51e5a8ff",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Large Openings",
+   "pivot": [
+    3155.034912109375,
+    5019.4140625
+   ],
+   "text": "LOPENING @self.Name\n DESC= -\n LOTYPE=        @self.Lotype : LO1TYPE=      @self.Lo1type : LOWIDTH=       @self.Lowidth : LOHEIGHT=       @self.Loheight : AXISHEIGHT=       0\n CDCLOSE=     @self.Cdclose : CDOPEN=     @self.Cdopen\n CSCL=     0.001 : EXPNCL=     0.7\n FILTER1= 0     : FILTER2= 0     : FILTER3= 0     : FILTER4= 0     : FILTER5= 0\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fc28d762-0464-4122-bc7f-96d70e9f3167",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow External Nodes",
+   "pivot": [
+    3146.3359375,
+    5150.48876953125
+   ],
+   "text": "@self.Data\nREFHEIGHT=      @self.Refheight :                   WINDDIR=        @self.Winddir\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "92f6fce1-728b-42ad-87f4-a7f922ac0dc3",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Thermal Zones",
+   "pivot": [
+    3145.14990234375,
+    5219.60302734375
+   ],
+   "text": "TNODE @self.Tnode           : REFHEIGHT=       @self.Refheight : THEIGHT=     @self.Theight : TDEPTH=       @self.Tdepth\n POLLUTANT= @self.Pollutant          : INICONCENTRATION=        @self.Iniconcentration : SOURCE= @self.Source : SINK= 0 : DECAY= 0\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "e3384f79-737c-42b3-ba67-662c1edb4475",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Windvelocityprofile",
+   "pivot": [
+    3148.833984375,
+    5333.5458984375
+   ],
+   "text": "WINDDIR=@self.Winddir\nVELOEXP=@self.Veloexp \n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f48c0ab1-d624-4230-9e0a-43be085d4bf1",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Trnflow Airlinknetwork",
+   "pivot": [
+    3150.833984375,
+    5397.14794921875
+   ],
+   "text": "LINK @self.Link       : ID= @self.Id : FRNODE= @self.Frnode     : TONODE= @self.Tonode         : FRHEIGHT=       @self.Frheight : TOHEIGHT=        @self.Toheight : WIOWNHF=       @self.Wiownhf : FSCALE= @self.Fscale\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7cc0552c-66d1-467b-8736-869ce7ebc96d",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Header Template",
+   "pivot": [
+    3133.529052734375,
+    1480.333984375
+   ],
+   "text": "*********************************************************************************\n*  TRNBuild   2.0.267\n*********************************************************************************\n*   BUILDING DESCRIPTIONS FILE TRNSYS\n*   FOR BUILDING:   c:\\TRNLizard_dev\\Model\\Base\\Base.inf\n*   GET BY WORKING WITH TRNBuild 2.0 for Windows\n*********************************************************************************\n*\n*--------------------------------------------------------------------------------\n*  C o m m e n t s\n*--------------------------------------------------------------------------------\n*#C Originally created by TRNSIDF Version 1.45\n*--------------------------------------------------------------------------------\n*  P r o j e c t\n*--------------------------------------------------------------------------------\n*+++ PROJECT\n*+++ TITLE=undefined\n*+++ DESCRIPTION=undefined\n*+++ CREATED=@author\n*+++ ADDRESS=undefined\n*+++ CITY=undefined\n*+++ SWITCH=undefined\n*--------------------------------------------------------------------------------\n*  P r o p e r t i e s\n*--------------------------------------------------------------------------------\nPROPERTIES\n DENSITY=1.204 : CAPACITY=1.012 : PRESSURE=101325.000 : HVAPOR=2454.0 : SIGMA=2.041e-007 : RTEMP=293.15\n*--- convective heat transfer coefficient calculation ---------------------\n KFLOORUP=7.2 : EFLOORUP=0.31 : KFLOORDOWN=3.888 : EFLOORDOWN=0.31\n KCEILUP=7.2 : ECEILUP=0.31 : KCEILDOWN=3.888 : ECEILDOWN=0.31\n KVERTICAL=5.76 : EVERTICAL=0.3\n*--- radiance parameters -------------------\n SCENE_ROTATION_ANGLE=0 : GROUND_IDS= : GROUND_REFLECTANCE=0.2 : SHADER_REFLECTANCE=@shader_reflectance\n CALC_MODE=@calcmode : LATITUDE=@latitude : LONGITUDE=@longitude : TIME_ZONE=@timezone : SITE_ELEVATION=@altitude\n AB=@ab : AD=@ad : AS=@as : AR=@ar : AA=@aa\n LR=6 : ST=0.15 : SJ=1 : LW=0.004 : DJ=0 : DS=0.2 : DR=2 : DP=512\n*--- comfort parameters -------------------\n DIAM-SENSOR=0.07 : EPS-SENSOR=0.82 : REFL-SENSOR=0.47 : ELV_AIRSPEED1=@elv_airspeed1 : ELV_AIRSPEED2=@elv_airspeed2 : ELV_AIRSPEED3=@elv_airspeed3\n*--- other -------------------\n FSCAL_TREGENZA=HIGH : SHM_MODE=0 : SURFGRID=0.2\n*--- daylight  -------------------\n UDIMIN=100 : UDIMAX=2000 : DAMIN=300\n*\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nTYPES\n*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n*\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "593850fa-7b28-45a9-8e7e-5e26fda10a13",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Daylight Control Template",
+   "pivot": [
+    3142.423095703125,
+    2533.6220703125
+   ],
+   "text": "DCONTROL @self.Name\n ILLMODE=@self.Illmode : VALUE=@self.Value : ILLSETPOINT1=@self.Illsetpoint1 : ILLSETPOINT2=@self.Illsetpoint2 : CNTRLMODE=@self.Cntrlmode : MINPFAC=@self.Minpfac : MINLFAC=@self.Minlfac : GEOPOS1=@self.Geopos1 : GEOPOS2=@self.Geopos2 : GEOPOS3=@self.Geopos3 : GEOPOS4=@self.Geopos4\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fc9775c4-7526-400d-943a-c15670a29896",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Daylight Output Template",
+   "pivot": [
+    3150.14111328125,
+    4549.6630859375
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 435 : SCHEDULE = @schedule,  : STDFILE_DL - Daylight standard output file (selected ON/OFF factor is used by output statistics) [-]\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "24dcf320-8535-4b90-8339-7a35cf46dda9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Annual Schedule Template",
+   "pivot": [
+    3138.7890625,
+    3533.10693359375
+   ],
+   "text": "SCHEDULE @self.Name\n HOURS =0 744 1416 2160 2880 3624 4344 5088 5832 6552 7296 8016 8760\n VALUES=@self.January @self.February @self.March @self.April @self.May @self.June @self.July @self.August @self.September @self.October @self.November @self.December @self.December \n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "c6665479-41df-4064-876b-697c44aab9db",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Ventilation Template",
+   "pivot": [
+    3142.537109375,
+    2221.337890625
+   ],
+   "text": "VENTILATION @self.Name\n TEMPERATURE=@self.Temperature\n AIRCHANGE=@self.Airchange\n SPECFANPOWER=@self.Specfanpower\n SENSHR=@self.Senshr\n ABSMINHUM=@self.Absminhum\n ABSMAXHUM=@self.Absmaxhum\n CALCQAHU=@self.Calcqahu\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fb7499e7-fbf3-42a6-b322-68bc1b732fa2",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Balance Output Template",
+   "pivot": [
+    3148.287109375,
+    4372.26123046875
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES =  19 : SURF = @balsurfaces  : QCOMI - energy from  inside surface incl. conv. to the air and l-wave radiation to other surfaces\n        =  79 : SURF = @balsurfaces  : QSIAB - solar (direkt+diffuse) radiation being absorbed at inside surface\n        =  21 : SURF = @balsurfaces  : QABSI - total radiation absorbed (and transmitted) at all inside surf. of airnode (inc. solar gains, radiative heat and int. rad. gains, but not l-wave radiation from other walls\n",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a9d641ce-e08f-4791-83d3-82ba9c1d3e16",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "BSDF Window Output Template",
+   "pivot": [
+    3141.787109375,
+    3973.552978515625
+   ],
+   "text": " AIRNODES = @airnodes \n NTYPES = 310 : SURF = @bsdfsurfaces  : TGGAP1 - Outlet temperature of gap 1 (for not ventilated gaps = gap temperature, available for complex fenestration model only) [C]\n",
+   "type": "GH_Panel"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [
+  "template"
+ ],
+ "wires": [
+  {
+   "from": [
+    "7cc0552c-66d1-467b-8736-869ce7ebc96d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "headertempl",
+    0
+   ]
+  },
+  {
+   "from": [
+    "36932499-f7d5-4be5-8bed-eb5b49bcf752",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "inputstempl",
+    1
+   ]
+  },
+  {
+   "from": [
+    "281dd068-47f1-4bd0-a7d7-3599dc681018",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "windowstempl",
+    2
+   ]
+  },
+  {
+   "from": [
+    "af397022-34a9-4702-81c8-254585cb62ee",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "BSDFwindowstempl",
+    3
+   ]
+  },
+  {
+   "from": [
+    "6e667241-b201-4e17-b61a-2c6825683100",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "comforttempl",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7cb75f42-7bc6-4b7e-a38f-2ee180572952",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "infiltrationtempl",
+    5
+   ]
+  },
+  {
+   "from": [
+    "c6665479-41df-4064-876b-697c44aab9db",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "ventilationtempl",
+    6
+   ]
+  },
+  {
+   "from": [
+    "e77b57ce-c349-4a68-a300-175cb59f46f9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "heatingtempl",
+    7
+   ]
+  },
+  {
+   "from": [
+    "25489d6b-1314-486d-b32f-75f139d1989d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "coolingtempl",
+    8
+   ]
+  },
+  {
+   "from": [
+    "593850fa-7b28-45a9-8e7e-5e26fda10a13",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "dctrltempl",
+    9
+   ]
+  },
+  {
+   "from": [
+    "262dc9b0-854e-409b-a9cc-407d99aab86a",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "zonesoritempl",
+    10
+   ]
+  },
+  {
+   "from": [
+    "c8d0f829-89c0-4b93-9c5e-ed9803ca7b8c",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "zonetempl",
+    11
+   ]
+  },
+  {
+   "from": [
+    "efcf3c62-f977-4422-b057-ce2bc26d0e84",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "airnodetempl",
+    12
+   ]
+  },
+  {
+   "from": [
+    "7517d448-80f3-42fe-bec8-95709fc176f7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "constrtempl",
+    13
+   ]
+  },
+  {
+   "from": [
+    "21969acf-5967-4105-ae21-e87457e24842",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "massivelayertempl",
+    14
+   ]
+  },
+  {
+   "from": [
+    "7c9bc4db-1cf3-461d-98cd-d1f9e12d7041",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "masslesslayertempl",
+    15
+   ]
+  },
+  {
+   "from": [
+    "94b674e1-8971-4481-a360-1d4dac0b23a0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "activelayertempl",
+    16
+   ]
+  },
+  {
+   "from": [
+    "30abb954-82e2-4582-a635-3df8b742bdcd",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "chilledceilingtempl",
+    17
+   ]
+  },
+  {
+   "from": [
+    "b8e7a3d2-02ac-41ef-967e-be62018da4b9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "gaintempl",
+    18
+   ]
+  },
+  {
+   "from": [
+    "6a2c8994-f297-4b15-9513-f29d81b0d2b1",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "dailyscheduletempl",
+    19
+   ]
+  },
+  {
+   "from": [
+    "69245d82-2737-42c0-bf0e-3d48105cfa8d",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "weeklyscheduletempl",
+    20
+   ]
+  },
+  {
+   "from": [
+    "24dcf320-8535-4b90-8339-7a35cf46dda9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "annualscheduletempl",
+    21
+   ]
+  },
+  {
+   "from": [
+    "560677d3-28b8-4a9c-a253-966c4f1177c7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "walltempl",
+    22
+   ]
+  },
+  {
+   "from": [
+    "2f5fe249-3205-45ae-9a3a-27c5561518dc",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "outputtempl",
+    23
+   ]
+  },
+  {
+   "from": [
+    "6c8f573a-aee8-48a2-ae60-81bb06228147",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "winoutputtempl",
+    24
+   ]
+  },
+  {
+   "from": [
+    "a9d641ce-e08f-4791-83d3-82ba9c1d3e16",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "bsdfoutputtempl",
+    25
+   ]
+  },
+  {
+   "from": [
+    "6964322a-4fe1-4d07-814f-1a8327d472b2",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "walloutputtempl",
+    26
+   ]
+  },
+  {
+   "from": [
+    "29ff3920-67e3-4fb4-b07e-f1ddda7d397c",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "tbdoutputtempl",
+    27
+   ]
+  },
+  {
+   "from": [
+    "683cdf45-bb23-4dd3-b5e6-be9ea0ea6297",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "ecaloutputtempl",
+    28
+   ]
+  },
+  {
+   "from": [
+    "f143390a-5a30-40de-b200-66174024cfd5",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "eficaloutputtempl",
+    29
+   ]
+  },
+  {
+   "from": [
+    "fb7499e7-fbf3-42a6-b322-68bc1b732fa2",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "baloutputtempl",
+    30
+   ]
+  },
+  {
+   "from": [
+    "660f08a1-6aee-44e2-a815-2abd06fd0e62",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "comfortoutputtempl",
+    31
+   ]
+  },
+  {
+   "from": [
+    "fc9775c4-7526-400d-943a-c15670a29896",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "daylightoutputtempl",
+    32
+   ]
+  },
+  {
+   "from": [
+    "a1225651-7d3c-4096-9ce1-a81020236a1e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "geo3dtempl",
+    33
+   ]
+  },
+  {
+   "from": [
+    "2d433c6c-a50c-4c09-be9a-29a7a10823b0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "trnflowtempl",
+    34
+   ]
+  },
+  {
+   "from": [
+    "aea0ad08-fed5-4a60-8158-e1cfb71fa2ca",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "pollutantstempl",
+    35
+   ]
+  },
+  {
+   "from": [
+    "8e654109-2fa1-4698-82bd-ff7f51e5a8ff",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "largeopeningstempl",
+    36
+   ]
+  },
+  {
+   "from": [
+    "fc28d762-0464-4122-bc7f-96d70e9f3167",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "externalnodestempl",
+    37
+   ]
+  },
+  {
+   "from": [
+    "92f6fce1-728b-42ad-87f4-a7f922ac0dc3",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "thermalzonestempl",
+    38
+   ]
+  },
+  {
+   "from": [
+    "e3384f79-737c-42b3-ba67-662c1edb4475",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "windvelocityprofiletempl",
+    39
+   ]
+  },
+  {
+   "from": [
+    "f48c0ab1-d624-4230-9e0a-43be085d4bf1",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "airlinknetworktempl",
+    40
+   ]
+  },
+  {
+   "from": [
+    "64ce9d64-57dc-4abb-b2ac-d0f03c652f2c",
+    "template",
+    1
+   ],
+   "to": [
+    "a14ebb4e-63ca-403a-a653-32fe367ef5fb",
+    "template",
+    -1
+   ]
+  }
+ ]
+}

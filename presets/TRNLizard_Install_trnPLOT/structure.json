@@ -1,0 +1,147 @@
+{
+ "objects": [
+  {
+   "id": "a238c0d7-1183-4dc8-981d-7b3b80118730",
+   "kind": "native",
+   "members": [
+    "5e204462-69a1-4740-aa16-f73cdb2f5ac2"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5e204462-69a1-4740-aa16-f73cdb2f5ac2",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    872.0,
+    394.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "dcc83da4-9756-451d-814c-30bd9e1e3730",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1296.1490478515625,
+    373.7882995605469
+   ],
+   "text": "Double click to edit panel content…",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f64688b7-b5f1-4d93-a859-ed9c9dc11181",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    762.69287109375,
+    431.7195129394531
+   ],
+   "text": "c:\\TRNSYS18\\Building\\trnPLOT\\",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "efa35dd8-8b41-4396-a76a-bd8c8dba8cea",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "License Text",
+   "pivot": [
+    108.41940307617188,
+    68.23969268798828
+   ],
+   "text": "TRNPlot for Rhinoceros 5 and Grasshopper\nCopyright (c) 2015 Transsolar Energietechnik GmbH\nAll Rights Reserved.\n\n                                 DISCLAIMER\n\nTHIS SOFTWARE IS PROVIDED BY THE CONTRACTOR \"AS IS\" AND ANY EXPRESS OR \nIMPLIED WARRANTIES, INCLUDING BUT NOT LIMITED TO, THE IMPLIED WARRANTIES \nOF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN \nNO EVENT SHALL THE CONTRACTOR OR THE GERMAN GOVERNMENT BE LIABLE FOR ANY \nSPECIAL, INDIRECT OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER, \nINCLUDING BUT NOT LIMITED TO CLAIMS ASSOCIATED WITH THE LOSS OF DATA OR \nPROFITS, WHICH MAY RESULT FROM AN ACTION IN CONTRACT, NEGLIGENCE OR OTHER \nTORTIOUS CLAIM THAT ARISES OUT OF OR IN CONNECTION WITH THE ACCESS, USE OR \nPERFORMANCE OF THIS SOFTWARE.\n\nYOU AGREE TO INDEMNIFY TRANSSOLAR ENERGIETECHNIK GMBH, AND ITS SUBSIDIARIES, \nAFFILIATES, OFFICERS, AGENTS, AND EMPLOYEES AGAINST ANY CLAIM OR DEMAND, \nINCLUDING REASONABLE ATTORNEYS' FEES, RELATED TO YOUR USE OF THESE DATA.\n\nTranssolar is not obligated to provide the user with any support, \nconsulting, training or assistance of any kind with regard to the use of \nthese Data or to provide the user with any updates, revisions or new \nversions of these Data.\n\nThe names TRNSYS and Transsolar may not be used in any advertising or \npublicity to endorse or promote any products or commercial entities unless \nspecific written permission is obtained from Transsolar.\n\n\nThe MIT License (MIT)\n\nCopyright (c) 2017 Plotly, Inc\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d552f22a-3cca-482a-a87d-52aa93eb56bc",
+   "kind": "native",
+   "name": "Sketch",
+   "nickName": "Sketch",
+   "pivot": [
+    968.9375,
+    243.1875
+   ],
+   "type": "GH_Markup"
+  },
+  {
+   "id": "020d0976-144c-4210-93c8-3acf10df4977",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1089.72998046875,
+    192.7010955810547
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "codeHash": "c9b093911d08",
+   "id": "1d6fc9ee-d2c3-4265-b13b-7284d663e73b",
+   "inputs": [
+    "Install",
+    "TargetDirectory"
+   ],
+   "kind": "script",
+   "name": "Lizard_trnPLOT_installer",
+   "nickName": "Installer",
+   "outputs": [
+    "out"
+   ],
+   "pivot": [
+    1162.0,
+    425.0
+   ],
+   "script": "Lizard_trnPLOT_installer",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "1d6fc9ee-d2c3-4265-b13b-7284d663e73b",
+    "out",
+    0
+   ],
+   "to": [
+    "dcc83da4-9756-451d-814c-30bd9e1e3730",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "5e204462-69a1-4740-aa16-f73cdb2f5ac2",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "1d6fc9ee-d2c3-4265-b13b-7284d663e73b",
+    "Install",
+    0
+   ]
+  },
+  {
+   "from": [
+    "f64688b7-b5f1-4d93-a859-ed9c9dc11181",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "1d6fc9ee-d2c3-4265-b13b-7284d663e73b",
+    "TargetDirectory",
+    1
+   ]
+  }
+ ]
+}

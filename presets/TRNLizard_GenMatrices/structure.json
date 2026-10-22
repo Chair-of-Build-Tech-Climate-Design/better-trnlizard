@@ -1,0 +1,249 @@
+{
+ "objects": [
+  {
+   "id": "8b2ea5a3-474e-4108-a731-ff047a95fc52",
+   "kind": "native",
+   "members": [
+    "999e9b84-3af2-49bb-85bc-2583d25d54d4",
+    "81a2dcde-9612-4bb0-ba56-2aefc5ad5b3b",
+    "d705e2d9-d5d0-4353-9c8a-4d34e042ef4b",
+    "bae97ca9-2129-4748-8f7a-c6fe5463cf3a",
+    "93ccb4fd-a073-49f9-be2f-d301bb11a2a4",
+    "df4d4ec9-4971-48a4-80a1-31a83a678139",
+    "1ff3a5ea-29ce-4cf5-bbe9-ce6984e99258",
+    "2c2aa2be-f15f-435b-b97d-9d1abef05377",
+    "9dcd66f2-264e-4ca8-98e5-7835a427229a",
+    "4c56f6fb-d18f-4c76-9daa-1e7864ac2b2c",
+    "acdabc8b-200a-4bef-a12b-e947700e1f9d",
+    "860f0b32-f10e-4d03-af11-959519d84cd2",
+    "4356c0da-9394-48ff-87fc-fb2eec0ff06d",
+    "63724019-a7fc-40ee-b48b-d5d5d5bec57e",
+    "46471ed9-a52b-4a2e-a1ac-7e7907c4b70a",
+    "99516fef-bcdd-42b0-ac63-6f986fe677b4",
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "999e9b84-3af2-49bb-85bc-2583d25d54d4",
+   "kind": "native",
+   "members": [
+    "81a2dcde-9612-4bb0-ba56-2aefc5ad5b3b",
+    "a5c48375-ca26-4c54-87d3-1edef55523f2"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "81a2dcde-9612-4bb0-ba56-2aefc5ad5b3b",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    142.44140625,
+    98.7686767578125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "93ccb4fd-a073-49f9-be2f-d301bb11a2a4",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    270.0,
+    295.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "df4d4ec9-4971-48a4-80a1-31a83a678139",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    171.6513671875,
+    371.14892578125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1ff3a5ea-29ce-4cf5-bbe9-ce6984e99258",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "window_ID",
+   "pivot": [
+    152.3515625,
+    402.9029541015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "2c2aa2be-f15f-435b-b97d-9d1abef05377",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    270.0,
+    261.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "9dcd66f2-264e-4ca8-98e5-7835a427229a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    175.2412109375,
+    434.8218994140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "acdabc8b-200a-4bef-a12b-e947700e1f9d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "transparency",
+   "pivot": [
+    135.021484375,
+    237.6707763671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4356c0da-9394-48ff-87fc-fb2eec0ff06d",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    282.0,
+    329.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "codeHash": "7df5f90ffa8c",
+   "id": "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+   "inputs": [
+    "Multizone",
+    "ShaderTransparency",
+    "ComfortPoints",
+    "CalcSHM",
+    "CalcISM",
+    "CalcMode",
+    "NoPatch",
+    "NoWindowPrint",
+    "GridSize"
+   ],
+   "kind": "script",
+   "name": "Lizard_GenMatrices",
+   "nickName": "Generate Matrices",
+   "outputs": [
+    "out",
+    "Multizone",
+    "refray",
+    "SHMValues",
+    "SHMRays",
+    "SHMIntersectPts",
+    "SHMUnshadedPts",
+    "ISMRays",
+    "ISMIntersectPts",
+    "ISMValues"
+   ],
+   "pivot": [
+    693.0,
+    332.0
+   ],
+   "script": "Lizard_GenMatrices",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "acdabc8b-200a-4bef-a12b-e947700e1f9d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "ShaderTransparency",
+    1
+   ]
+  },
+  {
+   "from": [
+    "2c2aa2be-f15f-435b-b97d-9d1abef05377",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "CalcSHM",
+    3
+   ]
+  },
+  {
+   "from": [
+    "93ccb4fd-a073-49f9-be2f-d301bb11a2a4",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "CalcISM",
+    4
+   ]
+  },
+  {
+   "from": [
+    "4356c0da-9394-48ff-87fc-fb2eec0ff06d",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "CalcMode",
+    5
+   ]
+  },
+  {
+   "from": [
+    "df4d4ec9-4971-48a4-80a1-31a83a678139",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "NoPatch",
+    6
+   ]
+  },
+  {
+   "from": [
+    "9dcd66f2-264e-4ca8-98e5-7835a427229a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8b1e6f68-d800-42ed-b4d3-0fe906c60f47",
+    "GridSize",
+    8
+   ]
+  }
+ ]
+}

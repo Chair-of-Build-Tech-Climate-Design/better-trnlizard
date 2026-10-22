@@ -1,0 +1,8 @@
+{
+ "category": "TRNLizard",
+ "description": "Contains a cluster of Grasshopper components",
+ "exposure": "primary",
+ "name": "TRNLizard_DIN4108_Regime",
+ "nickName": "DIN4108_Regime",
+ "subCategory": "2 | Extras"
+}

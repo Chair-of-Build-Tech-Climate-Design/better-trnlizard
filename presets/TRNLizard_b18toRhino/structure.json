@@ -1,0 +1,368 @@
+{
+ "objects": [
+  {
+   "id": "c09e6c0c-e400-4386-9133-4fcb91b846fc",
+   "kind": "native",
+   "members": [
+    "150b6844-645f-4ec1-a743-9f5cee520758",
+    "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c",
+    "ec3d7183-2687-4523-9e72-292a87b86652",
+    "bce02bd4-62aa-4cfe-a6c1-c1a48a8f7086",
+    "ec930c14-ef5f-454e-9452-352be5462b5e",
+    "9d95b921-be6b-4a4e-bfb8-5ee71c4d697c",
+    "72c87462-b695-4e18-a8b4-e6f1678a4044",
+    "950276c0-c1ea-42e7-b257-617afd5d514d",
+    "33e92589-c34d-4154-a676-af052bf8ae8c",
+    "6d61a7a3-2a8d-47a7-9c1c-9cb83b0f4ebb",
+    "20766692-1974-467a-9a22-744952d0dc08",
+    "90d0083c-1755-46ab-b6d7-592e0c95a956",
+    "3d4f8149-ffb7-4e22-a7f1-d82b6327137e",
+    "82e2d579-dd2d-48b8-bbb6-a2f321bc5afe",
+    "22f65c1e-fa29-49c5-9da8-dd563b79a764",
+    "998d34b5-425a-4f1c-9910-2a73fec88063",
+    "7d17a26e-843c-4b69-b7f4-545bd6a8742c",
+    "690b2d0c-3ce1-44d6-beae-cd9a7a0b1837",
+    "46ec6dec-6849-412e-98b4-815101a56bd4",
+    "ae1d3f09-de8f-4c1d-be59-da5b27cfec98",
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "150b6844-645f-4ec1-a743-9f5cee520758",
+   "kind": "native",
+   "members": [
+    "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    147.896484375,
+    100.46975708007812
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "ec3d7183-2687-4523-9e72-292a87b86652",
+   "kind": "native",
+   "members": [
+    "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "bce02bd4-62aa-4cfe-a6c1-c1a48a8f7086",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    214.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "ec930c14-ef5f-454e-9452-352be5462b5e",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    241.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "9d95b921-be6b-4a4e-bfb8-5ee71c4d697c",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    296.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "72c87462-b695-4e18-a8b4-e6f1678a4044",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    324.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "950276c0-c1ea-42e7-b257-617afd5d514d",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    269.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "33e92589-c34d-4154-a676-af052bf8ae8c",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    351.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "6d61a7a3-2a8d-47a7-9c1c-9cb83b0f4ebb",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    379.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "90d0083c-1755-46ab-b6d7-592e0c95a956",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    131.0,
+    406.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "22f65c1e-fa29-49c5-9da8-dd563b79a764",
+   "kind": "native",
+   "members": [
+    "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "998d34b5-425a-4f1c-9910-2a73fec88063",
+   "kind": "native",
+   "members": [
+    "8a3ecabe-ed6a-4c85-8fa9-77324dfeb69c"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "46ec6dec-6849-412e-98b4-815101a56bd4",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    135.546875,
+    437.1828308105469
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ae1d3f09-de8f-4c1d-be59-da5b27cfec98",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    136.806640625,
+    466.6089782714844
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "8558c1399b00",
+   "id": "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+   "inputs": [
+    "FileUrl",
+    "BakeBuilding",
+    "BakeShader",
+    "BakeVirtual",
+    "BakePoints",
+    "CutOutWindow",
+    "ShowSurfaceID",
+    "ShowConstruction",
+    "ShowShading",
+    "AirnodeScale",
+    "SurfaceScale"
+   ],
+   "kind": "script",
+   "name": "Lizard_b18_to_Rhino",
+   "nickName": "b18_to_Rhino",
+   "outputs": [
+    "out"
+   ],
+   "pivot": [
+    728.0,
+    335.0
+   ],
+   "script": "Lizard_b18_to_Rhino",
+   "type": "ZuiPythonComponent"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "bce02bd4-62aa-4cfe-a6c1-c1a48a8f7086",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "BakeBuilding",
+    1
+   ]
+  },
+  {
+   "from": [
+    "ec930c14-ef5f-454e-9452-352be5462b5e",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "BakeShader",
+    2
+   ]
+  },
+  {
+   "from": [
+    "950276c0-c1ea-42e7-b257-617afd5d514d",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "BakeVirtual",
+    3
+   ]
+  },
+  {
+   "from": [
+    "9d95b921-be6b-4a4e-bfb8-5ee71c4d697c",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "BakePoints",
+    4
+   ]
+  },
+  {
+   "from": [
+    "72c87462-b695-4e18-a8b4-e6f1678a4044",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "CutOutWindow",
+    5
+   ]
+  },
+  {
+   "from": [
+    "33e92589-c34d-4154-a676-af052bf8ae8c",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "ShowSurfaceID",
+    6
+   ]
+  },
+  {
+   "from": [
+    "6d61a7a3-2a8d-47a7-9c1c-9cb83b0f4ebb",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "ShowConstruction",
+    7
+   ]
+  },
+  {
+   "from": [
+    "90d0083c-1755-46ab-b6d7-592e0c95a956",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "ShowShading",
+    8
+   ]
+  },
+  {
+   "from": [
+    "46ec6dec-6849-412e-98b4-815101a56bd4",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "AirnodeScale",
+    9
+   ]
+  },
+  {
+   "from": [
+    "ae1d3f09-de8f-4c1d-be59-da5b27cfec98",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c6ae8228-72e5-41df-a923-de163d7d3aa1",
+    "SurfaceScale",
+    10
+   ]
+  }
+ ]
+}

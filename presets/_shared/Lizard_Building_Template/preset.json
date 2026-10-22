@@ -1,0 +1,11 @@
+{
+ "aliases": [],
+ "category": "TRNLizard",
+ "description": "TRNLizard shared cluster Lizard_Building_Template",
+ "exposure": "primary",
+ "name": "Lizard_Building_Template",
+ "nickName": "Lizard_Building_Template",
+ "role": "sync",
+ "source": "TRNLizard_Template_Lite",
+ "subCategory": "1 | Advanced"
+}

@@ -1,0 +1,3580 @@
+{
+ "objects": [
+  {
+   "id": "42045cf6-0f2a-44bb-832f-d4694f836404",
+   "kind": "native",
+   "members": [
+    "3cc48002-015d-4259-b720-a434e167f94b",
+    "b807555d-3864-4239-a626-4e6aefe142c1",
+    "570af1e5-571f-4127-a0df-2853f2f11a4e",
+    "0609e054-5179-47d0-aafd-c1661db4a098",
+    "e279648a-1e14-4ff8-8a9e-c742fa258591",
+    "dc97af36-1d07-4926-bec0-8805861e218b",
+    "9c8e68d0-6855-47ea-9851-011d3b9dabdf",
+    "55639274-6238-45b9-9fb1-836b6e70d94a",
+    "77140fe0-03d2-4753-a731-9605bf47513d",
+    "bbfa688b-c349-45be-8a78-4376e556e11f",
+    "7a8cc6d7-09b0-4fe7-8e9a-b6f62961e710",
+    "1fc481d3-927e-49fb-9931-dfaed6c2c0e2",
+    "b77288cb-459e-4389-acba-3045a80eb9bc",
+    "5c07fa64-4bfb-4b4d-a624-5b87a40c6cb7",
+    "4e4ad622-ce1b-4d1e-b200-eebe7bbb7c3a",
+    "7fc738db-9050-4c4c-bf55-17ba5685d4a3",
+    "6e7cb451-15ec-49d2-9695-b9f3ed75e85a"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "3cc48002-015d-4259-b720-a434e167f94b",
+   "kind": "native",
+   "members": [
+    "55639274-6238-45b9-9fb1-836b6e70d94a"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5cadb470-90d1-43c2-a684-c4965dd691b8",
+   "kind": "native",
+   "members": [
+    "b1927583-8372-4cf3-89a9-8084432a04eb",
+    "4100685e-4c8d-4a58-877c-061c71b16100",
+    "01514ae6-373f-4740-96d5-4e3d394d0e6e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b77288cb-459e-4389-acba-3045a80eb9bc",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Shading",
+   "pivot": [
+    5615.09521484375,
+    960.7293701171875
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "b807555d-3864-4239-a626-4e6aefe142c1",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Floor",
+   "pivot": [
+    5615.423828125,
+    1020.6199951171875
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "570af1e5-571f-4127-a0df-2853f2f11a4e",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Exterior Windows",
+   "pivot": [
+    5615.3349609375,
+    1282.989013671875
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "0609e054-5179-47d0-aafd-c1661db4a098",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Ceiling",
+   "pivot": [
+    5615.64501953125,
+    1080.73095703125
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "37642115-9993-4951-a0ac-32296cdcf291",
+   "kind": "native",
+   "members": [
+    "9d2fb3de-216d-4512-b9df-8a1845d6d041",
+    "2923619f-b564-4c3a-a736-a5242371d115"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "9d2fb3de-216d-4512-b9df-8a1845d6d041",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    6950.22802734375,
+    1399.39697265625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "b1927583-8372-4cf3-89a9-8084432a04eb",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    7587.548828125,
+    564.0213012695312
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "a679bc0d-dddc-4319-a3e2-dc9ed5eb468a",
+   "kind": "native",
+   "members": [
+    "0461e724-8db0-49e8-9877-46288dadf115",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "0837472e-32e3-46b1-a83f-8f09b0ac2c9d",
+    "388a5378-9ca4-426b-933d-365a67dc008c",
+    "0701ab33-c694-4b1a-bf0a-4ffb1f108e31",
+    "b0f5d7bf-eeea-4f87-9a63-691a39af1ae1",
+    "420d1aac-0f25-4240-8c07-9a11f458f074"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "0461e724-8db0-49e8-9877-46288dadf115",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    6738.43701171875,
+    398.7384033203125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "388a5378-9ca4-426b-933d-365a67dc008c",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    6734.5869140625,
+    489.1296081542969
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "4a9a1293-8efd-462f-a58f-3fed386f099c",
+   "kind": "native",
+   "members": [
+    "f9df0d19-874d-4f2b-a30b-9f516ead84c6",
+    "244c9ecc-49ee-4932-9ba3-22dffca3052e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "f9df0d19-874d-4f2b-a30b-9f516ead84c6",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    6551.64013671875,
+    402.36358642578125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "0701ab33-c694-4b1a-bf0a-4ffb1f108e31",
+   "kind": "native",
+   "members": [
+    "f9df0d19-874d-4f2b-a30b-9f516ead84c6",
+    "244c9ecc-49ee-4932-9ba3-22dffca3052e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "55639274-6238-45b9-9fb1-836b6e70d94a",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    5386.95703125,
+    774.6483764648438
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "ca9ebdf2-5981-4967-be09-ab9df73eca02",
+   "kind": "native",
+   "members": [
+    "9d2fb3de-216d-4512-b9df-8a1845d6d041",
+    "2923619f-b564-4c3a-a736-a5242371d115"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+   "kind": "native",
+   "name": "Data",
+   "nickName": "SurfaceInfo",
+   "pivot": [
+    8048.134765625,
+    1185.7879638671875
+   ],
+   "type": "Param_GenericObject"
+  },
+  {
+   "codeHash": "a18b7ebd964a",
+   "id": "ab2dc054-6ca3-483a-b4e9-890e3b7d5ae3",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Window_Surface",
+   "nickName": "Window",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7277.0,
+    1915.0
+   ],
+   "script": "Lizard_Window_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "01514ae6-373f-4740-96d5-4e3d394d0e6e",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    7660.38916015625,
+    561.4744873046875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "7cff2bb0-1d7b-4d68-8309-2b5d43b1a441",
+   "kind": "native",
+   "members": [
+    "9d3985ad-d9a8-4f90-a519-622d7317ef10",
+    "6917aecc-314d-49c0-99dd-f753fe808086",
+    "8969b427-b78e-4bb1-bdcf-c020898173f6",
+    "87340668-a2bb-4d5f-bcc8-02e4d9234485",
+    "24ecae39-8d2f-49a0-8b44-b45bc320e942",
+    "feef460b-60a6-4555-9ed9-3e2702776336",
+    "4372a429-3750-4fbe-9b29-a705b46a7456",
+    "88b69cd9-fcc3-486c-8bfb-92cd10de43f1",
+    "afc4cd53-5689-470c-9c3c-d37e144b393f",
+    "b51abbbb-2b52-4469-b9ac-55358c8ff0f3",
+    "5c91472b-8978-4cb2-8e00-d567984dac42",
+    "9cb4cb3e-4c60-4336-a422-70baaa903aab",
+    "17f99051-7a94-4ff6-b1f4-923d4d9dead5",
+    "ff33402d-153a-4e2c-a908-c508baa3cc1b",
+    "45fa9ede-5fdd-4ca4-825a-2f6996c4a55f",
+    "11ba1c1c-342f-4dd4-a63f-b67fcbafc6cb",
+    "6949569a-dc61-48c8-b491-d6615f592623",
+    "731f98f6-117c-4777-ae57-aae78aeac37d",
+    "62e345b0-243f-4fc3-a3cb-7c7bc852c960",
+    "5b3ebe9e-8aae-4e88-9cdd-4c72199d1dc5",
+    "d7c2a261-33f5-49b3-af29-9c1ede6f1503",
+    "e0e4949c-fc47-4b14-9c85-687c94c0f6ce",
+    "9b9812ea-18aa-4b5f-a54a-2b375779f2ec",
+    "e6add6c7-4244-41f2-9bc2-2d37cf3d6bf4",
+    "b3aa5bf2-e3ea-4d5f-8057-c068c1ef0494",
+    "7e8fdc93-ec5d-4db3-8425-2eed23815a43",
+    "fce9ef78-bf5b-49c4-b0e6-472241826b4a",
+    "415dc7d8-a537-4d1b-8947-58eb0200b48b",
+    "176ced1c-aa2a-4ed9-bc1a-ef6330878f90",
+    "7614f26d-16de-4534-b4c6-5b7397d70391",
+    "0f68efd3-55ba-48eb-9117-c071105fc04f",
+    "23df08ee-26f8-4bee-bce0-5497b6cdf662",
+    "b36b977b-3985-409c-b5a8-6532725ece05",
+    "bf233721-d66c-4cff-a6d8-32615281d237",
+    "0fcdbd72-b950-4282-8664-bf4c871b9f4b",
+    "94b2f4b4-a3a8-4340-980d-a5966971b94b",
+    "00f87644-fa82-46db-9b1b-7c010e97c899",
+    "014d1416-31c6-4007-8d72-ad3cc7729e92",
+    "bc31afac-580a-4f58-b2cf-e26014955464",
+    "efb166d5-013a-4f9d-85e1-c29d20ee4f45",
+    "205010fc-5f5f-4988-8a44-4cd2a26a6903",
+    "45763e65-d66e-47fa-9cc4-175765096f37",
+    "e699f7f6-b592-4733-bb83-8cb5863b639e",
+    "9029a01e-0647-4718-9422-a79ebeb5c4b4",
+    "eb818fa6-203f-46da-ba0a-705ececaf606",
+    "39dba972-5368-4070-b014-f807fbcfc626",
+    "a8c53521-a64a-424b-89e6-50772ba71264",
+    "5e9b16d6-d9c5-4633-863b-f626a5b82ee3",
+    "e5d97bef-ed53-4fdb-9feb-00fb701b56c5",
+    "c486d996-cb5d-4935-8044-26a2bec22c0d",
+    "0cb33cca-396c-48ef-bb1a-128ab0512a9d",
+    "096f7e56-11af-4324-8d26-29337ee0bbe7",
+    "b8cffc13-4b73-4cc1-b922-4237e4f430f8",
+    "c3c8c1df-d20b-45eb-960a-3418e6f39af3",
+    "c1ff4ac9-04fd-426c-8669-f18572b1fb90",
+    "7e53c53d-76a0-49ed-b188-377b97bf4b14",
+    "9b26128b-c734-4917-8b38-5aab41d2cc06",
+    "738e9717-0026-45f6-af24-ae1e3e747bed",
+    "622be072-c0bb-4e70-ae5e-d0760e6d62e7",
+    "a8c5bd38-7127-4082-acb5-80abdda65a19",
+    "dba5b3af-767d-42bf-a168-db0b1b117c42",
+    "43d45469-ff8a-49c4-8437-4544fdb1b39e",
+    "bbb76ac3-dded-4d2e-a172-a6ffdf6b2444",
+    "5d139297-55e5-4818-9428-c057390b1b1c",
+    "8d1b8bce-bdf6-4773-bead-af4433943fb6",
+    "4c303d06-fb58-426d-b18b-42f7bc143597",
+    "22ea2d52-5074-41e6-a98a-ec3071e71eed",
+    "af48a432-d2d4-4c1b-8ad0-f0615fc79e52",
+    "39f2a7d2-afce-4401-9d11-d1d98a48fae6",
+    "0a6ffeb5-181f-4f84-a3d1-9e98edfdadc2",
+    "09648f49-859a-4bf7-95b1-ee38ad18dc3f",
+    "3b385326-c7e8-4ee3-bf46-1efe80888dfa",
+    "658f66c6-c36f-4e24-8e68-f9978f571162",
+    "32e85f9d-9253-4a2f-84a3-c834a048287c",
+    "c6a62a43-c05c-4b79-844b-5094837ae2b2",
+    "4d5d6aca-5d10-4976-96f9-bb2e276a0abc",
+    "137e95f2-4b69-4146-ae99-e90283b0773f",
+    "1433a160-9dd9-46cd-bf2a-a299421493d0",
+    "fd2620b5-712a-4010-bee9-46111807d8fa",
+    "5cedbdc5-6ded-40c4-9a22-ba8324d14387",
+    "9a2ea5b6-58e7-4084-98ee-ed2c87d7244a",
+    "49c4abd0-e37e-426e-97ce-f5a269c8ccbf",
+    "694162c3-a0a4-4c24-9105-43f877939968",
+    "7f495426-ebfc-4adb-9239-f46a1fb8e91b",
+    "7aa576c8-6b47-4011-993a-203dd3f54045",
+    "4f136dc3-3da7-4371-a475-804c84420f8d",
+    "eb105037-596f-429e-95f0-bc5262aaea56",
+    "fd468b6a-ddc9-495a-b643-bf4fd4bd3b08",
+    "c1b74d67-15db-4635-a127-ecc6de0a68e4",
+    "9f51030d-b756-4bce-8b1e-8ef7a0129ae7",
+    "e53dabc5-78c2-41ee-b4e3-002b3bf8e94e",
+    "30591f7c-3a31-4e2a-a9af-b1794dbd6967",
+    "bfc9fd89-49d5-4260-a995-9d282e1edfba",
+    "d5eed019-af85-46f5-bc3d-ae1e4678b0af",
+    "f4dc5eca-2ed3-472b-a881-44d79cc885e0",
+    "e5a9e688-1ec7-41d1-955e-e26977fb2530",
+    "131a8dd3-3d40-46f0-b420-12e867212626",
+    "88558489-4109-4965-8ff4-dc62e42b6154",
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "e93a3402-23b2-40f6-8374-7a7c92e7f03b",
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "239b668e-a95c-4a5d-b824-d785e04e794b",
+    "79f0cf8b-71e4-467b-abf6-4acab38b68a6",
+    "a1c64387-b406-4c11-a0ec-9a4b0266c290",
+    "b53fa63f-671f-4bf2-94cc-7f52471037fd"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "c3b0a5bd-576d-484a-9719-f8bf85fb374d",
+   "kind": "native",
+   "members": [
+    "b778e2b2-9c02-42fd-9a13-fb79db7a3bf5",
+    "f1801d99-b70c-4139-8fd4-4457ca51eb07"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "4372a429-3750-4fbe-9b29-a705b46a7456",
+   "kind": "native",
+   "members": [
+    "5c91472b-8978-4cb2-8e00-d567984dac42",
+    "9cb4cb3e-4c60-4336-a422-70baaa903aab",
+    "17f99051-7a94-4ff6-b1f4-923d4d9dead5",
+    "7e53c53d-76a0-49ed-b188-377b97bf4b14"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5c91472b-8978-4cb2-8e00-d567984dac42",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Room width [m]",
+   "pivot": [
+    3959.56298828125,
+    1149.6219482421875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9cb4cb3e-4c60-4336-a422-70baaa903aab",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Room length [m]",
+   "pivot": [
+    3961.551025390625,
+    1198.656005859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "17f99051-7a94-4ff6-b1f4-923d4d9dead5",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Room height [m]",
+   "pivot": [
+    3966.842041015625,
+    1247.5250244140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7e53c53d-76a0-49ed-b188-377b97bf4b14",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Rotation [°]",
+   "pivot": [
+    4015.9609375,
+    1287.2950439453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4c303d06-fb58-426d-b18b-42f7bc143597",
+   "kind": "native",
+   "members": [
+    "22ea2d52-5074-41e6-a98a-ec3071e71eed",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "af48a432-d2d4-4c1b-8ad0-f0615fc79e52",
+    "39f2a7d2-afce-4401-9d11-d1d98a48fae6",
+    "5c3b0fe8-b3f8-4a48-8772-d498eba1a3f4",
+    "c7ce6d95-086e-4910-89e0-96a7780604b8",
+    "176a459b-7a9b-4ec9-b376-39b20107fa9a"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "22ea2d52-5074-41e6-a98a-ec3071e71eed",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    3811.1669921875,
+    874.0938110351562
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "39f2a7d2-afce-4401-9d11-d1d98a48fae6",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    3803.40087890625,
+    968.0794067382812
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "b778e2b2-9c02-42fd-9a13-fb79db7a3bf5",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    3743.131103515625,
+    887.8847045898438
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "5c3b0fe8-b3f8-4a48-8772-d498eba1a3f4",
+   "kind": "native",
+   "members": [
+    "b778e2b2-9c02-42fd-9a13-fb79db7a3bf5",
+    "f1801d99-b70c-4139-8fd4-4457ca51eb07"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "codeHash": "7547cf80ba88",
+   "id": "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+   "inputs": [
+    "Width",
+    "Depth",
+    "Height",
+    "Rotation"
+   ],
+   "kind": "script",
+   "name": "Lizard_Shoebox",
+   "nickName": "Shoebox",
+   "outputs": [
+    "out",
+    "Box_"
+   ],
+   "pivot": [
+    4363.0,
+    1191.0
+   ],
+   "script": "Lizard_Shoebox",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "e93a3402-23b2-40f6-8374-7a7c92e7f03b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "win/wall_ratio",
+   "pivot": [
+    4485.08984375,
+    1049.759033203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "5f2ddc09f891",
+   "id": "17d5e6f4-b669-42d5-870d-7f87247506ad",
+   "inputs": [
+    "_Box"
+   ],
+   "kind": "script",
+   "name": "Lizard_Deconstruct",
+   "nickName": "Deconstruct",
+   "outputs": [
+    "out",
+    "Orientation",
+    "Surfaces",
+    "SouthWall",
+    "WestWall",
+    "NorthWall",
+    "EastWall",
+    "Floor",
+    "Ceiling"
+   ],
+   "pivot": [
+    4629.0,
+    1228.0
+   ],
+   "script": "Lizard_Deconstruct",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "7fc738db-9050-4c4c-bf55-17ba5685d4a3",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Exterior Wall",
+   "pivot": [
+    5614.98388671875,
+    1140.510009765625
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "6e7cb451-15ec-49d2-9695-b9f3ed75e85a",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Interior Wall",
+   "pivot": [
+    5615.8759765625,
+    1216.06298828125
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "239b668e-a95c-4a5d-b824-d785e04e794b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    4532.47900390625,
+    1080.81298828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "601c305c8e71",
+   "id": "88b7f72e-617b-4716-8703-271f0c3eca72",
+   "inputs": [
+    "WinWallRatio",
+    "Thickness",
+    "Wall"
+   ],
+   "kind": "script",
+   "name": "Lizard_Window_Scale",
+   "nickName": "Window_Scale",
+   "outputs": [
+    "out",
+    "Shading",
+    "Windows"
+   ],
+   "pivot": [
+    4895.0,
+    1084.0
+   ],
+   "script": "Lizard_Window_Scale",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "9c784406-4107-4087-8b32-53dd70ad7d77",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Percentage [%/100]",
+   "pivot": [
+    5888.73486328125,
+    1073.824951171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3ed38c83-5cc0-4e8f-9d7f-a2a8f7f7f952",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    6026.0,
+    1017.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "codeHash": "bdf403af792f",
+   "id": "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+   "inputs": [
+    "Toggle",
+    "_BRep",
+    "Percentage"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Fraction",
+   "nickName": "Surface_Fraction",
+   "outputs": [
+    "out",
+    "BRep1_",
+    "BRep2_"
+   ],
+   "pivot": [
+    6296.0,
+    1048.0
+   ],
+   "script": "Lizard_Surface_Fraction",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "f94d55ff-3ec0-49ca-9415-c901843b7a98",
+   "kind": "native",
+   "members": [
+    "386eedbe-29ec-4e74-a14a-a40ad6c7dc9a",
+    "65cd03a2-20aa-48f8-8b82-2912fbedcf37",
+    "f35b7d01-8252-42e7-a48c-feee92a15ce7",
+    "2b472006-2e44-49a1-9e99-8aa3c53ca18f",
+    "37c601dc-e989-46bd-bd88-64ba45b6b489",
+    "54b77017-3a19-4433-ab20-fc69d132977d",
+    "ca1c097f-cb1c-454d-94f9-37e5e0c4662d",
+    "2d7b4177-8d73-4e91-8126-ca725de3298f",
+    "de854e51-da35-4773-bf55-daf09fb62c03",
+    "9aa7cac7-714f-4c88-af9d-48f923b06248",
+    "75937561-b613-4379-b2df-aade543c1c66",
+    "afb2f9f6-2b01-4288-830a-86cd80173b6e",
+    "b9bb928e-fd5b-4935-be32-6e3a992975d5",
+    "844e7764-37ea-4b4b-ae9e-385c457d9043",
+    "9e5ffbbc-0825-48b3-9273-adc1ba8976ea",
+    "8e2a2ea0-46cf-40fb-a832-dd44fed2e3f9",
+    "f738a590-2abb-4793-81f1-9b014d911b4a",
+    "af562e90-2a27-4c68-9bea-b85d836820eb",
+    "cd2c09fb-1f30-4ad4-9f20-2f92a247330d",
+    "829b371b-f794-436a-94ca-53e98e13c2d0",
+    "4cbf814a-3c4d-4691-99b0-d49a6221ff05",
+    "3a2abec4-ed5d-4e6c-8b30-53848ea86ee9",
+    "6622657b-d938-4b4b-a174-9dc3df576392",
+    "4f6ace55-2b0c-495f-99c3-7030d2727fc4",
+    "c33d8874-751a-4e41-9c66-5cd1e1cf73b8",
+    "66e9af7b-3c5d-44a2-99f3-aa1eb99046cf",
+    "1c6a4e22-ff6d-4d05-bbea-d413c45b8428",
+    "d9ac5ae2-4528-4e47-baa3-fb151c99b567",
+    "fc7f3b6e-f393-4b77-8fbf-e3886ff1adcf",
+    "07c8c53a-8003-4353-8f54-cc65f8ebd764",
+    "5ffe234b-964c-4d9f-95a1-3470b8f669ea",
+    "c792fcd4-c841-4b68-a040-1817c634679f",
+    "a792632d-75b7-4605-9eed-40147c6502bf",
+    "2e05ce51-b953-40dc-b78e-aadf97f1b1c0",
+    "534d914f-64d9-40c5-8c8b-8021decf4c4a",
+    "f316d190-2c33-47fe-8206-0924ed6c40e5",
+    "2df7f0a2-d7a1-4d83-9760-b03554cd99dd",
+    "621fbcb3-474b-4bd1-9430-527d06bf1958"
+   ],
+   "name": "Group",
+   "nickName": "Standard WIndow",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "9e5ffbbc-0825-48b3-9273-adc1ba8976ea",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    958.0,
+    1770.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "8e2a2ea0-46cf-40fb-a832-dd44fed2e3f9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Frame fraction [%]",
+   "pivot": [
+    787.4428100585938,
+    1712.27197265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f738a590-2abb-4793-81f1-9b014d911b4a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    770.8839111328125,
+    1831.573974609375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "af562e90-2a27-4c68-9bea-b85d836820eb",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Irradiation [W/m²]",
+   "pivot": [
+    768.0830078125,
+    1861.0589599609375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cd2c09fb-1f30-4ad4-9f20-2f92a247330d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Irradiation [W/m²]",
+   "pivot": [
+    768.3646850585938,
+    1890.8699951171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "829b371b-f794-436a-94ca-53e98e13c2d0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "U-Value [W/(m².K)]",
+   "pivot": [
+    781.3646850585938,
+    1741.9150390625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4cbf814a-3c4d-4691-99b0-d49a6221ff05",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    613.0,
+    1674.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "4f6ace55-2b0c-495f-99c3-7030d2727fc4",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    720.5640258789062,
+    1920.115966796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1c6a4e22-ff6d-4d05-bbea-d413c45b8428",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Heat exchange [kJ/(h.m²)]",
+   "pivot": [
+    700.825927734375,
+    1948.9139404296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d9ac5ae2-4528-4e47-baa3-fb151c99b567",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Heat exchange [kJ/(h.m²)]",
+   "pivot": [
+    701.2230224609375,
+    1978.35302734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "c792fcd4-c841-4b68-a040-1817c634679f",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    911.4246826171875,
+    1645.491943359375
+   ],
+   "text": "W1",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a792632d-75b7-4605-9eed-40147c6502bf",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    917.70458984375,
+    2007.654052734375
+   ],
+   "text": "glass_70",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2e05ce51-b953-40dc-b78e-aadf97f1b1c0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    917.70458984375,
+    2044.9580078125
+   ],
+   "text": "glass_20",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2df7f0a2-d7a1-4d83-9760-b03554cd99dd",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    770.6959228515625,
+    1802.4310302734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f316d190-2c33-47fe-8206-0924ed6c40e5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    996.0,
+    2071.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "codeHash": "0d5d0f7eed73",
+   "id": "5f51a446-5d11-4acd-a948-96d782eb5b09",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7271.0,
+    1539.0
+   ],
+   "script": "Lizard_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "0d5d0f7eed73",
+   "id": "5b82c973-1b67-4f0b-a164-b96b170dc784",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7270.0,
+    1825.0
+   ],
+   "script": "Lizard_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "0d5d0f7eed73",
+   "id": "3bb3a14b-d3d7-4c6a-8426-1fd18e80aa7d",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7271.0,
+    1729.0
+   ],
+   "script": "Lizard_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "0d5d0f7eed73",
+   "id": "cf59cbdf-91ef-4224-aa42-b22502296ca1",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7271.0,
+    1632.0
+   ],
+   "script": "Lizard_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "11eb1481-70fd-4ec4-8a5b-6886fe5b45a6",
+   "kind": "native",
+   "members": [
+    "07e7a124-ddad-4a81-9f57-c206521c6e5f",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "0837472e-32e3-46b1-a83f-8f09b0ac2c9d",
+    "5c963131-d247-44d0-8bbd-914b0b00ab40",
+    "fb375737-02cd-4b00-9bb3-28d52a7f0f9a",
+    "b0f5d7bf-eeea-4f87-9a63-691a39af1ae1",
+    "420d1aac-0f25-4240-8c07-9a11f458f074"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "07e7a124-ddad-4a81-9f57-c206521c6e5f",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    3757.931884765625,
+    347.997314453125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "5c963131-d247-44d0-8bbd-914b0b00ab40",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    3754.0810546875,
+    438.38800048828125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "21895d8c-b020-4f95-8c0a-712f91551e7f",
+   "kind": "native",
+   "members": [
+    "a605b9c1-45c3-4a00-b3cb-d451d4b1d18e",
+    "aa39cf72-1b5d-46c9-b24f-9fd630fdacff",
+    "f8cd688d-00a5-4f3f-8995-a404f115e92b",
+    "ce9a2d38-0bc3-4bfb-8266-7ab193f10d63",
+    "12aa0d32-7b53-4405-b878-93f079c2a7a2",
+    "621af95b-302e-40fa-b5f5-fd4de254feb0",
+    "c0a7febc-b256-4f56-b6ea-98608f0e0da8",
+    "8150c4e2-9950-4cbe-9ee2-2df2956e8fcc",
+    "2c959476-1f01-46c4-870a-d2ec6941ccb3",
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "a605b9c1-45c3-4a00-b3cb-d451d4b1d18e",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    972.0,
+    1260.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "aa39cf72-1b5d-46c9-b24f-9fd630fdacff",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    914.5234985351562,
+    1238.7550048828125
+   ],
+   "text": "EWL_L",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "12aa0d32-7b53-4405-b878-93f079c2a7a2",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    994.0,
+    1327.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "2c959476-1f01-46c4-870a-d2ec6941ccb3",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    915.4525146484375,
+    1300.218994140625
+   ],
+   "text": "TAIR_@ANAME",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d7f97c33-bdba-4a0e-b9df-6a124d8b8ccc",
+   "kind": "native",
+   "members": [
+    "386eedbe-29ec-4e74-a14a-a40ad6c7dc9a",
+    "65cd03a2-20aa-48f8-8b82-2912fbedcf37",
+    "f35b7d01-8252-42e7-a48c-feee92a15ce7",
+    "2b472006-2e44-49a1-9e99-8aa3c53ca18f",
+    "37c601dc-e989-46bd-bd88-64ba45b6b489",
+    "54b77017-3a19-4433-ab20-fc69d132977d",
+    "ca1c097f-cb1c-454d-94f9-37e5e0c4662d",
+    "2d7b4177-8d73-4e91-8126-ca725de3298f",
+    "de854e51-da35-4773-bf55-daf09fb62c03",
+    "9aa7cac7-714f-4c88-af9d-48f923b06248",
+    "75937561-b613-4379-b2df-aade543c1c66",
+    "afb2f9f6-2b01-4288-830a-86cd80173b6e",
+    "b9bb928e-fd5b-4935-be32-6e3a992975d5",
+    "844e7764-37ea-4b4b-ae9e-385c457d9043",
+    "d1d1ff87-c09f-48e7-8345-0202be2f37ab",
+    "375f84dc-fa7b-431f-90bf-2fe8a924855a",
+    "c1c0ddd6-57b6-4085-98f2-1ceabecc39ab",
+    "872a2aac-06c9-4e1d-8ca4-8e7bcaf19d97",
+    "46f4f4e0-e852-494e-bbee-dd2fd44e7df4",
+    "0fdb9a88-1e33-46d6-ad63-5b2afde05624",
+    "3621001c-655b-47a5-8a71-624b934dd86d",
+    "3a2abec4-ed5d-4e6c-8b30-53848ea86ee9",
+    "f30f89a5-709e-4e03-a122-1c21fca19204",
+    "344e1fd6-5add-4f77-8968-413a57be04f3",
+    "c33d8874-751a-4e41-9c66-5cd1e1cf73b8",
+    "66e9af7b-3c5d-44a2-99f3-aa1eb99046cf",
+    "6cc02e7c-f0f6-4649-97b1-a14686d894df",
+    "bd621a88-5836-45cf-8f28-165dc0450b69",
+    "fc7f3b6e-f393-4b77-8fbf-e3886ff1adcf",
+    "07c8c53a-8003-4353-8f54-cc65f8ebd764",
+    "5ffe234b-964c-4d9f-95a1-3470b8f669ea",
+    "7f46287f-cd9c-4813-a11d-a1fef8bce56b",
+    "ac04cedc-2b75-4613-9852-09514288a1f0",
+    "b2ba269f-0901-45f2-a95e-b9e7e08b9c4b",
+    "534d914f-64d9-40c5-8c8b-8021decf4c4a",
+    "0f85f2d0-c028-4a49-a4dc-15c1bfd01c76",
+    "34e0673e-6166-41ad-8fb8-a5115ffbecd0",
+    "ca7eee6d-e509-4baf-8d6f-b0ce4972a2b5",
+    "52162df3-f4df-4f94-8d4d-dbad775882c3",
+    "a1edf243-e86d-44db-b433-8a6b09d3aa6f",
+    "344199ab-533a-4a27-a2ca-35f1f40f729a",
+    "4a836421-f664-4eb7-818a-82e6c55297da",
+    "8bf4f188-fae2-41a7-abcc-1525b78232ee",
+    "59a62729-3d06-4e86-913e-fb3d11232f4e",
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a"
+   ],
+   "name": "Group",
+   "nickName": "BSDF WIndow",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "872a2aac-06c9-4e1d-8ca4-8e7bcaf19d97",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Irradiation [W/m²]",
+   "pivot": [
+    750.9840698242188,
+    2338.298095703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "46f4f4e0-e852-494e-bbee-dd2fd44e7df4",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Irradiation [W/m²]",
+   "pivot": [
+    751.2647705078125,
+    2369.509033203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "344e1fd6-5add-4f77-8968-413a57be04f3",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    708.2647705078125,
+    2404.35498046875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6cc02e7c-f0f6-4649-97b1-a14686d894df",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Heat exchange [kJ/(h.m²)]",
+   "pivot": [
+    688.52587890625,
+    2433.153076171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bd621a88-5836-45cf-8f28-165dc0450b69",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Heat exchange [kJ/(h.m²)]",
+   "pivot": [
+    688.9240112304688,
+    2462.591064453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7f46287f-cd9c-4813-a11d-a1fef8bce56b",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    895.440673828125,
+    2297.4150390625
+   ],
+   "text": "W2",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "ac04cedc-2b75-4613-9852-09514288a1f0",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    905.4044799804688,
+    2491.89306640625
+   ],
+   "text": "glass_70",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b2ba269f-0901-45f2-a95e-b9e7e08b9c4b",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    905.4044799804688,
+    2529.197021484375
+   ],
+   "text": "glass_20",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "0f85f2d0-c028-4a49-a4dc-15c1bfd01c76",
+   "kind": "native",
+   "locked": true,
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    980.0,
+    2554.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "ca7eee6d-e509-4baf-8d6f-b0ce4972a2b5",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    647.3577270507812,
+    2647.66796875
+   ],
+   "text": "c:\\Trnlizard\\Datafiles\\trnBSDF_40_04_between.dat",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8905b677-90a7-4938-91ab-add5528c9f26",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Select Config ID for shading",
+   "pivot": [
+    789.7559814453125,
+    2622.760009765625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a1edf243-e86d-44db-b433-8a6b09d3aa6f",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "Select Gap No to Ventilate",
+   "pivot": [
+    794.7457275390625,
+    2679.739013671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "344199ab-533a-4a27-a2ca-35f1f40f729a",
+   "kind": "native",
+   "locked": true,
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    892.0,
+    2704.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "9197fe42-bcd6-4d46-abf8-20abdc188f03",
+   "kind": "native",
+   "locked": true,
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    970.0,
+    2589.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "4e156092-d9a7-4115-8b01-8f2ab9607037",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1493.9759521484375,
+    2361.3779296875
+   ],
+   "text": "Double click to edit panel content…",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "4a836421-f664-4eb7-818a-82e6c55297da",
+   "kind": "native",
+   "locked": true,
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    896.1616821289062,
+    2737.77001953125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8bf4f188-fae2-41a7-abcc-1525b78232ee",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    900.16162109375,
+    2771.9189453125
+   ],
+   "text": "TAMB",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "59a62729-3d06-4e86-913e-fb3d11232f4e",
+   "kind": "native",
+   "locked": true,
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    899.761474609375,
+    2817.9189453125
+   ],
+   "text": "0.1*SCHED_WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "bbc401ef-15cf-48c3-b637-0e3407bc9960",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Exterior Wall",
+   "pivot": [
+    5613.26513671875,
+    1177.85400390625
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "codeHash": "c0a29ec1a829",
+   "id": "621fbcb3-474b-4bd1-9430-527d06bf1958",
+   "inputs": [
+    "-------------- Window",
+    "Name",
+    "WinID",
+    "---------------- Frame",
+    "FrameFraction",
+    "FrameConduction",
+    "-------------- Shading",
+    "ShadingMovable",
+    "ShadingFractionExt",
+    "ShadingFractionInt",
+    "ShadingActive",
+    "ShadingNonActive",
+    "ActiveIfTairRoomAbove",
+    "--------------- Glazing",
+    "Hinside",
+    "Houtside",
+    "------------- Daylight",
+    "RadMaterial0",
+    "RadMaterial1",
+    "ShadingGroup"
+   ],
+   "kind": "script",
+   "name": "Lizard_Window_Settings",
+   "nickName": "Window",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    1342.0,
+    1861.0
+   ],
+   "script": "Lizard_Window_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "3c1f58b476a6",
+   "id": "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+   "inputs": [
+    "-------------- Window",
+    "Name",
+    "-------------- Shading",
+    "ShadingActive",
+    "ShadingNonActive",
+    "ActiveIfTairRoomAbove",
+    "--------------- Glazing",
+    "Hinside",
+    "Houtside",
+    "------------- Daylight",
+    "RadMaterial0",
+    "RadMaterial1",
+    "ShadingGroup",
+    "----------------- BSDF",
+    "ShdControl",
+    "ShdConfId",
+    "DataFile",
+    "GapToVentilate",
+    "GapVentMode",
+    "Aopen",
+    "TsupPermanent",
+    "MflowPermanent"
+   ],
+   "kind": "script",
+   "locked": true,
+   "name": "Lizard_BSDF_Settings",
+   "nickName": "Window",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    1347.0,
+    2559.0
+   ],
+   "script": "Lizard_BSDF_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "0221b9e8682d",
+   "id": "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+   "inputs": [
+    "Construction",
+    "Category",
+    "--------------------- Boundary",
+    "BoundaryTemperature",
+    "---------------------- Adjacent",
+    "FrontBack"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Settings",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    1363.0,
+    1292.0
+   ],
+   "script": "Lizard_Surface_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "9cddca21-8a3c-46d1-b828-45f597cc2742",
+   "kind": "native",
+   "members": [
+    "6ac84576-f0b0-469f-98f9-494936a51486",
+    "434c029f-e9a7-4480-94b5-2b6605718903",
+    "f8cd688d-00a5-4f3f-8995-a404f115e92b",
+    "ce9a2d38-0bc3-4bfb-8266-7ab193f10d63",
+    "074f1cee-9a1f-41bb-81f7-b6745d5f9227",
+    "621af95b-302e-40fa-b5f5-fd4de254feb0",
+    "c0a7febc-b256-4f56-b6ea-98608f0e0da8",
+    "8150c4e2-9950-4cbe-9ee2-2df2956e8fcc",
+    "1de3b533-bb7d-466f-8bfb-fb2faa4e7bc3",
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "6ac84576-f0b0-469f-98f9-494936a51486",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    973.0,
+    1417.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "434c029f-e9a7-4480-94b5-2b6605718903",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    915.7734985351562,
+    1396.2550048828125
+   ],
+   "text": "ICL_ASL",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "074f1cee-9a1f-41bb-81f7-b6745d5f9227",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    995.0,
+    1484.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "1de3b533-bb7d-466f-8bfb-fb2faa4e7bc3",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    916.7025146484375,
+    1457.718994140625
+   ],
+   "text": "TAIR_@ANAME",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "0221b9e8682d",
+   "id": "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+   "inputs": [
+    "Construction",
+    "Category",
+    "--------------------- Boundary",
+    "BoundaryTemperature",
+    "---------------------- Adjacent",
+    "FrontBack"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Settings",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    1364.0,
+    1449.0
+   ],
+   "script": "Lizard_Surface_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "0788f837-ceb2-48fe-92e6-029f7b8ac897",
+   "kind": "native",
+   "members": [
+    "231f3d0c-6dc4-42b9-a431-fe1a069585f2",
+    "9af2e582-f32e-4f3f-9f7d-9c9b059717d4",
+    "f8cd688d-00a5-4f3f-8995-a404f115e92b",
+    "ce9a2d38-0bc3-4bfb-8266-7ab193f10d63",
+    "3df24b29-9c50-4b46-99e6-0814ad5220ad",
+    "621af95b-302e-40fa-b5f5-fd4de254feb0",
+    "c0a7febc-b256-4f56-b6ea-98608f0e0da8",
+    "8150c4e2-9950-4cbe-9ee2-2df2956e8fcc",
+    "ed947611-a5ac-4e12-bc82-7dded3790dd5",
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "231f3d0c-6dc4-42b9-a431-fe1a069585f2",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    394.0,
+    1258.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "9af2e582-f32e-4f3f-9f7d-9c9b059717d4",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    337.0234069824219,
+    1237.5050048828125
+   ],
+   "text": "ICL_L",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "3df24b29-9c50-4b46-99e6-0814ad5220ad",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    416.0,
+    1325.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "ed947611-a5ac-4e12-bc82-7dded3790dd5",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    337.9525146484375,
+    1298.968994140625
+   ],
+   "text": "TAIR_@ANAME",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "0221b9e8682d",
+   "id": "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+   "inputs": [
+    "Construction",
+    "Category",
+    "--------------------- Boundary",
+    "BoundaryTemperature",
+    "---------------------- Adjacent",
+    "FrontBack"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Settings",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    785.0,
+    1290.0
+   ],
+   "script": "Lizard_Surface_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "a5991e44-4490-4950-8e60-4439cc2f6348",
+   "kind": "native",
+   "members": [
+    "337dae4a-5624-4d5a-a4ff-8ded10b4d5f1",
+    "19b160eb-5f3c-4d29-8f4a-be84d8a81c33",
+    "f8cd688d-00a5-4f3f-8995-a404f115e92b",
+    "ce9a2d38-0bc3-4bfb-8266-7ab193f10d63",
+    "29bda827-a51a-4c12-b509-db721a9e2224",
+    "621af95b-302e-40fa-b5f5-fd4de254feb0",
+    "c0a7febc-b256-4f56-b6ea-98608f0e0da8",
+    "8150c4e2-9950-4cbe-9ee2-2df2956e8fcc",
+    "e82014ad-eb1a-497f-81f9-d886555ef177",
+    "0b361184-a465-4663-b6e8-8e4686341b0b"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "337dae4a-5624-4d5a-a4ff-8ded10b4d5f1",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    396.0,
+    1416.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "19b160eb-5f3c-4d29-8f4a-be84d8a81c33",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    339.0234069824219,
+    1395.5050048828125
+   ],
+   "text": "IFL_L",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "29bda827-a51a-4c12-b509-db721a9e2224",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    418.0,
+    1483.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "e82014ad-eb1a-497f-81f9-d886555ef177",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    339.9525146484375,
+    1456.968994140625
+   ],
+   "text": "TAIR_@ANAME",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "0221b9e8682d",
+   "id": "0b361184-a465-4663-b6e8-8e4686341b0b",
+   "inputs": [
+    "Construction",
+    "Category",
+    "--------------------- Boundary",
+    "BoundaryTemperature",
+    "---------------------- Adjacent",
+    "FrontBack"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Settings",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    787.0,
+    1448.0
+   ],
+   "script": "Lizard_Surface_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "49e4c881-d871-485e-bcfc-7d82e5484d17",
+   "kind": "native",
+   "members": [
+    "24265061-426b-4358-92c9-8f1fc689aeba",
+    "632a578f-28c9-4f69-b9b1-c991534e17a7",
+    "f8cd688d-00a5-4f3f-8995-a404f115e92b",
+    "ce9a2d38-0bc3-4bfb-8266-7ab193f10d63",
+    "fce3ba75-5821-4f09-a36f-b1920c6e9214",
+    "621af95b-302e-40fa-b5f5-fd4de254feb0",
+    "c0a7febc-b256-4f56-b6ea-98608f0e0da8",
+    "8150c4e2-9950-4cbe-9ee2-2df2956e8fcc",
+    "ea6c0c25-a0a7-4efe-9a7a-a8e1f9420d66",
+    "0789e206-1425-485a-8383-7d59e463d62e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "24265061-426b-4358-92c9-8f1fc689aeba",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    1597.0,
+    1277.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "632a578f-28c9-4f69-b9b1-c991534e17a7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1540.1259765625,
+    1256.968994140625
+   ],
+   "text": "IWL_L",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fce3ba75-5821-4f09-a36f-b1920c6e9214",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    1619.0,
+    1344.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "ea6c0c25-a0a7-4efe-9a7a-a8e1f9420d66",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1541.0550537109375,
+    1318.4329833984375
+   ],
+   "text": "TAIR_@ANAME",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "0221b9e8682d",
+   "id": "0789e206-1425-485a-8383-7d59e463d62e",
+   "inputs": [
+    "Construction",
+    "Category",
+    "--------------------- Boundary",
+    "BoundaryTemperature",
+    "---------------------- Adjacent",
+    "FrontBack"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Settings",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "Settings"
+   ],
+   "pivot": [
+    1988.0,
+    1309.0
+   ],
+   "script": "Lizard_Surface_Settings",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "85e100d8-5058-4bb6-b364-e59cc704261f",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Segments",
+   "pivot": [
+    6218.744140625,
+    912.9371948242188
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "27539caf-7052-4eb2-8d29-95d2b7694d2b",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    6315.0,
+    867.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "codeHash": "0e2b501ea643",
+   "id": "d6a5ebae-83cc-412c-a30d-d1755f28592a",
+   "inputs": [
+    "Toggle",
+    "_BRep",
+    "NoSegments"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_SegSplitting",
+   "nickName": "Surface_SegSplitting",
+   "outputs": [
+    "out",
+    "Brep_"
+   ],
+   "pivot": [
+    6559.0,
+    898.0
+   ],
+   "script": "Lizard_Surface_SegSplitting",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "af99935e-28d0-4a5d-8dac-f832aeda8672",
+   "kind": "native",
+   "members": [
+    "f9c3eed9-5564-41f5-801e-e49fe06ebda2",
+    "ec3669d4-6450-4991-8bbc-932b5748bf4e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "f9c3eed9-5564-41f5-801e-e49fe06ebda2",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    6727.63916015625,
+    646.6370849609375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "27ee46fb-99db-4cf6-8a9b-3332c19d79c5",
+   "kind": "native",
+   "members": [
+    "5bf15192-0cf6-43b8-9ba0-b3e324be14f9",
+    "18ebc270-a102-40da-9f49-54a2e0762063",
+    "833de566-b4d2-4f9b-9a2a-825799788f77",
+    "233327ff-757a-4967-9e67-9e5d54b69ae6",
+    "96e516c5-c13d-49dd-8240-5682c9c663bf",
+    "1b34ef32-ce26-4555-a12a-6cba1445308d",
+    "01582228-1beb-42f6-aa21-a79a466a02dc",
+    "33a3cd9b-7677-4fcc-8335-da73fe7d14df",
+    "e90549bd-c96e-4699-b29c-193e6ef76886",
+    "bf7cc840-7e93-4e78-b9a8-8eee0cd4c3c3",
+    "138abfc0-c100-4873-a676-75c29419a252",
+    "92cf8466-0608-42b9-b19e-2772947d6b0b",
+    "3d046c7a-0ad2-4650-9a54-24b5b40cd4c1",
+    "e6f11465-d875-434e-95bf-598dfec7f0fe",
+    "20ba6976-0761-40cd-b302-5435555223e0",
+    "04d3fd80-0b08-4b79-b94d-14fdced4fbb5",
+    "e883db50-7784-4da5-aa87-7e3e5a2c9d7d",
+    "5c8dd612-f014-44b3-b06a-c1347d81ccfc",
+    "a9c87b32-1118-4083-ad73-5d8d739f0cbb",
+    "efa1874d-af8c-4f8a-8f37-15d0fbf54cc8",
+    "d6e87a7c-1c3b-4707-ba15-60181c79a0ec",
+    "22413ebc-2ad7-41f8-8cda-b0c3451ec3dd",
+    "f921e99d-f28f-41cc-b596-f2aac468e633",
+    "2ff38b76-6cfd-49bb-9cb8-0189f48bc4b1",
+    "ab2b50e5-d2bc-482d-9280-00ab83547ca5",
+    "061fe611-c649-4c74-bff0-f90dba1c012a",
+    "2920bebf-953f-4d83-8fbd-696f0ed1c068",
+    "942bbdf9-8be5-4013-89ff-3ce2ab2ccf8d",
+    "49f7d506-338e-4477-b55b-88bbb05f057f",
+    "1d215527-588b-41a3-a46a-a3c126d725ed",
+    "bb72df51-8bbb-4d86-9029-c30d4c7e9e14",
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "8db8a7ad-7c23-44b2-8d52-66ec7ad50e22",
+    "4d438ceb-f506-467f-91f8-e8dab8b3e380",
+    "70ba983e-c4b7-458b-9d0a-84062de6aa3a",
+    "72c27210-b918-4b11-9b24-13ae1307b163",
+    "7c0e412e-fc6a-4934-81bb-c36f15933e84",
+    "a424d795-db08-4c53-954a-6707b571d8fb"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "33a3cd9b-7677-4fcc-8335-da73fe7d14df",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    6948.94287109375,
+    1029.14404296875
+   ],
+   "text": "AllDay",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "138abfc0-c100-4873-a676-75c29419a252",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    6948.30078125,
+    1137.0030517578125
+   ],
+   "text": "AllDay",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "04d3fd80-0b08-4b79-b94d-14fdced4fbb5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    6919.0,
+    1223.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "22413ebc-2ad7-41f8-8cda-b0c3451ec3dd",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    6931.0,
+    1262.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "f921e99d-f28f-41cc-b596-f2aac468e633",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    6916.0,
+    1293.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "2ff38b76-6cfd-49bb-9cb8-0189f48bc4b1",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    6921.0,
+    1079.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "ab2b50e5-d2bc-482d-9280-00ab83547ca5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    6926.0,
+    974.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "2920bebf-953f-4d83-8fbd-696f0ed1c068",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "fluid supply temperature [°C]",
+   "pivot": [
+    6765.1630859375,
+    1004.9329833984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "942bbdf9-8be5-4013-89ff-3ce2ab2ccf8d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "max. spec. power [W/(m²)]",
+   "pivot": [
+    6732.10302734375,
+    1056.133056640625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "49f7d506-338e-4477-b55b-88bbb05f057f",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "fluid supply temperature [°C]",
+   "pivot": [
+    6768.32177734375,
+    1110.3330078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1d215527-588b-41a3-a46a-a3c126d725ed",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "max. spec. power [W/(m²)]",
+   "pivot": [
+    6731.4990234375,
+    1163.613037109375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bb72df51-8bbb-4d86-9029-c30d4c7e9e14",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "temperature [°C]",
+   "pivot": [
+    6768.76220703125,
+    1189.3330078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "4eb452ab6c25",
+   "id": "435285e5-ecf3-4b70-88d1-83216e752b84",
+   "inputs": [
+    "BRep",
+    "------------------- ActiveLayer",
+    "SetTemperatureCooling",
+    "SupplyTempCoolFluid",
+    "ScheduleCoolFluid",
+    "MaxSpecCoolPower",
+    "SetTemperatureHeating",
+    "SupplyTempHeatFluid",
+    "ScheduleHeatFluid",
+    "MaxSpecHeatPower",
+    "CoolingTairOutside24hAbove",
+    "TemperatureControl",
+    "DewpointControl",
+    "SupplyMode",
+    "HeatingOn",
+    "CoolingOn",
+    "ControlledBasedOn",
+    "SetBackHeating",
+    "Circuit"
+   ],
+   "kind": "script",
+   "name": "Lizard_Active_Layer_Surface",
+   "nickName": "Active Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    7313.0,
+    1154.0
+   ],
+   "script": "Lizard_Active_Layer_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "8db8a7ad-7c23-44b2-8d52-66ec7ad50e22",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    6931.0,
+    1321.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "4d438ceb-f506-467f-91f8-e8dab8b3e380",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    6930.0,
+    1355.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "codeHash": "0d5d0f7eed73",
+   "id": "70ba983e-c4b7-458b-9d0a-84062de6aa3a",
+   "inputs": [
+    "BRep",
+    "Settings"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface",
+   "nickName": "Surface",
+   "outputs": [
+    "out",
+    "SurfaceInfo"
+   ],
+   "pivot": [
+    6955.0,
+    919.0
+   ],
+   "script": "Lizard_Surface",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "7c0e412e-fc6a-4934-81bb-c36f15933e84",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    6823.7041015625,
+    1382.4990234375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a424d795-db08-4c53-954a-6707b571d8fb",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    6959.0,
+    1409.0
+   ],
+   "type": "GH_ValueList"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "Shading",
+    1
+   ],
+   "to": [
+    "b77288cb-459e-4389-acba-3045a80eb9bc",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "Floor",
+    7
+   ],
+   "to": [
+    "b807555d-3864-4239-a626-4e6aefe142c1",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "Windows",
+    2
+   ],
+   "to": [
+    "570af1e5-571f-4127-a0df-2853f2f11a4e",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "Ceiling",
+    8
+   ],
+   "to": [
+    "0609e054-5179-47d0-aafd-c1661db4a098",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "cf59cbdf-91ef-4224-aa42-b22502296ca1",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "5f51a446-5d11-4acd-a948-96d782eb5b09",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "3bb3a14b-d3d7-4c6a-8426-1fd18e80aa7d",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "5b82c973-1b67-4f0b-a164-b96b170dc784",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "ab2dc054-6ca3-483a-b4e9-890e3b7d5ae3",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "b12939f6-ae18-4558-b61e-2ad2e47f526a",
+    "Data",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "570af1e5-571f-4127-a0df-2853f2f11a4e",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "ab2dc054-6ca3-483a-b4e9-890e3b7d5ae3",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "Settings",
+    1
+   ],
+   "to": [
+    "ab2dc054-6ca3-483a-b4e9-890e3b7d5ae3",
+    "Settings",
+    1
+   ]
+  },
+  {
+   "from": [
+    "5c91472b-8978-4cb2-8e00-d567984dac42",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "Width",
+    0
+   ]
+  },
+  {
+   "from": [
+    "9cb4cb3e-4c60-4336-a422-70baaa903aab",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "Depth",
+    1
+   ]
+  },
+  {
+   "from": [
+    "17f99051-7a94-4ff6-b1f4-923d4d9dead5",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "Height",
+    2
+   ]
+  },
+  {
+   "from": [
+    "7e53c53d-76a0-49ed-b188-377b97bf4b14",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "Rotation",
+    3
+   ]
+  },
+  {
+   "from": [
+    "bbed125a-992c-40a3-a6d3-d75c68dbd00d",
+    "Box_",
+    1
+   ],
+   "to": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "_Box",
+    0
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "SouthWall",
+    3
+   ],
+   "to": [
+    "7fc738db-9050-4c4c-bf55-17ba5685d4a3",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "NorthWall",
+    5
+   ],
+   "to": [
+    "6e7cb451-15ec-49d2-9695-b9f3ed75e85a",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "EastWall",
+    6
+   ],
+   "to": [
+    "6e7cb451-15ec-49d2-9695-b9f3ed75e85a",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "e93a3402-23b2-40f6-8374-7a7c92e7f03b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "WinWallRatio",
+    0
+   ]
+  },
+  {
+   "from": [
+    "239b668e-a95c-4a5d-b824-d785e04e794b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "Thickness",
+    1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "SouthWall",
+    3
+   ],
+   "to": [
+    "88b7f72e-617b-4716-8703-271f0c3eca72",
+    "Wall",
+    2
+   ]
+  },
+  {
+   "from": [
+    "3ed38c83-5cc0-4e8f-9d7f-a2a8f7f7f952",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+    "Toggle",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0609e054-5179-47d0-aafd-c1661db4a098",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+    "_BRep",
+    1
+   ]
+  },
+  {
+   "from": [
+    "9c784406-4107-4087-8b32-53dd70ad7d77",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+    "Percentage",
+    2
+   ]
+  },
+  {
+   "from": [
+    "b807555d-3864-4239-a626-4e6aefe142c1",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "5f51a446-5d11-4acd-a948-96d782eb5b09",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0b361184-a465-4663-b6e8-8e4686341b0b",
+    "Settings",
+    1
+   ],
+   "to": [
+    "5f51a446-5d11-4acd-a948-96d782eb5b09",
+    "Settings",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7fc738db-9050-4c4c-bf55-17ba5685d4a3",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "5b82c973-1b67-4f0b-a164-b96b170dc784",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+    "Settings",
+    1
+   ],
+   "to": [
+    "5b82c973-1b67-4f0b-a164-b96b170dc784",
+    "Settings",
+    1
+   ]
+  },
+  {
+   "from": [
+    "6e7cb451-15ec-49d2-9695-b9f3ed75e85a",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "3bb3a14b-d3d7-4c6a-8426-1fd18e80aa7d",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "bbc401ef-15cf-48c3-b637-0e3407bc9960",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "3bb3a14b-d3d7-4c6a-8426-1fd18e80aa7d",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "0789e206-1425-485a-8383-7d59e463d62e",
+    "Settings",
+    1
+   ],
+   "to": [
+    "3bb3a14b-d3d7-4c6a-8426-1fd18e80aa7d",
+    "Settings",
+    1
+   ]
+  },
+  {
+   "from": [
+    "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+    "BRep2_",
+    2
+   ],
+   "to": [
+    "cf59cbdf-91ef-4224-aa42-b22502296ca1",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+    "Settings",
+    1
+   ],
+   "to": [
+    "cf59cbdf-91ef-4224-aa42-b22502296ca1",
+    "Settings",
+    1
+   ]
+  },
+  {
+   "from": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "out",
+    0
+   ],
+   "to": [
+    "4e156092-d9a7-4115-8b01-8f2ab9607037",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "17d5e6f4-b669-42d5-870d-7f87247506ad",
+    "WestWall",
+    4
+   ],
+   "to": [
+    "bbc401ef-15cf-48c3-b637-0e3407bc9960",
+    "Brep",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "c792fcd4-c841-4b68-a040-1817c634679f",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "Name",
+    1
+   ]
+  },
+  {
+   "from": [
+    "4cbf814a-3c4d-4691-99b0-d49a6221ff05",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "WinID",
+    2
+   ]
+  },
+  {
+   "from": [
+    "8e2a2ea0-46cf-40fb-a832-dd44fed2e3f9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "FrameFraction",
+    4
+   ]
+  },
+  {
+   "from": [
+    "829b371b-f794-436a-94ca-53e98e13c2d0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "FrameConduction",
+    5
+   ]
+  },
+  {
+   "from": [
+    "9e5ffbbc-0825-48b3-9273-adc1ba8976ea",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingMovable",
+    7
+   ]
+  },
+  {
+   "from": [
+    "2df7f0a2-d7a1-4d83-9760-b03554cd99dd",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingFractionExt",
+    8
+   ]
+  },
+  {
+   "from": [
+    "f738a590-2abb-4793-81f1-9b014d911b4a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingFractionInt",
+    9
+   ]
+  },
+  {
+   "from": [
+    "af562e90-2a27-4c68-9bea-b85d836820eb",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingActive",
+    10
+   ]
+  },
+  {
+   "from": [
+    "cd2c09fb-1f30-4ad4-9f20-2f92a247330d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingNonActive",
+    11
+   ]
+  },
+  {
+   "from": [
+    "4f6ace55-2b0c-495f-99c3-7030d2727fc4",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ActiveIfTairRoomAbove",
+    12
+   ]
+  },
+  {
+   "from": [
+    "1c6a4e22-ff6d-4d05-bbea-d413c45b8428",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "Hinside",
+    14
+   ]
+  },
+  {
+   "from": [
+    "d9ac5ae2-4528-4e47-baa3-fb151c99b567",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "Houtside",
+    15
+   ]
+  },
+  {
+   "from": [
+    "f316d190-2c33-47fe-8206-0924ed6c40e5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "621fbcb3-474b-4bd1-9430-527d06bf1958",
+    "ShadingGroup",
+    19
+   ]
+  },
+  {
+   "from": [
+    "7f46287f-cd9c-4813-a11d-a1fef8bce56b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "Name",
+    1
+   ]
+  },
+  {
+   "from": [
+    "872a2aac-06c9-4e1d-8ca4-8e7bcaf19d97",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ShadingActive",
+    3
+   ]
+  },
+  {
+   "from": [
+    "46f4f4e0-e852-494e-bbee-dd2fd44e7df4",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ShadingNonActive",
+    4
+   ]
+  },
+  {
+   "from": [
+    "344e1fd6-5add-4f77-8968-413a57be04f3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ActiveIfTairRoomAbove",
+    5
+   ]
+  },
+  {
+   "from": [
+    "6cc02e7c-f0f6-4649-97b1-a14686d894df",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "Hinside",
+    7
+   ]
+  },
+  {
+   "from": [
+    "bd621a88-5836-45cf-8f28-165dc0450b69",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "Houtside",
+    8
+   ]
+  },
+  {
+   "from": [
+    "ac04cedc-2b75-4613-9852-09514288a1f0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "RadMaterial0",
+    10
+   ]
+  },
+  {
+   "from": [
+    "b2ba269f-0901-45f2-a95e-b9e7e08b9c4b",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "RadMaterial1",
+    11
+   ]
+  },
+  {
+   "from": [
+    "0f85f2d0-c028-4a49-a4dc-15c1bfd01c76",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ShadingGroup",
+    12
+   ]
+  },
+  {
+   "from": [
+    "9197fe42-bcd6-4d46-abf8-20abdc188f03",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ShdControl",
+    14
+   ]
+  },
+  {
+   "from": [
+    "8905b677-90a7-4938-91ab-add5528c9f26",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "ShdConfId",
+    15
+   ]
+  },
+  {
+   "from": [
+    "ca7eee6d-e509-4baf-8d6f-b0ce4972a2b5",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "DataFile",
+    16
+   ]
+  },
+  {
+   "from": [
+    "a1edf243-e86d-44db-b433-8a6b09d3aa6f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "GapToVentilate",
+    17
+   ]
+  },
+  {
+   "from": [
+    "344199ab-533a-4a27-a2ca-35f1f40f729a",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "GapVentMode",
+    18
+   ]
+  },
+  {
+   "from": [
+    "4a836421-f664-4eb7-818a-82e6c55297da",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "Aopen",
+    19
+   ]
+  },
+  {
+   "from": [
+    "8bf4f188-fae2-41a7-abcc-1525b78232ee",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "TsupPermanent",
+    20
+   ]
+  },
+  {
+   "from": [
+    "59a62729-3d06-4e86-913e-fb3d11232f4e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "100090a9-5dc0-450a-9569-bec9f8b25a3a",
+    "MflowPermanent",
+    21
+   ]
+  },
+  {
+   "from": [
+    "aa39cf72-1b5d-46c9-b24f-9fd630fdacff",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+    "Construction",
+    0
+   ]
+  },
+  {
+   "from": [
+    "a605b9c1-45c3-4a00-b3cb-d451d4b1d18e",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+    "Category",
+    1
+   ]
+  },
+  {
+   "from": [
+    "2c959476-1f01-46c4-870a-d2ec6941ccb3",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+    "BoundaryTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "12aa0d32-7b53-4405-b878-93f079c2a7a2",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "02a7f91d-386e-42c7-90cc-d2b1fd7fcf7a",
+    "FrontBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "434c029f-e9a7-4480-94b5-2b6605718903",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+    "Construction",
+    0
+   ]
+  },
+  {
+   "from": [
+    "6ac84576-f0b0-469f-98f9-494936a51486",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+    "Category",
+    1
+   ]
+  },
+  {
+   "from": [
+    "1de3b533-bb7d-466f-8bfb-fb2faa4e7bc3",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+    "BoundaryTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "074f1cee-9a1f-41bb-81f7-b6745d5f9227",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+    "FrontBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "9af2e582-f32e-4f3f-9f7d-9c9b059717d4",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+    "Construction",
+    0
+   ]
+  },
+  {
+   "from": [
+    "231f3d0c-6dc4-42b9-a431-fe1a069585f2",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+    "Category",
+    1
+   ]
+  },
+  {
+   "from": [
+    "ed947611-a5ac-4e12-bc82-7dded3790dd5",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+    "BoundaryTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "3df24b29-9c50-4b46-99e6-0814ad5220ad",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "63753bff-53a8-40da-8cd3-dc3cd37ecdfa",
+    "FrontBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "19b160eb-5f3c-4d29-8f4a-be84d8a81c33",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0b361184-a465-4663-b6e8-8e4686341b0b",
+    "Construction",
+    0
+   ]
+  },
+  {
+   "from": [
+    "337dae4a-5624-4d5a-a4ff-8ded10b4d5f1",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "0b361184-a465-4663-b6e8-8e4686341b0b",
+    "Category",
+    1
+   ]
+  },
+  {
+   "from": [
+    "e82014ad-eb1a-497f-81f9-d886555ef177",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0b361184-a465-4663-b6e8-8e4686341b0b",
+    "BoundaryTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "29bda827-a51a-4c12-b509-db721a9e2224",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "0b361184-a465-4663-b6e8-8e4686341b0b",
+    "FrontBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "632a578f-28c9-4f69-b9b1-c991534e17a7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0789e206-1425-485a-8383-7d59e463d62e",
+    "Construction",
+    0
+   ]
+  },
+  {
+   "from": [
+    "24265061-426b-4358-92c9-8f1fc689aeba",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "0789e206-1425-485a-8383-7d59e463d62e",
+    "Category",
+    1
+   ]
+  },
+  {
+   "from": [
+    "ea6c0c25-a0a7-4efe-9a7a-a8e1f9420d66",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "0789e206-1425-485a-8383-7d59e463d62e",
+    "BoundaryTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "fce3ba75-5821-4f09-a36f-b1920c6e9214",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "0789e206-1425-485a-8383-7d59e463d62e",
+    "FrontBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "27539caf-7052-4eb2-8d29-95d2b7694d2b",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "d6a5ebae-83cc-412c-a30d-d1755f28592a",
+    "Toggle",
+    0
+   ]
+  },
+  {
+   "from": [
+    "62f61aab-9bb1-4912-b2d0-7d0fce2a073a",
+    "BRep1_",
+    1
+   ],
+   "to": [
+    "d6a5ebae-83cc-412c-a30d-d1755f28592a",
+    "_BRep",
+    1
+   ]
+  },
+  {
+   "from": [
+    "85e100d8-5058-4bb6-b364-e59cc704261f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "d6a5ebae-83cc-412c-a30d-d1755f28592a",
+    "NoSegments",
+    2
+   ]
+  },
+  {
+   "from": [
+    "70ba983e-c4b7-458b-9d0a-84062de6aa3a",
+    "SurfaceInfo",
+    1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "ab2b50e5-d2bc-482d-9280-00ab83547ca5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SetTemperatureCooling",
+    2
+   ]
+  },
+  {
+   "from": [
+    "2920bebf-953f-4d83-8fbd-696f0ed1c068",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SupplyTempCoolFluid",
+    3
+   ]
+  },
+  {
+   "from": [
+    "33a3cd9b-7677-4fcc-8335-da73fe7d14df",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "ScheduleCoolFluid",
+    4
+   ]
+  },
+  {
+   "from": [
+    "942bbdf9-8be5-4013-89ff-3ce2ab2ccf8d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "MaxSpecCoolPower",
+    5
+   ]
+  },
+  {
+   "from": [
+    "2ff38b76-6cfd-49bb-9cb8-0189f48bc4b1",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SetTemperatureHeating",
+    6
+   ]
+  },
+  {
+   "from": [
+    "49f7d506-338e-4477-b55b-88bbb05f057f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SupplyTempHeatFluid",
+    7
+   ]
+  },
+  {
+   "from": [
+    "138abfc0-c100-4873-a676-75c29419a252",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "ScheduleHeatFluid",
+    8
+   ]
+  },
+  {
+   "from": [
+    "1d215527-588b-41a3-a46a-a3c126d725ed",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "MaxSpecHeatPower",
+    9
+   ]
+  },
+  {
+   "from": [
+    "bb72df51-8bbb-4d86-9029-c30d4c7e9e14",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "CoolingTairOutside24hAbove",
+    10
+   ]
+  },
+  {
+   "from": [
+    "04d3fd80-0b08-4b79-b94d-14fdced4fbb5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "TemperatureControl",
+    11
+   ]
+  },
+  {
+   "from": [
+    "22413ebc-2ad7-41f8-8cda-b0c3451ec3dd",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "DewpointControl",
+    12
+   ]
+  },
+  {
+   "from": [
+    "f921e99d-f28f-41cc-b596-f2aac468e633",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SupplyMode",
+    13
+   ]
+  },
+  {
+   "from": [
+    "8db8a7ad-7c23-44b2-8d52-66ec7ad50e22",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "HeatingOn",
+    14
+   ]
+  },
+  {
+   "from": [
+    "4d438ceb-f506-467f-91f8-e8dab8b3e380",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "CoolingOn",
+    15
+   ]
+  },
+  {
+   "from": [
+    "7c0e412e-fc6a-4934-81bb-c36f15933e84",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "SetBackHeating",
+    17
+   ]
+  },
+  {
+   "from": [
+    "a424d795-db08-4c53-954a-6707b571d8fb",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "435285e5-ecf3-4b70-88d1-83216e752b84",
+    "Circuit",
+    18
+   ]
+  },
+  {
+   "from": [
+    "d6a5ebae-83cc-412c-a30d-d1755f28592a",
+    "Brep_",
+    1
+   ],
+   "to": [
+    "70ba983e-c4b7-458b-9d0a-84062de6aa3a",
+    "BRep",
+    0
+   ]
+  },
+  {
+   "from": [
+    "72cf48ea-e22b-49b3-a169-43dd8b9a9e32",
+    "Settings",
+    1
+   ],
+   "to": [
+    "70ba983e-c4b7-458b-9d0a-84062de6aa3a",
+    "Settings",
+    1
+   ]
+  }
+ ]
+}

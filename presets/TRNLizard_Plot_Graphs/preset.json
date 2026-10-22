@@ -1,0 +1,8 @@
+{
+ "category": "TRNLizard",
+ "description": "In order to use this component you will have  to install python 2.7.10 plus the package plotly!!!!",
+ "exposure": "primary",
+ "name": "TRNLizard_Plot_Graphs",
+ "nickName": "Plot_Graphs",
+ "subCategory": "2 | Extras"
+}

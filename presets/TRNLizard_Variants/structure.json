@@ -1,0 +1,739 @@
+{
+ "objects": [
+  {
+   "id": "f474ea78-e7c8-4fc9-9154-e2f7edadc9d4",
+   "kind": "native",
+   "members": [
+    "ba9b5223-ca04-4b02-b709-bfd7dece325b",
+    "2a4b33e2-8799-452e-97b8-b36e64a1a145",
+    "b9d53718-b07a-472c-8806-ccdb298542d4",
+    "d58acda3-3797-4d55-bf2b-11f5395be815",
+    "4388a90a-2f8f-4633-a0e4-ab6f564db642",
+    "829def51-7e77-48da-a90b-6a3c2c609c68",
+    "3d332c3c-4696-4472-a66b-ba691b03d2aa",
+    "e402e03f-9ba4-4cd5-8afa-3b86ffcfe67a",
+    "ec9917c5-8109-44a1-b64e-6068c1fe1e7d",
+    "abbaff8b-aba0-41ec-aa89-d7f0846d8638",
+    "9d521d1f-8025-4a21-abbd-8ee030ca92b6",
+    "3525b563-a3af-4482-b819-5b3cdeffd60b"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "4388a90a-2f8f-4633-a0e4-ab6f564db642",
+   "kind": "native",
+   "members": [
+    "829def51-7e77-48da-a90b-6a3c2c609c68",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "c97a014e-d121-43ce-8b11-4a8eec82cc67",
+    "10e19e19-1956-421d-bc79-346338890461"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "829def51-7e77-48da-a90b-6a3c2c609c68",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    104.41410064697266,
+    52.73044967651367
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "e402e03f-9ba4-4cd5-8afa-3b86ffcfe67a",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    91.21795654296875,
+    159.39129638671875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "4a091532-7f77-46e6-b238-d61a512905bc",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    99.8631591796875,
+    493.705810546875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "a6cd88e4-9dcd-4c1b-a727-fdea56beab25",
+   "kind": "native",
+   "members": [
+    "516f3493-3298-450e-9850-7bc23601aeac",
+    "3459685c-ef16-4275-8bd4-b11e245bcbbe",
+    "ae68aa20-cada-4424-9c1d-b5bb4b1df6b4",
+    "7ffa822d-183a-40df-a053-7ac9ebcdc116",
+    "fb707650-9bac-4241-9a05-b6c42cacf0bc",
+    "3f696d38-7b73-406a-8fd8-e70f12baae47",
+    "c963fb18-489a-4fa3-9b8c-06b02e8766d6",
+    "0015ace2-8986-4b98-8e2d-b1bd7ef21ccc",
+    "404a7f8e-0fc6-4329-b6fd-f3ca12122e5e",
+    "46ba7930-f35e-48b6-bfda-4e27e417f985",
+    "d6fdac33-c5a3-4eee-99be-875e3408ac7f",
+    "d05143a4-10e9-48af-b819-1ed2d20e1764",
+    "2249024c-3a0d-49bd-805f-a75fe4fdf5a3",
+    "1111c352-305b-4827-96f5-68e0f8c89e41",
+    "86903683-ff45-4189-8510-6a5fd8cebcf0",
+    "153c46b6-53d7-4c31-9f62-ff3f21f85fcb",
+    "877662e7-2611-412b-a05a-f7c3f5bf240f",
+    "c5f9a042-d881-4e82-b880-e13f5403d430",
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "6246aed5-3004-4c54-8337-e1cb4c999d9e",
+    "b16a37aa-27d0-4b45-916f-500ce7c1a54d",
+    "75dfa8e5-ce05-4c2d-b237-ec7d8f80400c",
+    "13d71da9-01b2-4c7f-9c4e-a986ebb4365c",
+    "ce3d6049-7bd4-48b3-862d-cc2dd2be10cd",
+    "65c598d4-5505-43ce-b6f8-536132430def",
+    "dd06a535-d3d0-482c-8fc4-dc2258dcb8e4",
+    "26dcfdf9-e1e8-4719-a742-044fb0dc2e79",
+    "80020373-980b-4218-a822-0c6dfe039302",
+    "04617d6e-ec10-404e-b160-794c147bef27",
+    "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+    "85a261a6-e1d6-4ec4-a0d5-434dbe600380",
+    "dca409f2-4ce2-4e65-8095-e7baf64ccaac",
+    "8f0b546b-5468-4064-a2f8-548d5e2b6dc1"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "516f3493-3298-450e-9850-7bc23601aeac",
+   "kind": "native",
+   "members": [
+    "3459685c-ef16-4275-8bd4-b11e245bcbbe",
+    "fb707650-9bac-4241-9a05-b6c42cacf0bc",
+    "2249024c-3a0d-49bd-805f-a75fe4fdf5a3",
+    "d6fdac33-c5a3-4eee-99be-875e3408ac7f",
+    "496195ad-a26b-419e-aceb-9ecc303660f4",
+    "bcf79660-7a2b-4df3-b285-cf68c2bb8cff",
+    "eaca3032-a819-4c94-949c-01ff04eed095",
+    "4a091532-7f77-46e6-b238-d61a512905bc"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "3459685c-ef16-4275-8bd4-b11e245bcbbe",
+   "kind": "native",
+   "members": [
+    "2249024c-3a0d-49bd-805f-a75fe4fdf5a3"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "153c46b6-53d7-4c31-9f62-ff3f21f85fcb",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    899.5220947265625,
+    765.0003051757812
+   ],
+   "text": "This Version requires min.:\nGrasshopper 0.9.0076\nGHPython 0.6.0.3",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "ae68aa20-cada-4424-9c1d-b5bb4b1df6b4",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    901.14111328125,
+    681.5276489257812
+   ],
+   "text": "Double click to edit panel content…",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "7ffa822d-183a-40df-a053-7ac9ebcdc116",
+   "kind": "native",
+   "name": "Button",
+   "nickName": "Reload Library and Template",
+   "pivot": [
+    261.0,
+    546.0
+   ],
+   "type": "GH_ButtonObject"
+  },
+  {
+   "id": "fb707650-9bac-4241-9a05-b6c42cacf0bc",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    181.96017456054688,
+    354.0315246582031
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "404a7f8e-0fc6-4329-b6fd-f3ca12122e5e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Variant Name",
+   "pivot": [
+    104.77105712890625,
+    703.1219482421875
+   ],
+   "text": "V1",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "46ba7930-f35e-48b6-bfda-4e27e417f985",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Long Variant Name",
+   "pivot": [
+    107.212158203125,
+    749.935546875
+   ],
+   "text": "Basis",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "2249024c-3a0d-49bd-805f-a75fe4fdf5a3",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    103.74008178710938,
+    368.95343017578125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "c5f9a042-d881-4e82-b880-e13f5403d430",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Weather Data (epw/109/tmy3/tm2/tm3-format)",
+   "pivot": [
+    105.26107788085938,
+    799.8778076171875
+   ],
+   "text": "c:\\TRNLizard\\Weather\\DEU_Stuttgart.107380_IWEC.epw",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "2a0e8ce7ec7a",
+   "id": "caae4915-038a-4f0d-85fa-c8be6b80d199",
+   "inputs": [
+    "Template",
+    "WindowLibrary",
+    "TrnsysFolder",
+    "ProjectFolder",
+    "ShortVariantName",
+    "LongVariantName",
+    "WeatherFile",
+    "Hemisphere",
+    "Altitude",
+    "AnnualMeanOutsideTemp",
+    "AmbientPressure",
+    "AddSchedules",
+    "AddLayers",
+    "AddConstructions",
+    "AnnualSchedules",
+    "Variants",
+    "Reload"
+   ],
+   "kind": "script",
+   "name": "Lizard_Component",
+   "nickName": "Lizard",
+   "outputs": [
+    "out",
+    "Sequence",
+    "Variants"
+   ],
+   "pivot": [
+    752.0,
+    813.0
+   ],
+   "script": "Lizard_Component",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "6246aed5-3004-4c54-8337-e1cb4c999d9e",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "TRNSYS Folder",
+   "pivot": [
+    107.39218139648438,
+    663.9671020507812
+   ],
+   "text": "c:\\TRNSYS18\\",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "13d71da9-01b2-4c7f-9c4e-a986ebb4365c",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    381.0,
+    849.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "496195ad-a26b-419e-aceb-9ecc303660f4",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    181.27096557617188,
+    450.7893371582031
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "codeHash": "4169d4668aae",
+   "id": "04617d6e-ec10-404e-b160-794c147bef27",
+   "inputs": [],
+   "kind": "script",
+   "name": "building_library",
+   "nickName": "building_library",
+   "outputs": [
+    "WindowLibrary"
+   ],
+   "pivot": [
+    371.0,
+    627.0
+   ],
+   "script": "building_library",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "80020373-980b-4218-a822-0c6dfe039302",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Site Altitude [m]",
+   "pivot": [
+    261.99609375,
+    878.081298828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+   "inputs": [],
+   "kind": "cluster",
+   "name": "Database",
+   "nickName": "Database",
+   "outputs": [
+    "Data",
+    "Data",
+    "Data",
+    "Data"
+   ],
+   "pivot": [
+    363.0,
+    1000.0
+   ],
+   "shared": "Lizard_Database",
+   "type": "GH_Cluster"
+  },
+  {
+   "id": "8f0b546b-5468-4064-a2f8-548d5e2b6dc1",
+   "inputs": [],
+   "kind": "cluster",
+   "name": "Lizard_Building_Template",
+   "nickName": "Lizard_Building_Template",
+   "outputs": [
+    "template"
+   ],
+   "pivot": [
+    382.0,
+    589.0
+   ],
+   "shared": "Lizard_Building_Template",
+   "type": "GH_Cluster"
+  },
+  {
+   "id": "b38ef2da-b19a-49c8-857b-ee5fde881561",
+   "kind": "native",
+   "members": [
+    "6e8b5cbc-271e-42fb-8a8c-dfd72a7aaf5f",
+    "4d99d735-5d85-404e-9c71-10a0283ae461",
+    "9fe1d391-5bec-48a4-879b-0a26a5af170e",
+    "56c89826-39d8-48e8-aa34-06c35a5a6965",
+    "c0a8c546-8c15-46d6-8451-b963ba7dd5c5",
+    "35dc154a-942f-45a3-b0f2-33fd8d089966",
+    "0adfe1a2-3282-44e4-ba71-2e106d1d59a6"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "4d99d735-5d85-404e-9c71-10a0283ae461",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    81.73916625976562,
+    1123.443603515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "859afe72e751",
+   "id": "35dc154a-942f-45a3-b0f2-33fd8d089966",
+   "inputs": [
+    "slider"
+   ],
+   "kind": "script",
+   "name": "Lizard_Variant_Definition",
+   "nickName": "Lizard_Variant_Definition",
+   "outputs": [
+    "VarName",
+    "Desc",
+    "Variants"
+   ],
+   "pivot": [
+    398.0,
+    1137.0
+   ],
+   "script": "Lizard_Variant_Definition",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "8baa3a73ca5b",
+   "id": "0adfe1a2-3282-44e4-ba71-2e106d1d59a6",
+   "inputs": [
+    "Variants"
+   ],
+   "kind": "script",
+   "name": "Lizard_Variant_Signal",
+   "nickName": "VarName",
+   "outputs": [
+    "out",
+    "VarName",
+    "ExtWalls",
+    "WindowRatio"
+   ],
+   "pivot": [
+    1213.0,
+    1133.0
+   ],
+   "script": "Lizard_Variant_Signal",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "aeb579ab-3d64-4951-963d-3e5693cbffa4",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    259.9971923828125,
+    904.5616455078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5ea58d78-c0a7-4c7f-9b93-c995e5fb2b3e",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Pressure [Pa]",
+   "pivot": [
+    282.271484375,
+    932.0403442382812
+   ],
+   "type": "GH_NumberSlider"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "out",
+    0
+   ],
+   "to": [
+    "ae68aa20-cada-4424-9c1d-b5bb4b1df6b4",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "35dc154a-942f-45a3-b0f2-33fd8d089966",
+    "VarName",
+    0
+   ],
+   "to": [
+    "404a7f8e-0fc6-4329-b6fd-f3ca12122e5e",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "35dc154a-942f-45a3-b0f2-33fd8d089966",
+    "Desc",
+    1
+   ],
+   "to": [
+    "46ba7930-f35e-48b6-bfda-4e27e417f985",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "8f0b546b-5468-4064-a2f8-548d5e2b6dc1",
+    "template",
+    0
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Template",
+    0
+   ]
+  },
+  {
+   "from": [
+    "04617d6e-ec10-404e-b160-794c147bef27",
+    "WindowLibrary",
+    0
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "WindowLibrary",
+    1
+   ]
+  },
+  {
+   "from": [
+    "6246aed5-3004-4c54-8337-e1cb4c999d9e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "TrnsysFolder",
+    2
+   ]
+  },
+  {
+   "from": [
+    "404a7f8e-0fc6-4329-b6fd-f3ca12122e5e",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "ShortVariantName",
+    4
+   ]
+  },
+  {
+   "from": [
+    "46ba7930-f35e-48b6-bfda-4e27e417f985",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "LongVariantName",
+    5
+   ]
+  },
+  {
+   "from": [
+    "c5f9a042-d881-4e82-b880-e13f5403d430",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "WeatherFile",
+    6
+   ]
+  },
+  {
+   "from": [
+    "13d71da9-01b2-4c7f-9c4e-a986ebb4365c",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Hemisphere",
+    7
+   ]
+  },
+  {
+   "from": [
+    "80020373-980b-4218-a822-0c6dfe039302",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Altitude",
+    8
+   ]
+  },
+  {
+   "from": [
+    "aeb579ab-3d64-4951-963d-3e5693cbffa4",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AnnualMeanOutsideTemp",
+    9
+   ]
+  },
+  {
+   "from": [
+    "5ea58d78-c0a7-4c7f-9b93-c995e5fb2b3e",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AmbientPressure",
+    10
+   ]
+  },
+  {
+   "from": [
+    "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+    "Data",
+    0
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AddSchedules",
+    11
+   ]
+  },
+  {
+   "from": [
+    "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+    "Data",
+    1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AddLayers",
+    12
+   ]
+  },
+  {
+   "from": [
+    "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+    "Data",
+    2
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AddConstructions",
+    13
+   ]
+  },
+  {
+   "from": [
+    "9d5475f7-fad1-4625-b91a-3f45d1f0b511",
+    "Data",
+    3
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "AnnualSchedules",
+    14
+   ]
+  },
+  {
+   "from": [
+    "35dc154a-942f-45a3-b0f2-33fd8d089966",
+    "Variants",
+    2
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Variants",
+    15
+   ]
+  },
+  {
+   "from": [
+    "7ffa822d-183a-40df-a053-7ac9ebcdc116",
+    "Button",
+    -1
+   ],
+   "to": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Reload",
+    16
+   ]
+  },
+  {
+   "from": [
+    "4d99d735-5d85-404e-9c71-10a0283ae461",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "35dc154a-942f-45a3-b0f2-33fd8d089966",
+    "slider",
+    0
+   ]
+  },
+  {
+   "from": [
+    "caae4915-038a-4f0d-85fa-c8be6b80d199",
+    "Variants",
+    2
+   ],
+   "to": [
+    "0adfe1a2-3282-44e4-ba71-2e106d1d59a6",
+    "Variants",
+    0
+   ]
+  }
+ ]
+}

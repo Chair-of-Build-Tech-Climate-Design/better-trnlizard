@@ -1,0 +1,174 @@
+{
+ "objects": [
+  {
+   "id": "20194ce8-0869-41c7-a66d-1db436f22f2b",
+   "kind": "native",
+   "members": [
+    "4be251c4-df21-431a-bd9c-5d67de676f34",
+    "697b041b-f98f-4aeb-b623-6b9c68ec7866",
+    "780a62e7-295c-49f1-9306-f6327b64b894",
+    "500d8feb-a238-44d9-bc85-2a97f72fe0c8",
+    "534ee841-23c1-4078-a818-ec79668ebbb5",
+    "10d4a487-a2e8-407c-a16e-16b28ea3526b",
+    "e63a1a47-5f56-40b7-b241-d118642258ad",
+    "80fd1894-0ec3-4ca3-9566-d06f816a5963"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "697b041b-f98f-4aeb-b623-6b9c68ec7866",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    561.9840698242188,
+    284.0242004394531
+   ],
+   "text": "Double click to edit panel content…",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "780a62e7-295c-49f1-9306-f6327b64b894",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    111.0,
+    306.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "500d8feb-a238-44d9-bc85-2a97f72fe0c8",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    169.08509826660156,
+    347.6081848144531
+   ],
+   "text": "1",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "150be22bbed9",
+   "id": "10d4a487-a2e8-407c-a16e-16b28ea3526b",
+   "inputs": [
+    "surfaceinfo",
+    "information",
+    "filter"
+   ],
+   "kind": "script",
+   "name": "Lizard_Surface_Information",
+   "nickName": "Surface Search",
+   "outputs": [
+    "out",
+    "_brep"
+   ],
+   "pivot": [
+    348.0,
+    317.0
+   ],
+   "script": "Lizard_Surface_Information",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "e63a1a47-5f56-40b7-b241-d118642258ad",
+   "kind": "native",
+   "members": [
+    "9da8e2e3-976c-41d3-99be-5261eae4c8a3",
+    "12f205d9-6a4a-47e9-9197-4dc3e4249465"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "9da8e2e3-976c-41d3-99be-5261eae4c8a3",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    106.0343017578125,
+    76.25634765625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "f4f2fd9a-7a6c-4a5c-b030-08a390a3232a",
+   "kind": "native",
+   "members": [
+    "9da8e2e3-976c-41d3-99be-5261eae4c8a3",
+    "12f205d9-6a4a-47e9-9197-4dc3e4249465"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "80fd1894-0ec3-4ca3-9566-d06f816a5963",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    93.62420654296875,
+    173.9373016357422
+   ],
+   "type": "GH_Scribble"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "10d4a487-a2e8-407c-a16e-16b28ea3526b",
+    "out",
+    0
+   ],
+   "to": [
+    "697b041b-f98f-4aeb-b623-6b9c68ec7866",
+    "Panel",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "780a62e7-295c-49f1-9306-f6327b64b894",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "10d4a487-a2e8-407c-a16e-16b28ea3526b",
+    "information",
+    1
+   ]
+  },
+  {
+   "from": [
+    "500d8feb-a238-44d9-bc85-2a97f72fe0c8",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "10d4a487-a2e8-407c-a16e-16b28ea3526b",
+    "filter",
+    2
+   ]
+  }
+ ]
+}

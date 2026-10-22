@@ -1,0 +1,3595 @@
+{
+ "objects": [
+  {
+   "id": "7979a70f-b8cd-4d4c-bc61-a1c577059edc",
+   "kind": "native",
+   "members": [
+    "ac001fdc-4027-4a38-b4a7-2a7403b149bf",
+    "de4747a9-d166-4f2a-87fe-1dce1911fb79",
+    "d4458b14-4c64-4869-9b87-9e51ec557c61",
+    "485f85b8-15cd-4dce-8768-41f090ae10c5",
+    "5412d3a7-49dc-42a0-867f-93314b68d342",
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "0b4fc515-6695-42be-8276-6188129da0cd"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "fe2e5e84-0454-4249-aa04-35f45f23638d",
+   "kind": "native",
+   "members": [
+    "601af52f-dc05-42f3-a60a-c7416312d3a2",
+    "090356e1-9e9b-4e22-86c8-3bc7238cb149",
+    "6144e0b6-f5b8-4366-ba89-8473eff9439a",
+    "e4327914-ccbc-4d2c-9246-31bc035cd924",
+    "781be28f-1f43-4ac0-b691-7388f14cc134",
+    "e190c9e8-77d8-4afc-8abb-fe6295366d5f",
+    "eda29963-0005-41fa-b59f-4d88e6e6490e",
+    "e9f10037-944f-4ac8-a8ed-d1bb646da04e",
+    "67a0eb45-95fc-40de-8590-634b55abe0ba",
+    "004b2b5a-437e-43cd-a2cb-1887b8fa0854",
+    "935bd5e4-8e88-40dc-a152-1aa1521af39c",
+    "57d2193d-c6f2-40f5-984d-52820a8def6e",
+    "58847635-395e-4e4d-ab4c-b70f72cfc877",
+    "bf1e3c32-c231-425f-8483-4fce477b6c61",
+    "acf866e2-3dfe-4352-911b-6e2d3841bce2",
+    "31dc1b6a-8b63-456e-b9cb-96fa4d3bd5fb",
+    "22ffaf75-82f0-460f-ac61-e5e53fdc8e94",
+    "88c8df62-cd83-4cd7-af31-e284aa8041c4",
+    "01982ba4-286b-435c-9072-6a432cfc6ae2",
+    "7a789599-03bc-4c7c-bbff-7c52c0e0b0d8",
+    "12a46ab1-4401-49af-a5e0-fa56c168005d",
+    "f9aef4ec-3f1f-4e18-b96a-d3e0eeea2489",
+    "a8048930-6d9f-4e19-baa9-7c3f1b9a55d6",
+    "c07736db-5ffa-4f8c-b510-cc489fbbc40e",
+    "34a020b3-c270-43ff-a648-79aa7ef998f3",
+    "5ca6ae71-188a-46c2-a61c-46df222acaf0",
+    "af759d4f-acc0-4b0e-b634-6329c1cf70ba",
+    "1a128ab8-524e-4980-9d3d-50a9e01af1e4",
+    "85ab8b6a-8ede-4e8f-86de-312f2e214d64",
+    "266d8bb0-20bf-4a52-b446-c3a48a56eaef",
+    "a6855a3a-f3b9-42eb-ad03-867dd7466f3a",
+    "f5c363fd-52b6-437d-80e5-fbc1cdf501a8",
+    "ac001fdc-4027-4a38-b4a7-2a7403b149bf",
+    "c0b455d6-7b60-4dbb-8763-48cffa85cb2f",
+    "de4747a9-d166-4f2a-87fe-1dce1911fb79",
+    "d4458b14-4c64-4869-9b87-9e51ec557c61",
+    "485f85b8-15cd-4dce-8768-41f090ae10c5",
+    "e2eb7fae-5bc9-4c1d-9c80-c9cbc311d8c9",
+    "bb758188-d3f4-4102-bc6c-8bc71d299735",
+    "8c85cd72-9918-4640-ac96-1e8d2346eb29",
+    "5412d3a7-49dc-42a0-867f-93314b68d342",
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "fed6c095-5fb5-4ec5-a2b8-5273f3932fde",
+    "2d64aadf-ca60-4e0e-b3b1-5b5aeb5ba90b",
+    "a5319538-772c-44b0-8917-b4761ad971ec",
+    "02bf00a6-2900-4194-98eb-17cf386a2926",
+    "e8d17892-6f3a-4652-a494-fb5736cdf713",
+    "46bc0036-699f-46e8-8421-41b4b63de6cf",
+    "e6ce09fe-1287-451a-a115-7eff4b9f1a08",
+    "dcb605c7-ed9c-449f-9a50-ba3140147c83",
+    "5b02b5be-b596-4e57-ba6c-1f713a143add",
+    "fe84c44a-c704-4dcd-9ca0-429e70405a15",
+    "2e909883-2afb-4821-a555-6add8941f720",
+    "942b9e6e-c618-4435-a518-2128c2a96829",
+    "259163d5-77ea-4971-ac7c-7e007b5758c1",
+    "9d34ebb2-efdc-4124-a509-dcbaa78955a0",
+    "b6e9dd5b-3050-481b-b03a-de16cc428b14",
+    "3f651d5d-4d20-4cf3-a904-caaee2a55f52",
+    "c09db4e2-0d3c-42eb-88ae-ca82cf731eb8",
+    "9e0109b7-6bb9-4911-952f-665b5f09fea4",
+    "8b7d75b1-438c-483a-99fe-613347266f82",
+    "cd44ccb8-3e71-49a1-95e9-17fcfb0799e9",
+    "5d86bf51-acdf-4d13-9742-46c5be620972",
+    "6ea06bf5-9c99-4672-b513-324b281825d8",
+    "9cd6ee64-c3fe-4879-ae4d-bf3a2131def9",
+    "8a55d96c-ddc0-409c-8aba-1b8aef1bfc03",
+    "cc9c5519-d33c-4039-b1dc-13f7cf02c709",
+    "ff5d80b5-164a-418c-b887-aaccc449e19a",
+    "3c6fad6b-8dde-44c6-866b-569d46402b97",
+    "84f5c85f-f321-4090-b093-76680883aa7d",
+    "05f5a16a-6ba1-4dce-899c-696eb96f72e8",
+    "1a27839b-8de1-42d6-9b91-4b94907bfed1",
+    "dad7b3fb-3d7c-4581-afa4-844bbe256cf1",
+    "50f9ba06-739f-4738-bbb5-dd108f97131e",
+    "06a23551-8476-4b94-986c-4838f77b80bf",
+    "f63791cc-db34-47ff-a610-7910a3f85177",
+    "45c405d7-b6be-4a45-920a-4d6b129b85b8",
+    "1964dc15-d5d6-4fd1-8c8a-66253d4d04ca",
+    "b5dbc826-33e9-43f0-9831-c6509f471e2b",
+    "99e7f34d-913c-4652-8c16-69dba60dfa5f",
+    "294e00dc-52f3-4385-8038-7a93ed5ae6fe",
+    "64b66aba-e8cd-4ce6-a3ca-5a8fcc4d3e30",
+    "6188065e-9b97-4ea1-b225-9a2ac4c2197c",
+    "b75440ac-c79f-472a-aea9-71cd4af0f84a",
+    "5f01e5eb-0696-4af6-a31a-dda47791caf5",
+    "16e74303-47bd-4dd7-ac1c-9abed602a907",
+    "69de79a9-83eb-42da-8b09-301a33ae54a2",
+    "2d5c27ae-dba3-4a94-b803-d99ffc3b4df2",
+    "a1f25735-3caa-42f0-9164-093859b77378",
+    "484b89ee-fe4e-40bb-9e56-ed5e7a6c8f2c",
+    "a3f1372d-7ad5-4ac7-a25b-6f933edf9824",
+    "372a4124-c25d-4e88-a1fb-0b46e3abd8de",
+    "d150980e-8cdd-4f3c-91f0-79771b797981",
+    "087c83be-e94e-45fc-8d57-76a8ce142fdb",
+    "c5d8b1bc-c3b5-4b62-9547-1637e5ebbdf3",
+    "31663747-9b73-4b45-b270-3b81f82b9d8b",
+    "49946d4f-e4b3-420f-99fd-ca824a84e5b9",
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "972aa50d-9ec0-4d7e-8614-df28614e3319",
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "b4507189-a74a-4ac5-ba71-c54362327d6c",
+    "f80ab68c-8c86-42da-bb4a-fcb13c878454",
+    "6b0c054a-509c-4808-9416-202d963a3800",
+    "3d455e58-f511-4583-bee7-0434067265fc",
+    "c1818847-0e93-4613-9303-adb21db0c051",
+    "ef5d7ccb-631c-4662-a588-a6f3a1ca516e",
+    "b365e6e4-4036-4c2e-937c-2cab28e8b0d6",
+    "2e022f72-2350-4b00-b53e-2b09877f275c",
+    "d1785a68-b9cd-42b0-8898-99a2728b113b",
+    "bcded15c-4fcd-41b1-a6dd-2f564f82c060",
+    "dfc03559-10dc-41ba-8ce2-9c2451395462",
+    "31111fda-0a4c-430c-8b66-9fd5170352cc",
+    "12da2269-96a4-44ee-a130-193419ab02b4",
+    "cc672a5a-a9e9-4abe-89c8-8d73511ef1d7",
+    "ca02bd0c-4f49-4d2d-9a86-d86598e1135e",
+    "abf49ae1-022e-44b6-a17e-33b0292778a0",
+    "498d4b38-1a6a-410b-98e4-52dcf355ed28",
+    "0d5f4bcc-2cde-4c0c-a6d0-cee856c7a212",
+    "409dee7d-40d5-4bf8-8aa0-993da1c681cb",
+    "8e0f6104-0842-4337-b37d-5253eeb7a001",
+    "7fbe99fc-7c95-4e17-9110-82cb7fabaa34",
+    "de1c1d29-07db-4d44-beb2-57b12c264286",
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "a9aa8659-ae9e-4564-9b2a-eb4e8a0c5d39",
+    "5e89b651-4845-4d73-a5c4-7ad110241e71",
+    "10f54b34-5340-4e08-9859-c97510974f8d",
+    "3748b9cf-91ad-4a5f-8703-de51d42976bc",
+    "eead92b5-e110-4690-8961-fb70d8e33e6b",
+    "b3f3129b-b529-4462-9e90-e07eb61ca408",
+    "eb966cbb-dfb8-4beb-83fd-f4cf8164c66c",
+    "27017d8f-d31a-408c-b2f9-73406c2c246d",
+    "119743de-2dd7-403e-ab22-e20bd656c14a",
+    "5e548d6c-0d06-4d88-a925-6b35d56337d8",
+    "0bfa38df-cb1c-440c-922a-84fd7607bad0",
+    "542d86ef-a894-4463-84b9-2a33265f2be0",
+    "6afd91f4-d645-427a-9bf6-6b0b8c8f0359",
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "69dabaab-53de-4b7b-b954-1ee865b54aae",
+    "0eff2809-7181-4e0e-a78c-fd407aef7271",
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "1bc5a3c2-d046-4347-893e-d419f0323305",
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "f58a9406-abd1-4eba-96d1-a3013de3ada0",
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "73aa6357-63b9-49e6-a3c9-dcb983756e1d",
+    "4fac570c-7275-48db-a471-ae2c668cc404",
+    "d396b059-252b-4443-bb48-4435a1613a72",
+    "81ecfa9a-9dc0-47f3-b30b-1b1b7954497e",
+    "741db146-d486-4257-8a9f-07f1138046b8",
+    "b06921ee-31b5-4171-be82-10d0e45ce314",
+    "299a5b0e-b59a-46c4-89cd-4e43118847fe",
+    "f6449104-0714-4edd-8335-479f6ed32be4",
+    "ce9973f6-57b6-4d0d-880e-7c9b3781839e",
+    "ed20779a-0ba4-4bc3-984d-a3c47857d9c3",
+    "244fea7e-7a0a-4b7d-b855-74a1e9dd1930",
+    "9c9a66f2-2878-4032-87e1-9bc0c6c0e8c6",
+    "29393d34-2cba-465e-b659-a2bfcdc55849",
+    "95307c84-a588-4a2e-b6ed-8a65f0412e62",
+    "99a7345d-e8a4-4936-95fa-644e9623a254",
+    "51b72675-8b66-4e82-9989-949782d8543f",
+    "203e13e6-be8d-4afb-a1dc-4d24a65e3734",
+    "8df81e4d-3158-4ac8-8c90-387e66b5a68b",
+    "4746ab18-9b31-4a6d-9974-2c4b52463b91",
+    "af573a5b-70dc-4077-af3b-ce0f4f00b1df",
+    "2706f190-0910-4a54-b187-6faa2ca1021c",
+    "43b97ab2-70c9-4405-b0d2-d0d657d22080",
+    "7979a70f-b8cd-4d4c-bc61-a1c577059edc",
+    "0b4fc515-6695-42be-8276-6188129da0cd"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "601af52f-dc05-42f3-a60a-c7416312d3a2",
+   "kind": "native",
+   "members": [
+    "57d2193d-c6f2-40f5-984d-52820a8def6e",
+    "fe84c44a-c704-4dcd-9ca0-429e70405a15",
+    "2d5c27ae-dba3-4a94-b803-d99ffc3b4df2",
+    "a1f25735-3caa-42f0-9164-093859b77378",
+    "484b89ee-fe4e-40bb-9e56-ed5e7a6c8f2c",
+    "a3f1372d-7ad5-4ac7-a25b-6f933edf9824",
+    "372a4124-c25d-4e88-a1fb-0b46e3abd8de",
+    "d150980e-8cdd-4f3c-91f0-79771b797981",
+    "087c83be-e94e-45fc-8d57-76a8ce142fdb",
+    "972aa50d-9ec0-4d7e-8614-df28614e3319",
+    "3d455e58-f511-4583-bee7-0434067265fc",
+    "bf6ae51d-97a4-4e34-93ae-5533903bd440",
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "090356e1-9e9b-4e22-86c8-3bc7238cb149",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1586.4466552734375,
+    497.044921875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "6144e0b6-f5b8-4366-ba89-8473eff9439a",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1588.0086669921875,
+    906.880859375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "e4327914-ccbc-4d2c-9246-31bc035cd924",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1588.0086669921875,
+    1289.48583984375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "781be28f-1f43-4ac0-b691-7388f14cc134",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1593.0086669921875,
+    1640.68505859375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "e190c9e8-77d8-4afc-8abb-fe6295366d5f",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1588.0086669921875,
+    1990.265625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "eda29963-0005-41fa-b59f-4d88e6e6490e",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    291.00775146484375,
+    1758.89892578125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "e9f10037-944f-4ac8-a8ed-d1bb646da04e",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    291.00775146484375,
+    514.7978515625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "67a0eb45-95fc-40de-8590-634b55abe0ba",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    261.8388671875,
+    805.33984375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "935bd5e4-8e88-40dc-a152-1aa1521af39c",
+   "kind": "native",
+   "members": [
+    "fc08f099-ef1b-415a-ade4-7843a7fd9fa0",
+    "d4b84b2f-44e5-4ff8-8698-9155a31512c5",
+    "5ab39b11-6d66-40ae-88fb-6cb268bf4d03",
+    "479c9330-43a5-4705-935f-d4f3fea1ba41",
+    "256e7f2d-59e5-4da3-91e7-684d33594690",
+    "7cb82440-0f70-4614-918c-837464d5b7fb",
+    "47b57f86-b97d-4e1b-bc66-c12ee4b7f1ad",
+    "eb64b290-bd90-4d34-8dea-1f5e1466ba3f",
+    "5ffef1f1-d758-4587-9fe4-5872b61f4a2a",
+    "4e34e841-645f-4967-8a25-154f7cf7bb2d",
+    "76901d29-7ced-46c0-aadc-fcef347e1a12",
+    "c8986a24-30a1-46fc-8f7c-3970e64afaae",
+    "a2519d07-0b18-4611-9f24-62cf01a8bc6f",
+    "58847635-395e-4e4d-ab4c-b70f72cfc877",
+    "9720055d-c4e5-4891-90d4-18495ce86aca",
+    "91fd1a75-45ea-4961-ba47-209aba5c39aa",
+    "acf866e2-3dfe-4352-911b-6e2d3841bce2",
+    "9a8eb998-fa8f-4e7f-9f01-0a79545b1e13",
+    "8f7cc829-372a-44c2-ba36-5418cfb89be1",
+    "ebdd49f0-1d9a-4da2-aef3-9f4efbe30c35",
+    "1e260e56-0432-4e4e-9f2a-6a7f1311e368",
+    "22ffaf75-82f0-460f-ac61-e5e53fdc8e94",
+    "01982ba4-286b-435c-9072-6a432cfc6ae2",
+    "3e405da4-21cc-4ec2-a5e4-4a6fafa7d9ee",
+    "036323fc-4c1d-4d93-b843-b96e745f8b98",
+    "c9e098e6-cd6e-44e5-b169-f6904562efdb",
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "12a46ab1-4401-49af-a5e0-fa56c168005d",
+    "ed350dbf-a741-4b15-975e-4f0859f3436c",
+    "dadfd90c-5bb8-4fe2-a8aa-aac1667acedb"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "57d2193d-c6f2-40f5-984d-52820a8def6e",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    267.38958740234375,
+    1282.62890625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "58847635-395e-4e4d-ab4c-b70f72cfc877",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1923.220703125,
+    678.53076171875
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "bf1e3c32-c231-425f-8483-4fce477b6c61",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1565.0377197265625,
+    2245.98681640625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "31dc1b6a-8b63-456e-b9cb-96fa4d3bd5fb",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1588.0086669921875,
+    2749.66796875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "22ffaf75-82f0-460f-ac61-e5e53fdc8e94",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    1727.57763671875,
+    772.65576171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "88c8df62-cd83-4cd7-af31-e284aa8041c4",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1588.0086669921875,
+    3130.22998046875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "01982ba4-286b-435c-9072-6a432cfc6ae2",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Reduction percentage [%]",
+   "pivot": [
+    1729.4166259765625,
+    742.36376953125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7a789599-03bc-4c7c-bbff-7c52c0e0b0d8",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    1592.6376953125,
+    2331.1787109375
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "12a46ab1-4401-49af-a5e0-fa56c168005d",
+   "kind": "native",
+   "members": [
+    "090356e1-9e9b-4e22-86c8-3bc7238cb149",
+    "5a40600f-ea2b-47a2-a3ca-5aa419b2e9c0"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "f9aef4ec-3f1f-4e18-b96a-d3e0eeea2489",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    264.9969482421875,
+    2620.8310546875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "a8048930-6d9f-4e19-baa9-7c3f1b9a55d6",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    291.00775146484375,
+    2698.7529296875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "c07736db-5ffa-4f8c-b510-cc489fbbc40e",
+   "kind": "native",
+   "members": [
+    "fc08f099-ef1b-415a-ade4-7843a7fd9fa0",
+    "d4b84b2f-44e5-4ff8-8698-9155a31512c5",
+    "fd95ef68-d4bd-4739-a70f-73d246822028",
+    "479c9330-43a5-4705-935f-d4f3fea1ba41",
+    "256e7f2d-59e5-4da3-91e7-684d33594690",
+    "85a66c2f-1a6d-4c21-bcc7-7efd01691263",
+    "28bb8d93-df72-41e4-bf7e-9c516ee350da",
+    "0a2e29fa-8a09-4b78-96eb-483509cf2e2b",
+    "34a020b3-c270-43ff-a648-79aa7ef998f3",
+    "4e34e841-645f-4967-8a25-154f7cf7bb2d",
+    "76901d29-7ced-46c0-aadc-fcef347e1a12",
+    "5ca6ae71-188a-46c2-a61c-46df222acaf0",
+    "f0901e35-667b-4c1b-a3b1-15d4f95baf4a",
+    "229e8e0c-5bb4-4cb6-81aa-7f2d5f95ff35",
+    "f35d7700-02ab-4188-bc1f-e08dd615f523",
+    "af759d4f-acc0-4b0e-b634-6329c1cf70ba",
+    "34225c93-b07b-42c3-8999-1d59981507af",
+    "9a8eb998-fa8f-4e7f-9f01-0a79545b1e13",
+    "f7fdec2f-7116-4246-9e80-2f6fe207ba17",
+    "1a128ab8-524e-4980-9d3d-50a9e01af1e4",
+    "b6e658b5-e208-4eac-9fda-8934cd677a87",
+    "85ab8b6a-8ede-4e8f-86de-312f2e214d64",
+    "266d8bb0-20bf-4a52-b446-c3a48a56eaef",
+    "477e9001-7d75-4833-b970-e32be93bb474",
+    "a6855a3a-f3b9-42eb-ad03-867dd7466f3a",
+    "1606109f-e9cb-42e2-8ad2-53376cecc03a",
+    "dd69f372-ec5d-4bbd-8643-6d340580a27d",
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "8c85cd72-9918-4640-ac96-1e8d2346eb29"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5ca6ae71-188a-46c2-a61c-46df222acaf0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Convective Part [%/100]",
+   "pivot": [
+    1744.5576171875,
+    1109.6689453125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "af759d4f-acc0-4b0e-b634-6329c1cf70ba",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1922.0166015625,
+    1075.620849609375
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "1a128ab8-524e-4980-9d3d-50a9e01af1e4",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Value List",
+   "pivot": [
+    1927.0,
+    1035.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "85ab8b6a-8ede-4e8f-86de-312f2e214d64",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    1726.898681640625,
+    1176.517822265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "266d8bb0-20bf-4a52-b446-c3a48a56eaef",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Reduction percentage [%]",
+   "pivot": [
+    1728.09765625,
+    1142.7998046875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ac001fdc-4027-4a38-b4a7-2a7403b149bf",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Lighting Power [W/m²]",
+   "pivot": [
+    1834.167724609375,
+    1451.9697265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d4458b14-4c64-4869-9b87-9e51ec557c61",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Convective Part [%/100]",
+   "pivot": [
+    1833.99755859375,
+    1481.416015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "485f85b8-15cd-4dce-8768-41f090ae10c5",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1997.970703125,
+    1423.31494140625
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8c85cd72-9918-4640-ac96-1e8d2346eb29",
+   "kind": "native",
+   "members": [
+    "6144e0b6-f5b8-4366-ba89-8473eff9439a",
+    "5a40600f-ea2b-47a2-a3ca-5aa419b2e9c0"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5412d3a7-49dc-42a0-867f-93314b68d342",
+   "kind": "native",
+   "members": [
+    "e4327914-ccbc-4d2c-9246-31bc035cd924",
+    "5a40600f-ea2b-47a2-a3ca-5aa419b2e9c0"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "codeHash": "aab3c8525518",
+   "id": "cb5ff8de-8a23-4ae0-879e-37195959185a",
+   "inputs": [
+    "----------------- People",
+    "SensiblePeopleGain",
+    "LatentPeopleGain",
+    "SchedulePeopleGain",
+    "CO2Production",
+    "----- WinterRedOfGains",
+    "ReductionPercentage",
+    "OnTairoutside24hBelow",
+    "AnnualSchedule"
+   ],
+   "kind": "script",
+   "name": "Lizard_Person_Gains",
+   "nickName": "Person Gains",
+   "outputs": [
+    "out",
+    "-------------",
+    "PeopleGain"
+   ],
+   "pivot": [
+    2422.0,
+    702.0
+   ],
+   "script": "Lizard_Person_Gains",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "fed6c095-5fb5-4ec5-a2b8-5273f3932fde",
+   "kind": "native",
+   "members": [
+    "6294cbdb-2b4d-454e-bcc2-fb86ddb533a1",
+    "2d64aadf-ca60-4e0e-b3b1-5b5aeb5ba90b",
+    "a5319538-772c-44b0-8917-b4761ad971ec",
+    "02bf00a6-2900-4194-98eb-17cf386a2926",
+    "e8d17892-6f3a-4652-a494-fb5736cdf713",
+    "64aa2129-b891-45a8-9137-e0c0a6c1b5d0",
+    "2927401a-7170-409e-8c6e-a08b9a50a4ea",
+    "d59b5bbd-516c-4e08-93ab-b166c9bcca89",
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "46bc0036-699f-46e8-8421-41b4b63de6cf",
+    "62a96df3-ca22-4b7e-9163-b9c681dd1571"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "a5319538-772c-44b0-8917-b4761ad971ec",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Power [W/m²]",
+   "pivot": [
+    1834.638671875,
+    1766.69775390625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "02bf00a6-2900-4194-98eb-17cf386a2926",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    2000.720703125,
+    1793.11865234375
+   ],
+   "text": "AllDay",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "e8d17892-6f3a-4652-a494-fb5736cdf713",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Convective Part [%/100]",
+   "pivot": [
+    1749.9375,
+    1820.85302734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "46bc0036-699f-46e8-8421-41b4b63de6cf",
+   "kind": "native",
+   "members": [
+    "781be28f-1f43-4ac0-b691-7388f14cc134",
+    "794efea7-22ce-48ce-9831-fae72e40c309"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "e6ce09fe-1287-451a-a115-7eff4b9f1a08",
+   "kind": "native",
+   "members": [
+    "6294cbdb-2b4d-454e-bcc2-fb86ddb533a1",
+    "35065d02-615e-4a39-8eda-dd57a9ab2cc5",
+    "17932921-44db-4732-bac6-da2d2e9c89b0",
+    "2afc3e3e-d8a7-4f15-8e35-feecd0b3253a",
+    "f78d3cd2-5247-4a76-a511-837ee018025e",
+    "64aa2129-b891-45a8-9137-e0c0a6c1b5d0",
+    "c18a7ac5-f9f8-449f-9ae4-c4b461a9de81",
+    "dcb605c7-ed9c-449f-9a50-ba3140147c83",
+    "c14ca8d4-8732-4f53-b3c0-93a35f5d3b84",
+    "83220802-9a4b-4a7b-ae1b-160b68d3a20f",
+    "21959091-320a-45b2-9cb0-0457233bc8ec",
+    "55a6c349-7a86-4104-8db9-a62847514784",
+    "1fe2760d-34a1-4f61-a88b-9db13f777d00",
+    "1679db83-3ca2-465a-bb30-2d497fcfbaea",
+    "27e6eefc-6542-4f08-8db9-18837088b22a",
+    "c62bfbc3-4516-40b7-8468-4215b162145d",
+    "9341f5ed-2504-4169-8b94-7e0d914e85c6",
+    "a8235bfc-df0c-4e7a-8ab0-32ff16310090",
+    "bfe04505-15b6-4e3f-a7fe-24cb5b219178",
+    "bf8fe9f4-47dd-4a89-82dc-bb9b8fd9d014",
+    "204292ef-0c41-4b2a-831b-199b46e10ab0",
+    "1bc5a3c2-d046-4347-893e-d419f0323305",
+    "5b02b5be-b596-4e57-ba6c-1f713a143add"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "dcb605c7-ed9c-449f-9a50-ba3140147c83",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Thermal Bridge Factor [W/(m2.K)]",
+   "pivot": [
+    1664.4697265625,
+    2149.76904296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5b02b5be-b596-4e57-ba6c-1f713a143add",
+   "kind": "native",
+   "members": [
+    "e190c9e8-77d8-4afc-8abb-fe6295366d5f",
+    "133097af-8a13-49cf-b3ed-3569ae371356"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "fe84c44a-c704-4dcd-9ca0-429e70405a15",
+   "kind": "native",
+   "members": [
+    "57d2193d-c6f2-40f5-984d-52820a8def6e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "942b9e6e-c618-4435-a518-2128c2a96829",
+   "kind": "native",
+   "members": [
+    "c09db4e2-0d3c-42eb-88ae-ca82cf731eb8",
+    "c35075cb-0e6a-4336-9227-2ba670c8d58c",
+    "f4711067-575b-4e00-96ff-dbecaccf4bf4",
+    "dad7b3fb-3d7c-4581-afa4-844bbe256cf1",
+    "6188065e-9b97-4ea1-b225-9a2ac4c2197c",
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "5f01e5eb-0696-4af6-a31a-dda47791caf5"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "259163d5-77ea-4971-ac7c-7e007b5758c1",
+   "kind": "native",
+   "members": [
+    "1c66fa02-d5d2-4a50-ae5c-5032dfa6b864",
+    "9e0109b7-6bb9-4911-952f-665b5f09fea4",
+    "8b7d75b1-438c-483a-99fe-613347266f82",
+    "cd44ccb8-3e71-49a1-95e9-17fcfb0799e9",
+    "5d86bf51-acdf-4d13-9742-46c5be620972",
+    "6ea06bf5-9c99-4672-b513-324b281825d8",
+    "9cd6ee64-c3fe-4879-ae4d-bf3a2131def9",
+    "c5d3b3b7-255e-40a6-bb80-b6b5cb961605",
+    "84f5c85f-f321-4090-b093-76680883aa7d",
+    "2565659c-9477-4cd8-ae3d-18e701b2b056",
+    "8b93a322-6e58-44fc-bb1a-4123729176a0",
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "6b0c054a-509c-4808-9416-202d963a3800",
+    "31663747-9b73-4b45-b270-3b81f82b9d8b",
+    "355bab60-0579-42e8-92d3-c4279af16e31",
+    "688b08c5-5385-4c9b-b4be-aa695b574a07"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "9d34ebb2-efdc-4124-a509-dcbaa78955a0",
+   "kind": "native",
+   "members": [
+    "f69b0907-90a7-4b0a-ade0-6355f81f932c",
+    "b6e9dd5b-3050-481b-b03a-de16cc428b14",
+    "3f651d5d-4d20-4cf3-a904-caaee2a55f52",
+    "40de107e-a822-4b62-8041-aa72cbc18dc0",
+    "8a55d96c-ddc0-409c-8aba-1b8aef1bfc03",
+    "cc9c5519-d33c-4039-b1dc-13f7cf02c709",
+    "d06f05bd-b666-4718-a847-1d247d3bc720",
+    "ff5d80b5-164a-418c-b887-aaccc449e19a",
+    "3c6fad6b-8dde-44c6-866b-569d46402b97",
+    "efa5bba4-f19d-4107-8ced-53cb2d2d6a05",
+    "05f5a16a-6ba1-4dce-899c-696eb96f72e8",
+    "1a27839b-8de1-42d6-9b91-4b94907bfed1",
+    "f63791cc-db34-47ff-a610-7910a3f85177",
+    "45c405d7-b6be-4a45-920a-4d6b129b85b8",
+    "1964dc15-d5d6-4fd1-8c8a-66253d4d04ca",
+    "b5dbc826-33e9-43f0-9831-c6509f471e2b",
+    "99e7f34d-913c-4652-8c16-69dba60dfa5f",
+    "64b66aba-e8cd-4ce6-a3ca-5a8fcc4d3e30",
+    "775b281a-8bed-40d4-a52a-b2ada6a64dc3",
+    "294e00dc-52f3-4385-8038-7a93ed5ae6fe",
+    "124eb7ce-0a2f-497f-a7d8-625ff1037023",
+    "49946d4f-e4b3-420f-99fd-ca824a84e5b9",
+    "63b4b139-308e-498c-b2a2-dbfb7d5e41ff",
+    "cdcc13d1-1f16-487e-98cb-d02ef40bfc17",
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "b4507189-a74a-4ac5-ba71-c54362327d6c",
+    "b75440ac-c79f-472a-aea9-71cd4af0f84a",
+    "f80ab68c-8c86-42da-bb4a-fcb13c878454",
+    "dcba4d6a-7472-4668-924a-57e15fe61070",
+    "ff8926bf-6de9-4d5a-8287-a253e74c6dc7",
+    "76301944-10ef-4b6e-80b1-17ee26b21666",
+    "f5387709-0bca-4cbf-abdc-52b9196ad9b5"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b6e9dd5b-3050-481b-b03a-de16cc428b14",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Sens. Heat Recovery [%/100]",
+   "pivot": [
+    504.0921630859375,
+    2197.8330078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3f651d5d-4d20-4cf3-a904-caaee2a55f52",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Lat. Heat Recovery [%/100]",
+   "pivot": [
+    504.7730712890625,
+    2225.43896484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "c09db4e2-0d3c-42eb-88ae-ca82cf731eb8",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "ACH [1/h]",
+   "pivot": [
+    620.3585815429688,
+    635.85791015625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9e0109b7-6bb9-4911-952f-665b5f09fea4",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Eff. Opening Area [m²]",
+   "pivot": [
+    510.9468994140625,
+    949.266845703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8b7d75b1-438c-483a-99fe-613347266f82",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Height Difference [m]",
+   "pivot": [
+    517.7988891601562,
+    1013.705810546875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cd44ccb8-3e71-49a1-95e9-17fcfb0799e9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    553.15869140625,
+    1048.546875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5d86bf51-acdf-4d13-9742-46c5be620972",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    553.3995971679688,
+    1080.505859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6ea06bf5-9c99-4672-b513-324b281825d8",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    553.0377807617188,
+    1113.34375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9cd6ee64-c3fe-4879-ae4d-bf3a2131def9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    745.1787109375,
+    1145.185791015625
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8a55d96c-ddc0-409c-8aba-1b8aef1bfc03",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "ACH [1/h]",
+   "pivot": [
+    616.9386596679688,
+    1907.677734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cc9c5519-d33c-4039-b1dc-13f7cf02c709",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Sfp in [W/(m³/h)]",
+   "pivot": [
+    553.5531005859375,
+    2252.833984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ff5d80b5-164a-418c-b887-aaccc449e19a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    478.05889892578125,
+    2128.384765625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3c6fad6b-8dde-44c6-866b-569d46402b97",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    477.689453125,
+    2392.90478515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "84f5c85f-f321-4090-b093-76680883aa7d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Maximum Air Change [1/h]",
+   "pivot": [
+    468.55889892578125,
+    1177.075927734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "05f5a16a-6ba1-4dce-899c-696eb96f72e8",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Abs. Humidity [kg/kg]",
+   "pivot": [
+    514.627685546875,
+    2100.99072265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1a27839b-8de1-42d6-9b91-4b94907bfed1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Abs. Humidity [kg/kg]",
+   "pivot": [
+    514.1968994140625,
+    2156.10595703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "dad7b3fb-3d7c-4581-afa4-844bbe256cf1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Min. ACH [1/h]",
+   "pivot": [
+    574.747802734375,
+    708.56494140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f63791cc-db34-47ff-a610-7910a3f85177",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Volume Flow [m³/h]",
+   "pivot": [
+    531.7577514648438,
+    1936.11376953125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "45c405d7-b6be-4a45-920a-4d6b129b85b8",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Boolean Toggle",
+   "pivot": [
+    687.0,
+    2278.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "1964dc15-d5d6-4fd1-8c8a-66253d4d04ca",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    553.3130493164062,
+    2310.18798828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "b5dbc826-33e9-43f0-9831-c6509f471e2b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    553.9931030273438,
+    2337.8330078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "99e7f34d-913c-4652-8c16-69dba60dfa5f",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Min. ACH [1/h]",
+   "pivot": [
+    572.9786987304688,
+    1990.5576171875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "294e00dc-52f3-4385-8038-7a93ed5ae6fe",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    678.8088989257812,
+    2018.5390625
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "64b66aba-e8cd-4ce6-a3ca-5a8fcc4d3e30",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Value List",
+   "pivot": [
+    778.0,
+    2422.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "6188065e-9b97-4ea1-b225-9a2ac4c2197c",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    656.156982421875,
+    663.61279296875
+   ],
+   "text": "AllDay",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "b75440ac-c79f-472a-aea9-71cd4af0f84a",
+   "kind": "native",
+   "members": [
+    "eda29963-0005-41fa-b59f-4d88e6e6490e",
+    "5e3ee3c2-66a9-4142-9c3f-cbf3fd694721"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5f01e5eb-0696-4af6-a31a-dda47791caf5",
+   "kind": "native",
+   "members": [
+    "e9f10037-944f-4ac8-a8ed-d1bb646da04e",
+    "bc37e80b-e1d5-4e21-a1dc-20e20b080b38"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "16e74303-47bd-4dd7-ac1c-9abed602a907",
+   "kind": "native",
+   "members": [
+    "67a0eb45-95fc-40de-8590-634b55abe0ba",
+    "03cd7e9a-438e-489b-8d15-35d9e4ccbb4d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "2d5c27ae-dba3-4a94-b803-d99ffc3b4df2",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Eff. Opening Area [m²]",
+   "pivot": [
+    510.13958740234375,
+    1421.94580078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a1f25735-3caa-42f0-9164-093859b77378",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Height Difference [m]",
+   "pivot": [
+    516.98779296875,
+    1487.5087890625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "484b89ee-fe4e-40bb-9e56-ed5e7a6c8f2c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    552.9552612304688,
+    1523.091796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a3f1372d-7ad5-4ac7-a25b-6f933edf9824",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    552.9863891601562,
+    1556.591796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "372a4124-c25d-4e88-a1fb-0b46e3abd8de",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    552.2252807617188,
+    1589.57568359375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "087c83be-e94e-45fc-8d57-76a8ce142fdb",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Maximum Air Change [1/h]",
+   "pivot": [
+    467.315185546875,
+    1622.19384765625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "c5d8b1bc-c3b5-4b62-9547-1637e5ebbdf3",
+   "kind": "native",
+   "members": [
+    "67a0eb45-95fc-40de-8590-634b55abe0ba",
+    "03cd7e9a-438e-489b-8d15-35d9e4ccbb4d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "31663747-9b73-4b45-b270-3b81f82b9d8b",
+   "kind": "native",
+   "members": [
+    "67a0eb45-95fc-40de-8590-634b55abe0ba",
+    "03cd7e9a-438e-489b-8d15-35d9e4ccbb4d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "49946d4f-e4b3-420f-99fd-ca824a84e5b9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Fresh air per person [m³/h]",
+   "pivot": [
+    472.35858154296875,
+    1963.19091796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "f9db835b056b",
+   "id": "34f0c375-e33b-4484-ae5c-f2667cabd950",
+   "inputs": [
+    "----------- StackVentilation",
+    "EffOpeningAreaBottom",
+    "OrFloorRelatedEffOpAreaBottom",
+    "EffOpeningAreaTop",
+    "OrFloorRelatedEffOpAreaTop",
+    "HeightDifference",
+    "ONTemperatureAbove",
+    "OFFTemperatureBelow",
+    "ONTairOutsideAbove",
+    "ONTairOutside24hAbove",
+    "Schedule",
+    "MaxAirChange"
+   ],
+   "kind": "script",
+   "name": "Lizard_Stack_Ventilation_1",
+   "nickName": "Stack Ventilation 1",
+   "outputs": [
+    "out",
+    "-------------",
+    "StackVentilation1"
+   ],
+   "pivot": [
+    1188.0,
+    1053.0
+   ],
+   "script": "Lizard_Stack_Ventilation_1",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "3e9d6f4d94a3",
+   "id": "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+   "inputs": [
+    "------- Hybr.Ventilation",
+    "Mode",
+    "ACH",
+    "OrAbsoluteVolumeFlow",
+    "OrPersonRelatedVolumeFlow",
+    "MinACH",
+    "ScheduleACH",
+    "ScheduleOcc",
+    "-------- MechanicalVentilation",
+    "SupplyTempWinterOcc",
+    "SupplyTempWinterUnocc",
+    "MinSupplyAirHumidity",
+    "SupplyTempSummerOcc",
+    "SupplyTempSummerUnocc",
+    "MaxSupplyAirHumidity",
+    "SensibleHeatRecovery",
+    "LatentHeatRecovery",
+    "SpecFanPower",
+    "-------- NaturalVentilation",
+    "Activated",
+    "NaturalIfTairOutsideAbove",
+    "NaturalIfTairOutsideBelow",
+    "-------------------- Additional",
+    "RefTempSeason",
+    "SummerRefTempSeasonAbove",
+    "ActivateWinterReduction",
+    "WinterFraction"
+   ],
+   "kind": "script",
+   "name": "Lizard_Mechanical_Ventilation",
+   "nickName": "Mechanical Ventilation",
+   "outputs": [
+    "out",
+    "-------------",
+    "Ventilation"
+   ],
+   "pivot": [
+    1202.0,
+    2163.0
+   ],
+   "script": "Lizard_Mechanical_Ventilation",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "b4507189-a74a-4ac5-ba71-c54362327d6c",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    675.627685546875,
+    2045.845703125
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "f80ab68c-8c86-42da-bb4a-fcb13c878454",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    478.9468994140625,
+    2072.68505859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6b0c054a-509c-4808-9416-202d963a3800",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Floor related Eff. Opening Area in [%/floorarea]",
+   "pivot": [
+    303.8389892578125,
+    980.9658203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3d455e58-f511-4583-bee7-0434067265fc",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Floor related Eff. Opening Area in [%/floorarea]",
+   "pivot": [
+    300.1177978515625,
+    1454.40673828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "c1818847-0e93-4613-9303-adb21db0c051",
+   "kind": "native",
+   "members": [
+    "2e022f72-2350-4b00-b53e-2b09877f275c",
+    "bcded15c-4fcd-41b1-a6dd-2f564f82c060",
+    "31111fda-0a4c-430c-8b66-9fd5170352cc",
+    "12da2269-96a4-44ee-a130-193419ab02b4",
+    "de1c1d29-07db-4d44-beb2-57b12c264286",
+    "b3c59e03-39d0-4026-ac7a-0db2a255ce8f",
+    "a9aa8659-ae9e-4564-9b2a-eb4e8a0c5d39",
+    "27017d8f-d31a-408c-b2f9-73406c2c246d",
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "eead92b5-e110-4690-8961-fb70d8e33e6b",
+    "bd275c3d-1694-47de-8da8-c7d63762a6ec",
+    "6bfa8c87-5bfe-459f-8df4-7f68a3605e29"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "ef5d7ccb-631c-4662-a588-a6f3a1ca516e",
+   "kind": "native",
+   "members": [
+    "d1785a68-b9cd-42b0-8898-99a2728b113b",
+    "dfc03559-10dc-41ba-8ce2-9c2451395462",
+    "cc672a5a-a9e9-4abe-89c8-8d73511ef1d7",
+    "ca02bd0c-4f49-4d2d-9a86-d86598e1135e",
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "5e89b651-4845-4d73-a5c4-7ad110241e71",
+    "b3f3129b-b529-4462-9e90-e07eb61ca408",
+    "3748b9cf-91ad-4a5f-8703-de51d42976bc",
+    "eb966cbb-dfb8-4beb-83fd-f4cf8164c66c",
+    "56122cf5-d9af-4006-880b-9f955490a4e5",
+    "621f4655-35b0-4658-bd71-aca579a81deb"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b365e6e4-4036-4c2e-937c-2cab28e8b0d6",
+   "kind": "native",
+   "members": [
+    "c09b6861-d941-4894-91dd-b3c12d602d38",
+    "abf49ae1-022e-44b6-a17e-33b0292778a0",
+    "498d4b38-1a6a-410b-98e4-52dcf355ed28",
+    "0d5f4bcc-2cde-4c0c-a6d0-cee856c7a212",
+    "409dee7d-40d5-4bf8-8aa0-993da1c681cb",
+    "8e0f6104-0842-4337-b37d-5253eeb7a001",
+    "7fbe99fc-7c95-4e17-9110-82cb7fabaa34",
+    "866b26b7-cf65-4cc9-9598-07d89fca9750",
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "10f54b34-5340-4e08-9859-c97510974f8d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "2e022f72-2350-4b00-b53e-2b09877f275c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Min. Rel. Humidity [%]",
+   "pivot": [
+    1761.715576171875,
+    2543.5048828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d1785a68-b9cd-42b0-8898-99a2728b113b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Max. Rel. Humidity [%]",
+   "pivot": [
+    1750.94970703125,
+    3346.1318359375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bcded15c-4fcd-41b1-a6dd-2f564f82c060",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1997.7265625,
+    2600.20068359375
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "dfc03559-10dc-41ba-8ce2-9c2451395462",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1989.775634765625,
+    3402.10693359375
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "12da2269-96a4-44ee-a130-193419ab02b4",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature Setback (nighttime) [K]",
+   "pivot": [
+    1643.3876953125,
+    2572.748046875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ca02bd0c-4f49-4d2d-9a86-d86598e1135e",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature Setback (nighttime) [K]",
+   "pivot": [
+    1635.3287353515625,
+    3374.705078125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "abf49ae1-022e-44b6-a17e-33b0292778a0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    1803.586669921875,
+    2867.14306640625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "498d4b38-1a6a-410b-98e4-52dcf355ed28",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Temperature [°C]",
+   "pivot": [
+    1803.4296875,
+    2895.3818359375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "409dee7d-40d5-4bf8-8aa0-993da1c681cb",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Hot Water Demand [l/day]",
+   "pivot": [
+    1720.875732421875,
+    2928.40478515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8e0f6104-0842-4337-b37d-5253eeb7a001",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Full Load Hours [h]",
+   "pivot": [
+    1784.66357421875,
+    2956.40380859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "7fbe99fc-7c95-4e17-9110-82cb7fabaa34",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1993.24462890625,
+    2983.6728515625
+   ],
+   "text": "WORK",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "de1c1d29-07db-4d44-beb2-57b12c264286",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    1729.4566650390625,
+    2629.3349609375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "0125de159f34",
+   "id": "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+   "inputs": [
+    "------------------ Cooling",
+    "SetTemperature",
+    "MaxSpecCoolPower",
+    "ControlledTemperature",
+    "MaxRelHum",
+    "NightSetUp",
+    "Schedule",
+    "OnTairOutside24hAbove",
+    "ControlledBasedOn"
+   ],
+   "kind": "script",
+   "name": "Lizard_Cooling",
+   "nickName": "Cooling",
+   "outputs": [
+    "out",
+    "-------------",
+    "Cooling"
+   ],
+   "pivot": [
+    2410.0,
+    3343.0
+   ],
+   "script": "Lizard_Cooling",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "a9aa8659-ae9e-4564-9b2a-eb4e8a0c5d39",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Value List",
+   "pivot": [
+    1991.0,
+    2476.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "5e89b651-4845-4d73-a5c4-7ad110241e71",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "Value List",
+   "pivot": [
+    1986.0,
+    3310.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "10f54b34-5340-4e08-9859-c97510974f8d",
+   "kind": "native",
+   "members": [
+    "31dc1b6a-8b63-456e-b9cb-96fa4d3bd5fb",
+    "93a2fe77-94c8-40e9-8875-f5e82c265df7"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "3748b9cf-91ad-4a5f-8703-de51d42976bc",
+   "kind": "native",
+   "members": [
+    "88c8df62-cd83-4cd7-af31-e284aa8041c4",
+    "70db49d6-18c2-4e6d-bd6b-4e99e7b42c53"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "eead92b5-e110-4690-8961-fb70d8e33e6b",
+   "kind": "native",
+   "members": [
+    "7a789599-03bc-4c7c-bbff-7c52c0e0b0d8",
+    "75b77254-67a4-4132-b55a-3799dbe0a560"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "b3f3129b-b529-4462-9e90-e07eb61ca408",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Setpoint Temperature [°C]",
+   "pivot": [
+    1721.067626953125,
+    3429.638671875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "eb966cbb-dfb8-4beb-83fd-f4cf8164c66c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Max. Cooling Power [W/m²]",
+   "pivot": [
+    1712.5086669921875,
+    3288.6640625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "27017d8f-d31a-408c-b2f9-73406c2c246d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Max. Spec. Power [W/m².floor]",
+   "pivot": [
+    1691.6246337890625,
+    2515.28271484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "119743de-2dd7-403e-ab22-e20bd656c14a",
+   "kind": "native",
+   "members": [
+    "0ab0b4a5-dfb1-467c-99ff-5ba2b92fd2d2",
+    "74b9d005-1e1b-41ab-8e65-2e648d2cced4",
+    "61ab9312-d8b3-47c7-abaf-0587ece97d93",
+    "5e548d6c-0d06-4d88-a925-6b35d56337d8",
+    "0bfa38df-cb1c-440c-922a-84fd7607bad0",
+    "542d86ef-a894-4463-84b9-2a33265f2be0",
+    "6afd91f4-d645-427a-9bf6-6b0b8c8f0359",
+    "6a513b94-0454-4e91-bf69-de2f5b81b99a",
+    "a73da327-a4b8-4693-9740-9a69785954b1",
+    "e685d630-0411-45ee-abcc-8d249bc29ea5",
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "0ab819f6-25d7-461d-a886-a02b64b1c5d6",
+    "2e06e87e-fb50-4783-8873-bf5c93099b85",
+    "ef2d03a3-75ce-4fa6-bc2a-dca9bbdd9af7",
+    "0eff2809-7181-4e0e-a78c-fd407aef7271",
+    "f66229ab-4758-420a-8e80-fbd8757a30ba",
+    "af07c752-a439-457f-934a-90b453f814a6",
+    "6c52dbec-12b1-421f-ab84-1b9abfcb5dc5",
+    "095b6aa8-25d6-4916-b2f4-1c9e9a33921b",
+    "69dabaab-53de-4b7b-b954-1ee865b54aae",
+    "205ead35-dd15-4141-a237-916a1c97f794",
+    "f969adb0-2ca1-4207-948f-cae1ca1e45c7",
+    "1a71b9bf-7567-4e1d-b395-b8d71bc68ff0",
+    "192e4de2-505a-4de7-ae80-ff8028ac7255",
+    "8f9c2ceb-86d1-4cfd-9b6e-307cf8536e84"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "5e548d6c-0d06-4d88-a925-6b35d56337d8",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Clothing Factor [clo]",
+   "pivot": [
+    528.7286987304688,
+    2840.86767578125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "0bfa38df-cb1c-440c-922a-84fd7607bad0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Metabolic Rate [met]",
+   "pivot": [
+    522.5889892578125,
+    2868.44970703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "542d86ef-a894-4463-84b9-2a33265f2be0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Metabolic Rate [met]",
+   "pivot": [
+    522.1177978515625,
+    2896.6630859375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "6afd91f4-d645-427a-9bf6-6b0b8c8f0359",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Air Velocity [m/s]",
+   "pivot": [
+    615.5687866210938,
+    2954.8720703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "28c3a25e450f",
+   "id": "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+   "inputs": [
+    "--------------- Comfort",
+    "ClothingFactor",
+    "MetabolicRate",
+    "ExternalWork",
+    "Mode",
+    "AirVelocity",
+    "------- SET Parameters",
+    "AirVelocity2",
+    "AirVelocity3",
+    "AirVelocity4"
+   ],
+   "kind": "script",
+   "locked": true,
+   "name": "Lizard_Comfort",
+   "nickName": "Comfort",
+   "outputs": [
+    "out",
+    "-------------",
+    "Comfort"
+   ],
+   "pivot": [
+    1206.0,
+    2936.0
+   ],
+   "script": "Lizard_Comfort",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "69dabaab-53de-4b7b-b954-1ee865b54aae",
+   "kind": "native",
+   "members": [
+    "a8048930-6d9f-4e19-baa9-7c3f1b9a55d6",
+    "acfe7e0a-80e5-439d-ba16-b3aaa97fc0d2"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "codeHash": "2e7de4efe29c",
+   "id": "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+   "inputs": [
+    "--------------- Equipment",
+    "PowerEquipmentGain",
+    "ScheduleEquipmentGain",
+    "ConvPartEquipmentGain",
+    "----- WinterRedOfGains",
+    "ReductionPercentage",
+    "OnTairoutside24hBelow",
+    "AnnualSchedule"
+   ],
+   "kind": "script",
+   "name": "Lizard_Equipment_Gains",
+   "nickName": "Equipment Gains",
+   "outputs": [
+    "out",
+    "-------------",
+    "EquipmentGain"
+   ],
+   "pivot": [
+    2402.0,
+    1116.0
+   ],
+   "script": "Lizard_Equipment_Gains",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "f637558a4661",
+   "id": "96df5970-71e8-45d6-9111-254ff37f439a",
+   "inputs": [
+    "-------- ArtificialLight",
+    "ScheduleLightGain",
+    "SpecPowerLightGain",
+    "ConvPartLightGain",
+    "----- Daylight Control",
+    "UseDaylightCtrl",
+    "AnnualSchedule"
+   ],
+   "kind": "script",
+   "name": "Lizard_Light_Gains",
+   "nickName": "Light Gains",
+   "outputs": [
+    "out",
+    "-------------",
+    "LightGain"
+   ],
+   "pivot": [
+    2422.0,
+    1461.0
+   ],
+   "script": "Lizard_Light_Gains",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "474441ccf287",
+   "id": "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+   "inputs": [
+    "--------------- MiscGain",
+    "SpecificPower",
+    "Schedule",
+    "ConvectivePart",
+    "Humidity",
+    "AnnualSchedule"
+   ],
+   "kind": "script",
+   "name": "Lizard_Misc_Gains",
+   "nickName": "Gains",
+   "outputs": [
+    "out",
+    "-------------",
+    "MiscGain"
+   ],
+   "pivot": [
+    2414.0,
+    1799.0
+   ],
+   "script": "Lizard_Misc_Gains",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "e5c110e613d8",
+   "id": "1bc5a3c2-d046-4347-893e-d419f0323305",
+   "inputs": [
+    "---------- ThermalBridge",
+    "OutsideAreaFactor"
+   ],
+   "kind": "script",
+   "name": "Lizard_Thermal_Bridge_Gain",
+   "nickName": "TBR Gain",
+   "outputs": [
+    "out",
+    "-------------",
+    "ThbGain"
+   ],
+   "pivot": [
+    2415.0,
+    2135.0
+   ],
+   "script": "Lizard_Thermal_Bridge_Gain",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "924c6734436f",
+   "id": "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+   "inputs": [
+    "------------------ Heating",
+    "SetTemperature",
+    "ControlledTemperature",
+    "MaxSpecHeatPower",
+    "MinRelHum",
+    "NightSetBack",
+    "Schedule",
+    "OnTairOutside24hBelow",
+    "ControlledBasedOn"
+   ],
+   "kind": "script",
+   "name": "Lizard_Heating",
+   "nickName": "Heating",
+   "outputs": [
+    "out",
+    "-------------",
+    "Heating"
+   ],
+   "pivot": [
+    2413.0,
+    2529.0
+   ],
+   "script": "Lizard_Heating",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "d021957b0509",
+   "id": "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+   "inputs": [
+    "------ DomesticHotWater",
+    "FreshWaterTemperature",
+    "HotWaterTemperature",
+    "HotWaterPerPersonPerDay",
+    "FullLoadHoursWater",
+    "Schedule"
+   ],
+   "kind": "script",
+   "name": "Lizard_DHW",
+   "nickName": "DHW",
+   "outputs": [
+    "out",
+    "-------------",
+    "Dhw"
+   ],
+   "pivot": [
+    2412.0,
+    2935.0
+   ],
+   "script": "Lizard_DHW",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "484c392726ee",
+   "id": "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+   "inputs": [
+    "--------------- Infiltration",
+    "ACH",
+    "Schedule",
+    "AnnualSchedule",
+    "MinACH"
+   ],
+   "kind": "script",
+   "name": "Lizard_Infiltration",
+   "nickName": "Infiltration",
+   "outputs": [
+    "out",
+    "-------------",
+    "Infiltration"
+   ],
+   "pivot": [
+    1221.0,
+    669.0
+   ],
+   "script": "Lizard_Infiltration",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "02905360687e",
+   "id": "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+   "inputs": [
+    "PeopleGain",
+    "EquipmentGain",
+    "LightGain",
+    "MiscGain",
+    "ThbGain",
+    "Heating",
+    "Dhw",
+    "Cooling",
+    "Infiltration",
+    "Ventilation",
+    "StackVentilation1",
+    "StackVentilation2",
+    "Comfort"
+   ],
+   "kind": "script",
+   "name": "Lizard_Zone_Regime",
+   "nickName": "Zone Regime",
+   "outputs": [
+    "out",
+    "Regime"
+   ],
+   "pivot": [
+    2971.0,
+    1735.0
+   ],
+   "script": "Lizard_Zone_Regime",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "73aa6357-63b9-49e6-a3c9-dcb983756e1d",
+   "kind": "native",
+   "members": [
+    "4fac570c-7275-48db-a471-ae2c668cc404",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "0837472e-32e3-46b1-a83f-8f09b0ac2c9d",
+    "d396b059-252b-4443-bb48-4435a1613a72",
+    "b06921ee-31b5-4171-be82-10d0e45ce314",
+    "edb7dbe2-1be2-4865-9e2e-cd974b189e97",
+    "299a5b0e-b59a-46c4-89cd-4e43118847fe"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "4fac570c-7275-48db-a471-ae2c668cc404",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    463.3389892578125,
+    251.057861328125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "d396b059-252b-4443-bb48-4435a1613a72",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    457.706787109375,
+    340.891845703125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "81ecfa9a-9dc0-47f3-b30b-1b1b7954497e",
+   "kind": "native",
+   "members": [
+    "741db146-d486-4257-8a9f-07f1138046b8",
+    "244c9ecc-49ee-4932-9ba3-22dffca3052e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "741db146-d486-4257-8a9f-07f1138046b8",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    284.0889892578125,
+    245.324951171875
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "b06921ee-31b5-4171-be82-10d0e45ce314",
+   "kind": "native",
+   "members": [
+    "741db146-d486-4257-8a9f-07f1138046b8",
+    "244c9ecc-49ee-4932-9ba3-22dffca3052e"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "6bfa8c87-5bfe-459f-8df4-7f68a3605e29",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    1961.0,
+    2445.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "621f4655-35b0-4658-bd71-aca579a81deb",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    1960.0,
+    3253.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "f969adb0-2ca1-4207-948f-cae1ca1e45c7",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Air Velocity [m/s]",
+   "pivot": [
+    614.15869140625,
+    2983.341796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1a71b9bf-7567-4e1d-b395-b8d71bc68ff0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Air Velocity [m/s]",
+   "pivot": [
+    614.2577514648438,
+    3011.5498046875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "192e4de2-505a-4de7-ae80-ff8028ac7255",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Air Velocity [m/s]",
+   "pivot": [
+    613.9686889648438,
+    3039.6298828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "0b4fc515-6695-42be-8276-6188129da0cd",
+   "kind": "native",
+   "name": "Boolean Toggle",
+   "nickName": "Toggle",
+   "pivot": [
+    1973.0,
+    1511.0
+   ],
+   "type": "GH_BooleanToggle"
+  },
+  {
+   "id": "8f9c2ceb-86d1-4cfd-9b6e-307cf8536e84",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "",
+   "pivot": [
+    665.0,
+    2921.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "dcba4d6a-7472-4668-924a-57e15fe61070",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    737.0,
+    1873.0
+   ],
+   "type": "GH_ValueList"
+  },
+  {
+   "id": "dadfd90c-5bb8-4fe2-a8aa-aac1667acedb",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "Schedule Name",
+   "pivot": [
+    1903.188720703125,
+    814.1279296875
+   ],
+   "text": "AN_AUGOFF",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "d1293160-1c44-4e6a-8d12-cb049db5aad9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "CO2 [l/h]",
+   "pivot": [
+    1895.045654296875,
+    709.31982421875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "9c6559ca-9128-4015-a7df-c9e99707c836",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Load [W]",
+   "pivot": [
+    1893.312744140625,
+    619.1318359375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ba61471e-d0bd-4790-8b99-856f24118eba",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Load [W]",
+   "pivot": [
+    1893.07275390625,
+    649.61181640625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "62a96df3-ca22-4b7e-9163-b9c681dd1571",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Humidity [g/(m².h)]",
+   "pivot": [
+    1831.838623046875,
+    1849.4990234375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "codeHash": "4df4e0160388",
+   "id": "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+   "inputs": [
+    "----------- StackVentilation",
+    "EffOpeningAreaBottom",
+    "OrFloorRelatedEffOpAreaBottom",
+    "EffOpeningAreaTop",
+    "OrFloorRelatedEffOpAreaTop",
+    "HeightDifference",
+    "ONTemperatureAbove",
+    "OFFTemperatureBelow",
+    "ONTairOutsideAbove",
+    "ONTairOutside24hAbove",
+    "MaxAirChange"
+   ],
+   "kind": "script",
+   "name": "Lizard_Stack_Ventilation_2",
+   "nickName": "Stack Ventilation 2",
+   "outputs": [
+    "out",
+    "-------------",
+    "StackVentilation2"
+   ],
+   "pivot": [
+    1176.0,
+    1519.0
+   ],
+   "script": "Lizard_Stack_Ventilation_2",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "76301944-10ef-4b6e-80b1-17ee26b21666",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "ACH Fraction in Winter [%/100]",
+   "pivot": [
+    552.447265625,
+    2453.8828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f5387709-0bca-4cbf-abdc-52b9196ad9b5",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "",
+   "pivot": [
+    625.0,
+    2363.0
+   ],
+   "type": "GH_ValueList"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "9c6559ca-9128-4015-a7df-c9e99707c836",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "SensiblePeopleGain",
+    1
+   ]
+  },
+  {
+   "from": [
+    "ba61471e-d0bd-4790-8b99-856f24118eba",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "LatentPeopleGain",
+    2
+   ]
+  },
+  {
+   "from": [
+    "58847635-395e-4e4d-ab4c-b70f72cfc877",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "SchedulePeopleGain",
+    3
+   ]
+  },
+  {
+   "from": [
+    "d1293160-1c44-4e6a-8d12-cb049db5aad9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "CO2Production",
+    4
+   ]
+  },
+  {
+   "from": [
+    "01982ba4-286b-435c-9072-6a432cfc6ae2",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "ReductionPercentage",
+    6
+   ]
+  },
+  {
+   "from": [
+    "22ffaf75-82f0-460f-ac61-e5e53fdc8e94",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "OnTairoutside24hBelow",
+    7
+   ]
+  },
+  {
+   "from": [
+    "6b0c054a-509c-4808-9416-202d963a3800",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "OrFloorRelatedEffOpAreaBottom",
+    2
+   ]
+  },
+  {
+   "from": [
+    "6b0c054a-509c-4808-9416-202d963a3800",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "OrFloorRelatedEffOpAreaTop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "8b7d75b1-438c-483a-99fe-613347266f82",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "HeightDifference",
+    5
+   ]
+  },
+  {
+   "from": [
+    "cd44ccb8-3e71-49a1-95e9-17fcfb0799e9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "ONTemperatureAbove",
+    6
+   ]
+  },
+  {
+   "from": [
+    "5d86bf51-acdf-4d13-9742-46c5be620972",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "OFFTemperatureBelow",
+    7
+   ]
+  },
+  {
+   "from": [
+    "6ea06bf5-9c99-4672-b513-324b281825d8",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "ONTairOutsideAbove",
+    8
+   ]
+  },
+  {
+   "from": [
+    "6ea06bf5-9c99-4672-b513-324b281825d8",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "ONTairOutside24hAbove",
+    9
+   ]
+  },
+  {
+   "from": [
+    "9cd6ee64-c3fe-4879-ae4d-bf3a2131def9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "Schedule",
+    10
+   ]
+  },
+  {
+   "from": [
+    "84f5c85f-f321-4090-b093-76680883aa7d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "MaxAirChange",
+    11
+   ]
+  },
+  {
+   "from": [
+    "dcba4d6a-7472-4668-924a-57e15fe61070",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "Mode",
+    1
+   ]
+  },
+  {
+   "from": [
+    "49946d4f-e4b3-420f-99fd-ca824a84e5b9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "OrPersonRelatedVolumeFlow",
+    4
+   ]
+  },
+  {
+   "from": [
+    "99e7f34d-913c-4652-8c16-69dba60dfa5f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "MinACH",
+    5
+   ]
+  },
+  {
+   "from": [
+    "294e00dc-52f3-4385-8038-7a93ed5ae6fe",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "ScheduleACH",
+    6
+   ]
+  },
+  {
+   "from": [
+    "b4507189-a74a-4ac5-ba71-c54362327d6c",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "ScheduleOcc",
+    7
+   ]
+  },
+  {
+   "from": [
+    "f80ab68c-8c86-42da-bb4a-fcb13c878454",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SupplyTempWinterOcc",
+    9
+   ]
+  },
+  {
+   "from": [
+    "f80ab68c-8c86-42da-bb4a-fcb13c878454",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SupplyTempWinterUnocc",
+    10
+   ]
+  },
+  {
+   "from": [
+    "ff5d80b5-164a-418c-b887-aaccc449e19a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SupplyTempSummerOcc",
+    12
+   ]
+  },
+  {
+   "from": [
+    "ff5d80b5-164a-418c-b887-aaccc449e19a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SupplyTempSummerUnocc",
+    13
+   ]
+  },
+  {
+   "from": [
+    "b6e9dd5b-3050-481b-b03a-de16cc428b14",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SensibleHeatRecovery",
+    15
+   ]
+  },
+  {
+   "from": [
+    "3f651d5d-4d20-4cf3-a904-caaee2a55f52",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "LatentHeatRecovery",
+    16
+   ]
+  },
+  {
+   "from": [
+    "cc9c5519-d33c-4039-b1dc-13f7cf02c709",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SpecFanPower",
+    17
+   ]
+  },
+  {
+   "from": [
+    "45c405d7-b6be-4a45-920a-4d6b129b85b8",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "Activated",
+    19
+   ]
+  },
+  {
+   "from": [
+    "1964dc15-d5d6-4fd1-8c8a-66253d4d04ca",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "NaturalIfTairOutsideAbove",
+    20
+   ]
+  },
+  {
+   "from": [
+    "b5dbc826-33e9-43f0-9831-c6509f471e2b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "NaturalIfTairOutsideBelow",
+    21
+   ]
+  },
+  {
+   "from": [
+    "f5387709-0bca-4cbf-abdc-52b9196ad9b5",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "RefTempSeason",
+    23
+   ]
+  },
+  {
+   "from": [
+    "3c6fad6b-8dde-44c6-866b-569d46402b97",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "SummerRefTempSeasonAbove",
+    24
+   ]
+  },
+  {
+   "from": [
+    "64b66aba-e8cd-4ce6-a3ca-5a8fcc4d3e30",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "ActivateWinterReduction",
+    25
+   ]
+  },
+  {
+   "from": [
+    "76301944-10ef-4b6e-80b1-17ee26b21666",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "WinterFraction",
+    26
+   ]
+  },
+  {
+   "from": [
+    "621f4655-35b0-4658-bd71-aca579a81deb",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "SetTemperature",
+    1
+   ]
+  },
+  {
+   "from": [
+    "eb966cbb-dfb8-4beb-83fd-f4cf8164c66c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "MaxSpecCoolPower",
+    2
+   ]
+  },
+  {
+   "from": [
+    "5e89b651-4845-4d73-a5c4-7ad110241e71",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "ControlledTemperature",
+    3
+   ]
+  },
+  {
+   "from": [
+    "d1785a68-b9cd-42b0-8898-99a2728b113b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "MaxRelHum",
+    4
+   ]
+  },
+  {
+   "from": [
+    "ca02bd0c-4f49-4d2d-9a86-d86598e1135e",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "NightSetUp",
+    5
+   ]
+  },
+  {
+   "from": [
+    "dfc03559-10dc-41ba-8ce2-9c2451395462",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "Schedule",
+    6
+   ]
+  },
+  {
+   "from": [
+    "b3f3129b-b529-4462-9e90-e07eb61ca408",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "faa175b1-bfd3-42e0-9b08-b70962225f7c",
+    "OnTairOutside24hAbove",
+    7
+   ]
+  },
+  {
+   "from": [
+    "5e548d6c-0d06-4d88-a925-6b35d56337d8",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "ClothingFactor",
+    1
+   ]
+  },
+  {
+   "from": [
+    "0bfa38df-cb1c-440c-922a-84fd7607bad0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "MetabolicRate",
+    2
+   ]
+  },
+  {
+   "from": [
+    "542d86ef-a894-4463-84b9-2a33265f2be0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "ExternalWork",
+    3
+   ]
+  },
+  {
+   "from": [
+    "8f9c2ceb-86d1-4cfd-9b6e-307cf8536e84",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "Mode",
+    4
+   ]
+  },
+  {
+   "from": [
+    "6afd91f4-d645-427a-9bf6-6b0b8c8f0359",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "AirVelocity",
+    5
+   ]
+  },
+  {
+   "from": [
+    "f969adb0-2ca1-4207-948f-cae1ca1e45c7",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "AirVelocity2",
+    7
+   ]
+  },
+  {
+   "from": [
+    "1a71b9bf-7567-4e1d-b395-b8d71bc68ff0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "AirVelocity3",
+    8
+   ]
+  },
+  {
+   "from": [
+    "192e4de2-505a-4de7-ae80-ff8028ac7255",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3ad2ea85-7e1b-4cca-bd8f-2a2ff5e225fc",
+    "AirVelocity4",
+    9
+   ]
+  },
+  {
+   "from": [
+    "1a128ab8-524e-4980-9d3d-50a9e01af1e4",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "PowerEquipmentGain",
+    1
+   ]
+  },
+  {
+   "from": [
+    "af759d4f-acc0-4b0e-b634-6329c1cf70ba",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "ScheduleEquipmentGain",
+    2
+   ]
+  },
+  {
+   "from": [
+    "5ca6ae71-188a-46c2-a61c-46df222acaf0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "ConvPartEquipmentGain",
+    3
+   ]
+  },
+  {
+   "from": [
+    "266d8bb0-20bf-4a52-b446-c3a48a56eaef",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "ReductionPercentage",
+    5
+   ]
+  },
+  {
+   "from": [
+    "85ab8b6a-8ede-4e8f-86de-312f2e214d64",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "OnTairoutside24hBelow",
+    6
+   ]
+  },
+  {
+   "from": [
+    "485f85b8-15cd-4dce-8768-41f090ae10c5",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "ScheduleLightGain",
+    1
+   ]
+  },
+  {
+   "from": [
+    "ac001fdc-4027-4a38-b4a7-2a7403b149bf",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "SpecPowerLightGain",
+    2
+   ]
+  },
+  {
+   "from": [
+    "d4458b14-4c64-4869-9b87-9e51ec557c61",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "ConvPartLightGain",
+    3
+   ]
+  },
+  {
+   "from": [
+    "0b4fc515-6695-42be-8276-6188129da0cd",
+    "Boolean Toggle",
+    -1
+   ],
+   "to": [
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "UseDaylightCtrl",
+    5
+   ]
+  },
+  {
+   "from": [
+    "a5319538-772c-44b0-8917-b4761ad971ec",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "SpecificPower",
+    1
+   ]
+  },
+  {
+   "from": [
+    "02bf00a6-2900-4194-98eb-17cf386a2926",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "Schedule",
+    2
+   ]
+  },
+  {
+   "from": [
+    "e8d17892-6f3a-4652-a494-fb5736cdf713",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "ConvectivePart",
+    3
+   ]
+  },
+  {
+   "from": [
+    "62a96df3-ca22-4b7e-9163-b9c681dd1571",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "Humidity",
+    4
+   ]
+  },
+  {
+   "from": [
+    "dcb605c7-ed9c-449f-9a50-ba3140147c83",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1bc5a3c2-d046-4347-893e-d419f0323305",
+    "OutsideAreaFactor",
+    1
+   ]
+  },
+  {
+   "from": [
+    "6bfa8c87-5bfe-459f-8df4-7f68a3605e29",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "SetTemperature",
+    1
+   ]
+  },
+  {
+   "from": [
+    "a9aa8659-ae9e-4564-9b2a-eb4e8a0c5d39",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "ControlledTemperature",
+    2
+   ]
+  },
+  {
+   "from": [
+    "27017d8f-d31a-408c-b2f9-73406c2c246d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "MaxSpecHeatPower",
+    3
+   ]
+  },
+  {
+   "from": [
+    "2e022f72-2350-4b00-b53e-2b09877f275c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "MinRelHum",
+    4
+   ]
+  },
+  {
+   "from": [
+    "12da2269-96a4-44ee-a130-193419ab02b4",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "NightSetBack",
+    5
+   ]
+  },
+  {
+   "from": [
+    "bcded15c-4fcd-41b1-a6dd-2f564f82c060",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "Schedule",
+    6
+   ]
+  },
+  {
+   "from": [
+    "de1c1d29-07db-4d44-beb2-57b12c264286",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "OnTairOutside24hBelow",
+    7
+   ]
+  },
+  {
+   "from": [
+    "abf49ae1-022e-44b6-a17e-33b0292778a0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "FreshWaterTemperature",
+    1
+   ]
+  },
+  {
+   "from": [
+    "498d4b38-1a6a-410b-98e4-52dcf355ed28",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "HotWaterTemperature",
+    2
+   ]
+  },
+  {
+   "from": [
+    "409dee7d-40d5-4bf8-8aa0-993da1c681cb",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "HotWaterPerPersonPerDay",
+    3
+   ]
+  },
+  {
+   "from": [
+    "8e0f6104-0842-4337-b37d-5253eeb7a001",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "FullLoadHoursWater",
+    4
+   ]
+  },
+  {
+   "from": [
+    "7fbe99fc-7c95-4e17-9110-82cb7fabaa34",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "c76f86fe-893c-4caf-a3fb-ff85c68e6d2f",
+    "Schedule",
+    5
+   ]
+  },
+  {
+   "from": [
+    "c09db4e2-0d3c-42eb-88ae-ca82cf731eb8",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "ACH",
+    1
+   ]
+  },
+  {
+   "from": [
+    "6188065e-9b97-4ea1-b225-9a2ac4c2197c",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "Schedule",
+    2
+   ]
+  },
+  {
+   "from": [
+    "dad7b3fb-3d7c-4581-afa4-844bbe256cf1",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "MinACH",
+    4
+   ]
+  },
+  {
+   "from": [
+    "cb5ff8de-8a23-4ae0-879e-37195959185a",
+    "PeopleGain",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "PeopleGain",
+    0
+   ]
+  },
+  {
+   "from": [
+    "12b4a9bc-99b9-4352-b7cf-80c476600af5",
+    "EquipmentGain",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "EquipmentGain",
+    1
+   ]
+  },
+  {
+   "from": [
+    "96df5970-71e8-45d6-9111-254ff37f439a",
+    "LightGain",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "LightGain",
+    2
+   ]
+  },
+  {
+   "from": [
+    "dc82371a-9bb9-4588-a253-52a4cd7d2916",
+    "MiscGain",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "MiscGain",
+    3
+   ]
+  },
+  {
+   "from": [
+    "1bc5a3c2-d046-4347-893e-d419f0323305",
+    "ThbGain",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "ThbGain",
+    4
+   ]
+  },
+  {
+   "from": [
+    "1db782dc-deba-4de6-bf7f-61668c00aa9d",
+    "Heating",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "Heating",
+    5
+   ]
+  },
+  {
+   "from": [
+    "4e64cce8-0a7a-40f5-8d76-526203c097c1",
+    "Infiltration",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "Infiltration",
+    8
+   ]
+  },
+  {
+   "from": [
+    "630c70b1-d3e6-4eb6-81df-8cfb71d48cfb",
+    "Ventilation",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "Ventilation",
+    9
+   ]
+  },
+  {
+   "from": [
+    "34f0c375-e33b-4484-ae5c-f2667cabd950",
+    "StackVentilation1",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "StackVentilation1",
+    10
+   ]
+  },
+  {
+   "from": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "StackVentilation2",
+    2
+   ],
+   "to": [
+    "2c423c78-6344-45ae-b1bd-52c50cb1c20a",
+    "StackVentilation2",
+    11
+   ]
+  },
+  {
+   "from": [
+    "3d455e58-f511-4583-bee7-0434067265fc",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "OrFloorRelatedEffOpAreaBottom",
+    2
+   ]
+  },
+  {
+   "from": [
+    "3d455e58-f511-4583-bee7-0434067265fc",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "OrFloorRelatedEffOpAreaTop",
+    4
+   ]
+  },
+  {
+   "from": [
+    "a1f25735-3caa-42f0-9164-093859b77378",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "HeightDifference",
+    5
+   ]
+  },
+  {
+   "from": [
+    "484b89ee-fe4e-40bb-9e56-ed5e7a6c8f2c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "ONTemperatureAbove",
+    6
+   ]
+  },
+  {
+   "from": [
+    "a3f1372d-7ad5-4ac7-a25b-6f933edf9824",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "OFFTemperatureBelow",
+    7
+   ]
+  },
+  {
+   "from": [
+    "372a4124-c25d-4e88-a1fb-0b46e3abd8de",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "ONTairOutsideAbove",
+    8
+   ]
+  },
+  {
+   "from": [
+    "372a4124-c25d-4e88-a1fb-0b46e3abd8de",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "ONTairOutside24hAbove",
+    9
+   ]
+  },
+  {
+   "from": [
+    "087c83be-e94e-45fc-8d57-76a8ce142fdb",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "8fe8bab0-74b5-4fd6-92e7-59ab2a8f6b66",
+    "MaxAirChange",
+    10
+   ]
+  }
+ ]
+}

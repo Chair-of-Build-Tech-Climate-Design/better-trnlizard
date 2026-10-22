@@ -1,0 +1,352 @@
+{
+ "objects": [
+  {
+   "id": "004b24de-e70e-42e5-8e6f-a906ee933d61",
+   "kind": "native",
+   "members": [
+    "2729f5b1-bee1-48b6-b27d-d4699d68176a",
+    "fcca50ab-3cae-45ca-b44a-215b12c45863",
+    "280380a8-6552-4753-839a-ecb78c45d2e6",
+    "873fbde9-7616-48b6-a607-d888ad88e2ca",
+    "82bbdee2-1665-4381-9d48-d6bc9eebf9a4",
+    "5ce569ad-d1d7-49c2-84dd-78d48ed3b82d",
+    "82d847de-6cc9-4293-b0cc-b97901cfc2bd",
+    "24610dc3-184c-4168-96c6-729a73eab10c",
+    "0ae42152-f77a-4e17-8b60-b1ea7dc677bc",
+    "709cf90e-03cf-46c0-8168-2efc3a2c4016",
+    "a4d501bc-a9c4-498b-9459-edc25daed868",
+    "2d029f53-17da-4f52-80ee-71398a2ce217",
+    "00bf5912-4879-48b1-a1d9-b76deace8177"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "2729f5b1-bee1-48b6-b27d-d4699d68176a",
+   "kind": "native",
+   "members": [
+    "fcca50ab-3cae-45ca-b44a-215b12c45863",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "e1799c06-e527-4511-a512-316fc56080da",
+    "82bbdee2-1665-4381-9d48-d6bc9eebf9a4",
+    "82d847de-6cc9-4293-b0cc-b97901cfc2bd",
+    "2652ab11-1d33-4373-8eee-88bac5ba8d66",
+    "e84d978f-a949-45ca-a82e-baae093b6bfc"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "280380a8-6552-4753-839a-ecb78c45d2e6",
+   "kind": "native",
+   "members": [
+    "873fbde9-7616-48b6-a607-d888ad88e2ca",
+    "45f402ba-4b5c-4012-bc71-69cddd64d627"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "82bbdee2-1665-4381-9d48-d6bc9eebf9a4",
+   "kind": "native",
+   "members": [
+    "873fbde9-7616-48b6-a607-d888ad88e2ca",
+    "45f402ba-4b5c-4012-bc71-69cddd64d627"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "8dc1b651-48f7-4734-b310-639e34d48440",
+   "kind": "native",
+   "members": [
+    "4c122a35-47af-4b4f-a603-b32b584e6e16",
+    "c8bb9d22-1150-414d-bcc4-2981eb105fab",
+    "2edca5db-e293-4846-9a63-1da8db688fd6",
+    "91a62471-2f3d-4738-9fe6-41211847a8b0",
+    "043f85fe-17b3-40db-8026-44c50c398e78",
+    "5ce569ad-d1d7-49c2-84dd-78d48ed3b82d",
+    "065b35d0-8972-40d0-9c19-02d1359214ac",
+    "24610dc3-184c-4168-96c6-729a73eab10c",
+    "0ae42152-f77a-4e17-8b60-b1ea7dc677bc",
+    "34589d5d-8249-4c1b-ba5a-562e424969c9",
+    "a4d501bc-a9c4-498b-9459-edc25daed868",
+    "2d029f53-17da-4f52-80ee-71398a2ce217",
+    "bd6b4665-1ae7-413c-b92e-d57419f01211",
+    "1e79142f-76bc-4e18-8d54-27bd20c8c42b",
+    "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+    "7cbc5d97-a8b6-47e9-b0ba-db6422b49964",
+    "28992e26-4c5d-48c2-9d16-d36f81220318",
+    "30099dbb-d30c-4d8b-8e46-690092d203f7",
+    "706727da-b945-408a-acd0-e183ed5996df",
+    "fad0856d-f0b5-4eee-9524-70315bb931ae"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "4c122a35-47af-4b4f-a603-b32b584e6e16",
+   "kind": "native",
+   "members": [
+    "c8bb9d22-1150-414d-bcc4-2981eb105fab",
+    "b560b1ea-363b-400b-8af9-4957d86edc75",
+    "e1799c06-e527-4511-a512-316fc56080da",
+    "043f85fe-17b3-40db-8026-44c50c398e78",
+    "065b35d0-8972-40d0-9c19-02d1359214ac",
+    "2652ab11-1d33-4373-8eee-88bac5ba8d66",
+    "2f66f52f-a6d5-46ed-94c6-fd7c65691af2"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "c8bb9d22-1150-414d-bcc4-2981eb105fab",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    292.236328125,
+    196.91580200195312
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "2edca5db-e293-4846-9a63-1da8db688fd6",
+   "kind": "native",
+   "members": [
+    "91a62471-2f3d-4738-9fe6-41211847a8b0",
+    "45f402ba-4b5c-4012-bc71-69cddd64d627"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "91a62471-2f3d-4738-9fe6-41211847a8b0",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    146.015625,
+    206.401611328125
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "043f85fe-17b3-40db-8026-44c50c398e78",
+   "kind": "native",
+   "members": [
+    "91a62471-2f3d-4738-9fe6-41211847a8b0",
+    "45f402ba-4b5c-4012-bc71-69cddd64d627"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "065b35d0-8972-40d0-9c19-02d1359214ac",
+   "kind": "native",
+   "name": "Scribble",
+   "nickName": "Scribble",
+   "pivot": [
+    293.5263671875,
+    286.734619140625
+   ],
+   "type": "GH_Scribble"
+  },
+  {
+   "id": "34589d5d-8249-4c1b-ba5a-562e424969c9",
+   "kind": "native",
+   "name": "Data",
+   "nickName": "Shading",
+   "pivot": [
+    300.416015625,
+    353.35009765625
+   ],
+   "type": "Param_GenericObject"
+  },
+  {
+   "id": "30099dbb-d30c-4d8b-8e46-690092d203f7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    174.7958984375,
+    413.23101806640625
+   ],
+   "text": "plastic_50",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "90388410cfd8",
+   "id": "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+   "inputs": [
+    "Airnode",
+    "Shading",
+    "AddDaylightGeometry",
+    "Coupling",
+    "Timebase",
+    "DaylightMode"
+   ],
+   "kind": "script",
+   "name": "Lizard_MultiZone",
+   "nickName": "MultiZone",
+   "outputs": [
+    "out",
+    "Multizone",
+    "MismatchedAdjacent"
+   ],
+   "pivot": [
+    899.0,
+    413.0
+   ],
+   "script": "Lizard_MultiZone",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "20c56c74f892",
+   "id": "7cbc5d97-a8b6-47e9-b0ba-db6422b49964",
+   "inputs": [
+    "Brep",
+    "RadMaterial"
+   ],
+   "kind": "script",
+   "name": "Lizard_AddDaylightGeometry",
+   "nickName": "DaylightGeometry",
+   "outputs": [
+    "out",
+    "AddDaylightGeometry"
+   ],
+   "pivot": [
+    460.0,
+    415.0
+   ],
+   "script": "Lizard_AddDaylightGeometry",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "28992e26-4c5d-48c2-9d16-d36f81220318",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "",
+   "pivot": [
+    417.7861328125,
+    448.49639892578125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "706727da-b945-408a-acd0-e183ed5996df",
+   "kind": "native",
+   "name": "Value List",
+   "nickName": "List",
+   "pivot": [
+    498.0,
+    485.0
+   ],
+   "type": "GH_ValueList"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "34589d5d-8249-4c1b-ba5a-562e424969c9",
+    "Data",
+    -1
+   ],
+   "to": [
+    "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+    "Shading",
+    1
+   ]
+  },
+  {
+   "from": [
+    "7cbc5d97-a8b6-47e9-b0ba-db6422b49964",
+    "AddDaylightGeometry",
+    1
+   ],
+   "to": [
+    "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+    "AddDaylightGeometry",
+    2
+   ]
+  },
+  {
+   "from": [
+    "28992e26-4c5d-48c2-9d16-d36f81220318",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+    "Timebase",
+    4
+   ]
+  },
+  {
+   "from": [
+    "706727da-b945-408a-acd0-e183ed5996df",
+    "Value List",
+    -1
+   ],
+   "to": [
+    "cdb15600-3798-4fcd-a8d6-a33f4f56b8ed",
+    "DaylightMode",
+    5
+   ]
+  },
+  {
+   "from": [
+    "30099dbb-d30c-4d8b-8e46-690092d203f7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "7cbc5d97-a8b6-47e9-b0ba-db6422b49964",
+    "RadMaterial",
+    1
+   ]
+  }
+ ]
+}

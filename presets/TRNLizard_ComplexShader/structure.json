@@ -1,0 +1,6182 @@
+{
+ "objects": [
+  {
+   "id": "90c44485-e221-44b9-a8b6-d91fea95f1f4",
+   "kind": "native",
+   "members": [
+    "9261f2a8-2cf4-4e07-86ca-3d04f58dc352",
+    "e216011c-325d-44d4-9058-c33ac63a30d1",
+    "1c6dbc7a-373f-4342-a8ae-45e8afd79e97",
+    "a6257934-0d6f-4b88-9f16-d6aee9543d6b",
+    "a65eaa51-ac59-4365-85c6-2d49067f62ea",
+    "25948a0d-dcb9-47cd-a69f-b859b8ebe2f9",
+    "14efc985-7f18-4659-8430-736ac89fb032",
+    "fca678cb-44b5-4ebb-8e3e-3abc42210135",
+    "33312efa-c07f-481c-9b62-dbbbdc30cbc0",
+    "3c121def-d1ed-4633-ad1f-913508773941",
+    "8d350d0e-2fca-4638-a0a1-2b29cf276c31",
+    "a23b5d67-3fa9-4f59-8c50-2e715eaa0aa9",
+    "efb750d7-baf2-42ac-b92e-7d5d408fd6a7",
+    "260ca68d-e91d-4f5d-a3ca-612cde229734",
+    "409f0b71-37db-45f3-b8c6-b5ad07e56ee1",
+    "b874ce5f-b9ee-40f1-9396-797735b8b6e6",
+    "fa24fa5b-86c9-4189-86e1-2ff9b38aedf2",
+    "0ea282ec-2e0b-4ad5-83c9-f205573cf7be",
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "0287cda9-9ee3-4bef-8177-d125f47fe0eb",
+    "394f4406-d0d4-48b4-93a3-1c23ee845f6b",
+    "4b972358-cac2-4269-9428-5304a6bb0eb3",
+    "a2e284ee-a172-4c5c-944f-6456b1b8dc5c",
+    "003e03fa-93e0-4955-a040-0314d1307840",
+    "1ad50335-f8bb-4f69-8332-2dbb0a8ce005",
+    "f52369f1-777a-4fa1-bb8b-8484f894c2da",
+    "277b6b87-436f-47dd-87cc-9a3c8a1e20fe",
+    "6c4c1686-c58c-450b-8100-95c9eb6d6332",
+    "dd6b78e0-0c93-46df-b446-d6dfac38d3bc",
+    "8f7f8f04-5153-4de2-9f1f-580e0432c3af",
+    "d774b272-a890-44df-a16b-a7fccb5bd1b1",
+    "43d8c23a-17c6-4b5d-a667-2e6e65ecad84",
+    "5203fca0-f719-46d4-b067-19aa2cbdac94",
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "650dfa36-87bf-4c9f-9943-9da62417de64",
+    "0a68fce8-38b0-4e10-ae12-22c10d2338fc",
+    "1185213d-e073-4192-8711-844ee64c3bc5",
+    "62231787-39ed-47cd-b43e-2e6ea1b46d17",
+    "bfa37c91-93cb-4b98-8675-8c66ea3f54fc",
+    "229717a4-9c49-45d1-9306-b7535a344c94",
+    "5d11ffdc-b160-4762-8e97-03d24262c392",
+    "83755e41-3028-4196-b2fb-9a5d07094312",
+    "2d7ea888-e570-46a1-847f-ef42fdbdee23",
+    "824269ad-fe83-4ac8-b013-346d2fa8de08",
+    "867ba00c-700c-490a-8efa-190e7ebf1ce0",
+    "505cca10-70e3-4073-b0d0-eb31eebd7bae",
+    "8f435027-1b1c-4faa-a6b3-155636ee95d7",
+    "69614899-d581-4765-98e6-c805df7818cb",
+    "ffc42747-c469-4d00-ac3a-667ecc967135",
+    "ea971455-7a2e-4bcc-ba75-834e3668c82a",
+    "225fcd96-c9b7-49a9-af76-bdee50072951",
+    "656aad24-db0f-4127-ac52-86db7b03dac3",
+    "4c60c84f-68a7-4b18-b17b-dcec8a70e312",
+    "a6e9a67c-a32e-4e28-ad35-f6bf78b8c0b8",
+    "a853e8f7-a2b7-427f-b2c2-d18e9d5f513a",
+    "8fb77c8a-390e-43e3-abaf-ad43704701ff",
+    "41a54401-58ac-4d3f-9ec2-ef4b2ef91d4d",
+    "d6aae005-c2f5-47cb-973b-9c591bbf0206",
+    "fe74810f-c204-4844-afd4-2e1e6bea82ac",
+    "9fae9846-4632-4793-9513-15b96fc17f02",
+    "70b93245-4ca2-43f8-ac63-740eadd23da9",
+    "bb7f9e4d-719d-4853-9fc3-289238e18c14",
+    "bb8a3798-734e-4cb3-b39a-17f999791c3f",
+    "f6f64d40-361a-44f2-98d8-33aace7ae829",
+    "0a4b67f4-75be-4c28-a1a7-61e93629be0a",
+    "ebf4aff7-506d-47c9-aa40-069e4baec599",
+    "34298ace-d750-4ee7-a03c-3c2c0062e656",
+    "3a1cb615-e5db-4362-9353-64e3a84a261e",
+    "cd8d9cde-53bb-43bb-ac8a-ff476f7161bf",
+    "a98c8f01-2f46-4e85-99e8-c28a4b392216",
+    "efe84ca7-dfd1-4c4c-977f-8b26d57de602",
+    "754dedc9-a35d-4533-9360-6a266c754565",
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "fd1ac7ff-1a2c-4376-938b-f863079bde47",
+    "e444456a-f670-4d9b-970b-287d3b06da6d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "9261f2a8-2cf4-4e07-86ca-3d04f58dc352",
+   "kind": "native",
+   "members": [
+    "e444456a-f670-4d9b-970b-287d3b06da6d"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "e216011c-325d-44d4-9058-c33ac63a30d1",
+   "kind": "native",
+   "members": [
+    "fd1ac7ff-1a2c-4376-938b-f863079bde47"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "1c6dbc7a-373f-4342-a8ae-45e8afd79e97",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.876953125,
+    81.651611328125
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a6257934-0d6f-4b88-9f16-d6aee9543d6b",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.2569580078125,
+    151.15870666503906
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a65eaa51-ac59-4365-85c6-2d49067f62ea",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.8590087890625,
+    119.8447036743164
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "25948a0d-dcb9-47cd-a69f-b859b8ebe2f9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1891.094970703125,
+    579.61767578125
+   ],
+   "text": "gt(AHEI,0)*le(AHEI,45)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "14efc985-7f18-4659-8430-736ac89fb032",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1885.884033203125,
+    608.817626953125
+   ],
+   "text": "gt(AHEI,45)*le(AHEI,90)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "fca678cb-44b5-4ebb-8e3e-3abc42210135",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1918.1610107421875,
+    554.210693359375
+   ],
+   "text": "SHD_activeA_aname",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "33312efa-c07f-481c-9b62-dbbbdc30cbc0",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1817.157958984375,
+    664.3607788085938
+   ],
+   "text": "Crit0_aname*Crit1_aname*not(Crit3_aname)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "3c121def-d1ed-4633-ad1f-913508773941",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1816.56298828125,
+    692.1356811523438
+   ],
+   "text": "Crit0_aname*Crit2_aname*not(Crit3_aname)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "8d350d0e-2fca-4638-a0a1-2b29cf276c31",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.2969970703125,
+    215.43870544433594
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a23b5d67-3fa9-4f59-8c50-2e715eaa0aa9",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.8990478515625,
+    183.1248016357422
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "efb750d7-baf2-42ac-b92e-7d5d408fd6a7",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1918.510986328125,
+    636.480712890625
+   ],
+   "text": "SHD_activeB_aname",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "260ca68d-e91d-4f5d-a3ca-612cde229734",
+   "kind": "native",
+   "members": [
+    "409f0b71-37db-45f3-b8c6-b5ad07e56ee1",
+    "e3ce6707-ae8b-4342-b84b-1e8ac59115dd",
+    "b874ce5f-b9ee-40f1-9396-797735b8b6e6",
+    "fa24fa5b-86c9-4189-86e1-2ff9b38aedf2",
+    "0ea282ec-2e0b-4ad5-83c9-f205573cf7be",
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "0287cda9-9ee3-4bef-8177-d125f47fe0eb",
+    "394f4406-d0d4-48b4-93a3-1c23ee845f6b",
+    "e04bca52-56c4-4fb7-a529-2301d8f62f5e",
+    "4b972358-cac2-4269-9428-5304a6bb0eb3",
+    "a2e284ee-a172-4c5c-944f-6456b1b8dc5c",
+    "003e03fa-93e0-4955-a040-0314d1307840",
+    "1ad50335-f8bb-4f69-8332-2dbb0a8ce005",
+    "f52369f1-777a-4fa1-bb8b-8484f894c2da"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "409f0b71-37db-45f3-b8c6-b5ad07e56ee1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Distance_from_win",
+   "pivot": [
+    307.08221435546875,
+    425.5046081542969
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "b874ce5f-b9ee-40f1-9396-797735b8b6e6",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Depth_lamellas",
+   "pivot": [
+    307.5943908691406,
+    450.564697265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "fa24fa5b-86c9-4189-86e1-2ff9b38aedf2",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Distance_lamellas",
+   "pivot": [
+    305.9661865234375,
+    475.0447082519531
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "0ea282ec-2e0b-4ad5-83c9-f205573cf7be",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Split_lamellas",
+   "pivot": [
+    305.9682922363281,
+    500.2048034667969
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "cluster": {
+    "objects": [
+     {
+      "id": "7f942fbe-3f3f-4a1c-9757-2f35fbd84298",
+      "kind": "native",
+      "members": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "236d467a-9c19-44cb-876e-6c59238650e3",
+      "kind": "native",
+      "members": [
+       "319984b1-f6f9-4083-b9c7-6ea4dd8b9122",
+       "f694154c-3ff4-405e-927c-722d5d8f0ff7",
+       "f9f98fd5-b546-4e41-b7fe-50c7732357cb",
+       "022340f6-0359-4eba-860f-0c07d840803f"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "0aadeca3-f919-4a02-b7fa-ad854036b850",
+      "kind": "native",
+      "members": [
+       "aeff0573-94dc-470f-a190-0cb31fbda545",
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "e8c4b305-f961-46af-9e64-95f9f202ae0a",
+      "kind": "native",
+      "members": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "80a55a5b-4140-4949-a57a-b5d9a20a2f3b",
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "80ce0f8b-c80f-4621-9ef1-d1b47b6ac245"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "0213ceef-c885-4d86-8ea4-be3154b7618d",
+      "kind": "native",
+      "members": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "d31e5362-aa71-4314-b332-b8a663da9117"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "231c2399-6f8c-4aef-a9c0-72c14674e913",
+      "kind": "native",
+      "members": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "17dc0fa4-aec4-470d-b404-4dc37c769559",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "fd16ec61-2b69-4f07-9611-9326ea5cbd51",
+      "kind": "native",
+      "members": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "afbfd656-d824-40a6-aff8-648c4a826b02"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "aeff0573-94dc-470f-a190-0cb31fbda545",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2913.19091796875,
+       878.6239013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "742db892-fcc1-409f-99a2-2961de32611c",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3035.405029296875,
+       1289.22900390625
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "d31e5362-aa71-4314-b332-b8a663da9117",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2911.12890625,
+       1228.4990234375
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3059.155029296875,
+       918.7285766601562
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "a1a746c8-5c87-4be1-8618-c74e207fc0d9",
+      "kind": "native",
+      "members": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "28d0696b-f525-43ae-9725-cd8c90e4ffa8",
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "3f6cb07d-2c11-457e-8085-9fdd4eb33327",
+       "18ce8651-eb69-4584-a715-de0051f7340b"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "06f687ce-414c-4dbb-8713-7518b12200f9",
+      "kind": "native",
+      "name": "Face Normals",
+      "nickName": "Face Normals",
+      "pivot": [
+       479.0,
+       664.0
+      ],
+      "type": "Component_MeshFaceNormals"
+     },
+     {
+      "id": "bb95efaa-9efc-4040-98e3-e4f039303a04",
+      "kind": "native",
+      "name": "Move",
+      "nickName": "Move",
+      "pivot": [
+       1041.0,
+       539.0
+      ],
+      "type": "Component_Move"
+     },
+     {
+      "id": "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       772.0,
+       687.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2657.0,
+       1147.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "0dda4448-9a72-404a-9cde-72d32e9de370",
+      "kind": "native",
+      "name": "Move",
+      "nickName": "Move",
+      "pivot": [
+       1891.0,
+       562.0
+      ],
+      "type": "Component_Move"
+     },
+     {
+      "id": "393d05a9-32e9-43fe-97df-348ba92b0aea",
+      "kind": "native",
+      "name": "Deconstruct Brep",
+      "nickName": "Deconstruct Brep",
+      "pivot": [
+       500.0,
+       521.0
+      ],
+      "type": "Component_DeconstructBrep"
+     },
+     {
+      "id": "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+      "kind": "native",
+      "name": "Series",
+      "nickName": "Series",
+      "pivot": [
+       1753.0,
+       1171.0
+      ],
+      "type": "Component_Series"
+     },
+     {
+      "id": "80a55a5b-4140-4949-a57a-b5d9a20a2f3b",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1346.4410400390625,
+       842.2489013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1719.0,
+       568.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       1922.0,
+       1171.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "7a9d18b6-c96d-4369-af3a-5529a667155a",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       2212.863037109375,
+       1427.1080322265625
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+      "kind": "native",
+      "name": "Division",
+      "nickName": "Division",
+      "pivot": [
+       1548.0,
+       592.0
+      ],
+      "type": "Operator_Division"
+     },
+     {
+      "id": "8e97488a-4ac3-468f-af18-20b0bff70db8",
+      "kind": "native",
+      "name": "Integer",
+      "nickName": "Integer",
+      "pivot": [
+       1524.655029296875,
+       1524.72900390625
+      ],
+      "type": "Param_Integer"
+     },
+     {
+      "id": "a91a00b7-af25-420b-9b67-59fa4be77720",
+      "kind": "native",
+      "name": "Extrude",
+      "nickName": "Extrude",
+      "pivot": [
+       1273.0,
+       554.0
+      ],
+      "type": "Component_Extrude"
+     },
+     {
+      "id": "4a1751af-5c85-4107-b995-79b6cddeb850",
+      "kind": "native",
+      "name": "Linear Array",
+      "nickName": "Linear Array",
+      "pivot": [
+       2126.0,
+       584.0
+      ],
+      "type": "Component_ArrayLinear"
+     },
+     {
+      "id": "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+      "kind": "native",
+      "name": "Subtraction",
+      "nickName": "Subtraction",
+      "pivot": [
+       1613.0,
+       1546.0
+      ],
+      "type": "Operator_Subtraction_OBSOLETE"
+     },
+     {
+      "id": "18ce8651-eb69-4584-a715-de0051f7340b",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1049.0,
+       688.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2265.0,
+       1149.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "510f1c52-4d4b-4f38-974a-cccdc833e10e",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1726.7540283203125,
+       1364.56103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "3f6cb07d-2c11-457e-8085-9fdd4eb33327",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1187.6910400390625,
+       490.9989013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+      "kind": "native",
+      "name": "Series",
+      "nickName": "Series",
+      "pivot": [
+       1817.0,
+       1436.0
+      ],
+      "type": "Component_Series"
+     },
+     {
+      "id": "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2421.0,
+       1218.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+      "kind": "native",
+      "name": "Linear Array",
+      "nickName": "Lamellas",
+      "pivot": [
+       1508.0,
+       927.0
+      ],
+      "type": "Component_ArrayLinear"
+     },
+     {
+      "id": "07449514-16a6-437d-a8ab-6f387e731750",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       1999.0,
+       1439.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "da0f11bd-1264-4457-bd43-0cfe311db8b5",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1704.2540283203125,
+       485.9989013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "b25fa710-d50c-4127-b390-9a2d9a84b23d",
+      "kind": "native",
+      "members": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "510f1c52-4d4b-4f38-974a-cccdc833e10e"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "17dc0fa4-aec4-470d-b404-4dc37c769559",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2521.18798828125,
+       1062.5030517578125
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "fab4d955-9112-4fcf-a725-6c6789f2d168",
+      "kind": "native",
+      "name": "Multiplication",
+      "nickName": "reverse_direction",
+      "pivot": [
+       1154.0,
+       1010.0
+      ],
+      "type": "Operator_Multiplication_OBSOLETE"
+     },
+     {
+      "id": "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+      "kind": "native",
+      "name": "Reverse List",
+      "nickName": "Reverse List",
+      "pivot": [
+       1616.0,
+       1411.0
+      ],
+      "type": "Component_ReverseList"
+     },
+     {
+      "id": "97397286-5b59-42e2-98be-34c9720c6760",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1325.0,
+       927.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "afbfd656-d824-40a6-aff8-648c4a826b02",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1661.7540283203125,
+       1099.56103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "17a7d85b-9899-4f91-94fe-ee190af904cb",
+      "kind": "native",
+      "name": "Inclination_upper_lamellas",
+      "nickName": "Inclination_upper_lamellas",
+      "pivot": [
+       60.0,
+       1467.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "3d316b16-ff50-43c3-bdb7-548efece1c83",
+      "kind": "native",
+      "name": "Split_lamellas",
+      "nickName": "Split_lamellas",
+      "pivot": [
+       68.0,
+       1362.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+      "kind": "native",
+      "name": "Distance_lamellas",
+      "nickName": "Distance_lamellas",
+      "pivot": [
+       68.0,
+       1222.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+      "kind": "native",
+      "name": "Thickness_lamellas",
+      "nickName": "Thickness_lamellas",
+      "pivot": [
+       65.0,
+       1082.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ed913ec8-8be1-43af-bf29-0930d6f3018d",
+      "kind": "native",
+      "name": "Distance_from_win",
+      "nickName": "Distance_from_win",
+      "pivot": [
+       64.0,
+       942.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+      "kind": "native",
+      "name": "Window",
+      "nickName": "Window",
+      "pivot": [
+       90.0,
+       662.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "dad95c28-a338-4768-92a1-4d834ece24b3",
+      "kind": "native",
+      "name": "Single Blind System",
+      "nickName": "Single Blind System",
+      "pivot": [
+       3281.0,
+       906.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "dbeb2266-3bf2-4b39-86a4-24e9379c52e5",
+      "kind": "native",
+      "name": "Split Blind System",
+      "nickName": "Split Blind System",
+      "pivot": [
+       3287.0,
+       1276.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+      "kind": "native",
+      "name": "Unit Z",
+      "nickName": "Unit Z",
+      "pivot": [
+       1124.0,
+       907.0
+      ],
+      "type": "Component_UnitVectorZ"
+     },
+     {
+      "id": "80ce0f8b-c80f-4621-9ef1-d1b47b6ac245",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1072.7540283203125,
+       844.3615112304688
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "056efc13-2fbe-41d0-914c-690cee6bdc28",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       739.0,
+       542.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "1023b7f4-80af-4469-925f-e0b5368c701e",
+      "kind": "native",
+      "name": "Start",
+      "nickName": "Start",
+      "pivot": [
+       93.0,
+       567.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "4ea5a1b9-c92a-409b-a90c-d2ea46e009d2",
+      "kind": "native",
+      "name": "Stop",
+      "nickName": "Stop",
+      "pivot": [
+       94.0,
+       603.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "510c1de2-6039-44ec-82f0-c377b47f25a9",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       716.0,
+       1210.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+      "kind": "native",
+      "name": "Length",
+      "nickName": "Length",
+      "pivot": [
+       827.0,
+       1211.0
+      ],
+      "type": "Component_Length"
+     },
+     {
+      "id": "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+      "kind": "native",
+      "name": "Division",
+      "nickName": "Division",
+      "pivot": [
+       951.0,
+       1230.0
+      ],
+      "type": "Operator_Division"
+     },
+     {
+      "id": "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+      "kind": "native",
+      "name": "Reverse List",
+      "nickName": "Reverse List",
+      "pivot": [
+       2049.0,
+       1687.0
+      ],
+      "type": "Component_ReverseList"
+     },
+     {
+      "id": "0dd0cb65-2891-49bb-90c5-21001a30711d",
+      "kind": "native",
+      "members": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "ea72763d-b1ec-4174-a68b-ca2ee3286c8e",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2723.0,
+       1674.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2292.0,
+       1694.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2500.0,
+       1695.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "ea72763d-b1ec-4174-a68b-ca2ee3286c8e",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2587.43798828125,
+       1589.6910400390625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "b2a29af8-f9a4-4195-adb2-a6dae30556b9",
+      "kind": "native",
+      "name": "Inclination_lower_lamellas",
+      "nickName": "Inclination_lower_lamellas",
+      "pivot": [
+       61.0,
+       1529.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+      "kind": "native",
+      "name": "Inclination_closed_lamellas",
+      "nickName": "Inclination_closed_lamellas",
+      "pivot": [
+       59.0,
+       1592.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "f39ff82d-e313-4a74-9a42-71fbbf8458a6",
+      "kind": "native",
+      "name": "Split Blind System_2",
+      "nickName": "Split Blind System_2",
+      "pivot": [
+       3290.0,
+       1657.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3052.445068359375,
+       1676.18896484375
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "894c5463-c272-4a96-9cd8-a59ff31df7a3",
+      "kind": "native",
+      "name": "Split Blind System_Closed",
+      "nickName": "Split Blind System_Closed",
+      "pivot": [
+       3330.0,
+       2774.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "d43d6209-bd91-4963-b664-ac7f666ebec1",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3108.406982421875,
+       2787.09912109375
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "d17fc62d-5416-4af3-8ab6-993944060730",
+      "kind": "native",
+      "members": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "dddfdfeb-e4fd-43ee-9762-c10d3edbbd66",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2744.0,
+       2588.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2352.0,
+       2590.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2508.0,
+       2659.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "dddfdfeb-e4fd-43ee-9762-c10d3edbbd66",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2608.489013671875,
+       2504.06103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "e784d817-0b29-4176-872d-4545bc5402b8",
+      "kind": "native",
+      "members": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "d731b3df-9837-41ca-a7cd-5b58259e85c6",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "5712e200-5018-458e-b85e-f49daebfb160",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2810.0,
+       3115.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "7bfd6506-4e1f-437a-a512-65950394d277",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2379.0,
+       3135.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "36497413-688f-40f8-82f7-c9247cc58ef2",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2587.0,
+       3136.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "d731b3df-9837-41ca-a7cd-5b58259e85c6",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2674.739013671875,
+       3031.2490234375
+      ],
+      "type": "GH_Scribble"
+     }
+    ],
+    "outerInputs": [
+     "Start",
+     "Stop",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Inclination_lower_lamellas",
+     "Inclination_closed_lamellas"
+    ],
+    "outerOutputs": [
+     "Single Blind System",
+     "Split Blind System",
+     "Split Blind System_2",
+     "Split Blind System_Closed"
+    ],
+    "wires": [
+     {
+      "from": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "7a9d18b6-c96d-4369-af3a-5529a667155a",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+       "Window",
+       -1
+      ],
+      "to": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Mesh",
+       0
+      ]
+     },
+     {
+      "from": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "Item",
+       0
+      ],
+      "to": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Vector",
+       0
+      ],
+      "to": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Motion",
+       1
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ed913ec8-8be1-43af-bf29-0930d6f3018d",
+       "Distance_from_win",
+       -1
+      ],
+      "to": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Item",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "17a7d85b-9899-4f91-94fe-ee190af904cb",
+       "Inclination_upper_lamellas",
+       -1
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "Highest",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Item",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Vector",
+       0
+      ],
+      "to": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Motion",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+       "Window",
+       -1
+      ],
+      "to": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Brep",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3d316b16-ff50-43c3-bdb7-548efece1c83",
+       "Split_lamellas",
+       -1
+      ],
+      "to": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+       "Result",
+       0
+      ],
+      "to": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "7a9d18b6-c96d-4369-af3a-5529a667155a",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+       "Thickness_lamellas",
+       -1
+      ],
+      "to": [
+       "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "8e97488a-4ac3-468f-af18-20b0bff70db8",
+       "Integer",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Base",
+       0
+      ]
+     },
+     {
+      "from": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Vector",
+       0
+      ],
+      "to": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "8e97488a-4ac3-468f-af18-20b0bff70db8",
+       "Integer",
+       -1
+      ],
+      "to": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3d316b16-ff50-43c3-bdb7-548efece1c83",
+       "Split_lamellas",
+       -1
+      ],
+      "to": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "B",
+       1
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+       "Thickness_lamellas",
+       -1
+      ],
+      "to": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "Result",
+       0
+      ],
+      "to": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Item",
+       0
+      ],
+      "to": [
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Extrusion",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+       "List",
+       0
+      ],
+      "to": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "Unit vector",
+       0
+      ],
+      "to": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "Result",
+       0
+      ],
+      "to": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "dad95c28-a338-4768-92a1-4d834ece24b3",
+       "Single Blind System",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "dbeb2266-3bf2-4b39-86a4-24e9379c52e5",
+       "Split Blind System",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "Factor",
+       0
+      ]
+     },
+     {
+      "from": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Edges",
+       1
+      ],
+      "to": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "1023b7f4-80af-4469-925f-e0b5368c701e",
+       "Start",
+       -1
+      ],
+      "to": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Edges",
+       1
+      ],
+      "to": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "4ea5a1b9-c92a-409b-a90c-d2ea46e009d2",
+       "Stop",
+       -1
+      ],
+      "to": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "Item",
+       0
+      ],
+      "to": [
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "Length",
+       0
+      ],
+      "to": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "B",
+       1
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b2a29af8-f9a4-4195-adb2-a6dae30556b9",
+       "Inclination_lower_lamellas",
+       -1
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "Highest",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Item",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ],
+      "to": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Item",
+       0
+      ],
+      "to": [
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "f39ff82d-e313-4a74-9a42-71fbbf8458a6",
+       "Split Blind System_2",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "894c5463-c272-4a96-9cd8-a59ff31df7a3",
+       "Split Blind System_Closed",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Item",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+       "Inclination_closed_lamellas",
+       -1
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "Highest",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Item",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Item",
+       0
+      ],
+      "to": [
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+       "Inclination_closed_lamellas",
+       -1
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "Highest",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Item",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ],
+      "to": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Item",
+       0
+      ],
+      "to": [
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "Curve",
+       0
+      ]
+     }
+    ]
+   },
+   "id": "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+   "inputs": [
+    "Start",
+    "Stop",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Inclination_lower_lamellas",
+    "Inclination_closed_lamellas"
+   ],
+   "kind": "cluster",
+   "name": "Cluster",
+   "nickName": "Shading_Groups",
+   "outputs": [
+    "Single Blind System",
+    "Split Blind System",
+    "Split Blind System_2",
+    "Split Blind System_Closed"
+   ],
+   "pivot": [
+    706.0,
+    486.0
+   ],
+   "type": "GH_Cluster"
+  },
+  {
+   "id": "0287cda9-9ee3-4bef-8177-d125f47fe0eb",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    938.504150390625,
+    390.6651306152344
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "394f4406-d0d4-48b4-93a3-1c23ee845f6b",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    938.7850952148438,
+    453.6918640136719
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "4b972358-cac2-4269-9428-5304a6bb0eb3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.63018798828125,
+    528.40478515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a2e284ee-a172-4c5c-944f-6456b1b8dc5c",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Horizontal start ",
+   "pivot": [
+    317.5332946777344,
+    376.5246887207031
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "003e03fa-93e0-4955-a040-0314d1307840",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Vertical binar",
+   "pivot": [
+    323.7933044433594,
+    401.0447082519531
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "1ad50335-f8bb-4f69-8332-2dbb0a8ce005",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.63031005859375,
+    558.40478515625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f52369f1-777a-4fa1-bb8b-8484f894c2da",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.63031005859375,
+    590.0045776367188
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "277b6b87-436f-47dd-87cc-9a3c8a1e20fe",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    938.38525390625,
+    518.1585693359375
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "6c4c1686-c58c-450b-8100-95c9eb6d6332",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    938.8652954101562,
+    581.7452392578125
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "dd6b78e0-0c93-46df-b446-d6dfac38d3bc",
+   "kind": "native",
+   "members": [
+    "8f7f8f04-5153-4de2-9f1f-580e0432c3af",
+    "e3ce6707-ae8b-4342-b84b-1e8ac59115dd",
+    "d774b272-a890-44df-a16b-a7fccb5bd1b1",
+    "43d8c23a-17c6-4b5d-a667-2e6e65ecad84",
+    "5203fca0-f719-46d4-b067-19aa2cbdac94",
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "650dfa36-87bf-4c9f-9943-9da62417de64",
+    "0a68fce8-38b0-4e10-ae12-22c10d2338fc",
+    "e04bca52-56c4-4fb7-a529-2301d8f62f5e",
+    "1185213d-e073-4192-8711-844ee64c3bc5",
+    "62231787-39ed-47cd-b43e-2e6ea1b46d17",
+    "bfa37c91-93cb-4b98-8675-8c66ea3f54fc",
+    "229717a4-9c49-45d1-9306-b7535a344c94",
+    "5d11ffdc-b160-4762-8e97-03d24262c392"
+   ],
+   "name": "Group",
+   "nickName": "",
+   "pivot": [
+    0.0,
+    0.0
+   ],
+   "type": "GH_Group"
+  },
+  {
+   "id": "8f7f8f04-5153-4de2-9f1f-580e0432c3af",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Distance_from_win",
+   "pivot": [
+    307.823486328125,
+    801.7158203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d774b272-a890-44df-a16b-a7fccb5bd1b1",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Depth_lamellas",
+   "pivot": [
+    307.33538818359375,
+    826.7755737304688
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "43d8c23a-17c6-4b5d-a667-2e6e65ecad84",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Distance_lamellas",
+   "pivot": [
+    305.7074890136719,
+    851.255615234375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5203fca0-f719-46d4-b067-19aa2cbdac94",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Split_lamellas",
+   "pivot": [
+    305.70941162109375,
+    876.415771484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "cluster": {
+    "objects": [
+     {
+      "id": "7f942fbe-3f3f-4a1c-9757-2f35fbd84298",
+      "kind": "native",
+      "members": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "236d467a-9c19-44cb-876e-6c59238650e3",
+      "kind": "native",
+      "members": [
+       "319984b1-f6f9-4083-b9c7-6ea4dd8b9122",
+       "f694154c-3ff4-405e-927c-722d5d8f0ff7",
+       "f9f98fd5-b546-4e41-b7fe-50c7732357cb",
+       "022340f6-0359-4eba-860f-0c07d840803f"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "0aadeca3-f919-4a02-b7fa-ad854036b850",
+      "kind": "native",
+      "members": [
+       "aeff0573-94dc-470f-a190-0cb31fbda545",
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "e8c4b305-f961-46af-9e64-95f9f202ae0a",
+      "kind": "native",
+      "members": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "80a55a5b-4140-4949-a57a-b5d9a20a2f3b",
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "80ce0f8b-c80f-4621-9ef1-d1b47b6ac245"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "0213ceef-c885-4d86-8ea4-be3154b7618d",
+      "kind": "native",
+      "members": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "d31e5362-aa71-4314-b332-b8a663da9117"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "231c2399-6f8c-4aef-a9c0-72c14674e913",
+      "kind": "native",
+      "members": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "17dc0fa4-aec4-470d-b404-4dc37c769559",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "fd16ec61-2b69-4f07-9611-9326ea5cbd51",
+      "kind": "native",
+      "members": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "afbfd656-d824-40a6-aff8-648c4a826b02"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "aeff0573-94dc-470f-a190-0cb31fbda545",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2913.19091796875,
+       878.6239013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "742db892-fcc1-409f-99a2-2961de32611c",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3035.405029296875,
+       1289.22900390625
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "d31e5362-aa71-4314-b332-b8a663da9117",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2911.12890625,
+       1228.4990234375
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3059.155029296875,
+       918.7285766601562
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "a1a746c8-5c87-4be1-8618-c74e207fc0d9",
+      "kind": "native",
+      "members": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "28d0696b-f525-43ae-9725-cd8c90e4ffa8",
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "3f6cb07d-2c11-457e-8085-9fdd4eb33327",
+       "18ce8651-eb69-4584-a715-de0051f7340b"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "06f687ce-414c-4dbb-8713-7518b12200f9",
+      "kind": "native",
+      "name": "Face Normals",
+      "nickName": "Face Normals",
+      "pivot": [
+       479.0,
+       664.0
+      ],
+      "type": "Component_MeshFaceNormals"
+     },
+     {
+      "id": "bb95efaa-9efc-4040-98e3-e4f039303a04",
+      "kind": "native",
+      "name": "Move",
+      "nickName": "Move",
+      "pivot": [
+       1041.0,
+       539.0
+      ],
+      "type": "Component_Move"
+     },
+     {
+      "id": "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       772.0,
+       687.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2657.0,
+       1147.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "0dda4448-9a72-404a-9cde-72d32e9de370",
+      "kind": "native",
+      "name": "Move",
+      "nickName": "Move",
+      "pivot": [
+       1891.0,
+       562.0
+      ],
+      "type": "Component_Move"
+     },
+     {
+      "id": "393d05a9-32e9-43fe-97df-348ba92b0aea",
+      "kind": "native",
+      "name": "Deconstruct Brep",
+      "nickName": "Deconstruct Brep",
+      "pivot": [
+       500.0,
+       521.0
+      ],
+      "type": "Component_DeconstructBrep"
+     },
+     {
+      "id": "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+      "kind": "native",
+      "name": "Series",
+      "nickName": "Series",
+      "pivot": [
+       1753.0,
+       1171.0
+      ],
+      "type": "Component_Series"
+     },
+     {
+      "id": "80a55a5b-4140-4949-a57a-b5d9a20a2f3b",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1346.4410400390625,
+       842.2489013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1719.0,
+       568.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       1922.0,
+       1171.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "7a9d18b6-c96d-4369-af3a-5529a667155a",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       2212.863037109375,
+       1427.1080322265625
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+      "kind": "native",
+      "name": "Division",
+      "nickName": "Division",
+      "pivot": [
+       1548.0,
+       592.0
+      ],
+      "type": "Operator_Division"
+     },
+     {
+      "id": "8e97488a-4ac3-468f-af18-20b0bff70db8",
+      "kind": "native",
+      "name": "Integer",
+      "nickName": "Integer",
+      "pivot": [
+       1524.655029296875,
+       1524.72900390625
+      ],
+      "type": "Param_Integer"
+     },
+     {
+      "id": "a91a00b7-af25-420b-9b67-59fa4be77720",
+      "kind": "native",
+      "name": "Extrude",
+      "nickName": "Extrude",
+      "pivot": [
+       1273.0,
+       554.0
+      ],
+      "type": "Component_Extrude"
+     },
+     {
+      "id": "4a1751af-5c85-4107-b995-79b6cddeb850",
+      "kind": "native",
+      "name": "Linear Array",
+      "nickName": "Linear Array",
+      "pivot": [
+       2126.0,
+       584.0
+      ],
+      "type": "Component_ArrayLinear"
+     },
+     {
+      "id": "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+      "kind": "native",
+      "name": "Subtraction",
+      "nickName": "Subtraction",
+      "pivot": [
+       1613.0,
+       1546.0
+      ],
+      "type": "Operator_Subtraction_OBSOLETE"
+     },
+     {
+      "id": "18ce8651-eb69-4584-a715-de0051f7340b",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1049.0,
+       688.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2265.0,
+       1149.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "510f1c52-4d4b-4f38-974a-cccdc833e10e",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1726.7540283203125,
+       1364.56103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "3f6cb07d-2c11-457e-8085-9fdd4eb33327",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1187.6910400390625,
+       490.9989013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+      "kind": "native",
+      "name": "Series",
+      "nickName": "Series",
+      "pivot": [
+       1817.0,
+       1436.0
+      ],
+      "type": "Component_Series"
+     },
+     {
+      "id": "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2421.0,
+       1218.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+      "kind": "native",
+      "name": "Linear Array",
+      "nickName": "Lamellas",
+      "pivot": [
+       1508.0,
+       927.0
+      ],
+      "type": "Component_ArrayLinear"
+     },
+     {
+      "id": "07449514-16a6-437d-a8ab-6f387e731750",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       1999.0,
+       1439.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "da0f11bd-1264-4457-bd43-0cfe311db8b5",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1704.2540283203125,
+       485.9989013671875
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "b25fa710-d50c-4127-b390-9a2d9a84b23d",
+      "kind": "native",
+      "members": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "510f1c52-4d4b-4f38-974a-cccdc833e10e"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "17dc0fa4-aec4-470d-b404-4dc37c769559",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2521.18798828125,
+       1062.5030517578125
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "fab4d955-9112-4fcf-a725-6c6789f2d168",
+      "kind": "native",
+      "name": "Multiplication",
+      "nickName": "reverse_direction",
+      "pivot": [
+       1154.0,
+       1010.0
+      ],
+      "type": "Operator_Multiplication_OBSOLETE"
+     },
+     {
+      "id": "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+      "kind": "native",
+      "name": "Reverse List",
+      "nickName": "Reverse List",
+      "pivot": [
+       1616.0,
+       1411.0
+      ],
+      "type": "Component_ReverseList"
+     },
+     {
+      "id": "97397286-5b59-42e2-98be-34c9720c6760",
+      "kind": "native",
+      "name": "Amplitude",
+      "nickName": "Amplitude",
+      "pivot": [
+       1325.0,
+       927.0
+      ],
+      "type": "Component_VectorAmplitude"
+     },
+     {
+      "id": "afbfd656-d824-40a6-aff8-648c4a826b02",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1661.7540283203125,
+       1099.56103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "17a7d85b-9899-4f91-94fe-ee190af904cb",
+      "kind": "native",
+      "name": "Inclination_upper_lamellas",
+      "nickName": "Inclination_upper_lamellas",
+      "pivot": [
+       60.0,
+       1467.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "3d316b16-ff50-43c3-bdb7-548efece1c83",
+      "kind": "native",
+      "name": "Split_lamellas",
+      "nickName": "Split_lamellas",
+      "pivot": [
+       68.0,
+       1362.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+      "kind": "native",
+      "name": "Distance_lamellas",
+      "nickName": "Distance_lamellas",
+      "pivot": [
+       68.0,
+       1222.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+      "kind": "native",
+      "name": "Thickness_lamellas",
+      "nickName": "Thickness_lamellas",
+      "pivot": [
+       65.0,
+       1082.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "ed913ec8-8be1-43af-bf29-0930d6f3018d",
+      "kind": "native",
+      "name": "Distance_from_win",
+      "nickName": "Distance_from_win",
+      "pivot": [
+       64.0,
+       942.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+      "kind": "native",
+      "name": "Window",
+      "nickName": "Window",
+      "pivot": [
+       90.0,
+       662.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "dad95c28-a338-4768-92a1-4d834ece24b3",
+      "kind": "native",
+      "name": "Single Blind System",
+      "nickName": "Single Blind System",
+      "pivot": [
+       3281.0,
+       906.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "dbeb2266-3bf2-4b39-86a4-24e9379c52e5",
+      "kind": "native",
+      "name": "Split Blind System",
+      "nickName": "Split Blind System",
+      "pivot": [
+       3287.0,
+       1276.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+      "kind": "native",
+      "name": "Unit Z",
+      "nickName": "Unit Z",
+      "pivot": [
+       1124.0,
+       907.0
+      ],
+      "type": "Component_UnitVectorZ"
+     },
+     {
+      "id": "80ce0f8b-c80f-4621-9ef1-d1b47b6ac245",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       1072.7540283203125,
+       844.3615112304688
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "056efc13-2fbe-41d0-914c-690cee6bdc28",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       739.0,
+       542.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "1023b7f4-80af-4469-925f-e0b5368c701e",
+      "kind": "native",
+      "name": "Start",
+      "nickName": "Start",
+      "pivot": [
+       93.0,
+       567.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "4ea5a1b9-c92a-409b-a90c-d2ea46e009d2",
+      "kind": "native",
+      "name": "Stop",
+      "nickName": "Stop",
+      "pivot": [
+       94.0,
+       603.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "510c1de2-6039-44ec-82f0-c377b47f25a9",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       716.0,
+       1210.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+      "kind": "native",
+      "name": "Length",
+      "nickName": "Length",
+      "pivot": [
+       827.0,
+       1211.0
+      ],
+      "type": "Component_Length"
+     },
+     {
+      "id": "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+      "kind": "native",
+      "name": "Division",
+      "nickName": "Division",
+      "pivot": [
+       951.0,
+       1230.0
+      ],
+      "type": "Operator_Division"
+     },
+     {
+      "id": "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+      "kind": "native",
+      "name": "Reverse List",
+      "nickName": "Reverse List",
+      "pivot": [
+       2049.0,
+       1687.0
+      ],
+      "type": "Component_ReverseList"
+     },
+     {
+      "id": "0dd0cb65-2891-49bb-90c5-21001a30711d",
+      "kind": "native",
+      "members": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "ea72763d-b1ec-4174-a68b-ca2ee3286c8e",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2723.0,
+       1674.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2292.0,
+       1694.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2500.0,
+       1695.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "ea72763d-b1ec-4174-a68b-ca2ee3286c8e",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2587.43798828125,
+       1589.6910400390625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "b2a29af8-f9a4-4195-adb2-a6dae30556b9",
+      "kind": "native",
+      "name": "Inclination_lower_lamellas",
+      "nickName": "Inclination_lower_lamellas",
+      "pivot": [
+       61.0,
+       1529.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+      "kind": "native",
+      "name": "Inclination_closed_lamellas",
+      "nickName": "Inclination_closed_lamellas",
+      "pivot": [
+       59.0,
+       1592.0
+      ],
+      "type": "GH_ClusterInputHook"
+     },
+     {
+      "id": "f39ff82d-e313-4a74-9a42-71fbbf8458a6",
+      "kind": "native",
+      "name": "Split Blind System_2",
+      "nickName": "Split Blind System_2",
+      "pivot": [
+       3290.0,
+       1657.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3052.445068359375,
+       1676.18896484375
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "894c5463-c272-4a96-9cd8-a59ff31df7a3",
+      "kind": "native",
+      "name": "Split Blind System_Closed",
+      "nickName": "Split Blind System_Closed",
+      "pivot": [
+       3330.0,
+       2774.0
+      ],
+      "type": "GH_ClusterOutputHook"
+     },
+     {
+      "id": "d43d6209-bd91-4963-b664-ac7f666ebec1",
+      "kind": "native",
+      "name": "Geometry",
+      "nickName": "Geometry",
+      "pivot": [
+       3108.406982421875,
+       2787.09912109375
+      ],
+      "type": "Param_Geometry"
+     },
+     {
+      "id": "d17fc62d-5416-4af3-8ab6-993944060730",
+      "kind": "native",
+      "members": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "dddfdfeb-e4fd-43ee-9762-c10d3edbbd66",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2744.0,
+       2588.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2352.0,
+       2590.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2508.0,
+       2659.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "dddfdfeb-e4fd-43ee-9762-c10d3edbbd66",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2608.489013671875,
+       2504.06103515625
+      ],
+      "type": "GH_Scribble"
+     },
+     {
+      "id": "e784d817-0b29-4176-872d-4545bc5402b8",
+      "kind": "native",
+      "members": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "d731b3df-9837-41ca-a7cd-5b58259e85c6",
+       "998f8f94-3231-4cf8-8b11-482e5edec228"
+      ],
+      "name": "Group",
+      "nickName": "",
+      "pivot": [
+       0.0,
+       0.0
+      ],
+      "type": "GH_Group"
+     },
+     {
+      "id": "5712e200-5018-458e-b85e-f49daebfb160",
+      "kind": "native",
+      "name": "Rotate 3D",
+      "nickName": "Rotate 3D",
+      "pivot": [
+       2810.0,
+       3115.0
+      ],
+      "type": "Component_Rotate3D"
+     },
+     {
+      "id": "7bfd6506-4e1f-437a-a512-65950394d277",
+      "kind": "native",
+      "name": "List Item",
+      "nickName": "List Item",
+      "pivot": [
+       2379.0,
+       3135.0
+      ],
+      "type": "Component_ListItemVariable"
+     },
+     {
+      "id": "36497413-688f-40f8-82f7-c9247cc58ef2",
+      "kind": "native",
+      "name": "Extremes",
+      "nickName": "Extremes",
+      "pivot": [
+       2587.0,
+       3136.0
+      ],
+      "type": "Component_CurveExtremes"
+     },
+     {
+      "id": "d731b3df-9837-41ca-a7cd-5b58259e85c6",
+      "kind": "native",
+      "name": "Scribble",
+      "nickName": "Scribble",
+      "pivot": [
+       2674.739013671875,
+       3031.2490234375
+      ],
+      "type": "GH_Scribble"
+     }
+    ],
+    "outerInputs": [
+     "Start",
+     "Stop",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Data",
+     "Inclination_lower_lamellas",
+     "Inclination_closed_lamellas"
+    ],
+    "outerOutputs": [
+     "Single Blind System",
+     "Split Blind System",
+     "Split Blind System_2",
+     "Split Blind System_Closed"
+    ],
+    "wires": [
+     {
+      "from": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "7a9d18b6-c96d-4369-af3a-5529a667155a",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+       "Window",
+       -1
+      ],
+      "to": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Mesh",
+       0
+      ]
+     },
+     {
+      "from": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "Item",
+       0
+      ],
+      "to": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Vector",
+       0
+      ],
+      "to": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Motion",
+       1
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ed913ec8-8be1-43af-bf29-0930d6f3018d",
+       "Distance_from_win",
+       -1
+      ],
+      "to": [
+       "b3a1358c-8e58-42c4-9414-8a5ed7e0574e",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Item",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "17a7d85b-9899-4f91-94fe-ee190af904cb",
+       "Inclination_upper_lamellas",
+       -1
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "Highest",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Item",
+       0
+      ],
+      "to": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Vector",
+       0
+      ],
+      "to": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Motion",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0f6eacd3-5a81-47d7-b5f7-01f5a5e65efc",
+       "Window",
+       -1
+      ],
+      "to": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Brep",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3d316b16-ff50-43c3-bdb7-548efece1c83",
+       "Split_lamellas",
+       -1
+      ],
+      "to": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+       "Result",
+       0
+      ],
+      "to": [
+       "6cea4246-edec-4c7a-9300-ff8afa30c74d",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "7a9d18b6-c96d-4369-af3a-5529a667155a",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+       "Thickness_lamellas",
+       -1
+      ],
+      "to": [
+       "458b82ca-d0f2-4e77-83c9-fca55a5e543e",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "8e97488a-4ac3-468f-af18-20b0bff70db8",
+       "Integer",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "bb95efaa-9efc-4040-98e3-e4f039303a04",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Base",
+       0
+      ]
+     },
+     {
+      "from": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Vector",
+       0
+      ],
+      "to": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0dda4448-9a72-404a-9cde-72d32e9de370",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "8e97488a-4ac3-468f-af18-20b0bff70db8",
+       "Integer",
+       -1
+      ],
+      "to": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3d316b16-ff50-43c3-bdb7-548efece1c83",
+       "Split_lamellas",
+       -1
+      ],
+      "to": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "B",
+       1
+      ]
+     },
+     {
+      "from": [
+       "06f687ce-414c-4dbb-8713-7518b12200f9",
+       "Normals",
+       1
+      ],
+      "to": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ffb6d512-563f-4a13-aece-88e42f95bbc8",
+       "Thickness_lamellas",
+       -1
+      ],
+      "to": [
+       "18ce8651-eb69-4584-a715-de0051f7340b",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "5dbb1207-c2ee-45ad-8295-57da0ad3f74f",
+       "Result",
+       0
+      ],
+      "to": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "f44157fb-463e-4917-bdcf-9f62a0f9c917",
+       "Item",
+       0
+      ],
+      "to": [
+       "3ff330bc-a243-4a01-a4ed-f54cf01dd16f",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "a91a00b7-af25-420b-9b67-59fa4be77720",
+       "Extrusion",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Direction",
+       1
+      ]
+     },
+     {
+      "from": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "Result",
+       0
+      ],
+      "to": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Count",
+       2
+      ]
+     },
+     {
+      "from": [
+       "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+       "List",
+       0
+      ],
+      "to": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "87d91e87-3b2e-4408-b9e4-ea47c36b0e68",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "81882628-6b49-4584-bdce-fb89bbc8f2b7",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "Unit vector",
+       0
+      ],
+      "to": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Vector",
+       0
+      ]
+     },
+     {
+      "from": [
+       "fab4d955-9112-4fcf-a725-6c6789f2d168",
+       "Result",
+       0
+      ],
+      "to": [
+       "97397286-5b59-42e2-98be-34c9720c6760",
+       "Amplitude",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ec32c602-74f1-4f6a-a1b7-a1b13cd38e9e",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "dad95c28-a338-4768-92a1-4d834ece24b3",
+       "Single Blind System",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "742db892-fcc1-409f-99a2-2961de32611c",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "dbeb2266-3bf2-4b39-86a4-24e9379c52e5",
+       "Split Blind System",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "3b1e5e6f-6b8f-4d77-9b6c-9461dae3031f",
+       "Factor",
+       0
+      ]
+     },
+     {
+      "from": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Edges",
+       1
+      ],
+      "to": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "1023b7f4-80af-4469-925f-e0b5368c701e",
+       "Start",
+       -1
+      ],
+      "to": [
+       "056efc13-2fbe-41d0-914c-690cee6bdc28",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "393d05a9-32e9-43fe-97df-348ba92b0aea",
+       "Edges",
+       1
+      ],
+      "to": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "4ea5a1b9-c92a-409b-a90c-d2ea46e009d2",
+       "Stop",
+       -1
+      ],
+      "to": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "510c1de2-6039-44ec-82f0-c377b47f25a9",
+       "Item",
+       0
+      ],
+      "to": [
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "2c2d2897-e14f-4e90-ae6d-76601a9e63f4",
+       "Length",
+       0
+      ],
+      "to": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "A",
+       0
+      ]
+     },
+     {
+      "from": [
+       "ca498a98-4ffc-405e-acdc-a1729e94b9f6",
+       "Distance_lamellas",
+       -1
+      ],
+      "to": [
+       "a5ed9d0c-f82b-4212-a6e1-16778e69bb5a",
+       "B",
+       1
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b2a29af8-f9a4-4195-adb2-a6dae30556b9",
+       "Inclination_lower_lamellas",
+       -1
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "Highest",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Item",
+       0
+      ],
+      "to": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ],
+      "to": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "0c037c2e-2a29-4fc2-ab0d-2114c8e7476d",
+       "Item",
+       0
+      ],
+      "to": [
+       "dcce7c41-0b14-4b73-9c45-4f15ec3a8f90",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "f39ff82d-e313-4a74-9a42-71fbbf8458a6",
+       "Split Blind System_2",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "1cc89870-6ab7-4172-b6b9-8ab890245f43",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "ffe85e8e-979b-4a83-8d54-2685e68b37ae",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "54e88f2f-fac3-49e1-b914-d83184a31bd4",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ],
+      "to": [
+       "894c5463-c272-4a96-9cd8-a59ff31df7a3",
+       "Split Blind System_Closed",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "d43d6209-bd91-4963-b664-ac7f666ebec1",
+       "Geometry",
+       -1
+      ]
+     },
+     {
+      "from": [
+       "d80c14f4-c3fb-4a51-959d-c8e033e24a42",
+       "Item",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+       "Inclination_closed_lamellas",
+       -1
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "Highest",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Item",
+       0
+      ],
+      "to": [
+       "b5abf039-03f2-4a13-8651-5ce9f2fcd345",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "4a1751af-5c85-4107-b995-79b6cddeb850",
+       "Geometry",
+       0
+      ],
+      "to": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "b3d3f5aa-d54a-4c7d-9fb0-a47def9b4540",
+       "Series",
+       0
+      ],
+      "to": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "ee4cd36a-09a3-49b4-a35b-93de123f301f",
+       "Item",
+       0
+      ],
+      "to": [
+       "7208f4fe-dd03-4ac4-88bc-08d20162f8d4",
+       "Curve",
+       0
+      ]
+     },
+     {
+      "from": [
+       "07449514-16a6-437d-a8ab-6f387e731750",
+       "Item",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Geometry",
+       0
+      ]
+     },
+     {
+      "from": [
+       "f1c5f31a-5e5b-4e2e-a91b-db483f8efdd7",
+       "Inclination_closed_lamellas",
+       -1
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Angle",
+       1
+      ]
+     },
+     {
+      "from": [
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "Highest",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Center",
+       2
+      ]
+     },
+     {
+      "from": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Item",
+       0
+      ],
+      "to": [
+       "5712e200-5018-458e-b85e-f49daebfb160",
+       "Axis",
+       3
+      ]
+     },
+     {
+      "from": [
+       "a07bc12d-6646-40f8-b687-0eb78a4e3f77",
+       "List",
+       0
+      ],
+      "to": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "List",
+       0
+      ]
+     },
+     {
+      "from": [
+       "38898f94-4f5f-47ca-91e1-bb38177f8a72",
+       "Series",
+       0
+      ],
+      "to": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Index",
+       1
+      ]
+     },
+     {
+      "from": [
+       "7bfd6506-4e1f-437a-a512-65950394d277",
+       "Item",
+       0
+      ],
+      "to": [
+       "36497413-688f-40f8-82f7-c9247cc58ef2",
+       "Curve",
+       0
+      ]
+     }
+    ]
+   },
+   "id": "333cb708-0051-4764-b9d3-74fa413bcb0c",
+   "inputs": [
+    "Start",
+    "Stop",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Data",
+    "Inclination_lower_lamellas",
+    "Inclination_closed_lamellas"
+   ],
+   "kind": "cluster",
+   "name": "Cluster",
+   "nickName": "Shading_Groups",
+   "outputs": [
+    "Single Blind System",
+    "Split Blind System",
+    "Split Blind System_2",
+    "Split Blind System_Closed"
+   ],
+   "pivot": [
+    700.0,
+    862.0
+   ],
+   "type": "GH_Cluster"
+  },
+  {
+   "id": "650dfa36-87bf-4c9f-9943-9da62417de64",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    937.0374755859375,
+    765.668212890625
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "0a68fce8-38b0-4e10-ae12-22c10d2338fc",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    937.3184204101562,
+    829.6950073242188
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "1185213d-e073-4192-8711-844ee64c3bc5",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.3714904785156,
+    904.61572265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "62231787-39ed-47cd-b43e-2e6ea1b46d17",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Horizontal start ",
+   "pivot": [
+    317.2745056152344,
+    752.7357788085938
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bfa37c91-93cb-4b98-8675-8c66ea3f54fc",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Vertical binar",
+   "pivot": [
+    323.53448486328125,
+    777.255615234375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "229717a4-9c49-45d1-9306-b7535a344c94",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.3716125488281,
+    934.61572265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "5d11ffdc-b160-4762-8e97-03d24262c392",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Inclination_lamellas",
+   "pivot": [
+    304.3716125488281,
+    966.2158203125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "83755e41-3028-4196-b2fb-9a5d07094312",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    937.9185791015625,
+    893.1617431640625
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "2d7ea888-e570-46a1-847f-ef42fdbdee23",
+   "kind": "native",
+   "name": "Geometry",
+   "nickName": "Geometry",
+   "pivot": [
+    937.3986206054688,
+    956.7483520507812
+   ],
+   "type": "Param_Geometry"
+  },
+  {
+   "id": "824269ad-fe83-4ac8-b013-346d2fa8de08",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.31396484375,
+    286.9635925292969
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "867ba00c-700c-490a-8efa-190e7ebf1ce0",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.6939697265625,
+    356.4717102050781
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "505cca10-70e3-4073-b0d0-eb31eebd7bae",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.2960205078125,
+    324.15771484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8f435027-1b1c-4faa-a6b3-155636ee95d7",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7349853515625,
+    420.751708984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "69614899-d581-4765-98e6-c805df7818cb",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.3370361328125,
+    388.4377136230469
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ffc42747-c469-4d00-ac3a-667ecc967135",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.376953125,
+    506.65057373046875
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "ea971455-7a2e-4bcc-ba75-834e3668c82a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7559814453125,
+    581.15869140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "225fcd96-c9b7-49a9-af76-bdee50072951",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.3590087890625,
+    551.8447265625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "656aad24-db0f-4127-ac52-86db7b03dac3",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7979736328125,
+    640.438720703125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "4c60c84f-68a7-4b18-b17b-dcec8a70e312",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.4000244140625,
+    611.1248168945312
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a6e9a67c-a32e-4e28-ad35-f6bf78b8c0b8",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.81396484375,
+    723.2125854492188
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "a853e8f7-a2b7-427f-b2c2-d18e9d5f513a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.1939697265625,
+    797.7216796875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "8fb77c8a-390e-43e3-abaf-ad43704701ff",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7969970703125,
+    768.40771484375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "41a54401-58ac-4d3f-9ec2-ef4b2ef91d4d",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.2349853515625,
+    857.001708984375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "d6aae005-c2f5-47cb-973b-9c591bbf0206",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.8370361328125,
+    827.6876831054688
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "fe74810f-c204-4844-afd4-2e1e6bea82ac",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1818.7550048828125,
+    726.3795776367188
+   ],
+   "text": "Crit3_aname*Crit1_aname*not(Crit0_aname)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "9fae9846-4632-4793-9513-15b96fc17f02",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1816.758056640625,
+    755.085693359375
+   ],
+   "text": "Crit3_aname*Crit2_aname*not(Crit0_aname)",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "70b93245-4ca2-43f8-ac63-740eadd23da9",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.376953125,
+    936.1038208007812
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "bb7f9e4d-719d-4853-9fc3-289238e18c14",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7559814453125,
+    1010.6119995117188
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "bb8a3798-734e-4cb3-b39a-17f999791c3f",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.3590087890625,
+    981.2979125976562
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "f6f64d40-361a-44f2-98d8-33aace7ae829",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.7979736328125,
+    1069.8919677734375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "0a4b67f4-75be-4c28-a1a7-61e93629be0a",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.4000244140625,
+    1040.5780029296875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "ebf4aff7-506d-47c9-aa40-069e4baec599",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1324.56396484375,
+    1145.166015625
+   ],
+   "text": "plastic_80",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "34298ace-d750-4ee7-a03c-3c2c0062e656",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.9439697265625,
+    1219.675048828125
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "3a1cb615-e5db-4362-9353-64e3a84a261e",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.5469970703125,
+    1190.3609619140625
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "cd8d9cde-53bb-43bb-ac8a-ff476f7161bf",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.9849853515625,
+    1278.9549560546875
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "a98c8f01-2f46-4e85-99e8-c28a4b392216",
+   "kind": "native",
+   "name": "Number Slider",
+   "nickName": "Shading fraction [%]",
+   "pivot": [
+    1177.5870361328125,
+    1249.6409912109375
+   ],
+   "type": "GH_NumberSlider"
+  },
+  {
+   "id": "efe84ca7-dfd1-4c4c-977f-8b26d57de602",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1816.6419677734375,
+    784.86181640625
+   ],
+   "text": "Crit0_aname*Crit1_aname*Crit3_aname",
+   "type": "GH_Panel"
+  },
+  {
+   "id": "754dedc9-a35d-4533-9360-6a266c754565",
+   "kind": "native",
+   "name": "Panel",
+   "nickName": "",
+   "pivot": [
+    1814.133056640625,
+    825.581787109375
+   ],
+   "text": "Crit0_aname*Crit2_aname*Crit3_aname",
+   "type": "GH_Panel"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "761ae1a7-f810-4668-8900-799fb2fda136",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    155.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "14239c10-607c-4b30-b86f-f40c256a3fd2",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    367.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "26d33074-d704-485f-b6d9-3dd40c172535",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    579.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "e03a9349-d238-4807-8358-187a351e0f69",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    792.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "11f9944d-d61e-4762-92a0-a743040de8a2",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    1004.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "fa2ba95b718f",
+   "id": "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+   "inputs": [
+    "DaylightGeometry",
+    "DaylightMaterial",
+    "ShadingFractionExtA",
+    "ShadingFractionIntA",
+    "ShadingFractionExtB",
+    "ShadingFractionIntB"
+   ],
+   "kind": "script",
+   "name": "Lizard_Operable_Shading",
+   "nickName": "Operable_Shading",
+   "outputs": [
+    "out",
+    "Shader",
+    "Geometry"
+   ],
+   "pivot": [
+    1665.0,
+    1217.0
+   ],
+   "script": "Lizard_Operable_Shading",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "bd915d93f582",
+   "id": "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+   "inputs": [
+    "Shader2",
+    "Shader3",
+    "Shader4",
+    "Shader5",
+    "Shader6",
+    "Shader7",
+    "Shader8",
+    "Shader9",
+    "Control"
+   ],
+   "kind": "script",
+   "name": "Lizard_Complex_Shader",
+   "nickName": "Complex_Shader",
+   "outputs": [
+    "out",
+    "ComplexShade"
+   ],
+   "pivot": [
+    2378.0,
+    457.0
+   ],
+   "script": "Lizard_Complex_Shader",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "codeHash": "6101fa779eed",
+   "id": "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+   "inputs": [
+    "Crit0",
+    "Crit1",
+    "Crit2",
+    "Crit3",
+    "Shd2",
+    "Shd3",
+    "Shd4",
+    "Shd5",
+    "Shd6",
+    "Shd7",
+    "Shd8",
+    "Shd9"
+   ],
+   "kind": "script",
+   "name": "Lizard_Shading_Control",
+   "nickName": "Shading_Control",
+   "outputs": [
+    "out",
+    "Control"
+   ],
+   "pivot": [
+    2161.0,
+    688.0
+   ],
+   "script": "Lizard_Shading_Control",
+   "type": "ZuiPythonComponent"
+  },
+  {
+   "id": "fd1ac7ff-1a2c-4376-938b-f863079bde47",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Exterior Windows 1",
+   "pivot": [
+    150.82139587402344,
+    437.189697265625
+   ],
+   "type": "Param_Brep"
+  },
+  {
+   "id": "e444456a-f670-4d9b-970b-287d3b06da6d",
+   "kind": "native",
+   "name": "Brep",
+   "nickName": "Exterior Windows 2",
+   "pivot": [
+    150.65919494628906,
+    813.164794921875
+   ],
+   "type": "Param_Brep"
+  }
+ ],
+ "outerInputs": [],
+ "outerOutputs": [],
+ "wires": [
+  {
+   "from": [
+    "a2e284ee-a172-4c5c-944f-6456b1b8dc5c",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Start",
+    0
+   ]
+  },
+  {
+   "from": [
+    "003e03fa-93e0-4955-a040-0314d1307840",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Stop",
+    1
+   ]
+  },
+  {
+   "from": [
+    "fd1ac7ff-1a2c-4376-938b-f863079bde47",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    2
+   ]
+  },
+  {
+   "from": [
+    "409f0b71-37db-45f3-b8c6-b5ad07e56ee1",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    3
+   ]
+  },
+  {
+   "from": [
+    "b874ce5f-b9ee-40f1-9396-797735b8b6e6",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    4
+   ]
+  },
+  {
+   "from": [
+    "fa24fa5b-86c9-4189-86e1-2ff9b38aedf2",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    5
+   ]
+  },
+  {
+   "from": [
+    "0ea282ec-2e0b-4ad5-83c9-f205573cf7be",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    6
+   ]
+  },
+  {
+   "from": [
+    "4b972358-cac2-4269-9428-5304a6bb0eb3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Data",
+    7
+   ]
+  },
+  {
+   "from": [
+    "1ad50335-f8bb-4f69-8332-2dbb0a8ce005",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Inclination_lower_lamellas",
+    8
+   ]
+  },
+  {
+   "from": [
+    "f52369f1-777a-4fa1-bb8b-8484f894c2da",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Inclination_closed_lamellas",
+    9
+   ]
+  },
+  {
+   "from": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Single Blind System",
+    0
+   ],
+   "to": [
+    "0287cda9-9ee3-4bef-8177-d125f47fe0eb",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Split Blind System",
+    1
+   ],
+   "to": [
+    "394f4406-d0d4-48b4-93a3-1c23ee845f6b",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Split Blind System_2",
+    2
+   ],
+   "to": [
+    "277b6b87-436f-47dd-87cc-9a3c8a1e20fe",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "3097186a-cecb-4a2c-bd65-254f9c06f94c",
+    "Split Blind System_Closed",
+    3
+   ],
+   "to": [
+    "6c4c1686-c58c-450b-8100-95c9eb6d6332",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "62231787-39ed-47cd-b43e-2e6ea1b46d17",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Start",
+    0
+   ]
+  },
+  {
+   "from": [
+    "bfa37c91-93cb-4b98-8675-8c66ea3f54fc",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Stop",
+    1
+   ]
+  },
+  {
+   "from": [
+    "e444456a-f670-4d9b-970b-287d3b06da6d",
+    "Brep",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    2
+   ]
+  },
+  {
+   "from": [
+    "8f7f8f04-5153-4de2-9f1f-580e0432c3af",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    3
+   ]
+  },
+  {
+   "from": [
+    "d774b272-a890-44df-a16b-a7fccb5bd1b1",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    4
+   ]
+  },
+  {
+   "from": [
+    "43d8c23a-17c6-4b5d-a667-2e6e65ecad84",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    5
+   ]
+  },
+  {
+   "from": [
+    "5203fca0-f719-46d4-b067-19aa2cbdac94",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    6
+   ]
+  },
+  {
+   "from": [
+    "1185213d-e073-4192-8711-844ee64c3bc5",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Data",
+    7
+   ]
+  },
+  {
+   "from": [
+    "229717a4-9c49-45d1-9306-b7535a344c94",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Inclination_lower_lamellas",
+    8
+   ]
+  },
+  {
+   "from": [
+    "5d11ffdc-b160-4762-8e97-03d24262c392",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Inclination_closed_lamellas",
+    9
+   ]
+  },
+  {
+   "from": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Single Blind System",
+    0
+   ],
+   "to": [
+    "650dfa36-87bf-4c9f-9943-9da62417de64",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Split Blind System",
+    1
+   ],
+   "to": [
+    "0a68fce8-38b0-4e10-ae12-22c10d2338fc",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Split Blind System_2",
+    2
+   ],
+   "to": [
+    "83755e41-3028-4196-b2fb-9a5d07094312",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "333cb708-0051-4764-b9d3-74fa413bcb0c",
+    "Split Blind System_Closed",
+    3
+   ],
+   "to": [
+    "2d7ea888-e570-46a1-847f-ef42fdbdee23",
+    "Geometry",
+    -1
+   ]
+  },
+  {
+   "from": [
+    "277b6b87-436f-47dd-87cc-9a3c8a1e20fe",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "1c6dbc7a-373f-4342-a8ae-45e8afd79e97",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "a65eaa51-ac59-4365-85c6-2d49067f62ea",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a6257934-0d6f-4b88-9f16-d6aee9543d6b",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "a23b5d67-3fa9-4f59-8c50-2e715eaa0aa9",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "8d350d0e-2fca-4638-a0a1-2b29cf276c31",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "6c4c1686-c58c-450b-8100-95c9eb6d6332",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "824269ad-fe83-4ac8-b013-346d2fa8de08",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "505cca10-70e3-4073-b0d0-eb31eebd7bae",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "867ba00c-700c-490a-8efa-190e7ebf1ce0",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "69614899-d581-4765-98e6-c805df7818cb",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "8f435027-1b1c-4faa-a6b3-155636ee95d7",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "83755e41-3028-4196-b2fb-9a5d07094312",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "ffc42747-c469-4d00-ac3a-667ecc967135",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "225fcd96-c9b7-49a9-af76-bdee50072951",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "ea971455-7a2e-4bcc-ba75-834e3668c82a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "4c60c84f-68a7-4b18-b17b-dcec8a70e312",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "656aad24-db0f-4127-ac52-86db7b03dac3",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "2d7ea888-e570-46a1-847f-ef42fdbdee23",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "a6e9a67c-a32e-4e28-ad35-f6bf78b8c0b8",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "8fb77c8a-390e-43e3-abaf-ad43704701ff",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "a853e8f7-a2b7-427f-b2c2-d18e9d5f513a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "d6aae005-c2f5-47cb-973b-9c591bbf0206",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "41a54401-58ac-4d3f-9ec2-ef4b2ef91d4d",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "277b6b87-436f-47dd-87cc-9a3c8a1e20fe",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "83755e41-3028-4196-b2fb-9a5d07094312",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "70b93245-4ca2-43f8-ac63-740eadd23da9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "bb8a3798-734e-4cb3-b39a-17f999791c3f",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "bb7f9e4d-719d-4853-9fc3-289238e18c14",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "0a4b67f4-75be-4c28-a1a7-61e93629be0a",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "f6f64d40-361a-44f2-98d8-33aace7ae829",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "6c4c1686-c58c-450b-8100-95c9eb6d6332",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "2d7ea888-e570-46a1-847f-ef42fdbdee23",
+    "Geometry",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "DaylightGeometry",
+    0
+   ]
+  },
+  {
+   "from": [
+    "ebf4aff7-506d-47c9-aa40-069e4baec599",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "DaylightMaterial",
+    1
+   ]
+  },
+  {
+   "from": [
+    "3a1cb615-e5db-4362-9353-64e3a84a261e",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "ShadingFractionExtA",
+    2
+   ]
+  },
+  {
+   "from": [
+    "34298ace-d750-4ee7-a03c-3c2c0062e656",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "ShadingFractionIntA",
+    3
+   ]
+  },
+  {
+   "from": [
+    "a98c8f01-2f46-4e85-99e8-c28a4b392216",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "ShadingFractionExtB",
+    4
+   ]
+  },
+  {
+   "from": [
+    "cd8d9cde-53bb-43bb-ac8a-ff476f7161bf",
+    "Number Slider",
+    -1
+   ],
+   "to": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "ShadingFractionIntB",
+    5
+   ]
+  },
+  {
+   "from": [
+    "761ae1a7-f810-4668-8900-799fb2fda136",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader2",
+    0
+   ]
+  },
+  {
+   "from": [
+    "14239c10-607c-4b30-b86f-f40c256a3fd2",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader3",
+    1
+   ]
+  },
+  {
+   "from": [
+    "26d33074-d704-485f-b6d9-3dd40c172535",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader4",
+    2
+   ]
+  },
+  {
+   "from": [
+    "e03a9349-d238-4807-8358-187a351e0f69",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader5",
+    3
+   ]
+  },
+  {
+   "from": [
+    "11f9944d-d61e-4762-92a0-a743040de8a2",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader6",
+    4
+   ]
+  },
+  {
+   "from": [
+    "5b3db1ad-167d-4b84-9bd2-6dc0a17bfa9c",
+    "Shader",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Shader7",
+    5
+   ]
+  },
+  {
+   "from": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Control",
+    1
+   ],
+   "to": [
+    "5b0ddffb-a4cc-49cb-bbdd-f0b76aad000d",
+    "Control",
+    8
+   ]
+  },
+  {
+   "from": [
+    "fca678cb-44b5-4ebb-8e3e-3abc42210135",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Crit0",
+    0
+   ]
+  },
+  {
+   "from": [
+    "25948a0d-dcb9-47cd-a69f-b859b8ebe2f9",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Crit1",
+    1
+   ]
+  },
+  {
+   "from": [
+    "14efc985-7f18-4659-8430-736ac89fb032",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Crit2",
+    2
+   ]
+  },
+  {
+   "from": [
+    "efb750d7-baf2-42ac-b92e-7d5d408fd6a7",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Crit3",
+    3
+   ]
+  },
+  {
+   "from": [
+    "33312efa-c07f-481c-9b62-dbbbdc30cbc0",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd2",
+    4
+   ]
+  },
+  {
+   "from": [
+    "3c121def-d1ed-4633-ad1f-913508773941",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd3",
+    5
+   ]
+  },
+  {
+   "from": [
+    "fe74810f-c204-4844-afd4-2e1e6bea82ac",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd4",
+    6
+   ]
+  },
+  {
+   "from": [
+    "9fae9846-4632-4793-9513-15b96fc17f02",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd5",
+    7
+   ]
+  },
+  {
+   "from": [
+    "efe84ca7-dfd1-4c4c-977f-8b26d57de602",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd6",
+    8
+   ]
+  },
+  {
+   "from": [
+    "754dedc9-a35d-4533-9360-6a266c754565",
+    "Panel",
+    -1
+   ],
+   "to": [
+    "d976f5cf-08af-4369-bba1-66cad0e8c6d4",
+    "Shd7",
+    9
+   ]
+  }
+ ]
+}
