@@ -542,6 +542,30 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertTrue((self.uo_folder / "Lizard_Hygro.ghuser").exists())             # the new one stays
         self.assertEqual(2, len(removed))
 
+    def test_a_restart_is_asked_once_when_userobjects_changed(self):
+        asked = []
+        self.updater.askRestart = lambda log: asked.append(len(log))
+        self.run_updater()                                    # UserObjects written, no canvas changes
+        self.assertEqual(1, len(asked))
+        self.run_updater()                                    # nothing changed: no dialog
+        self.assertEqual(1, len(asked))
+        (self.folder / "Lizard_Simple.py").write_text(SIMPLE_SCRIPT + "\n# changed\n", encoding="utf-8")
+        self.run_updater()                                    # its UserObject is rewritten: asked again
+        self.assertEqual(2, len(asked))
+
+    def test_with_canvas_changes_the_restart_is_asked_with_the_completed_report(self):
+        asked = []
+        self.updater.askRestart = lambda log: asked.append("asked")
+        hygro = glue.LegacyGhPython("Lizard_Hygro", [glue.ScriptVariable(n) for n in glue.HYGRO_INPUTS_BEFORE],
+                                    [glue.Param("SurfaceInfo")], code="old hygro code")
+        hygro.CreateAttributes()
+        doc = glue.Document([hygro])
+        self.run_updater(doc)
+        self.assertEqual([], asked)                           # not before the canvas changes
+        doc.scheduled[0](doc)
+        self.run_updater(doc)                                 # the run that shows the completed report
+        self.assertEqual(["asked"], asked)
+
     def test_make_userobjects_false_is_a_canvas_update_only(self):
         log, updated, skipped, errors = self.run_updater(make=False)
         self.assertEqual([], GH_UserObject.SAVED)

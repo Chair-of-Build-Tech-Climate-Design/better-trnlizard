@@ -91,6 +91,9 @@ GROUP_ARGB = (150, 255, 0, 0)                             # red group around a r
 REPORT_KEY = 'Lizard_Updater_report_'                     # sc.sticky key + updater InstanceGuid
 OUTDATED_KEY = 'Lizard_Updater_outdated_'                 # sc.sticky key + updater InstanceGuid: last self check
 OUTDATED_MESSAGE = 'OUTDATED'                             # shown under the updater while its code is outdated
+RESTART_KEY = 'Lizard_Updater_restart_'                   # sc.sticky key + updater InstanceGuid: ribbon changed
+RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rhino to load them into the TRNLizard '
+                   u'tab.')
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -1985,7 +1988,7 @@ def oldUserObjectsTarget():
                         time.strftime('%Y%m%d-%H%M%S'))
 
 
-def cleanOldUserObjects(managed, move, log, errors):
+def cleanOldUserObjects(managed, move, log, errors, changes=None):
     """List (move = False) or move away (move = True) the UserObjects of earlier TRNLizard installs in the root of
     the UserObjects folder; matching files in its subfolders (except TRNLizard) are only listed."""
     folders = getattr(Grasshopper, 'Folders', None)
@@ -2037,6 +2040,27 @@ def cleanOldUserObjects(managed, move, log, errors):
     log.append('Moved {0} old UserObjects to {1}: {2}'.format(moved, target, names))
     if moved:
         refreshRibbon([], log)
+        if changes is not None:
+            changes['ribbon'] = True
+
+
+def askRestart(log):
+    """Dialog that asks to restart Rhino (new and rewritten UserObjects are only loaded at the start)."""
+    log.append('')
+    log.append(RESTART_MESSAGE)
+    try:
+        import Rhino
+        Rhino.UI.Dialogs.ShowMessage(RESTART_MESSAGE, 'TRNLizard')
+        return
+    except Exception:
+        pass
+    try:
+        import clr
+        clr.AddReference('System.Windows.Forms')
+        import System.Windows.Forms
+        System.Windows.Forms.MessageBox.Show(RESTART_MESSAGE, 'TRNLizard')
+    except Exception:
+        pass
 
 
 def refreshRibbon(newUserObjects, log):
@@ -2053,7 +2077,7 @@ def refreshRibbon(newUserObjects, log):
         log.append('Note: could not refresh the ribbon ({0}): restart Grasshopper to see the UserObjects.'.format(e))
 
 
-def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None):
+def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None, changes=None):
     """Write a UserObject per component script into <UserObjects folder>/TRNLizard; returns the summary line.
 
     Only new and changed scripts (or icons) are written (lizard_userobjects.json); icons: {script: base64 PNG} of
@@ -2178,6 +2202,8 @@ def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None):
         errors.append('Could not write {0}: {1}'.format(statePath, e))
     if written or removed:
         refreshRibbon(newUserObjects, log)
+        if changes is not None:
+            changes['ribbon'] = True
     summary = 'UserObjects: {0} written, {1} unchanged'.format(written, len(plan['unchanged']))
     if removed:
         summary += ', {0} removed'.format(removed)
@@ -2199,6 +2225,8 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
     reportKey = REPORT_KEY + str(updater.InstanceGuid)
     finished = sc.sticky.pop(reportKey, None)
     if finished is not None:
+        if sc.sticky.pop(RESTART_KEY + str(updater.InstanceGuid), None):
+            askRestart(finished[0])
         return finished
     log, updated, skipped, errors = [], [], [], []
     if not runUpdate:
@@ -2248,9 +2276,11 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
         except Exception as e:
             errors.append('Shared clusters not checked: {0}'.format(e))
     userObjectsSummary = None
+    changes = {'ribbon': False}
     if makeUserObjects is not False:
         try:
-            userObjectsSummary = writeUserObjects(scripts, updater, log, errors, loadIcons(sourceFolder, log), presets)
+            userObjectsSummary = writeUserObjects(scripts, updater, log, errors, loadIcons(sourceFolder, log), presets,
+                                                  changes)
         except Exception as e:  # never stops the canvas update
             errors.append('UserObjects not written: {0}'.format(e))
             userObjectsSummary = 'UserObjects: failed'
@@ -2259,7 +2289,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
         for key, preset in ((presets or {}).get(group) or {}).items():
             managed.update((key.lower(), preset['name'].lower()))
     try:
-        cleanOldUserObjects(managed, cleanOld is True, log, errors)
+        cleanOldUserObjects(managed, cleanOld is True, log, errors, changes)
     except Exception as e:
         errors.append('Old UserObjects not checked: {0}'.format(e))
     if actions:
@@ -2270,6 +2300,8 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
         doc.ScheduleSolution(1, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
         log.append('')
         log.append('{0} component(s) are changed right after this solution; this report is then completed.'.format(len(actions)))
+        if changes['ribbon']:
+            sc.sticky[RESTART_KEY + str(updater.InstanceGuid)] = True   # asked with the completed report
     else:
         log.append('')
         log.append('=== Update Summary ===')
@@ -2278,6 +2310,8 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
         if userObjectsSummary:
             log.append(userObjectsSummary)
         log.append('Errors:  {0}'.format(len(errors)))
+        if changes['ribbon']:
+            askRestart(log)
     return log, updated, skipped, errors
 
 

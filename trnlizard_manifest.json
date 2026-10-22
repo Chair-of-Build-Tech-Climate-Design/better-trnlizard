@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-22T14:26:18Z",
+  "generated": "2026-10-22T14:38:46Z",
   "files": {
     "Lizard_Active_CC_Layer.py": {
       "sha256": "a386fccd889ae6cca5fc671955595cb1bf853681c9ef0c2f8e0f2c940f4976fd",
@@ -223,8 +223,8 @@
       "size": 3232
     },
     "Lizard_Updater.py": {
-      "sha256": "09582c9c7115aa1539e042e00a650b851c5866ba119978700d754f37a7d1c33e",
-      "size": 109978
+      "sha256": "42d55bc62d38de5d425d7c6fa83aed960a84f5c1f18cb74c23548ecbad111030",
+      "size": 111356
     },
     "Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",
