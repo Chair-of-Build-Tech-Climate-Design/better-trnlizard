@@ -190,6 +190,14 @@ class UserObjectLogicTests(unittest.TestCase):
                          (info["name"], info["nickName"], info["category"], info["subCategory"], info["message"]))
         self.assertEqual("TRNLizard component Lizard_Window_Settings", info["description"])
 
+    def test_every_repo_script_declares_its_own_file_name(self):
+        # the canvas update and the UserObjects match a component to <Name>.py: two scripts with one Name would
+        # overwrite each other's UserObject, and a component would run the other script after its first solution
+        for path in sorted(REPO_ROOT.glob("Lizard_*.py")):
+            with self.subTest(script=path.stem):
+                info = self.updater.parseComponentInfo(path.read_text(encoding="utf-8-sig"), path.stem)
+                self.assertEqual(path.stem, info["name"])
+
     def test_identity_of_the_repo_scripts(self):
         expected = {
             "Lizard_Comfort": ("Lizard_Comfort", "Comfort", "TRNLizard", "5 | Tools"),
@@ -365,7 +373,7 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual("A simple component.\nSecond line of the description.", simple.Description)
 
         updater_uo = saved["Lizard_Updater"].data
-        self.assertEqual(["source", "runUpdate", "makeUserObjects"], [p.Name for p in updater_uo.Params.Input])
+        self.assertEqual(["source", "runUpdate", "makeUserObjects", "cleanOldUserObjects"], [p.Name for p in updater_uo.Params.Input])
         self.assertEqual(["out", "log", "updated", "skipped", "errors"], [p.Name for p in updater_uo.Params.Output])
 
         state = self.state()
@@ -498,6 +506,41 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual([], errors)
         self.assertTrue(any(line.startswith("Note: trnlizard_icons.json not used") for line in log))
         self.assertIs(ICON, self.saved()["Lizard_Simple"].Icon)
+
+    def test_old_trnlizard_userobjects_in_the_root_are_listed_then_moved_out_of_the_userobjects_folder(self):
+        appdata = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, appdata)
+        self.modules["Grasshopper"].Folders.AppDataFolder = str(appdata)
+        removed = []
+        self.modules["Grasshopper"].Instances.ComponentServer.RemoveCachedObject = removed.append
+        infos = {"Lizard_Hygro.ghuser": ("Lizard_Hygro", "Lizard"),              # a script of the source
+                 "Old_Thing.ghuser": ("Lizard_Obsolete", "Lizard"),              # an old TRNLizard component
+                 "Other.ghuser": ("Other_Plugin", "Other"),                      # another plugin
+                 "Lizard_Fake.ghuser": ("Lizard_Fake", "Ladybug")}               # Lizard_ name, other tab
+        for name in infos:
+            (self.root / name).write_text("x", encoding="utf-8")
+        (self.root / "TRNLizard_Presets").mkdir()
+        (self.root / "TRNLizard_Presets" / "TRNLizard_Simple.ghuser").write_text("x", encoding="utf-8")
+        infos["TRNLizard_Simple.ghuser"] = ("TRNLizard_Simple", "TRNLizard")
+        self.updater.userObjectInfo = lambda path: infos.get(os.path.basename(path), (None, None))
+
+        log, updated, skipped, errors = self.run_updater()
+        self.assertEqual([], errors)
+        self.assertTrue(any(line.startswith("2 in the root of the UserObjects folder") and "Lizard_Hygro.ghuser" in line
+                            and "Old_Thing.ghuser" in line for line in log))
+        self.assertTrue(any("TRNLizard_Presets" in line and "not moved" in line for line in log))
+        self.assertTrue((self.root / "Lizard_Hygro.ghuser").exists())                  # listed only
+
+        self.updater.ghenv = SimpleNamespace(Component=self.updater_component)
+        log, updated, skipped, errors = self.updater.runUpdater(str(self.folder), True, None, True)
+        self.assertEqual([], errors)
+        moved = list((appdata / "TRNLizard" / "old_userobjects").iterdir())
+        self.assertEqual(1, len(moved))
+        self.assertEqual(["Lizard_Hygro.ghuser", "Old_Thing.ghuser"], sorted(p.name for p in moved[0].iterdir()))
+        self.assertEqual(["Lizard_Fake.ghuser", "Other.ghuser", "TRNLizard", "TRNLizard_Presets"],
+                         sorted(p.name for p in self.root.iterdir()))
+        self.assertTrue((self.uo_folder / "Lizard_Hygro.ghuser").exists())             # the new one stays
+        self.assertEqual(2, len(removed))
 
     def test_make_userobjects_false_is_a_canvas_update_only(self):
         log, updated, skipped, errors = self.run_updater(make=False)

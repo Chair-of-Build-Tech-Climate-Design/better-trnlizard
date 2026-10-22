@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-10-22T14:05:53Z",
+  "generated": "2026-10-22T14:21:32Z",
   "files": {
     "Lizard_Active_CC_Layer.py": {
       "sha256": "a386fccd889ae6cca5fc671955595cb1bf853681c9ef0c2f8e0f2c940f4976fd",
@@ -123,8 +123,8 @@
       "size": 5156
     },
     "Lizard_Lite_Zone_Regime.py": {
-      "sha256": "030789eeea962f9aba15cebc5334f785957bb07a1ef81c1baab6bc9e23457cb8",
-      "size": 4620
+      "sha256": "2eaedfb3eaabb8dc2b6a284907c5e8f300529aa94e77575e2036d7bb8fefea53",
+      "size": 4630
     },
     "Lizard_Log_Check.py": {
       "sha256": "bc6b407505e43c672cfb92d394f23890a4a93b8d489ca7435f4719ae1231653b",
@@ -223,8 +223,8 @@
       "size": 3232
     },
     "Lizard_Updater.py": {
-      "sha256": "6d452d19d8292e912b470812d2b0423c9c2863ff304be05f6ab89f181427aec2",
-      "size": 104924
+      "sha256": "09582c9c7115aa1539e042e00a650b851c5866ba119978700d754f37a7d1c33e",
+      "size": 109978
     },
     "Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",
@@ -251,8 +251,8 @@
       "size": 3549
     },
     "Lizard_Zone_Reg4108.py": {
-      "sha256": "1272bbc46232c74db4e89947b92d91bd6f70cde6f4dfcd778ae943fbb04be0b0",
-      "size": 34034
+      "sha256": "96cd43eb78cdec22a05eff075c1ff10ad7517a1898df2ae0d5e9d19a690dfa74",
+      "size": 34040
     },
     "Lizard_Zone_Regime.py": {
       "sha256": "7ea5c142e39333d048e45550c50b3507657ed620ef438284b7029cd47f957ecd",

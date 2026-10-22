@@ -55,6 +55,9 @@ Args:
     makeUserObjects (bool): True or not connected = write a UserObject per script into <Grasshopper UserObjects folder>/TRNLizard; False = canvas update only
         Access: item
         Required: False
+    cleanOldUserObjects (bool): True = move the UserObjects of earlier TRNLizard installs out of the root of the UserObjects folder (into the Grasshopper AppData folder, TRNLizard/old_userobjects/<time>); not connected or False = only list them in the log
+        Access: item
+        Required: False
 
 Returns:
     log (str): report of the last update
@@ -109,6 +112,9 @@ RETRY_BACKOFF_S = 1.0                                     # wait before the 2nd 
 MAX_RETRY_WAIT_S = 10.0                                   # cap of all waits of one update
 USER_AGENT = 'TRNLizard-Updater'
 CACHE_SUBFOLDER = ('TRNLizard', 'source')                 # under the Grasshopper AppData folder
+OLD_USEROBJECTS_SUBFOLDER = ('TRNLizard', 'old_userobjects')  # under the Grasshopper AppData folder, not loaded by GH
+OLD_CATEGORIES = ('lizard', 'trnlizard')                  # tabs of earlier TRNLizard installs
+OLD_PREFIXES = ('lizard_', 'trnlizard_')                  # names of their components and presets
 USEROBJECT_SUBFOLDER = 'TRNLizard'                        # subfolder of the Grasshopper UserObjects folder
 USEROBJECT_STATE = 'lizard_userobjects.json'              # in that subfolder: {format, userObjects: {script: hash, file}}
 USEROBJECT_FORMAT = 2                                     # raise when the UserObject builder changes: rewrites them all
@@ -828,6 +834,15 @@ def presetHash(entry, shared, fingerprint):
 def sharedMarker(entry):
     """Text in the Description of a shared cluster made from this template; a canvas copy without it is outdated."""
     return SHARED_MARKER.format(getHash(entry['xml'])[:12])
+
+
+def isOldTRNLizardUserObject(fileBase, name, category, managed):
+    """True for a UserObject of an earlier TRNLizard install: its file or component name is one this updater writes
+    (managed: lower-case names), or it is a Lizard_/TRNLizard_ object on the Lizard or TRNLizard tab."""
+    names = [n.lower() for n in (fileBase, name) if n]
+    if any(n in managed for n in names):
+        return True
+    return (category or u'').strip().lower() in OLD_CATEGORIES and any(n.startswith(OLD_PREFIXES) for n in names)
 
 
 def pairParams(oldNames, newNames):
@@ -1949,6 +1964,81 @@ def saveUserObjectState(path, state):
         handle.close()
 
 
+def userObjectInfo(path):
+    """(component name, category) of a .ghuser file, (None, None) when it cannot be read."""
+    try:
+        uo = Grasshopper.Kernel.GH_UserObject(path)
+        try:
+            uo.ReadFromFile()
+        except Exception:
+            pass
+        return str(uo.Description.Name), str(uo.Description.Category)
+    except Exception:
+        return None, None
+
+
+def oldUserObjectsTarget():
+    """New folder for moved old UserObjects: <Grasshopper AppData>/TRNLizard/old_userobjects/<time>; Grasshopper does
+    not load UserObjects from there (it loads the UserObjects and Libraries folders with all their subfolders)."""
+    import time
+    return os.path.join(os.path.dirname(sourceCacheRoot()), OLD_USEROBJECTS_SUBFOLDER[1],
+                        time.strftime('%Y%m%d-%H%M%S'))
+
+
+def cleanOldUserObjects(managed, move, log, errors):
+    """List (move = False) or move away (move = True) the UserObjects of earlier TRNLizard installs in the root of
+    the UserObjects folder; matching files in its subfolders (except TRNLizard) are only listed."""
+    folders = getattr(Grasshopper, 'Folders', None)
+    root = getattr(folders, 'DefaultUserObjectFolder', None) if folders is not None else None
+    if not root or not os.path.isdir(str(root)):
+        return
+    root = str(root)
+    found, elsewhere = [], []
+    for entry in sorted(os.listdir(root)):
+        path = os.path.join(root, entry)
+        if os.path.isfile(path) and entry.lower().endswith('.ghuser'):
+            name, category = userObjectInfo(path)
+            if isOldTRNLizardUserObject(os.path.splitext(entry)[0], name, category, managed):
+                found.append(path)
+        elif os.path.isdir(path) and entry != USEROBJECT_SUBFOLDER:
+            for inner in sorted(os.listdir(path)):
+                innerPath = os.path.join(path, inner)
+                if inner.lower().endswith('.ghuser') and os.path.isfile(innerPath):
+                    name, category = userObjectInfo(innerPath)
+                    if isOldTRNLizardUserObject(os.path.splitext(inner)[0], name, category, managed):
+                        elsewhere.append(os.path.join(entry, inner))
+    log.append('')
+    log.append('=== Old TRNLizard UserObjects ===')
+    if elsewhere:
+        log.append('In subfolders (not moved; move or delete them by hand if they are old): ' + ', '.join(elsewhere))
+    if not found:
+        log.append('None in the root of the UserObjects folder.')
+        return
+    names = ', '.join(os.path.basename(path) for path in found)
+    if not move:
+        log.append('{0} in the root of the UserObjects folder (set cleanOldUserObjects to True to move them away): {1}'.format(
+            len(found), names))
+        return
+    target = oldUserObjectsTarget()
+    server = Grasshopper.Instances.ComponentServer
+    moved = 0
+    for path in found:
+        try:
+            if not os.path.isdir(target):
+                os.makedirs(target)
+            shutil.move(path, os.path.join(target, os.path.basename(path)))
+            moved += 1
+            try:
+                server.RemoveCachedObject(path)  # off the ribbon without a restart
+            except Exception:
+                pass
+        except Exception as e:
+            errors.append('Could not move the old UserObject {0}: {1}'.format(path, e))
+    log.append('Moved {0} old UserObjects to {1}: {2}'.format(moved, target, names))
+    if moved:
+        refreshRibbon([], log)
+
+
 def refreshRibbon(newUserObjects, log):
     """Show new UserObjects in the ribbon without a restart, as far as this Grasshopper offers it."""
     server = Grasshopper.Instances.ComponentServer
@@ -2094,17 +2184,17 @@ def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None):
     return summary
 
 
-def runUpdater(source, runUpdate, makeUserObjects=None):
+def runUpdater(source, runUpdate, makeUserObjects=None, cleanOld=None):
     """Plan the update of every matching script component and schedule the document changes, and write the UserObjects
     (unless makeUserObjects is False); (log, updated, skipped, errors). The run right after the scheduled changes shows
     the final report instead. An outdated updater is marked on the canvas on every run."""
     try:
-        return updateDocument(source, runUpdate, makeUserObjects)
+        return updateDocument(source, runUpdate, makeUserObjects, cleanOld)
     finally:
         showSelfState(ghenv.Component)  # noqa: F821
 
 
-def updateDocument(source, runUpdate, makeUserObjects):
+def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
     updater = ghenv.Component  # noqa: F821 (global of every Grasshopper script component)
     reportKey = REPORT_KEY + str(updater.InstanceGuid)
     finished = sc.sticky.pop(reportKey, None)
@@ -2164,6 +2254,14 @@ def updateDocument(source, runUpdate, makeUserObjects):
         except Exception as e:  # never stops the canvas update
             errors.append('UserObjects not written: {0}'.format(e))
             userObjectsSummary = 'UserObjects: failed'
+    managed = set(name.lower() for name in scripts)
+    for group in ('presets', 'shared'):
+        for key, preset in ((presets or {}).get(group) or {}).items():
+            managed.update((key.lower(), preset['name'].lower()))
+    try:
+        cleanOldUserObjects(managed, cleanOld is True, log, errors)
+    except Exception as e:
+        errors.append('Old UserObjects not checked: {0}'.format(e))
     if actions:
         report = (log, updated, skipped, errors)
 
@@ -2185,4 +2283,4 @@ def updateDocument(source, runUpdate, makeUserObjects):
 
 if 'ghenv' in globals():
     log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'),
-                                               globals().get('makeUserObjects'))
+                                               globals().get('makeUserObjects'), globals().get('cleanOldUserObjects'))

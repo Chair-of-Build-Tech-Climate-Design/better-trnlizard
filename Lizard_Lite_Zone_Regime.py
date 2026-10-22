@@ -63,8 +63,8 @@ Returns:
 """
 version='2.1.2'
 """
-ghenv.Component.Name = "Lizard_Zone_Regime"
-ghenv.Component.NickName = 'Zone Regime'
+ghenv.Component.Name = "Lizard_Lite_Zone_Regime"
+ghenv.Component.NickName = 'Zone Regime Lite'
 ghenv.Component.Message = 'VER 2.1.2\n2019'
 ghenv.Component.Category = "TRNLizard"
 ghenv.Component.SubCategory = "3 | Regime"

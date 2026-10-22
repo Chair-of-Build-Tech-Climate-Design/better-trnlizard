@@ -152,6 +152,15 @@ class PresetLogicTests(unittest.TestCase):
         self.assertEqual([(1, 0)], pairs(["a", "b"], ["b", "c"]))
         self.assertEqual([], pairs(["Data", "Data"], ["Data"]))
 
+    def test_old_trnlizard_userobjects(self):
+        old = self.updater.isOldTRNLizardUserObject
+        managed = {"lizard_hygro", "trnlizard_template_lite"}
+        self.assertTrue(old("Lizard_Hygro", None, None, managed))
+        self.assertTrue(old("Something", "TRNLizard_Template_Lite", "TRNLizard", managed))
+        self.assertTrue(old("Lizard_Obsolete", "Lizard_Obsolete", "Lizard", managed))
+        self.assertFalse(old("Lizard_Obsolete", "Lizard_Obsolete", "Ladybug", managed))
+        self.assertFalse(old("Other", "Other", "Lizard", managed))
+
     def test_hashes(self):
         parsed = self.updater.parsePresets(bundle({"P": entry("P", "x")}, SHARED))
         preset, shared = parsed["presets"]["P"], parsed["shared"]
