@@ -108,7 +108,7 @@ def load_template_lines():
     scriptcontext = ModuleType("scriptcontext")
     scriptcontext.doc = None
     scriptcontext.sticky = {}
-    namespace = {"ghenv": SimpleNamespace(Component=SimpleNamespace()), "Tsoil": "20"}
+    namespace = {"ghenv": SimpleNamespace(Component=SimpleNamespace())}
     with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
         compile_source(source, namespace, TEMPLATE_SOURCE)
     return namespace["DckTemplate"]

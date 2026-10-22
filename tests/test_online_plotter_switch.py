@@ -102,7 +102,6 @@ def load_template_lines():
     scriptcontext.sticky = {}
     namespace = {
         "ghenv": SimpleNamespace(Component=SimpleNamespace()),
-        "Tsoil": "20",
     }
     with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
         run_source(source, TEMPLATE_SOURCE, namespace)

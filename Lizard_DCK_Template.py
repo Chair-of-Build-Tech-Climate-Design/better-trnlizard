@@ -114,7 +114,7 @@ Twb_amb      = [33,2]       !wet bulb temperature of outside air in ?C
 Tdp_amb      = [33,8]       !dew point temperature of outside air in ?C
 Tamb         = [@ta_link]   !outside air temperature in ?C
 Tfloat       = max( min( 27, (Tamb/3+49/3) ), 25)  !floating temperature in ?C
-Tsoil        = {Tsoil} ! @Tmean_amb - 8 * COS(360/365*(TIME/24 - 43)) !soil temperature used for ground connected surfaces in ?C
+Tsoil        = @Tmean_amb - 8 * COS(360/365*(TIME/24 - 43)) !soil temperature used for ground connected surfaces in ?C
 Tamb_m24     = [27,1]       !24h mean outside air temperature in ?C
 Tamb_g24     = [27,3]       !floating mean outside air temperature in ?C
 Tsky         = [69,1]       !sky temperature in ?C
@@ -1210,16 +1210,11 @@ END
 -
 
 Args:
-    Tsoil (object): Script variable DCK Template hamt
-        Access: item
-        Required: True
 
 Returns:
     DckTemplate (object): Script output DckTemplate.
         Access: item
-""".format(
-Tsoil= Tsoil
-).split('\n')
+""".split('\n')
 new_library = []
 for item in dck_template:
     new_library.append(item + '\n')
