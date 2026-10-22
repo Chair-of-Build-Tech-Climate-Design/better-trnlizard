@@ -31,6 +31,18 @@ class BuildInstallerTests(unittest.TestCase):
         self.assertIn('<item name="UserText" type_name="gh_string" type_code="10">log</item>', result)
         self.assertNotIn("OLD_INSTALLER_MARKER", result)
 
+    def test_the_committed_template_is_unchanged_when_its_code_is_current(self):
+        import tempfile, os
+        template = REPO_ROOT / "installer" / "TRNLizard_Installer.ghx"
+        if not template.exists():
+            self.skipTest("no installer template")
+        out = os.path.join(tempfile.mkdtemp(), "installer.ghx")
+        TOOL.main(["--out", out])
+        result = open(out, "rb").read()
+        self.assertTrue(result.startswith(b"\xef\xbb\xbf"))
+        self.assertEqual(result.count(b"\r\n"), result.count(b"\n"))     # CRLF only, as Grasshopper wrote it
+        self.assertEqual(1, len(TOOL.updaterItems(result.decode("utf-8-sig"))))
+
     def test_exactly_one_updater_is_required(self):
         self.assertRaises(ValueError, TOOL.fillTemplate, TEMPLATE.replace("Update the TRNLizard", "Other"), "x")
         twice = TEMPLATE.replace("</Archive>", TEMPLATE[len("<Archive>"):])

@@ -43,14 +43,16 @@ def main(argv=None):
     parser.add_argument("--template", default=TEMPLATE)
     parser.add_argument("--out", default=os.path.join(REPO_ROOT, "dist", "TRNLizard_Installer.ghx"))
     args = parser.parse_args(argv)
-    with open(args.template, encoding="utf-8-sig") as handle:
-        xml = handle.read()
+    with open(args.template, "rb") as handle:
+        raw = handle.read()
+    bom = raw.startswith(b"\xef\xbb\xbf")
+    xml = raw.decode("utf-8-sig")              # no newline translation: the file keeps its CRLF
     with open(UPDATER, encoding="utf-8-sig") as handle:
         code = handle.read()
     result = fillTemplate(xml, code)
     os.makedirs(os.path.dirname(os.path.abspath(args.out)), exist_ok=True)
-    with open(args.out, "w", encoding="utf-8", newline="") as handle:
-        handle.write(result)
+    with open(args.out, "wb") as handle:
+        handle.write(result.encode("utf-8-sig" if bom else "utf-8"))
     print("{0} written".format(args.out))
     return 0
 
