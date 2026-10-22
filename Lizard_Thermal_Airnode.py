@@ -60,6 +60,9 @@ Args:
     Wcapr (object): Script variable Thermal Airnode
         Access: item
         Required: True
+    CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor. Not connected = 3
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -93,7 +96,7 @@ rem = gh.Kernel.GH_RuntimeMessageLevel.Remark
 bla = gh.Kernel.GH_RuntimeMessageLevel.Blank
 warn = gh.Kernel.GH_RuntimeMessageLevel.Warning
 #---- initial definition start
-InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence"]
+InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence","CapacitanceFactor"]
 OutputList = ["Out","Airnode","Center","OriToCheck","PtsToCheck"]
 def findInOut(info, pararray):
     oldpar = []
@@ -164,7 +167,12 @@ if len(SurfaceInfo) > 0:
     #Modifications for simplified Zone
     Airnode_name    = AirnodeName
     #VolumeUserDef  = 0
-    capacitance_fact_userdef = 1
+    capacitance_fact_userdef = 3 # kJ/(m3 K), air plus furnishing (TRNLizard default)
+    if 'CapacitanceFactor' in locals() and CapacitanceFactor is not None:
+        if float(CapacitanceFactor) > 0:
+            capacitance_fact_userdef = float(CapacitanceFactor)
+        else:
+            ghenv.Component.AddRuntimeMessage(w, "CapacitanceFactor must be > 0: 3 kJ/(m3 K) is used")
     #radiation_mode  = RadiationMode
     ComfortPoints  = ComfortPts
     #Modifications for simplified Zone
@@ -259,7 +267,7 @@ if len(SurfaceInfo) > 0:
         Airnode.Volume = VolumeUserDef
     zonevolume          = Airnode.Volume
     volume              = Airnode.Volume
-    Airnode.Capacitance = "INPUT {}*NodeHeatCapacitance".format(capacitance_fact_userdef) # Airnode.Volume * capacitance_fact_userdef
+    Airnode.Capacitance = round(float(Airnode.Volume) * capacitance_fact_userdef, 3) # kJ/K
     if RefAreaBRepUserDef:
         Airnode.Floorarea = 0
         for item in RefAreaBRepUserDef:
