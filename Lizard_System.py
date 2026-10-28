@@ -563,6 +563,33 @@ def has_hamt_surfaces(airnode):
             return True
     return False
 # ---- HAMT gain of a zone (end)
+# ---- TRNFlow helpers (begin)
+# Parameters 4 to 14 of the TRNFlow version of Type 56 and the CRACK link type of the airflow network.
+def trnflow_parameters(altitude):
+    """Type 56 parameters 4 to 14 (text for @trnflowpar).
+
+    The weather file is the weather of the building site, so the altitude of the building (project input Altitude) is also the
+    altitude of the meteo station (parameter 10): the TRNFlow wind and pressure are not corrected for an altitude difference.
+    """
+    parameters = [
+        ('-1', '4 Not used - Logical unit for monthly summary'),
+        ('-1', '5 Not used - Logical unit for hourly temperatures'),
+        ('-1', '6 Not used - Logical unit for hourly loads'),
+        ('1', '7 Comis output / Tste'),
+        (str(altitude), '8 Altitude of building'),
+        ('10', '9 Height of meteo pylon'),
+        (str(altitude), '10 Altitude of weather station'),
+        ('0.14', '11 Velocity profile at weather station'),
+        ('0.01', '12 Tolerance for internal iterations'),
+        ('100', '13 Maximum number of internal iterations'),
+        ('0.1', '14 Minimum relaxation factor'),
+    ]
+    return ''.join(['%s\t\t! %s\n' % (value, comment) for value, comment in parameters])
+def trnflow_crack_type(crack):
+    """BUI block of a crack link type (LINKTYPES); the manual's example: CRACK CR_001 / DESC / CS, EXPN / FILTER1..5."""
+    return 'CRACK %s\n DESC= -\n CS= %s : EXPN= %s\n FILTER1= 0 : FILTER2= 0 : FILTER3= 0 : FILTER4= 0 : FILTER5= 0\n' % (
+        crack.Name, crack.Cs, crack.Expn)
+# ---- TRNFlow helpers (end)
 @timing
 def printbuitoppart(dataset):
     global collmessages
@@ -1712,6 +1739,7 @@ def printbuibotpart(dataset):
         trnflowtempllines = templates.Trnflow
         pollutants = ''
         cracks     = ''
+        crackdefined = []
         fans       = ''
         straightducts = ''
         flowcontrollers = ''
@@ -1857,6 +1885,31 @@ def printbuibotpart(dataset):
                     outlinknames = '%s[%s] '%(subitem.Name, airlink.Id)
                     if outlinknames != '':
                         addouttempllines = addouttempllines + ' AIRLINKS = {0}\r\n NTYPES '.format(outlinknames)
+                    for outitem in subitem.Output:
+                        for sui, suboutitem in enumerate(outitem.NtypesNo):
+                            linkoutarray.append(' = {0} : {1}\r\n'.format(suboutitem,outitem.Ntype[sui]))
+                        if len(linkoutarray) > 0:
+                            dummyarray = list(set(linkoutarray))
+                            for ditem in dummyarray:
+                                addouttempllines += ditem
+            if subitem.__class__.__name__ == 'CRACKS':
+                if subitem.Name not in crackdefined:
+                    crackdefined.append(subitem.Name)
+                    cracks = cracks + trnflow_crack_type(subitem)
+                airlink = sc.sticky[sc.doc.Path]["AIRLINKNETWORK"]()
+                airlink.Link = subitem.Name
+                airlink.Frnode = subitem.Frnode
+                airlink.Tonode = subitem.Tonode
+                airlink.Frheight = subitem.Frheight
+                airlink.Toheight = subitem.Toheight
+                airlink.Wiownhf = 0
+                airlink.Fscale = subitem.Fscale
+                linkid += 1
+                airlink.Id = linkid
+                airlinknetwork = airlinknetwork + printsingledata(airlink,'Airlinknetwork')
+                if hasattr(subitem,'Output') and subitem.Output != '':
+                    outlinknames = '%s[%s] '%(subitem.Name, airlink.Id)
+                    addouttempllines = addouttempllines + ' AIRLINKS = {0}\r\n NTYPES '.format(outlinknames)
                     for outitem in subitem.Output:
                         for sui, suboutitem in enumerate(outitem.NtypesNo):
                             linkoutarray.append(' = {0} : {1}\r\n'.format(suboutitem,outitem.Ntype[sui]))
@@ -5918,18 +5971,7 @@ Zero
                     searchedinputs[i] = re.sub('CONAMB', 'CCONAMB',searchedinputs[i])
             if variables['trnflow'] == 1 or sc.sticky[sc.doc.Path]["trnflow"] == -1:
                 variables['nr_ofT56par']    = 14
-                variables['trnflowpar']      = """-1		! 4 Not used - Logical unit for monthly summary
--1		! 5 Not used - Logical unit for hourly temperatures
--1		! 6 Not used - Logical unit for hourly loads
-1		! 7 Comis output / Tste
-318		! 8 Altitude of building
-10		! 9 Height of meteo pylon
-0		! 10 Altitude of weather station
-0.14		! 11 Velocity profile at weather station
-0.01		! 12 Tolerance for internal iterations
-100		! 13 Maximum number of internal iterations
-0.1		! 14 Minimum relaxation factor
-"""
+                variables['trnflowpar']      = trnflow_parameters(sc.sticky[sc.doc.Path]["Altitude"])
             initialval = {}
             if "InitialValues" in locals():
                 for items in InitialValues:

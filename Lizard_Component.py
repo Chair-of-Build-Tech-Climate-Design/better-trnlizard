@@ -368,6 +368,19 @@ class LARGEOPENINGS:
         self.Loheight       = 1
         self.Cdopen         = 0
         self.Cdclose        = 0
+class CRACKS:
+    """TRNFlow crack link: the type (CRACK CR_<name>: CS, EXPN) and the link between two nodes in one object."""
+    def __init__(self):
+        self.Cracks         = 1
+        self.Name           = ''        # must start with CR_
+        self.Cs             = 0.002     # air mass flow coefficient [kg/s at 1 Pa, per link]
+        self.Expn           = 0.66      # flow exponent, 0.5 turbulent ... 1.0 laminar
+        self.Frnode         = ''
+        self.Tonode         = ''
+        self.Frheight       = 0
+        self.Toheight       = 0
+        self.Fscale         = 1         # factor of the mass flow coefficient, 0 = closed (a number or 'INPUT 1*NAME')
+        self.Output         = ''
 class STRAIGHTDUCTS:
     def __init__(self):
         self.Straightducts  = 1
@@ -1771,6 +1784,7 @@ sc.sticky[sc.doc.Path]["surfaceSplitting"]   = surfaceSplitting
 sc.sticky[sc.doc.Path]["TRNSYS"] = 18
 sc.sticky[sc.doc.Path]["POLLUTANTS"]         = POLLUTANTS
 sc.sticky[sc.doc.Path]["LARGEOPENINGS"]      = LARGEOPENINGS
+sc.sticky[sc.doc.Path]["CRACKS"]             = CRACKS
 sc.sticky[sc.doc.Path]["STRAIGHTDUCTS"]      = STRAIGHTDUCTS
 sc.sticky[sc.doc.Path]["EXTERNALNODES"]      = EXTERNALNODES
 sc.sticky[sc.doc.Path]["AUXILIARYNODES"]      = AUXILIARYNODES
