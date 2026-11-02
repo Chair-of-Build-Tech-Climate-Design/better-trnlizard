@@ -32,6 +32,9 @@ ghenv.Component.Name = "Lizard_Surface"
 BRep = sc.sticky[sc.doc.Path]["CONSTRUCTION"]().addToConstruction(BRep,ghenv.Component.InstanceGuid.ToString())
 w = gh.GH_RuntimeMessageLevel.Warning
 err = gh.GH_RuntimeMessageLevel.Error
+for item in BRep:
+    if item.Faces.Count > 1:
+        ghenv.Component.AddRuntimeMessage(w, "A Brep with {0} faces counts as one surface here: connect a solid directly to the airnode".format(item.Faces.Count))
 surface = Settings
 library = sc.sticky[sc.doc.Path]["library"]
 found = 1

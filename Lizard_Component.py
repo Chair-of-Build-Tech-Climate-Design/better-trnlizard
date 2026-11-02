@@ -1644,6 +1644,27 @@ def fillConstructions(airnodes, pairs, modelset, library, issues):
     for slot, name in sorted(filled):
         items = filled[(slot, name)]
         addIssue(issues, 'info', "Construction set: {0} = {1} on surfaces {2}".format(slot, name, ', '.join([str(item.Surfnum) for item in items])), items)
+def subtractSurfaces(faces, explicit):
+    """What remains of the faces of a solid when other surfaces lie on them. Returns ({number of a face with a surface on it: the 3D loops
+    that remain}, [surfaces, or parts of them, beside the faces])."""
+    if not explicit:
+        return {}, []
+    numbers = [item.Surfnum for item in faces]
+    bynumber = dict([(item.Surfnum, item) for item in explicit])
+    touched = []
+    remaining = {}
+    outside = []
+    for region in arrangeFaces([surfaceFace(item) for item in list(faces)+list(explicit)], ADJACENCY_TOLERANCE, DEFAULT_GAP_TOLERANCE):
+        own = [key for key in region['cover'] if key in numbers]
+        others = [key for key in region['cover'] if key not in numbers]
+        if not others:
+            for key in own:
+                remaining.setdefault(key, []).append(region['loops'][key])
+        elif own:
+            touched.extend(own)
+        else:
+            outside.extend([bynumber[key] for key in others if bynumber[key] not in outside])
+    return dict([(key, remaining.get(key, [])) for key in touched]), outside
 def finalizeSurfaces(airnodes, library, pairs, issues):
     """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values."""
     walls = dict([(wall.Name, wall) for wall in library.Walls])
@@ -1715,6 +1736,22 @@ def makeSurfaceBrep(points, normal):
     if rc.Geometry.Vector3d.Multiply(surfaceNormal(brep),normal) < 0:
         brep.Flip()
     return brep
+def solidFaces(solid):
+    """The faces of a room solid as single-face Breps with outward normals. Returns (faces, problem)."""
+    brep = solid.DuplicateBrep()
+    brep.MergeCoplanarFaces(abs_tolerance)
+    if not brep.IsSolid:
+        return [], "The Brep with {0} faces given to the airnode is not a closed solid".format(brep.Faces.Count)
+    if brep.SolidOrientation == rc.Geometry.BrepSolidOrientation.Inward:
+        brep.Flip()
+    faces = []
+    for face in brep.Faces:
+        if not face.IsPlanar(abs_tolerance):
+            return [], "The solid has a curved face: rebuild it from planar faces"
+        if face.Loops.Count > 1:
+            return [], "The solid has a face with a hole: split that face first, a surface of the b18 has one loop of vertices"
+        faces.append(face.DuplicateFace(False))
+    return faces, None
 def flipSurfaceBreps(item):
     item.Faces.Flip()
     if item.Surface is not item.Faces:
@@ -1765,6 +1802,40 @@ class CONSTRUCTION:
             geometry.UserDictionary.Set('ID', record.Surfnum)
             geometries.append(geometry)
         return geometries
+    def expandSolids(self, breps, GHComponentID):
+        """The input of an airnode as surfaces. What comes from a surface component stays, a bare face is registered, and a solid becomes
+        its faces (no boundary condition, no construction) without the parts covered by the other surfaces. Returns (breps, problem)."""
+        surfaces = []
+        bare = []
+        solids = []
+        for brep in breps:
+            if brep.UserDictionary.ContainsKey('LID'):
+                surfaces.append(brep)
+            elif brep.Faces.Count > 1:
+                solids.append(brep)
+            else:
+                bare.append(brep)
+        if len(solids) > 1:
+            return [], "An airnode takes one solid, {0} were connected".format(len(solids))
+        surfaces.extend(self.addToConstruction(bare, GHComponentID + ':face'))
+        if not solids:
+            return surfaces, None
+        faces, problem = solidFaces(solids[0])
+        if problem:
+            return [], problem
+        facebreps = self.addToConstruction(faces, GHComponentID + ':solid')
+        records = self.callFromConstruction(facebreps)
+        explicit = [item for item in self.callFromConstruction(surfaces) if not isWindowSurface(item) and not isVirtualSurface(item) and item.Type != 'ADDWINDOW']
+        pieces, outside = subtractSurfaces(records, explicit)
+        if outside:
+            return [], "Surfaces {0} do not lie on a face of the solid".format(', '.join([str(item.Surfnum) for item in outside]))
+        for brep, record in zip(facebreps, records):
+            if record.Surfnum in pieces:
+                loops = pieces[record.Surfnum]
+                surfaces.extend(self.addToConstruction([makeSurfaceBrep(loop, record.Normalvector) for loop in loops], '{0}:piece:{1}'.format(GHComponentID, record.Surfnum)))
+            else:
+                surfaces.append(brep)
+        return surfaces, None
     def callFromConstruction(self, geometryList):
         Objects = []
         for geometry in geometryList:

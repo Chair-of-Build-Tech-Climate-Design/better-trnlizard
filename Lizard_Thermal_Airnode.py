@@ -15,7 +15,7 @@ Args:
     AirnodeName (object): define airnode name
         Access: item
         Required: True
-    SurfaceInfo (Brep): link all airnode related surface definitions
+    SurfaceInfo (Brep): link all airnode related surface definitions and/or one closed solid. A solid becomes its faces, without boundary condition and construction; a surface given here that lies on one of its faces replaces that part of the face
         Access: list
         Required: True
     Regime (object): connect the regime component
@@ -183,6 +183,11 @@ if len(SurfaceInfo) > 0:
         geosurf_floor   = 0
     else:
         geosurf_floor   = 0.6
+    SurfaceInfo, solidproblem = lizard_coll.expandSolids(SurfaceInfo, ghenv.Component.InstanceGuid.ToString())
+    if solidproblem:
+        print solidproblem
+        ghenv.Component.AddRuntimeMessage(err, solidproblem)
+        sys.exit()
     ObjectsFromLz   = lizard_coll.callFromConstruction(SurfaceInfo)
     SurfaceInfo = []
 #collect first the additional windows

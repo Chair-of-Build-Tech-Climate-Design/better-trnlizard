@@ -1,4 +1,4 @@
-"""Default constructions from Lizard_Construction_Set and the meaning of AUTOMATIC.
+"""Default constructions from Lizard_Construction_Set, the meaning of AUTOMATIC, and the solid of an airnode with surfaces on top of it.
 
 Same harness as test_surface_model.py: the real blocks of Lizard_Component.py with stand-ins for Rhino.
 """
@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 from types import SimpleNamespace
 
-from test_surface_model import M, airnode, compile_model, errors, library, north, south, surface, warnings_of, walls_of
+from test_surface_model import FakeSurfaceBrep, FakeUserDictionary, M, Vec, airnode, compile_model, errors, library, load_construction, north, south, surface, warnings_of, walls_of
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -179,6 +179,206 @@ class FillTests(unittest.TestCase):
         issues = self.compile(airnode("A1", a), airnode("A2", b), autoadjacency=True, model=constructions(InteriorWall="WALL"))
         self.assertEqual([], [message for message in warnings_of(issues) if "keep the construction" in message])
         self.assertEqual(("WALL", "WALL"), (a.Construction, b.Construction))
+
+
+class SubtractTests(unittest.TestCase):
+    def test_surface_on_a_face_replaces_that_part(self):
+        face = south(0, 6, number=90)
+        explicit = south(0, 2, number=91)
+        pieces, outside = M["subtractSurfaces"]([face], [explicit])
+        self.assertEqual([], outside)
+        self.assertEqual([90], list(pieces))
+        self.assertEqual(1, len(pieces[90]))
+        area = M["polyAreaVector"](pieces[90][0])
+        self.assertAlmostEqual(12.0, M["vecDot"](area, area)**0.5)
+        self.assertLess(area[1], 0)  # the winding of the face
+
+    def test_surface_over_the_whole_face_leaves_nothing(self):
+        pieces, outside = M["subtractSurfaces"]([south(0, 6, number=92)], [south(0, 6, number=93)])
+        self.assertEqual(({92: []}, []), (pieces, outside))
+
+    def test_reversed_surface_counts_as_well(self):
+        pieces, outside = M["subtractSurfaces"]([south(0, 6, number=94)], [north(0, 6, number=95)])
+        self.assertEqual(({94: []}, []), (pieces, outside))
+
+    def test_faces_without_a_surface_on_them_are_not_touched(self):
+        pieces, outside = M["subtractSurfaces"]([south(0, 6, number=96), floor(number=97)], [south(0, 2, number=98)])
+        self.assertEqual([96], list(pieces))
+
+    def test_surface_outside_the_faces_is_reported(self):
+        _, outside = M["subtractSurfaces"]([south(0, 6, number=99)], [north(0, 6, y=2.0, number=100)])
+        self.assertEqual([100], [item.Surfnum for item in outside])
+
+    def test_surface_sticking_out_of_a_face_is_reported(self):
+        _, outside = M["subtractSurfaces"]([south(0, 6, number=101)], [south(4, 8, number=102)])
+        self.assertEqual([102], [item.Surfnum for item in outside])
+
+    def test_surface_in_the_middle_is_cut_out(self):
+        pieces, _ = M["subtractSurfaces"]([south(0, 6, number=103)], [surface([(2, 0, 1), (4, 0, 1), (4, 0, 2), (2, 0, 2)], number=104)])
+        total = sum(M["vecDot"](M["polyAreaVector"](loop), M["polyAreaVector"](loop))**0.5 for loop in pieces[103])
+        self.assertAlmostEqual(16.0, total)
+
+
+class ExpandTests(unittest.TestCase):
+    """CONSTRUCTION.expandSolids, with solidFaces, makeSurfaceBrep and the record geometry replaced."""
+
+    def setUp(self):
+        self.construction, self.sticky = load_construction()
+
+    def brep(self, faces=1, lid=None, name="a"):
+        brep = FakeSurfaceBrep(name)
+        brep.Faces = SimpleNamespace(Count=faces)
+        if lid:
+            brep.UserDictionary.Set("LID", lid)
+        return brep
+
+    def test_two_solids_are_a_problem(self):
+        _, problem = self.construction.expandSolids([self.brep(6), self.brep(6, name="b")], "c1")
+        self.assertIn("one solid", problem)
+
+    def test_bare_single_faces_are_registered(self):
+        breps, problem = self.construction.expandSolids([self.brep(1)], "c1")
+        self.assertIsNone(problem)
+        self.assertEqual(1, len(self.sticky["Const_coll"]))
+        self.assertTrue(breps[0].UserDictionary.ContainsKey("LID"))
+
+    def test_surfaces_with_settings_pass_unchanged(self):
+        known = self.construction.addToConstruction([self.brep(1)], "c0")[0]
+        breps, problem = self.construction.expandSolids([known], "c1")
+        self.assertIsNone(problem)
+        self.assertIs(known, breps[0])
+        self.assertEqual(1, len(self.sticky["Const_coll"]))
+
+
+class SolidBrep(FakeSurfaceBrep):
+    """A single face with real points."""
+
+    def __init__(self, name, points):
+        super().__init__(name)
+        self.points = points
+
+    def DuplicateBrep(self):
+        other = SolidBrep(self.name, self.points)
+        other.UserDictionary = FakeUserDictionary(self.UserDictionary)
+        return other
+
+
+def south_face(name, x0, x1):
+    return SolidBrep(name, [(x0, 0, 0), (x1, 0, 0), (x1, 0, 3), (x0, 0, 3)])
+
+
+class ExpandSolidTests(unittest.TestCase):
+    """The way of a solid through expandSolids, with the Rhino calls replaced."""
+
+    def setUp(self):
+        self.construction, self.sticky = load_construction()
+        scope = type(self.construction).expandSolids.__globals__
+        scope["surfaceNormal"] = lambda brep: Vec(*M["vecUnit"](M["polyAreaVector"](brep.points)))
+        scope["getSurfaceVertices"] = lambda normal, brep: [Vec(*point) for point in brep.points]
+        scope["makeSurfaceBrep"] = lambda points, normal: SolidBrep("piece%d" % len(self.sticky["Const_coll"]), points)
+        scope["solidFaces"] = lambda solid: (self.faces, None)
+        self.faces = [south_face("wall", 0, 6), SolidBrep("floor", [(0, 0, 0), (0, 4, 0), (6, 4, 0), (6, 0, 0)])]
+        self.solid = SimpleNamespace(UserDictionary=FakeUserDictionary(), Faces=SimpleNamespace(Count=6))
+
+    def records(self, breps):
+        return self.construction.callFromConstruction(breps)
+
+    def test_faces_have_no_settings(self):
+        breps, problem = self.construction.expandSolids([self.solid], "c1")
+        self.assertIsNone(problem)
+        self.assertEqual([(None, None)]*2, [(item.Boundarycond, item.Construction) for item in self.records(breps)])
+
+    def test_solution_after_solution_keeps_the_numbers(self):
+        first = [item.Surfnum for item in self.records(self.construction.expandSolids([self.solid], "c1")[0])]
+        second = [item.Surfnum for item in self.records(self.construction.expandSolids([self.solid], "c1")[0])]
+        self.assertEqual(first, second)
+
+    def test_surface_with_settings_replaces_the_part_it_covers(self):
+        known = self.construction.addToConstruction([south_face("part", 0, 2)], "c0")[0]
+        self.sticky["Const_coll"][known.UserDictionary["LID"]].Construction = "OUT"
+        breps, problem = self.construction.expandSolids([known, self.solid], "c1")
+        self.assertIsNone(problem)
+        records = self.records(breps)
+        self.assertEqual(3, len(records))
+        constructions_of = sorted(str(item.Construction) for item in records)
+        self.assertEqual(["None", "None", "OUT"], constructions_of)
+        spans = sorted(sorted(set(point.X for point in item.Vertices)) for item in records if all(point.Y == 0 for point in item.Vertices))
+        self.assertEqual([[0.0, 2.0], [2.0, 6.0]], spans)
+
+    def test_surface_beside_the_solid_is_a_problem(self):
+        known = self.construction.addToConstruction([south_face("part", 4, 8)], "c0")[0]
+        _, problem = self.construction.expandSolids([known, self.solid], "c1")
+        self.assertIn("do not lie on a face", problem)
+
+    def test_window_does_not_cut_a_face(self):
+        window = self.construction.addToConstruction([south_face("window", 1, 2)], "c0")[0]
+        self.sticky["Const_coll"][window.UserDictionary["LID"]].Type = "WINDOW"
+        breps, problem = self.construction.expandSolids([window, self.solid], "c1")
+        self.assertIsNone(problem)
+        self.assertEqual(3, len(breps))
+
+
+class FakeRhinoFace:
+    def __init__(self, name, planar=True, loops=1):
+        self.name, self.planar = name, planar
+        self.Loops = SimpleNamespace(Count=loops)
+
+    def IsPlanar(self, tolerance):
+        return self.planar
+
+    def DuplicateFace(self, shrink):
+        return self.name
+
+
+class FakeSolid:
+    def __init__(self, faces, solid=True, orientation="Outward"):
+        self.Faces = faces
+        self.IsSolid = solid
+        self.SolidOrientation = orientation
+        self.flips = 0
+        self.merged = False
+
+    def DuplicateBrep(self):
+        return self
+
+    def MergeCoplanarFaces(self, tolerance):
+        self.merged = True
+        return True
+
+    def Flip(self):
+        self.flips += 1
+
+
+class FakeFaceList(list):
+    @property
+    def Count(self):
+        return len(self)
+
+
+class SolidFacesTests(unittest.TestCase):
+    def setUp(self):
+        text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        first = text.index("def solidFaces(solid):")
+        self.scope = {"abs_tolerance": 0.001, "rc": SimpleNamespace(Geometry=SimpleNamespace(BrepSolidOrientation=SimpleNamespace(Inward="Inward")))}
+        exec(text[first:text.index("def flipSurfaceBreps(item):", first)], self.scope)
+
+    def run_on(self, *faces, **options):
+        self.solid = FakeSolid(FakeFaceList(faces), **options)
+        return self.scope["solidFaces"](self.solid)
+
+    def test_planar_faces(self):
+        self.assertEqual((["a", "b"], None), self.run_on(FakeRhinoFace("a"), FakeRhinoFace("b")))
+        self.assertTrue(self.solid.merged)
+        self.assertEqual(0, self.solid.flips)
+
+    def test_inward_solid_is_flipped(self):
+        self.run_on(FakeRhinoFace("a"), orientation="Inward")
+        self.assertEqual(1, self.solid.flips)
+
+    def test_open_brep_curved_face_and_hole_are_problems(self):
+        self.assertIn("not a closed solid", self.run_on(FakeRhinoFace("a"), solid=False)[1])
+        self.assertIn("curved", self.run_on(FakeRhinoFace("a", planar=False))[1])
+        self.assertIn("hole", self.run_on(FakeRhinoFace("a", loops=2))[1])
 
 
 class ComponentTests(unittest.TestCase):

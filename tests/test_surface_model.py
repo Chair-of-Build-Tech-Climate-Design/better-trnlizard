@@ -701,7 +701,10 @@ def run_surface_component(settings, walls=("WALL",)):
     kernel.GH_RuntimeMessageLevel = SimpleNamespace(Warning="WARNING", Error="ERROR")
     grasshopper.Kernel = kernel
     component = SimpleNamespace(InstanceGuid=SimpleNamespace(ToString=lambda: "guid"), AddRuntimeMessage=lambda level, text: messages.append(text))
-    namespace = {"ghenv": SimpleNamespace(Component=component), "BRep": ["brep"], "Settings": settings}
+    class BRep(str):
+        Faces = SimpleNamespace(Count=1)
+
+    namespace = {"ghenv": SimpleNamespace(Component=component), "BRep": [BRep("brep")], "Settings": settings}
     with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext, "Grasshopper": grasshopper, "Grasshopper.Kernel": kernel}):
         exec(compile(source, "Lizard_Surface.py", "exec"), namespace)
     return written, messages, namespace["SurfaceInfo"]
