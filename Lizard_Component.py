@@ -706,6 +706,514 @@ def checkVerticesOrder(Points, Normal):
                 attached_points.append(pitem)
     new_points.extend(attached_points)
     return new_points
+# ---- Surface kernel (begin)
+# Plain geometry on tuples: no Rhino, no sticky, the same code under IronPython 2 and CPython 3
+# (tests/test_surface_kernel.py). Loops are lists of points without a repeated last point.
+def vecAdd(a, b, scale=1.0):
+    return (a[0]+scale*b[0], a[1]+scale*b[1], a[2]+scale*b[2])
+def vecSub(a, b):
+    return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+def vecDot(a, b):
+    return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]
+def vecCross(a, b):
+    return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
+def vecUnit(a):
+    length = vecDot(a, a)**0.5
+    return (a[0]/length, a[1]/length, a[2]/length)
+def polyAreaVector(points):
+    """Area vector of a planar 3D loop: its length is the area, its direction follows the right hand rule."""
+    total = (0.0, 0.0, 0.0)
+    for i in range(len(points)):
+        total = vecAdd(total, vecCross(points[i], points[(i+1) % len(points)]))
+    return (total[0]/2.0, total[1]/2.0, total[2]/2.0)
+def polyArea2d(loop):
+    """Signed area of a 2D loop, positive for counter-clockwise."""
+    total = 0.0
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        total += a[0]*b[1]-b[0]*a[1]
+    return total/2.0
+def polyPerimeter2d(loop):
+    total = 0.0
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        total += ((b[0]-a[0])**2+(b[1]-a[1])**2)**0.5
+    return total
+def pointInLoop2d(point, loop):
+    """Even-odd test; a point exactly on the boundary may give either answer."""
+    inside = False
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        if (a[1] > point[1]) != (b[1] > point[1]):
+            if a[0]+(point[1]-a[1])*(b[0]-a[0])/(b[1]-a[1]) > point[0]:
+                inside = not inside
+    return inside
+def pointSegmentDistance2d(p, a, b):
+    dx, dy = b[0]-a[0], b[1]-a[1]
+    length2 = dx*dx+dy*dy
+    if length2 == 0:
+        return ((p[0]-a[0])**2+(p[1]-a[1])**2)**0.5
+    t = max(0.0, min(1.0, ((p[0]-a[0])*dx+(p[1]-a[1])*dy)/length2))
+    return ((p[0]-a[0]-t*dx)**2+(p[1]-a[1]-t*dy)**2)**0.5
+def pointOnLoop2d(point, loop, tolerance):
+    for i in range(len(loop)):
+        if pointSegmentDistance2d(point, loop[i], loop[(i+1) % len(loop)]) < tolerance:
+            return True
+    return False
+def cleanLoop2d(loop, tolerance):
+    """The loop without repeated and collinear vertices."""
+    result = list(loop)
+    changed = True
+    while changed and len(result) > 3:
+        changed = False
+        for i in range(len(result)):
+            before, after = result[i-1], result[(i+1) % len(result)]
+            if pointSegmentDistance2d(result[i], before, after) < tolerance:
+                del result[i]
+                changed = True
+                break
+    return result
+def loopInterior2d(loops):
+    """A point inside a region given by its outer loop and hole loops, in the widest span of the widest band."""
+    heights = sorted(set([point[1] for loop in loops for point in loop]))
+    bands = sorted([(heights[i+1]-heights[i], i) for i in range(len(heights)-1)], reverse=True)
+    for gap, index in bands:
+        y = heights[index]+gap/2.0
+        crossings = []
+        for loop in loops:
+            for i in range(len(loop)):
+                a, b = loop[i], loop[(i+1) % len(loop)]
+                if (a[1] > y) != (b[1] > y):
+                    crossings.append(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]))
+        crossings.sort()
+        spans = [(crossings[i+1]-crossings[i], crossings[i]) for i in range(0, len(crossings)-1, 2)]
+        if spans:
+            width, start = max(spans)
+            if width > 0:
+                return (start+width/2.0, y)
+    return None
+class PointSnapper:
+    """Maps every point closer than the tolerance to the first point seen there, through a grid of tolerance-sized cells."""
+    def __init__(self, tolerance):
+        self.tolerance = tolerance
+        self.cells = {}
+    def snap(self, point):
+        cx, cy = int(point[0]//self.tolerance), int(point[1]//self.tolerance)
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for other in self.cells.get((cx+dx, cy+dy), ()):
+                    if ((other[0]-point[0])**2+(other[1]-point[1])**2)**0.5 < self.tolerance:
+                        return other
+        self.cells.setdefault((cx, cy), []).append(point)
+        return point
+def segmentCrossing2d(a, b, c, d):
+    """Crossing point of the segments a-b and c-d, None for parallel segments or when they do not meet."""
+    rx, ry = b[0]-a[0], b[1]-a[1]
+    sx, sy = d[0]-c[0], d[1]-c[1]
+    denominator = rx*sy-ry*sx
+    if abs(denominator) < 1e-12:
+        return None
+    t = ((c[0]-a[0])*sy-(c[1]-a[1])*sx)/denominator
+    u = ((c[0]-a[0])*ry-(c[1]-a[1])*rx)/denominator
+    if t < 0 or t > 1 or u < 0 or u > 1:
+        return None
+    return (a[0]+t*rx, a[1]+t*ry)
+def nodeSegments(segments, snapper):
+    """Splits the undirected segments (pairs of snapped points) at every crossing and every point lying on them."""
+    tolerance = snapper.tolerance
+    segments = set([(min(a, b), max(a, b)) for a, b in segments if a != b])
+    for attempt in range(8):
+        ordered = sorted(segments)
+        boxes = [(min(s[0][0], s[1][0])-tolerance, max(s[0][0], s[1][0])+tolerance,
+                  min(s[0][1], s[1][1])-tolerance, max(s[0][1], s[1][1])+tolerance) for s in ordered]
+        cuts = {}
+        for i in range(len(ordered)):
+            a, b = ordered[i]
+            for j in range(i+1, len(ordered)):
+                if boxes[i][1] < boxes[j][0] or boxes[j][1] < boxes[i][0] or boxes[i][3] < boxes[j][2] or boxes[j][3] < boxes[i][2]:
+                    continue
+                c, d = ordered[j]
+                crossing = segmentCrossing2d(a, b, c, d)
+                if crossing is not None:
+                    point = snapper.snap(crossing)
+                    if point not in (a, b):
+                        cuts.setdefault(ordered[i], set()).add(point)
+                    if point not in (c, d):
+                        cuts.setdefault(ordered[j], set()).add(point)
+                for point in (c, d):
+                    if point not in (a, b) and pointSegmentDistance2d(point, a, b) < tolerance:
+                        cuts.setdefault(ordered[i], set()).add(point)
+                for point in (a, b):
+                    if point not in (c, d) and pointSegmentDistance2d(point, c, d) < tolerance:
+                        cuts.setdefault(ordered[j], set()).add(point)
+        if not cuts:
+            return segments
+        for segment in cuts:
+            segments.discard(segment)
+            a, b = segment
+            chain = sorted(cuts[segment], key=lambda p: (p[0]-a[0])**2+(p[1]-a[1])**2)
+            chain = [a]+chain+[b]
+            for k in range(len(chain)-1):
+                if chain[k] != chain[k+1]:
+                    segments.add((min(chain[k], chain[k+1]), max(chain[k], chain[k+1])))
+    return segments
+def edgeAngle2d(a, b):
+    return math.atan2(b[1]-a[1], b[0]-a[0])
+def traceLoops(edges):
+    """Closed loops of directed edges, each with the region on its left: counter-clockwise shells, clockwise holes."""
+    outgoing = {}
+    for a, b in edges:
+        outgoing.setdefault(a, []).append(b)
+    loops = []
+    unused = set(edges)
+    for start in sorted(edges):
+        if start not in unused:
+            continue
+        loop = []
+        edge = start
+        while edge in unused:
+            unused.discard(edge)
+            loop.append(edge[0])
+            a, b = edge
+            back = edgeAngle2d(b, a)
+            best, bestturn = None, None
+            for other in outgoing[b]:
+                turn = (back-edgeAngle2d(b, other)) % (2*math.pi)
+                if turn < 1e-12:
+                    turn = 2*math.pi
+                if bestturn is None or turn < bestturn:
+                    best, bestturn = other, turn
+            edge = (b, best)
+        if len(loop) >= 3:
+            loops.append(loop)
+    return loops
+def planarFaces(segments):
+    """Faces of a noded set of segments: dicts with 'outer' (counter-clockwise) and 'holes' (clockwise); dangling edges are dropped."""
+    neighbours = {}
+    for a, b in segments:
+        neighbours.setdefault(a, set()).add(b)
+        neighbours.setdefault(b, set()).add(a)
+    dangling = [p for p in neighbours if len(neighbours[p]) == 1]
+    while dangling:
+        point = dangling.pop()
+        for other in list(neighbours.get(point, ())):
+            neighbours[other].discard(point)
+            if len(neighbours[other]) == 1:
+                dangling.append(other)
+        neighbours.pop(point, None)
+    edges = []
+    for point in neighbours:
+        for other in neighbours[point]:
+            edges.append((point, other))
+    component = {}
+    for point in sorted(neighbours):
+        if point not in component:
+            stack = [point]
+            component[point] = point
+            while stack:
+                for other in neighbours[stack.pop()]:
+                    if other not in component:
+                        component[other] = point
+                        stack.append(other)
+    loops = traceLoops(edges)
+    faces = [{'outer': loop, 'holes': []} for loop in loops if polyArea2d(loop) > 0]
+    faces.sort(key=lambda face: polyArea2d(face['outer']))
+    for loop in loops:
+        if polyArea2d(loop) > 0:
+            continue
+        for face in faces:  # smallest first: the first one that holds the loop is its direct parent
+            if component[face['outer'][0]] != component[loop[0]] and pointInLoop2d(loop[0], face['outer']):
+                face['holes'].append(loop)
+                break
+    return faces
+def faceEdges(face):
+    edges = []
+    for loop in [face['outer']]+face['holes']:
+        for i in range(len(loop)):
+            edges.append((loop[i], loop[(i+1) % len(loop)]))
+    return edges
+def splitHoles(face, snapper):
+    """Simple loops that together make up a face with holes: b18 surfaces have one loop of vertices, so a hole is cut
+    open with a horizontal line through it to the nearest boundary on both sides."""
+    if not face['holes']:
+        return [face['outer']]
+    hole = sorted(face['holes'], key=lambda loop: min(loop))[0]
+    heights = sorted(set([point[1] for point in hole]))
+    gap, index = max([(heights[i+1]-heights[i], i) for i in range(len(heights)-1)])
+    y = heights[index]+gap/2.0
+    edges = faceEdges(face)
+    own = []
+    others = []
+    for a, b in edges:
+        if (a[1] > y) != (b[1] > y):
+            x = a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1])
+            if a in hole and b in hole:
+                own.append(x)
+            else:
+                others.append(x)
+    left = max([x for x in others if x < min(own)])
+    right = min([x for x in others if x > max(own)])
+    segments = [(a, b) for a, b in edges]
+    for x0, x1 in ((left, min(own)), (max(own), right)):
+        segments.append((snapper.snap((x0, y)), snapper.snap((x1, y))))
+    pieces = []
+    for part in planarFaces(nodeSegments(segments, snapper)):
+        point = loopInterior2d([part['outer']]+part['holes'])
+        if point is None or not pointInLoop2d(point, face['outer']):
+            continue
+        if True in [pointInLoop2d(point, other) for other in face['holes']]:
+            continue
+        pieces.extend(splitHoles(part, snapper))
+    return pieces
+def arrangePolygons(polygons, tolerance, slivertolerance=None):
+    """Splits overlapping simple polygons of one plane into regions with one set of sources.
+
+    polygons: list of (key, 2D loop). Returns a list of dicts sorted by cover and size: 'cover' = sorted tuple of the keys
+    whose polygon holds the region (never empty), 'loop' = one simple counter-clockwise loop, 'area'. A region of one cover
+    with holes comes as several loops. Regions narrower than slivertolerance (default: tolerance) go to the neighbour that
+    shares the longest edge. The result does not depend on the order of the polygons.
+    """
+    if slivertolerance is None:
+        slivertolerance = tolerance
+    snapper = PointSnapper(tolerance)
+    for point in sorted(set([point for key, loop in polygons for point in loop])):
+        snapper.snap(point)
+    sources = []
+    segments = []
+    for key, loop in sorted(polygons, key=lambda polygon: polygon[0]):
+        snapped = []
+        for point in loop:
+            point = snapper.snap(point)
+            if not snapped or snapped[-1] != point:
+                snapped.append(point)
+        if len(snapped) > 1 and snapped[0] == snapped[-1]:
+            snapped.pop()
+        if len(snapped) < 3:
+            continue
+        sources.append((key, snapped))
+        for i in range(len(snapped)):
+            segments.append((snapped[i], snapped[(i+1) % len(snapped)]))
+    faces = planarFaces(nodeSegments(segments, snapper))
+    faceofedge = {}
+    for index, face in enumerate(faces):
+        for edge in faceEdges(face):
+            faceofedge[edge] = index
+        point = loopInterior2d([face['outer']]+face['holes'])
+        face['cover'] = ()
+        if point is not None:
+            face['cover'] = tuple(sorted([key for key, loop in sources if pointInLoop2d(point, loop)]))
+    for index, face in enumerate(faces):
+        area = polyArea2d(face['outer'])+sum([polyArea2d(hole) for hole in face['holes']])
+        perimeter = polyPerimeter2d(face['outer'])+sum([polyPerimeter2d(hole) for hole in face['holes']])
+        face['sliver'] = bool(face['cover']) and 2.0*area/perimeter < slivertolerance
+    for index, face in enumerate(faces):
+        if not face['sliver']:
+            continue
+        shared = {}
+        for a, b in faceEdges(face):
+            other = faceofedge.get((b, a))
+            if other is not None and other != index and faces[other]['cover'] and not faces[other]['sliver']:
+                length = ((b[0]-a[0])**2+(b[1]-a[1])**2)**0.5
+                shared[faces[other]['cover']] = shared.get(faces[other]['cover'], 0.0)+length
+        if shared:
+            face['cover'] = max([(shared[cover], cover) for cover in shared])[1]
+    grouped = {}
+    for face in faces:
+        if face['cover']:
+            grouped.setdefault(face['cover'], []).extend(faceEdges(face))
+    regions = []
+    for cover in sorted(grouped):
+        edges = set(grouped[cover])
+        remaining = [edge for edge in sorted(edges) if (edge[1], edge[0]) not in edges]
+        loops = traceLoops(remaining)
+        shells = [{'outer': loop, 'holes': []} for loop in loops if polyArea2d(loop) > 0]
+        shells.sort(key=lambda face: polyArea2d(face['outer']))
+        for loop in loops:
+            if polyArea2d(loop) > 0:
+                continue
+            middle = ((loop[0][0]+loop[1][0])/2.0, (loop[0][1]+loop[1][1])/2.0)
+            for shell in shells:
+                if pointInLoop2d(middle, shell['outer']):
+                    shell['holes'].append(loop)
+                    break
+        for shell in shells:
+            for loop in splitHoles(shell, snapper):
+                loop = cleanLoop2d(loop, tolerance)
+                regions.append({'cover': cover, 'loop': loop, 'area': polyArea2d(loop)})
+    regions.sort(key=lambda region: (region['cover'], -region['area'], region['loop'][0]))
+    return regions
+def planeBasis(normal):
+    """Unit vectors u, v of a plane with u x v = normal."""
+    helper = (1.0, 0.0, 0.0)
+    if abs(normal[0]) >= 0.9:
+        helper = (0.0, 1.0, 0.0)
+    u = vecUnit(vecCross(normal, helper))
+    return u, vecCross(normal, u)
+def canonicalDirection(normal):
+    """The normal or its opposite, the same for both: the first clear component is positive."""
+    for value in normal:
+        if abs(value) > 1e-6:
+            if value < 0:
+                return (-normal[0], -normal[1], -normal[2])
+            break
+    return normal
+def groupPlanes(faces, gaptolerance, angletolerance):
+    """Groups of faces (dicts with 'key', 'points', 'normal') that lie in one plane, up to the gap: list of (direction, faces)."""
+    cosine = math.cos(math.radians(angletolerance))
+    directions = []
+    for face in sorted(faces, key=lambda item: item['key']):
+        direction = canonicalDirection(vecUnit(face['normal']))
+        for known in directions:
+            if abs(vecDot(known[0], direction)) >= cosine:
+                known[1].append(face)
+                break
+        else:
+            directions.append((direction, [face]))
+    groups = []
+    for direction, members in directions:
+        offsets = sorted([(vecDot(direction, member['points'][0]), member['key'], member) for member in members], key=lambda entry: entry[:2])
+        current = []
+        for offset, key, member in offsets:
+            if current and offset-current[0][0] > gaptolerance:
+                groups.append((direction, [entry[1] for entry in current]))
+                current = []
+            current.append((offset, member))
+        if current:
+            groups.append((direction, [entry[1] for entry in current]))
+    return groups
+def convexStartIndex(points, normal):
+    """Index of the first convex vertex (seen along the normal) of a loop, the start checkVerticesOrder looks for."""
+    area = polyAreaVector(points)
+    sign = 1.0
+    if vecDot(area, normal) < 0:
+        sign = -1.0
+    for i in range(len(points)):
+        turn = vecCross(vecSub(points[i], points[i-1]), vecSub(points[(i+1) % len(points)], points[i]))
+        if sign*vecDot(turn, area) > 0:
+            return i
+    return 0
+def rotateConvexStart(points, normal):
+    start = convexStartIndex(points, normal)
+    return points[start:]+points[:start]
+def arrangeFaces(faces, tolerance, gaptolerance, angletolerance=1.0):
+    """Regions of 3D faces (dicts with 'key', 'points', 'normal').
+
+    Faces of one plane, up to gaptolerance between parallel planes, are arranged together. Returns a list of dicts: 'cover',
+    'area', 'sides' {key: +1 or -1, side of the plane the normal of that face points to} and 'loops' {key: the region as a
+    3D loop in the plane of that face and with the winding of that face}.
+    """
+    regions = []
+    for direction, members in groupPlanes(faces, gaptolerance, angletolerance):
+        u, v = planeBasis(direction)
+        polygons = [(member['key'], [(vecDot(point, u), vecDot(point, v)) for point in member['points']]) for member in members]
+        bykey = dict([(member['key'], member) for member in members])
+        for region in arrangePolygons(polygons, tolerance, max(tolerance, gaptolerance)):
+            loops = {}
+            sides = {}
+            for key in region['cover']:
+                member = bykey[key]
+                normal = vecUnit(member['normal'])
+                sides[key] = 1
+                if vecDot(normal, direction) < 0:
+                    sides[key] = -1
+                planeoffset = vecDot(normal, member['points'][0])
+                points = []
+                for x, y in region['loop']:
+                    point = vecAdd(vecAdd((0.0, 0.0, 0.0), u, x), v, y)
+                    points.append(vecAdd(point, direction, (planeoffset-vecDot(point, normal))/vecDot(direction, normal)))
+                if vecDot(polyAreaVector(member['points']), direction) < 0:
+                    points.reverse()
+                loops[key] = rotateConvexStart(points, polyAreaVector(points))
+            regions.append({'cover': region['cover'], 'area': region['area'], 'sides': sides, 'loops': loops})
+    return regions
+def triangulateLoop3d(points):
+    """Triangles of a planar loop, by ear clipping; the loop may be concave."""
+    area = polyAreaVector(points)
+    remaining = list(points)
+    triangles = []
+    def holds(point, a, b, c):
+        for p, q in ((a, b), (b, c), (c, a)):
+            if vecDot(vecCross(vecSub(q, p), vecSub(point, p)), area) <= 0:
+                return False
+        return True
+    while len(remaining) > 3:
+        for k in range(len(remaining)):
+            a, b, c = remaining[k-1], remaining[k], remaining[(k+1) % len(remaining)]
+            if vecDot(vecCross(vecSub(b, a), vecSub(c, b)), area) <= 0:
+                continue
+            if True in [holds(point, a, b, c) for point in remaining if point not in (a, b, c)]:
+                continue
+            triangles.append((a, b, c))
+            del remaining[k]
+            break
+        else:
+            break
+    if len(remaining) == 3:
+        triangles.append(tuple(remaining))
+    return triangles
+def rayCrossesPolygon(origin, direction, points):
+    """True/False: the ray crosses the polygon or not. None: it passes too close to the boundary to tell."""
+    normal = vecUnit(polyAreaVector(points))
+    denominator = vecDot(normal, direction)
+    if abs(denominator) < 1e-9:
+        return False
+    distance = vecDot(normal, vecSub(points[0], origin))/denominator
+    if distance <= 1e-7:
+        return False
+    hit = vecAdd(origin, direction, distance)
+    u, v = planeBasis(normal)
+    loop = [(vecDot(point, u), vecDot(point, v)) for point in points]
+    point = (vecDot(hit, u), vecDot(hit, v))
+    if pointOnLoop2d(point, loop, 1e-6):
+        return None
+    return pointInLoop2d(point, loop)
+ORIENT_SAMPLES = ((0.34, 0.33, 0.33), (0.61, 0.26, 0.13), (0.17, 0.71, 0.12), (0.13, 0.19, 0.68), (0.47, 0.09, 0.44), (0.08, 0.41, 0.51))
+def orientClosedPolygons(polygons, normals):
+    """Which faces of one closed volume have a normal that points into the volume.
+
+    A ray from the face along an outward normal starts outside, so it crosses the other faces an even number of times, and an
+    inward one an odd number of times. The count ignores the normals of the others: any mix of wrong faces, concave rooms
+    and T-junctions give the right answer. The answer is only used when the corrected faces close (areas times normals add up
+    to zero, positive volume). Returns (indices to flip, closed).
+    """
+    flips = []
+    votes = []
+    for index in range(len(polygons)):
+        direction = vecUnit(normals[index])
+        triangles = triangulateLoop3d(polygons[index])
+        triangles.sort(key=lambda t: -vecDot(polyAreaVector(t), polyAreaVector(t)))
+        counts = []
+        for triangle in triangles:
+            for w0, w1, w2 in ORIENT_SAMPLES:
+                origin = (w0*triangle[0][0]+w1*triangle[1][0]+w2*triangle[2][0],
+                          w0*triangle[0][1]+w1*triangle[1][1]+w2*triangle[2][1],
+                          w0*triangle[0][2]+w1*triangle[1][2]+w2*triangle[2][2])
+                hits = [rayCrossesPolygon(origin, direction, polygons[other]) for other in range(len(polygons)) if other != index]
+                if None not in hits:
+                    counts.append(hits.count(True) % 2)
+            if len(counts) >= len(ORIENT_SAMPLES):
+                break
+        votes.append(counts)
+        if counts and sum(counts) == len(counts):
+            flips.append(index)
+    closure = (0.0, 0.0, 0.0)
+    total = 0.0
+    volume = 0.0
+    for index in range(len(polygons)):
+        sign = 1.0
+        if index in flips:
+            sign = -1.0
+        area = vecDot(polyAreaVector(polygons[index]), polyAreaVector(polygons[index]))**0.5
+        oriented = vecAdd((0.0, 0.0, 0.0), vecUnit(normals[index]), sign*area)
+        closure = vecAdd(closure, oriented)
+        total += area
+        volume += vecDot(polygons[index][0], oriented)/3.0
+    agreed = True not in [len(set(counts)) != 1 for counts in votes]
+    closed = agreed and vecDot(closure, closure)**0.5 <= 1e-3*total and volume > 0
+    if not closed:
+        return [], False
+    return flips, True
+# ---- Surface kernel (end)
 class CONSTRUCTION:
     def addToConstruction(self, Brep, GHComponentID):
         # check if the lizarddictionary already existed
