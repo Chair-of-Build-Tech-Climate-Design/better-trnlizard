@@ -775,7 +775,7 @@ class WiringTests(unittest.TestCase):
     def test_system_compiles_the_model_and_stops_on_errors(self):
         source = self.read("Lizard_System.py")
         self.assertIn('compileModel        = sc.sticky[sc.doc.Path]["compileModel"]', source)
-        self.assertRegex(source, r"compileModel\(Airnodeinfo,library,dummyMulti\.autoadjacency,dummyMulti\.gaptolerance,RunSingleAirnodes == 1\)")
+        self.assertRegex(source, r"compileModel\(Airnodeinfo,library,dummyMulti\.autoadjacency,dummyMulti\.gaptolerance,RunSingleAirnodes == 1,dummyMulti\.constructionset\)")
         self.assertRegex(source, r"if modelerror:[\s\S]{0,200}sys\.exit\(\)")
 
     def test_component_registers_the_functions(self):

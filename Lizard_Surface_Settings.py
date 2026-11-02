@@ -11,7 +11,7 @@ Args:
     Construction (object): define surface construction (refer to Wall Type Library). Empty = keep the value of the surface; a surface without one is an error before the simulation
         Access: item
         Required: False
-    Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise EXTERNAL (a floor without a room below is an error)
+    Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise EXTERNAL (a floor without a room below is an error). AUTOMATIC = back to that rule
         Access: item
         Required: False
     --------------------- Boundary

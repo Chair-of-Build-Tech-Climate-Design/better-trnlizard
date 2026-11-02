@@ -63,6 +63,9 @@ Args:
     CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor. Not connected = 3
         Access: item
         Required: False
+    ConstructionSet (object): default constructions from Lizard_Construction_Set for the surfaces of this airnode that have none after the adjacency is solved; comes before the set of Lizard_Multizone, slot by slot
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -96,7 +99,7 @@ rem = gh.Kernel.GH_RuntimeMessageLevel.Remark
 bla = gh.Kernel.GH_RuntimeMessageLevel.Blank
 warn = gh.Kernel.GH_RuntimeMessageLevel.Warning
 #---- initial definition start
-InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence","CapacitanceFactor"]
+InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence","ConstructionSet","CapacitanceFactor"]
 OutputList = ["Out","Airnode","Center","OriToCheck","PtsToCheck"]
 def findInOut(info, pararray):
     oldpar = []
@@ -210,6 +213,8 @@ if len(SurfaceInfo) > 0:
     getSurfaceType(SurfaceInfo)
     Match               = checkWindowsInWalls(SurfaceInfo,Match)
     Airnode.Surfaces    = SurfaceInfo
+    if 'ConstructionSet' in locals():
+        Airnode.Constructionset = ConstructionSet
     Airnode.Zonename    = ZoneName
     Airnode.Beam        = BeamMode
     Airnode.Diffuse     = DiffuseMode

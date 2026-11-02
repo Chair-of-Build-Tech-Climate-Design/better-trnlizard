@@ -33,6 +33,10 @@ if "GapTolerance" in locals():
     pass
 else:
     GapTolerance = None
+if "ConstructionSet" in locals():
+    pass
+else:
+    ConstructionSet = None
 
 
 class Multizone():
@@ -47,6 +51,7 @@ class Multizone():
         self.trnflownetwork = TrnflowNetwork
         self.autoadjacency = AutoAdjacency
         self.gaptolerance = GapTolerance
+        self.constructionset = ConstructionSet
         #current_class = self.__class__
     def info(self):
         print self.name
@@ -79,6 +84,9 @@ Args:
         Access: item
         Required: False
     GapTolerance (float): largest distance in m between two parallel surfaces of adjacent rooms, for models with net room volumes. Not connected = 0.02
+        Access: item
+        Required: False
+    ConstructionSet (object): default constructions from Lizard_Construction_Set for surfaces that have none after the adjacency is solved; a set on the airnode comes first, slot by slot. Not connected = such a surface is an error
         Access: item
         Required: False
 

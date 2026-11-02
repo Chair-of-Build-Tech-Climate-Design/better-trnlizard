@@ -256,6 +256,7 @@ class GEOMETRY:
         self.Frontback      = None                  #None = not set: filled in by compileModel
         self.Hygrothermal   = False                 #True = Lizard_Hygro: Type 395 model of the final EXTERNAL or BOUNDARY
         self.Sourcesurf     = None                  #Surfnum of the surface this one was split from
+        self.Frontguessed   = False                 #True = neither the settings nor the surface type chose the FRONT side of the pair
         self.Coupling       = 0
         self.Couplupper     = ''
         self.Coupllower     = ''
@@ -354,6 +355,7 @@ class AIRNODE:
         self.Comfortpts = []
         self.Wcapr = 3
         self.Geosurffloor = 0
+        self.Constructionset = None                 #defaults for the surfaces of this airnode, before the ones of the model
     def __repr__(self):
         """Airnode representation."""
         return "{}:{}".format(self.__class__.__name__, self.Name)
@@ -1223,6 +1225,8 @@ def orientClosedPolygons(polygons, normals):
 ADJACENCY_TOLERANCE = 0.01      # m, points closer than this are one point
 DEFAULT_GAP_TOLERANCE = 0.02    # m, parallel planes closer than this are one plane
 NEAR_MISS_DISTANCE = 0.5        # m, faces this close get a hint when they are not adjacent
+CONSTRUCTION_SLOTS = ('ExteriorWall', 'InteriorWall', 'Roof', 'InteriorCeiling', 'InteriorFloor', 'GroundFloor', 'ExposedFloor')
+EXTERIOR_CATEGORIES = ('EXTERNAL', 'EXTBOUNDARY', 'EXTCALC', 'EXTSKYBND', 'EXTVERTF', 'EXTBOUNDADJ', 'EXTCALEXT')
 def isWindowSurface(item):
     return item.Type in ('WINDOW', 'BSDFWINDOW')
 def isVirtualSurface(item):
@@ -1279,9 +1283,9 @@ def isMirrorBoundary(item):
         return True
     return 'TAIR_@ANAME' in str(temperature) or str(temperature) == 'INPUT 1*TAIR_{0}'.format(item.Airnode)
 def surfaceParticipates(item, autoadjacency):
-    """Whether a surface looks for a partner: an unset, AUTOMATIC or ADJACENT category always, the plain categories on request."""
+    """Whether a surface looks for a partner: an unset or ADJACENT category always, the plain categories on request."""
     category = item.Boundarycond
-    if not category or category in ('ADJACENT', 'AUTOMATIC', 'AUTOBOUND'):
+    if not category or category in ('ADJACENT', 'AUTOBOUND'):
         return True
     if not autoadjacency or item.Hygrothermal:
         return False
@@ -1327,22 +1331,26 @@ def wallLayers(name, walls):
     if wall is None:
         return None
     return list(zip(wall.Layers.split(), wall.Thickness.split()))
-def frontOfPair(a, b, walls, issues):
-    """(front surface, back surface). An explicit FRONT/BACK on either side decides. Otherwise the floor is the front (floor constructions
-    list their layers from the walking surface down), and between walls the airnode that sorts first."""
+def frontOfPair(a, b):
+    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with a construction (it
+    lists its layers from its own side), then the floor (floor constructions list their layers from the walking surface down). Between
+    walls the airnode that sorts first is the front: guessed."""
     if a.Frontback != b.Frontback and (a.Frontback or b.Frontback):
         if a.Frontback == 'FRONT' or b.Frontback == 'BACK':
-            return a, b
-        return b, a
+            return a, b, False
+        return b, a, False
+    if bool(a.Construction) != bool(b.Construction):
+        if a.Construction:
+            return a, b, False
+        return b, a, False
     if a.Type == 'FLOOR' or b.Type == 'FLOOR':
         if a.Type == 'FLOOR':
-            return a, b
-        return b, a
+            return a, b, False
+        return b, a, False
     front, back = sorted([a, b], key=lambda item: (item.Airnode, item.Surfnum))
-    layers = wallLayers(front.Construction, walls)
-    if a.Frontback and front.Construction == back.Construction and layers and layers != list(reversed(layers)):
-        addIssue(issues, 'warning', "Surfaces {0} & {1} have the same FRONT/BACK and the non-symmetric construction {2}: {0} is used as FRONT".format(front.Surfnum, back.Surfnum, front.Construction), [front, back])
-    return front, back
+    return front, back, True
+def isSymmetric(layers):
+    return layers == list(reversed(layers))
 def matchConstructions(front, back, walls, issues):
     """Both sides of a pair end up with a construction: an empty side follows the other one; two constructions must be the same or mirrored."""
     if front.Type == 'ADDWINDOW':
@@ -1351,10 +1359,20 @@ def matchConstructions(front, back, walls, issues):
     if back.Type == 'ADDWINDOW':
         front.Construction = back.Construction
         return
-    if not front.Construction or not back.Construction:
-        front.Construction = back.Construction = front.Construction or back.Construction
+    if not front.Construction and not back.Construction:
         return
+    if not front.Construction:
+        layers = wallLayers(back.Construction, walls)
+        if layers and not isSymmetric(layers):
+            addIssue(issues, 'error', "Surface {0} is the FRONT of the pair but has no construction, and the construction {1} of surface {2} lists its layers from the other side: fill {3}".format(front.Surfnum, back.Construction, back.Surfnum, constructionSlot(front)), [front, back])
+        front.Construction = back.Construction
+        return
+    if not back.Construction:
+        back.Construction = front.Construction
     if front.Construction == back.Construction:
+        layers = wallLayers(front.Construction, walls)
+        if front.Frontguessed and layers and not isSymmetric(layers):
+            addIssue(issues, 'warning', "Surfaces {0} & {1} have no FRONT/BACK of their own and the non-symmetric construction {2}: {0} is used as FRONT".format(front.Surfnum, back.Surfnum, front.Construction), [front, back])
         return
     frontlayers, backlayers = wallLayers(front.Construction, walls), wallLayers(back.Construction, walls)
     if frontlayers is None or backlayers is None or frontlayers != list(reversed(backlayers)):
@@ -1389,16 +1407,16 @@ def pairWindows(front, back, issues):
         partner.Construction = window.Construction
     for window in remaining:
         addIssue(issues, 'error', "Window {0} is in the adjacent surface {1} but surface {2} has no window at the same place".format(window.Surfnum, back.Surfnum, front.Surfnum), [window])
-def pairSurfaces(a, b, walls, issues):
+def pairSurfaces(a, b, issues):
     """Makes two surfaces of one region adjacent. Returns (front, back) for the orientation that is shared at the end."""
     if a.Hygrothermal or b.Hygrothermal:
         addIssue(issues, 'error', "Surfaces {0} & {1} are adjacent but a HAMT surface can only be EXTERNAL or BOUNDARY".format(a.Surfnum, b.Surfnum), [a, b])
-    front, back = frontOfPair(a, b, walls, issues)
+    front, back, guessed = frontOfPair(a, b)
+    front.Frontguessed = guessed
     front.Frontback, back.Frontback = 'FRONT', 'BACK'
     front.Boundarycond = back.Boundarycond = 'ADJACENT'
     front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
     front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
-    matchConstructions(front, back, walls, issues)
     if front.Activelayer == 1:
         back.Activelayer = 1
         back.Intemp = front.Intemp
@@ -1416,9 +1434,7 @@ def pairSurfaces(a, b, walls, issues):
 def finishUnmatched(item, standalone, issues):
     """The boundary condition of a surface (or a part of one) that has no partner."""
     category = item.Boundarycond
-    if category == 'AUTOMATIC':
-        item.Boundarycond = 'EXTERNAL'
-    elif category == 'ADJACENT' and standalone:
+    if category == 'ADJACENT' and standalone:
         item.Boundarycond = 'BOUNDARY'
         item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item.Airnode)
     elif category == 'ADJACENT':
@@ -1470,11 +1486,10 @@ def expandSurfaceOutputs(airnodes, splits):
                             output.SurfaceID.append(new)
                             for short in output.Ntype:
                                 output.NtypesShort.append('{0}_S{1}'.format(short, new))
-def resolveAdjacency(airnodes, library, autoadjacency, gaptolerance, standalone, issues):
+def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
     """Splits the surfaces that look for a partner along what faces them and sets their boundary conditions.
 
     A pair needs two surfaces of different airnodes with opposite normals in one plane. Returns the (front, back) pairs."""
-    walls = dict([(wall.Name, wall) for wall in library.Walls])
     allnumbers = []
     participants = []
     others = []
@@ -1560,9 +1575,9 @@ def resolveAdjacency(airnodes, library, autoadjacency, gaptolerance, standalone,
             finishUnmatched(b, standalone, issues)
         else:
             for item in (a, b):
-                if item.Boundarycond in ('EXTERNAL', 'BOUNDARY'):
+                if item.Boundarycond in ('EXTERNAL', 'BOUNDARY') and item.Construction:
                     converted.setdefault(item.Construction, []).append(item)
-            pairs.append(pairSurfaces(a, b, walls, issues))
+            pairs.append(pairSurfaces(a, b, issues))
     for construction in sorted(converted, key=str):
         items = converted[construction]
         addIssue(issues, 'warning', "Surfaces {0} were not declared adjacent but face another room: they keep the construction {1}, check that it suits an inner wall".format(', '.join(sorted(set([str(item.Surfnum) for item in items]))), construction), items)
@@ -1585,6 +1600,50 @@ def resolveAdjacency(airnodes, library, autoadjacency, gaptolerance, standalone,
     if not standalone:
         addFacingHints(unmatched, allwalls, gaptolerance, issues)
     return pairs
+def constructionSlot(item):
+    """The slot of a construction set for a surface with its final type and boundary condition."""
+    exterior = item.Boundarycond in EXTERIOR_CATEGORIES
+    if item.Type == 'FLOOR':
+        if exterior:
+            return 'ExposedFloor'
+        if item.Boundarycond in ('ADJACENT', 'INTERNAL') or isMirrorBoundary(item):
+            return 'InteriorFloor'
+        return 'GroundFloor'
+    if item.Type in ('ROOF', 'CEILING'):
+        if exterior:
+            return 'Roof'
+        return 'InteriorCeiling'
+    if exterior:
+        return 'ExteriorWall'
+    return 'InteriorWall'
+def fillConstructions(airnodes, pairs, modelset, library, issues):
+    """Gives the surfaces without a construction the one of their slot, from the set of the airnode and then from the set of the model. A
+    surface whose partner has a construction follows that one. Matches the two sides of every pair afterwards."""
+    walls = dict([(wall.Name, wall) for wall in library.Walls])
+    following = []
+    for front, back in pairs:
+        if front.Construction:
+            following.append(id(back))
+        if back.Construction:
+            following.append(id(front))
+    filled = {}
+    for airnode in airnodes:
+        sets = [item for item in (airnode.Constructionset, modelset) if item is not None]
+        for item in airnode.Surfaces:
+            if item.Construction or isWindowSurface(item) or isVirtualSurface(item) or item.Type == 'ADDWINDOW' or id(item) in following:
+                continue
+            slot = constructionSlot(item)
+            for constructions in sets:
+                name = getattr(constructions, slot, None)
+                if name:
+                    item.Construction = name
+                    filled.setdefault((slot, name), []).append(item)
+                    break
+    for front, back in pairs:
+        matchConstructions(front, back, walls, issues)
+    for slot, name in sorted(filled):
+        items = filled[(slot, name)]
+        addIssue(issues, 'info', "Construction set: {0} = {1} on surfaces {2}".format(slot, name, ', '.join([str(item.Surfnum) for item in items])), items)
 def finalizeSurfaces(airnodes, library, pairs, issues):
     """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values."""
     walls = dict([(wall.Name, wall) for wall in library.Walls])
@@ -1604,7 +1663,7 @@ def finalizeSurfaces(airnodes, library, pairs, issues):
             if item.Type == 'ADDWINDOW':
                 continue
             if not item.Construction:
-                addIssue(issues, 'error', "Surface {0} of {1} ({2}, {3}) has no construction".format(item.Surfnum, item.Airnode, item.Type, item.Boundarycond), [item])
+                addIssue(issues, 'error', "Surface {0} of {1} ({2}, {3}) has no construction: set one on the surface or fill {4} in a construction set".format(item.Surfnum, item.Airnode, item.Type, item.Boundarycond, constructionSlot(item)), [item])
             elif item.Construction not in walls:
                 addIssue(issues, 'error', "Surface {0} of {1}: construction {2} is not in the library".format(item.Surfnum, item.Airnode, item.Construction), [item])
             else:
@@ -1620,11 +1679,12 @@ def finalizeSurfaces(airnodes, library, pairs, issues):
             defineGeosurf(airnode.Geosurffloor, airnode.Surfaces)
     for front, back in pairs:
         back.Orientation = front.Orientation
-def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False):
+def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False, constructionset=None):
     """The one path from the airnodes to the surfaces the b18 writer reads, for System and for inspection.
 
-    Works on the given airnodes (deep copies from callFromZones). Returns the issues: dicts with 'level' ('error' or 'warning'),
-    'message' and 'surfaces'. With an error the surfaces are not complete and must not be written.
+    Works on the given airnodes (deep copies from callFromZones). Returns the issues: dicts with 'level' ('error', 'warning' or 'info'),
+    'message' and 'surfaces'. With an error the surfaces are not complete and must not be written. AUTOMATIC is the same as an empty
+    category: it only exists because an empty setting keeps the value of the surface.
     """
     issues = []
     if gaptolerance is None:
@@ -1633,7 +1693,10 @@ def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, stan
     for airnode in airnodes:
         for item in airnode.Surfaces:
             item.Airnode = airnode.Name
-    pairs = resolveAdjacency(airnodes, library, autoadjacency, gaptolerance, standalone, issues)
+            if item.Boundarycond == 'AUTOMATIC':
+                item.Boundarycond = None
+    pairs = resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues)
+    fillConstructions(airnodes, pairs, constructionset, library, issues)
     finalizeSurfaces(airnodes, library, pairs, issues)
     return issues
 # ---- Surface model (end)

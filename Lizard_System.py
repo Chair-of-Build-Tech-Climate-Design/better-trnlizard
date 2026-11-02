@@ -5211,7 +5211,7 @@ if WriteSimulationFiles:
                          Airnode_item.surfaces.append(item)
         if 'OC_command_lines_global_variables' in sc.sticky[sc.doc.Path]:
             checkTreeSurfaceOrientation(Airnodeinfo)
-        modelissues = compileModel(Airnodeinfo,library,dummyMulti.autoadjacency,dummyMulti.gaptolerance,RunSingleAirnodes == 1)
+        modelissues = compileModel(Airnodeinfo,library,dummyMulti.autoadjacency,dummyMulti.gaptolerance,RunSingleAirnodes == 1,dummyMulti.constructionset)
         surfaceinfo = []
         for Airnode_item in Airnodeinfo:
             surfaceinfo.extend(Airnode_item.Surfaces)
@@ -5219,6 +5219,9 @@ if WriteSimulationFiles:
             checkTreeSurfaceOrientation(Airnodeinfo)
         modelerror = False
         for mitem in modelissues:
+            if mitem['level'] == 'info':
+                ghenv.Component.AddRuntimeMessage(rem, mitem['message'])
+                continue
             if mitem['level'] == 'error':
                 modelerror = True
                 ghenv.Component.AddRuntimeMessage(err, mitem['message'])
