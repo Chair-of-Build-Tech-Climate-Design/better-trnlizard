@@ -4919,6 +4919,13 @@ def todict(obj, classkey=None):
 
 #CCF new for loop to define multizone and system simulation
 if WriteSimulationFiles:
+    upstreamerrors = sc.sticky[sc.doc.Path]["upstreamErrors"](ghenv.Component, err)
+    if upstreamerrors:
+        for message in upstreamerrors:
+            ghenv.Component.AddRuntimeMessage(err, "Upstream error, %s"%message)
+        ghenv.Component.Message = 'Model not written: see the errors'
+        rs.EnableRedraw(True)
+        sys.exit()
     for rui,runitem in enumerate(dummyMulti.airnode):
         variants_folder         = sc.sticky[sc.doc.Path]["Variants_folder"].decode('utf-8')
         if RunSingleAirnodes == 1:

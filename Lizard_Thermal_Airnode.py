@@ -148,6 +148,10 @@ ghenv.Component.Params.OnParametersChanged()
 w = gh.Kernel.GH_RuntimeMessageLevel.Warning
 err = gh.Kernel.GH_RuntimeMessageLevel.Error
 warn = '*** Warning *** '
+for message in sc.sticky[sc.doc.Path]["upstreamErrors"](ghenv.Component, err):
+    ghenv.Component.AddRuntimeMessage(err, "Upstream error, %s"%message)
+if 'ConstructionSet' in locals() and sc.sticky[sc.doc.Path]["isFailure"](ConstructionSet):
+    ghenv.Component.AddRuntimeMessage(err, "ConstructionSet failed: %s"%ConstructionSet.Message)
 if len(SurfaceInfo) > 0:
     rs.EnableRedraw(False)
     getVolume = sc.sticky[sc.doc.Path]["getVolume"]
@@ -202,6 +206,7 @@ if len(SurfaceInfo) > 0:
     orientations = []
     if len(SurfaceInfo) <= 3:
         print '!At least four surfaces have to be connected!'
+        ghenv.Component.AddRuntimeMessage(err, "At least four surfaces have to be connected!")
         sys.exit()
     OriToCheck = []
     PtsToCheck = []

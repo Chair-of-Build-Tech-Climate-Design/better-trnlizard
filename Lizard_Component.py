@@ -1227,6 +1227,18 @@ DEFAULT_GAP_TOLERANCE = 0.02    # m, parallel planes closer than this are one pl
 NEAR_MISS_DISTANCE = 0.5        # m, faces this close get a hint when they are not adjacent
 CONSTRUCTION_SLOTS = ('ExteriorWall', 'InteriorWall', 'Roof', 'InteriorCeiling', 'InteriorFloor', 'GroundFloor', 'ExposedFloor')
 EXTERIOR_CATEGORIES = ('EXTERNAL', 'EXTBOUNDARY', 'EXTCALC', 'EXTSKYBND', 'EXTVERTF', 'EXTBOUNDADJ', 'EXTCALEXT')
+class ComponentFailure:
+    """What a component outputs when it could not do its work. None would look like an input that is not connected, and the next
+    component would go on with its defaults."""
+    Failed = True
+    def __init__(self, component, message):
+        self.Component = component
+        self.Message = message
+    def __repr__(self):
+        return "Failed:{0}:{1}".format(self.Component, self.Message)
+def isFailure(value):
+    """Asks the value and not its class: the class is defined again whenever Lizard_Component runs."""
+    return getattr(value, 'Failed', False) is True
 def isWindowSurface(item):
     return item.Type in ('WINDOW', 'BSDFWINDOW')
 def isVirtualSurface(item):
@@ -1628,7 +1640,7 @@ def fillConstructions(airnodes, pairs, modelset, library, issues):
             following.append(id(front))
     filled = {}
     for airnode in airnodes:
-        sets = [item for item in (airnode.Constructionset, modelset) if item is not None]
+        sets = [item for item in (airnode.Constructionset, modelset) if item is not None and not isFailure(item)]
         for item in airnode.Surfaces:
             if item.Construction or isWindowSurface(item) or isVirtualSurface(item) or item.Type == 'ADDWINDOW' or id(item) in following:
                 continue
@@ -1665,8 +1677,18 @@ def subtractSurfaces(faces, explicit):
         else:
             outside.extend([bynumber[key] for key in others if bynumber[key] not in outside])
     return dict([(key, remaining.get(key, [])) for key in touched]), outside
-def finalizeSurfaces(airnodes, library, pairs, issues):
-    """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values."""
+def setFailures(airnodes, modelset):
+    """The messages of the construction sets that failed. Such a set stops the model: its surfaces must not go on without their defaults."""
+    messages = []
+    for airnode in airnodes:
+        if isFailure(airnode.Constructionset):
+            messages.append("Airnode {0}: {1}".format(airnode.Name, airnode.Constructionset.Message))
+    if isFailure(modelset):
+        messages.append("Multizone: {0}".format(modelset.Message))
+    return messages
+def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
+    """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values. A surface
+    without a construction is not reported when a set has failed: that error says it already."""
     walls = dict([(wall.Name, wall) for wall in library.Walls])
     for airnode in airnodes:
         for item in airnode.Surfaces:
@@ -1684,6 +1706,8 @@ def finalizeSurfaces(airnodes, library, pairs, issues):
             if item.Type == 'ADDWINDOW':
                 continue
             if not item.Construction:
+                if setfailed:
+                    continue
                 addIssue(issues, 'error', "Surface {0} of {1} ({2}, {3}) has no construction: set one on the surface or fill {4} in a construction set".format(item.Surfnum, item.Airnode, item.Type, item.Boundarycond, constructionSlot(item)), [item])
             elif item.Construction not in walls:
                 addIssue(issues, 'error', "Surface {0} of {1}: construction {2} is not in the library".format(item.Surfnum, item.Airnode, item.Construction), [item])
@@ -1716,9 +1740,12 @@ def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, stan
             item.Airnode = airnode.Name
             if item.Boundarycond == 'AUTOMATIC':
                 item.Boundarycond = None
+    failures = setFailures(airnodes, constructionset)
+    for message in failures:
+        addIssue(issues, 'error', message)
     pairs = resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues)
     fillConstructions(airnodes, pairs, constructionset, library, issues)
-    finalizeSurfaces(airnodes, library, pairs, issues)
+    finalizeSurfaces(airnodes, library, pairs, issues, len(failures) > 0)
     return issues
 # ---- Surface model (end)
 def surfaceNormal(brep):
@@ -1736,6 +1763,27 @@ def makeSurfaceBrep(points, normal):
     if rc.Geometry.Vector3d.Multiply(surfaceNormal(brep),normal) < 0:
         brep.Flip()
     return brep
+def upstreamErrors(component, level):
+    """The errors of everything upstream of a component, as 'name: message'. A component in error leaves its output empty, which looks
+    like nothing connected, also behind a merge. level = GH_RuntimeMessageLevel.Error."""
+    found = []
+    seen = [component.InstanceGuid]
+    stack = [component]
+    while stack:
+        current = stack.pop()
+        if current is not component:
+            for message in current.RuntimeMessages(level):
+                found.append("{0}: {1}".format(current.NickName, message))
+        inputs = [current]
+        if hasattr(current, 'Params'):
+            inputs = current.Params.Input
+        for param in inputs:
+            for source in param.Sources:
+                owner = source.Attributes.GetTopLevel.DocObject
+                if owner.InstanceGuid not in seen:
+                    seen.append(owner.InstanceGuid)
+                    stack.append(owner)
+    return found
 def solidFaces(solid):
     """The faces of a room solid as single-face Breps with outward normals. Returns (faces, problem)."""
     brep = solid.DuplicateBrep()
@@ -2672,6 +2720,10 @@ sc.sticky[sc.doc.Path]["Exe_mode"]           = exe_mode
 sc.sticky[sc.doc.Path]["findMaxSurfNum"]     = findMaxSurfNum
 sc.sticky[sc.doc.Path]["compileModel"]       = compileModel
 sc.sticky[sc.doc.Path]["orientSurfaces"]     = orientSurfaces
+sc.sticky[sc.doc.Path]["ComponentFailure"]   = ComponentFailure
+sc.sticky[sc.doc.Path]["isFailure"]          = isFailure
+sc.sticky[sc.doc.Path]["setFailures"]        = setFailures
+sc.sticky[sc.doc.Path]["upstreamErrors"]     = upstreamErrors
 sc.sticky[sc.doc.Path]["checkWindowsInWalls"] = checkWindowsInWalls
 sc.sticky[sc.doc.Path]["defineGeosurf"]      = defineGeosurf
 sc.sticky[sc.doc.Path]["getFloorArea"]       = getFloorArea

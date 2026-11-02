@@ -3,9 +3,12 @@
 Same harness as test_surface_model.py: the real blocks of Lizard_Component.py with stand-ins for Rhino.
 """
 
+import copy
+import sys
 import unittest
 from pathlib import Path
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
+from unittest import mock
 
 from test_surface_model import FakeSurfaceBrep, FakeUserDictionary, M, Vec, airnode, compile_model, errors, library, load_construction, north, south, surface, warnings_of, walls_of
 
@@ -381,7 +384,137 @@ class SolidFacesTests(unittest.TestCase):
         self.assertIn("hole", self.run_on(FakeRhinoFace("a", loops=2))[1])
 
 
+class FailureTests(unittest.TestCase):
+    def failure(self):
+        return M["ComponentFailure"]("Lizard_Construction_Set", "ExteriorWall: construction NOPE not found")
+
+    def test_the_value_is_asked_and_not_its_class(self):
+        self.assertTrue(M["isFailure"](self.failure()))
+        self.assertTrue(M["isFailure"](SimpleNamespace(Failed=True)))
+        for value in (None, "", "NOPE", 0, constructions(ExteriorWall="OUT"), [self.failure()]):
+            self.assertFalse(M["isFailure"](value))
+
+    def test_failed_set_of_the_model_stops_the_model_with_one_error(self):
+        item = south(0, 5, construction=None)
+        issues = M["compileModel"]([airnode("A1", item)], library(), constructionset=self.failure())
+        self.assertEqual(1, len(errors(issues)))
+        self.assertIn("Multizone", errors(issues)[0])
+        self.assertIn("NOPE", errors(issues)[0])
+        self.assertIsNone(item.Construction)
+
+    def test_failed_set_of_an_airnode_does_not_fall_back_to_the_model(self):
+        item = south(0, 5, construction=None)
+        node = airnode("A1", item)
+        node.Constructionset = self.failure()
+        issues = M["compileModel"]([node], library(), constructionset=constructions(ExteriorWall="OUT"))
+        self.assertEqual(1, len(errors(issues)))
+        self.assertIn("Airnode A1", errors(issues)[0])
+
+    def test_failure_also_stops_a_model_that_does_not_need_the_set(self):
+        issues = M["compileModel"]([airnode("A1", south(0, 5))], library(), constructionset=self.failure())
+        self.assertEqual(1, len(errors(issues)))
+
+    def test_failure_survives_a_deep_copy(self):
+        self.assertTrue(M["isFailure"](copy.deepcopy(self.failure())))
+
+
+class FakeDocObject:
+    """A component (with inputs) or a floating parameter (with sources)."""
+
+    def __init__(self, name, messages=(), inputs=None, sources=None):
+        self.NickName, self.InstanceGuid = name, name
+        self.messages = list(messages)
+        self.Attributes = SimpleNamespace(GetTopLevel=SimpleNamespace(DocObject=self))
+        if inputs is not None:
+            self.Params = SimpleNamespace(Input=[SimpleNamespace(Sources=list(group)) for group in inputs])
+        else:
+            self.Sources = list(sources or [])
+
+    def RuntimeMessages(self, level):
+        return self.messages if level == "ERROR" else []
+
+
+class UpstreamTests(unittest.TestCase):
+    def setUp(self):
+        text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        first = text.index("def upstreamErrors(component, level):")
+        scope = {}
+        exec(text[first:text.index("def solidFaces(solid):", first)], scope)
+        self.upstream = scope["upstreamErrors"]
+
+    def test_nothing_red(self):
+        source = FakeDocObject("Surface", inputs=[[]])
+        self.assertEqual([], self.upstream(FakeDocObject("Airnode", inputs=[[source]]), "ERROR"))
+
+    def test_error_of_the_direct_source(self):
+        source = FakeDocObject("Surface", ["no such construction"], inputs=[[]])
+        self.assertEqual(["Surface: no such construction"], self.upstream(FakeDocObject("Airnode", inputs=[[source]]), "ERROR"))
+
+    def test_error_behind_a_merge_and_a_floating_parameter(self):
+        red = FakeDocObject("Surface", ["bad"], inputs=[[]])
+        merge = FakeDocObject("Merge", inputs=[[red], [FakeDocObject("Other", inputs=[[]])]])
+        floating = FakeDocObject("Brep", sources=[merge])
+        self.assertEqual(["Surface: bad"], self.upstream(FakeDocObject("Airnode", inputs=[[floating]]), "ERROR"))
+
+    def test_own_errors_do_not_count(self):
+        self.assertEqual([], self.upstream(FakeDocObject("Airnode", ["own"], inputs=[[]]), "ERROR"))
+
+    def test_shared_source_is_reported_once(self):
+        red = FakeDocObject("Schedule", ["bad"], inputs=[[]])
+        a, b = FakeDocObject("A", inputs=[[red]]), FakeDocObject("B", inputs=[[red]])
+        self.assertEqual(1, len(self.upstream(FakeDocObject("Airnode", inputs=[[a, b]]), "ERROR")))
+
+    def test_a_loop_of_references_ends(self):
+        a = FakeDocObject("A", inputs=[[]])
+        b = FakeDocObject("B", inputs=[[a]])
+        a.Params.Input[0].Sources.append(b)
+        self.assertEqual([], self.upstream(FakeDocObject("Airnode", inputs=[[a]]), "ERROR"))
+
+
+def run_set_component(known=("OUT",), **slots):
+    source = (REPO_ROOT / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
+    messages = []
+    scriptcontext = ModuleType("scriptcontext")
+    scriptcontext.doc = SimpleNamespace(Path="doc")
+    scriptcontext.sticky = {"doc": {"library": SimpleNamespace(Walls=[SimpleNamespace(Name=name) for name in known]), "ComponentFailure": M["ComponentFailure"]}}
+    grasshopper = ModuleType("Grasshopper")
+    kernel = ModuleType("Grasshopper.Kernel")
+    kernel.GH_RuntimeMessageLevel = SimpleNamespace(Error="ERROR")
+    grasshopper.Kernel = kernel
+    component = SimpleNamespace(AddRuntimeMessage=lambda level, text: messages.append(text), Name="", NickName="", Message="", Category="", SubCategory="")
+    namespace = {"ghenv": SimpleNamespace(Component=component)}
+    namespace.update(dict((slot, slots.get(slot)) for slot in M["CONSTRUCTION_SLOTS"]))
+    with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext, "Grasshopper": grasshopper, "Grasshopper.Kernel": kernel}):
+        exec(compile(source, "Lizard_Construction_Set.py", "exec"), namespace)
+    return namespace["Set"], messages
+
+
+class SetComponentTests(unittest.TestCase):
+    def test_valid_names_give_a_set(self):
+        result, messages = run_set_component(ExteriorWall="OUT")
+        self.assertEqual([], messages)
+        self.assertFalse(M["isFailure"](result))
+        self.assertEqual("OUT", result.ExteriorWall)
+
+    def test_unknown_name_gives_a_failure_and_no_set_at_all(self):
+        result, messages = run_set_component(ExteriorWall="OUT", Roof="NOPE")
+        self.assertEqual(1, len(messages))
+        self.assertTrue(M["isFailure"](result))
+        self.assertIn("NOPE", result.Message)
+        self.assertIsNone(getattr(result, "ExteriorWall", None))
+
+
 class ComponentTests(unittest.TestCase):
+    def test_the_next_components_react_to_errors(self):
+        for name in ("Lizard_Thermal_Airnode.py", "Lizard_Multizone.py"):
+            text = (REPO_ROOT / name).read_text(encoding="utf-8-sig")
+            self.assertIn('["upstreamErrors"](ghenv.Component, err)', text)
+            self.assertIn('["isFailure"](ConstructionSet)', text)
+
+    def test_system_stops_on_upstream_errors_before_it_writes(self):
+        text = (REPO_ROOT / "Lizard_System.py").read_text(encoding="utf-8-sig")
+        self.assertRegex(text, r"if WriteSimulationFiles:\s+upstreamerrors = [^\n]*upstreamErrors[\s\S]{0,300}sys\.exit\(\)\s+for rui,runitem")
+
     def test_component_has_all_the_slots_and_their_docs(self):
         text = (REPO_ROOT / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
         self.assertIn('ghenv.Component.Name = "Lizard_Construction_Set"', text)

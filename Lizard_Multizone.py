@@ -102,6 +102,11 @@ Returns:
 """
         return "{}:{}".format(self.__class__.__name__, self.name)
 
+err = gh.GH_RuntimeMessageLevel.Error
+for message in sc.sticky[sc.doc.Path]["upstreamErrors"](ghenv.Component, err):
+    ghenv.Component.AddRuntimeMessage(err, "Upstream error, %s"%message)
+if sc.sticky[sc.doc.Path]["isFailure"](ConstructionSet):
+    ghenv.Component.AddRuntimeMessage(err, "ConstructionSet failed: %s"%ConstructionSet.Message)
 Multizone = Multizone()
 Brep_ = copy.deepcopy(Multizone.airnode)
 Brep_.extend(Multizone.shading)

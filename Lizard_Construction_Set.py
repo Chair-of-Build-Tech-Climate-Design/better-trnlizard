@@ -10,7 +10,8 @@ See the file "License.txt" for additional terms and conditions.
 
 Connect Set to the input ConstructionSet of Lizard_Multizone for the whole building, or of Lizard_Thermal_Airnode for one room. The
 airnode comes first, slot by slot: an empty slot is looked up in the set of the model. A construction in Lizard_Surface_Settings always
-wins. Windows and active layers need that explicit construction: a set does not fill them.
+wins. Windows and active layers need that explicit construction: a set does not fill them. A name that is not in the library makes the
+whole set fail: the components after it then stop the model, and none of its slots is used.
 
 Args:
     ExteriorWall (str): wall with outside air
@@ -38,7 +39,7 @@ Args:
 Returns:
     out (object): Log Information!!!
         Access: item
-    Set (object): connect to ConstructionSet of Lizard_Multizone or Lizard_Thermal_Airnode
+    Set (object): connect to ConstructionSet of Lizard_Multizone or Lizard_Thermal_Airnode; after an error a failure that stops them
         Access: item
 """
 import scriptcontext as sc
@@ -64,6 +65,12 @@ class ConstructionSet:
         return "{0}:{1}".format('Settings:ConstructionSet',self.ExteriorWall)
 Set = ConstructionSet()
 known = [wall_item.Name for wall_item in sc.sticky[sc.doc.Path]["library"].Walls]
+problems = []
 for slot, name in sorted(vars(Set).items()):
     if name and name not in known:
-        ghenv.Component.AddRuntimeMessage(err, "{0}: construction {1} not found in the library!".format(slot, name))
+        problems.append("{0}: construction {1} not found in the library!".format(slot, name))
+for message in problems:
+    ghenv.Component.AddRuntimeMessage(err, message)
+if problems:
+    Set = sc.sticky[sc.doc.Path]["ComponentFailure"]("Lizard_Construction_Set", " ".join(problems))
+    ghenv.Component.Message = 'Failed'
