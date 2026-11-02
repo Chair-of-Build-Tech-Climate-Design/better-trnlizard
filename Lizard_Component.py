@@ -1747,6 +1747,79 @@ def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, stan
     fillConstructions(airnodes, pairs, constructionset, library, issues)
     finalizeSurfaces(airnodes, library, pairs, issues, len(failures) > 0)
     return issues
+INSPECT_GROUPS = ('External', 'Adjacent', 'Boundary', 'Mirror', 'Window', 'Other', 'Unresolved')
+INSPECT_COLOURS = {'External': (66, 133, 200), 'Adjacent': (92, 170, 100), 'Boundary': (226, 142, 50), 'Mirror': (150, 105, 190),
+                   'Window': (150, 215, 230), 'Other': (160, 160, 160), 'Unresolved': (214, 50, 50)}
+INSPECT_COLUMNS = ('airnode', 'surface', 'source', 'type', 'group', 'category', 'temperature', 'construction', 'fromset', 'slot', 'frontback', 'partner', 'area')
+def inspectGroup(item):
+    """The group of a surface in the inspection, from its final boundary condition."""
+    if isWindowSurface(item) or item.Type == 'ADDWINDOW':
+        return 'Window'
+    if isVirtualSurface(item):
+        return 'Other'
+    category = item.Boundarycond
+    if not category or (category == 'ADJACENT' and not item.Adjsurf):
+        return 'Unresolved'
+    if category == 'ADJACENT':
+        return 'Adjacent'
+    if category in EXTERIOR_CATEGORIES:
+        return 'External'
+    if category in ('BOUNDARY', 'EXTCALBND') and isMirrorBoundary(item):
+        return 'Mirror'
+    if category in ('BOUNDARY', 'EXTCALBND', 'EXTFICALC', 'BNDCALC', 'AUTOBOUND'):
+        return 'Boundary'
+    return 'Other'
+def inspectRow(airnode, item, group, filled):
+    slot = ''
+    if group != 'Window' and not isVirtualSurface(item):
+        slot = constructionSlot(item)
+    partner = ''
+    if item.Adjsurf:
+        partner = '{0}:{1}'.format(item.Adjairnode, item.Adjsurf)
+    return {'airnode': airnode.Name, 'surface': item.Surfnum, 'source': item.Sourcesurf if item.Sourcesurf is not None else item.Surfnum, 'type': item.Type,
+            'group': group, 'category': item.Boundarycond, 'temperature': item.Boundarytemp, 'construction': item.Construction, 'fromset': id(item) in filled,
+            'slot': slot, 'frontback': item.Frontback, 'partner': partner, 'area': float(item.Area or 0.0)}
+def inspectModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False, constructionset=None):
+    """compileModel for looking at the result, also when it has errors. Works on the given airnodes (deep copies from callFromZones).
+
+    Returns a dict: 'airnodes' (names), 'groups' {group: one list of surfaces per airnode}, 'rows' (one dict per surface), 'summary' and 'issues'."""
+    issues = []
+    if standalone:
+        for airnode in airnodes:
+            issues.extend(compileModel([airnode], library, autoadjacency, gaptolerance, True, constructionset))
+    else:
+        issues = compileModel(airnodes, library, autoadjacency, gaptolerance, False, constructionset)
+    filled = []
+    for issue in issues:
+        if issue['level'] == 'info':
+            filled.extend([id(item) for item in issue['surfaces']])
+    groups = dict([(group, [[] for airnode in airnodes]) for group in INSPECT_GROUPS])
+    rows = []
+    for index, airnode in enumerate(airnodes):
+        for item in airnode.Surfaces:
+            group = inspectGroup(item)
+            groups[group][index].append(item)
+            rows.append(inspectRow(airnode, item, group, filled))
+    summary = []
+    for group in INSPECT_GROUPS:
+        own = [row for row in rows if row['group'] == group]
+        if own:
+            summary.append('{0}: {1} surfaces, {2:.2f} m2'.format(group, len(own), sum([row['area'] for row in own])))
+    return {'airnodes': [airnode.Name for airnode in airnodes], 'groups': groups, 'rows': rows, 'summary': summary, 'issues': issues}
+def inspectTable(rows):
+    """Tab-separated lines with a header, for a panel or a spreadsheet."""
+    lines = ['\t'.join([column.capitalize() for column in INSPECT_COLUMNS])]
+    for row in rows:
+        values = []
+        for column in INSPECT_COLUMNS:
+            if column == 'area':
+                values.append('{0:.2f}'.format(row[column]))
+            elif row[column] is None:
+                values.append('')
+            else:
+                values.append(str(row[column]))
+        lines.append('\t'.join(values))
+    return lines
 # ---- Surface model (end)
 def surfaceNormal(brep):
     """Normal of the single face of a surface as Rhino shows it: a face can be flipped against its underlying surface."""
@@ -2724,6 +2797,10 @@ sc.sticky[sc.doc.Path]["ComponentFailure"]   = ComponentFailure
 sc.sticky[sc.doc.Path]["isFailure"]          = isFailure
 sc.sticky[sc.doc.Path]["setFailures"]        = setFailures
 sc.sticky[sc.doc.Path]["upstreamErrors"]     = upstreamErrors
+sc.sticky[sc.doc.Path]["inspectModel"]       = inspectModel
+sc.sticky[sc.doc.Path]["inspectTable"]       = inspectTable
+sc.sticky[sc.doc.Path]["INSPECT_GROUPS"]     = INSPECT_GROUPS
+sc.sticky[sc.doc.Path]["INSPECT_COLOURS"]    = INSPECT_COLOURS
 sc.sticky[sc.doc.Path]["checkWindowsInWalls"] = checkWindowsInWalls
 sc.sticky[sc.doc.Path]["defineGeosurf"]      = defineGeosurf
 sc.sticky[sc.doc.Path]["getFloorArea"]       = getFloorArea

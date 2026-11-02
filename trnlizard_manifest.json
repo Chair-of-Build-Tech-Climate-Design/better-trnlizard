@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-11-02T16:56:19Z",
+  "generated": "2026-11-02T16:56:21Z",
   "files": {
     "Lizard_Active_CC_Layer.py": {
       "sha256": "a386fccd889ae6cca5fc671955595cb1bf853681c9ef0c2f8e0f2c940f4976fd",
@@ -47,8 +47,8 @@
       "size": 2126
     },
     "Lizard_Component.py": {
-      "sha256": "a3c84b9224436624e24b2f39352ab4e2220544602d0633bdb85c9932e7a271da",
-      "size": 134485
+      "sha256": "8a29319d9511a1282973059984016c6521784cb237619b71b535b964361dbc97",
+      "size": 138731
     },
     "Lizard_Construction.py": {
       "sha256": "d41308ca368236c742690606a71b22b887c253365a507578f9abb4784d7fecde",
@@ -141,6 +141,10 @@
     "Lizard_Misc_Gains.py": {
       "sha256": "dd96812ec47ce9b0483a5b0d06e21b12fc0060983453a9d5331983dbafa65237",
       "size": 4889
+    },
+    "Lizard_Model_Inspect.py": {
+      "sha256": "f6583bcb4c3f0222d59030f5f837b451eef4eb5592c46a5c4c64145ec467c354",
+      "size": 5380
     },
     "Lizard_Multizone.py": {
       "sha256": "b82e46f059be1c88c99c241e786e2b2948032d068c0ff8fca636d2d273272b96",
@@ -275,8 +279,8 @@
       "size": 1858
     },
     "trnlizard_icons.json": {
-      "sha256": "9cb435308e329ba6de80b721c69cf3698d638b153f23960cce33b81fb23ecf04",
-      "size": 110963
+      "sha256": "edcedf45b1bc916b9959e0d9ab0afb98742dc57271864377f2d31ffa7f97fb7c",
+      "size": 112837
     },
     "trnlizard_presets.json": {
       "sha256": "2a2c554bf858447e34fb69abc3129e47cf4afd7d31083c63be5d642605ee8edf",
