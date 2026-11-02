@@ -1,4 +1,5 @@
-"""compileModel of Lizard_Component.py: adjacency with splitting, boundary conditions, the final check.
+"""compileModel of Lizard_Component.py: adjacency with splitting, boundary conditions, the final check, and the settings of
+a surface that are written in several steps.
 
 The real blocks run with fake Rhino objects: only makeSurfaceVertices, makeSurfaceBrep, flipSurfaceBreps and the Brep class are stand-ins.
 """
@@ -6,9 +7,11 @@ The real blocks run with fake Rhino objects: only makeSurfaceVertices, makeSurfa
 import copy
 import math
 import re
+import sys
 import unittest
 from pathlib import Path
-from types import SimpleNamespace
+from types import ModuleType, SimpleNamespace
+from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -553,6 +556,170 @@ class OrientSurfacesTests(unittest.TestCase):
         vertices = list(room[0].Vertices)
         self.assertEqual(([], False), M["orientSurfaces"](room))
         self.assertEqual(vertices, room[0].Vertices)
+
+
+class FakeUserDictionary(dict):
+    def ContainsKey(self, key):
+        return key in self
+
+    def Set(self, key, value):
+        self[key] = value
+
+
+class FakeSurfaceBrep:
+    def __init__(self, name):
+        self.name = name
+        self.UserDictionary = FakeUserDictionary()
+
+    def DuplicateBrep(self):
+        other = FakeSurfaceBrep(self.name)
+        other.UserDictionary = FakeUserDictionary(self.UserDictionary)
+        return other
+
+    def GetArea(self):
+        return 1.0
+
+    def GetBoundingBox(self, accurate):
+        return SimpleNamespace(Min=self.name, Max=self.name)
+
+
+def load_construction():
+    text = SOURCE.read_text(encoding="utf-8-sig")
+    block = between(text, "class CONSTRUCTION:", "class ZONECOLL():")
+    block = re.sub(r"^(\s*)print (.*)$", r"\1print(\2)", block, flags=re.M).replace(".has_key(key)", ".__contains__(key)").replace(".has_key('Const_coll')", ".__contains__('Const_coll')").replace(".has_key('Surface_Counter')", ".__contains__('Surface_Counter')")
+    sticky = {"doc": {"GEOMETRY": lambda brep: _geometry(brep), "library": None}}
+    namespace = dict(M)
+    namespace.update({
+        "copy": copy, "re": re, "sc": SimpleNamespace(sticky=sticky, doc=SimpleNamespace(Path="doc")),
+        "surfaceNormal": lambda brep: Vec(0, 0, 1),
+        "getSurfaceVertices": lambda normal, brep: [Vec(0, 0, 0), Vec(1, 0, 0), Vec(0, 1, 0)],
+        "cleanVertices": lambda points: points,
+        "checkVerticesOrder": lambda points, normal: points,
+        "getWinOrientation": lambda brep: "S_0_90",
+        "library": SimpleNamespace(Walls=[]),
+    })
+    exec(compile(block, str(SOURCE), "exec"), namespace)
+    return namespace["CONSTRUCTION"](), sticky["doc"]
+
+
+def _geometry(brep):
+    record = M["GEOMETRY"](brep)
+    return record
+
+
+class SettingsTests(unittest.TestCase):
+    def setUp(self):
+        self.construction, self.sticky = load_construction()
+
+    def settings(self, **values):
+        fields = {"Boundarycond": None, "Construction": None, "Boundarytemp": None, "Frontback": None}
+        fields.update(values)
+        return SimpleNamespace(**fields)
+
+    def add(self, brep, guid, settings=None):
+        breps = self.construction.addToConstruction([brep], guid)
+        self.construction.updateConstructionNew(breps, settings)
+        return breps[0]
+
+    def record(self, brep):
+        return self.sticky["Const_coll"][brep.UserDictionary["LID"]]
+
+    def test_empty_settings_stay_unset(self):
+        brep = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL"))
+        record = self.record(brep)
+        self.assertEqual(("WALL", None, None), (record.Construction, record.Boundarycond, record.Frontback))
+
+    def test_no_settings_at_all_leave_everything_open(self):
+        record = self.record(self.add(FakeSurfaceBrep("a"), "c1"))
+        self.assertEqual((None, None), (record.Construction, record.Boundarycond))
+
+    def test_later_component_only_changes_what_it_sets(self):
+        first = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL", Boundarycond="EXTERNAL"))
+        second = self.add(first, "c2", self.settings(Boundarycond="BOUNDARY", Boundarytemp="TAIR_A2"))
+        record = self.record(second)
+        self.assertEqual(("WALL", "BOUNDARY", "INPUT 1*TAIR_A2"), (record.Construction, record.Boundarycond, record.Boundarytemp))
+        self.assertEqual(self.record(first).Surfnum, record.Surfnum)
+
+    def test_branches_do_not_touch_each_other(self):
+        first = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL"))
+        left = self.add(first, "c2", self.settings(Construction="LEFT"))
+        right = self.add(first, "c3", self.settings(Construction="RIGHT"))
+        self.assertEqual(("WALL", "LEFT", "RIGHT"), (self.record(first).Construction, self.record(left).Construction, self.record(right).Construction))
+
+    def test_the_input_brep_keeps_its_id(self):
+        first = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL"))
+        lid = first.UserDictionary["LID"]
+        second = self.add(first, "c2", self.settings(Boundarycond="EXTERNAL"))
+        self.assertEqual(lid, first.UserDictionary["LID"])
+        self.assertNotEqual(lid, second.UserDictionary["LID"])
+
+    def test_a_new_solution_keeps_the_number_and_forgets_removed_settings(self):
+        first = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL", Boundarycond="EXTERNAL"))
+        again = self.add(FakeSurfaceBrep("a"), "c1", self.settings(Construction="WALL"))
+        self.assertEqual(self.record(first).Surfnum, self.record(again).Surfnum)
+        self.assertIsNone(self.record(again).Boundarycond)
+
+    def test_new_surfaces_get_new_numbers(self):
+        self.assertNotEqual(self.record(self.add(FakeSurfaceBrep("a"), "c1")).Surfnum, self.record(self.add(FakeSurfaceBrep("b"), "c1")).Surfnum)
+
+    def test_numeric_temperature_stays_a_number_and_efical_gets_the_surface_number(self):
+        record = self.record(self.add(FakeSurfaceBrep("a"), "c1", self.settings(Boundarytemp="20")))
+        self.assertEqual("20", record.Boundarytemp)
+        record = self.record(self.add(FakeSurfaceBrep("b"), "c1", self.settings(Boundarycond="EXTFICALC", Boundarytemp="TF_S")))
+        self.assertEqual("INPUT 1*TF_S%s" % record.Surfnum, record.Boundarytemp)
+
+    def test_window_settings_add_attributes_the_surface_does_not_have(self):
+        settings = SimpleNamespace(Type="WINDOW", Construction="WIN_A_1", Trnflow=None, Shdinput=None, Fixshade=0)
+        record = self.record(self.add(FakeSurfaceBrep("a"), "c1", settings))
+        self.assertEqual(("WINDOW", "WIN_A_1_S_0_90", None, None, 0), (record.Type, record.Construction, record.Trnflow, record.Shdinput, record.Fixshade))
+
+
+def run_surface_component(settings, walls=("WALL",)):
+    """The real Lizard_Surface.py on a fake CONSTRUCTION; returns (written settings, runtime messages, SurfaceInfo)."""
+    source = (REPO_ROOT / "Lizard_Surface.py").read_text(encoding="utf-8-sig")
+    written = []
+    messages = []
+
+    class Construction:
+        def addToConstruction(self, breps, guid):
+            return breps
+
+        def updateConstructionNew(self, breps, surface):
+            written.append(surface)
+
+        def getWallThickness(self, breps):
+            pass
+
+        def callFromConstruction(self, breps):
+            return []
+
+    scriptcontext = ModuleType("scriptcontext")
+    scriptcontext.doc = SimpleNamespace(Path="doc")
+    scriptcontext.sticky = {"doc": {"CONSTRUCTION": Construction, "library": SimpleNamespace(Walls=[SimpleNamespace(Name=name) for name in walls])}}
+    grasshopper = ModuleType("Grasshopper")
+    kernel = ModuleType("Grasshopper.Kernel")
+    kernel.GH_RuntimeMessageLevel = SimpleNamespace(Warning="WARNING", Error="ERROR")
+    grasshopper.Kernel = kernel
+    component = SimpleNamespace(InstanceGuid=SimpleNamespace(ToString=lambda: "guid"), AddRuntimeMessage=lambda level, text: messages.append(text))
+    namespace = {"ghenv": SimpleNamespace(Component=component), "BRep": ["brep"], "Settings": settings}
+    with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext, "Grasshopper": grasshopper, "Grasshopper.Kernel": kernel}):
+        exec(compile(source, "Lizard_Surface.py", "exec"), namespace)
+    return written, messages, namespace["SurfaceInfo"]
+
+
+class SurfaceComponentTests(unittest.TestCase):
+    def test_no_settings_at_all(self):
+        written, messages, info = run_surface_component(None)
+        self.assertEqual(([None], [], ["brep"]), (written, messages, info))
+
+    def test_empty_construction_is_fine_here(self):
+        settings = SimpleNamespace(Construction=None, Boundarycond="EXTERNAL")
+        self.assertEqual(["brep"], run_surface_component(settings)[2])
+
+    def test_unknown_construction_is_still_reported_at_once(self):
+        written, messages, info = run_surface_component(SimpleNamespace(Construction="NOPE", Boundarycond=None))
+        self.assertIsNone(info)
+        self.assertEqual(["Construction name not found in the library!"], messages)
 
 
 def box_room(name, x0, x1, y0, y1, z0, z1, ground=False):

@@ -546,6 +546,15 @@ class LizardHygroComponentTests(unittest.TestCase):
                     self.assertEqual("GKP.idf", stored[brep]["Filemat"])
                     self.assertEqual("EXTCALBND", stored[brep]["Boundarycond"])
 
+    def test_surface_settings_are_optional(self):
+        stored, messages = run_hygro(Settings=None)
+
+        self.assertEqual([], messages)
+        for brep in ("brep1", "brep2"):
+            self.assertIs(True, stored[brep]["Hygrothermal"])
+            self.assertEqual("GKP.idf", stored[brep]["Filemat"])
+            self.assertNotIn("Boundarycond", stored[brep])
+
     def test_values_are_stored_on_every_surface_of_the_component(self):
         stored, messages = run_hygro(write_report=False, report_interval=0.5, add_heat_depth=0.0125, add_heat=10.0, layer_min_div=8)
 

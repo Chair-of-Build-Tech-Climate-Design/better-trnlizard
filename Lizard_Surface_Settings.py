@@ -8,12 +8,12 @@ See the file "License.txt" for additional terms and conditions.
 -
 
 Args:
-    Construction (object): define surface construction (refer to Wall Type Library)
+    Construction (object): define surface construction (refer to Wall Type Library). Empty = keep the value of the surface; a surface without one is an error before the simulation
         Access: item
-        Required: True
-    Category (object): define boundary conditions of surface
+        Required: False
+    Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise EXTERNAL (a floor without a room below is an error)
         Access: item
-        Required: True
+        Required: False
     --------------------- Boundary
     BoundaryTemperature (str): use if category = boundary and if boundary temp. is not identical
         Access: item

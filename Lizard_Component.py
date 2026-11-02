@@ -1667,32 +1667,39 @@ class CONSTRUCTION:
         if not sc.sticky[sc.doc.Path].has_key('Const_coll'): sc.sticky[sc.doc.Path]['Const_coll'] = {}
         if not sc.sticky[sc.doc.Path].has_key('Surface_Counter'): sc.sticky[sc.doc.Path]['Surface_Counter'] = 0
         geometries = []
-        info       = []
-        itemcount = 0
+        collection = sc.sticky[sc.doc.Path]['Const_coll']
         for obj_items in range(len(Brep)):
-            info.append(sc.sticky[sc.doc.Path]["GEOMETRY"](Brep[obj_items]))
-            info[-1].Faces         = Brep[obj_items]
-            info[-1].Area          = Brep[obj_items].GetArea()
-            ori_normal             = Brep[obj_items].Faces[0].NormalAt(0,0)
-            info[-1].Vertices      = getSurfaceVertices(ori_normal,Brep[obj_items])
-            info[-1].Normalvector  = ori_normal
-            if len(info[-1].Vertices) > 4:
-                info[-1].Vertices = cleanVertices(info[-1].Vertices)
-            info[-1].Vertices = checkVerticesOrder(info[-1].Vertices, ori_normal)
-            lizkey = ("%s"%Brep[obj_items]).split()[3]
-            if sc.sticky[sc.doc.Path].has_key('Const_coll'):
-                if sc.sticky[sc.doc.Path]['Const_coll'].has_key(lizkey):
-                    info[obj_items].Surfnum = sc.sticky[sc.doc.Path]['Const_coll'][lizkey].Surfnum
-                else:
-                    sc.sticky[sc.doc.Path]['Surface_Counter'] = sc.sticky[sc.doc.Path]['Surface_Counter'] + 1
-                    info[obj_items].Surfnum  = sc.sticky[sc.doc.Path]['Surface_Counter']
-            sc.sticky[sc.doc.Path]['Const_coll'][lizkey] = info[obj_items]
-            geometry = info[obj_items].Surface
-            #for ditem in [a for a in dir(info[obj_items]) if not a.startswith('__')]:
-            #    print ditem, getattr(info[obj_items], ditem)
-            #    geometry.UserDictionary.Set(ditem, getattr(info[obj_items], ditem))
+            # the copy takes the new LID: the output of the upstream component keeps its own
+            geometry = Brep[obj_items].DuplicateBrep()
+            parent = None
+            if geometry.UserDictionary.ContainsKey('LID'):
+                parent = collection.get(geometry.UserDictionary['LID'])
+            if parent is not None:
+                # later settings go on top of the ones this surface already has
+                record = copy.copy(parent)
+                record.Surface = geometry
+            else:
+                record = sc.sticky[sc.doc.Path]["GEOMETRY"](geometry)
+            record.Faces           = geometry
+            record.Area            = geometry.GetArea()
+            ori_normal             = surfaceNormal(geometry)
+            record.Vertices        = getSurfaceVertices(ori_normal,geometry)
+            record.Normalvector    = ori_normal
+            if len(record.Vertices) > 4:
+                record.Vertices = cleanVertices(record.Vertices)
+            record.Vertices = checkVerticesOrder(record.Vertices, ori_normal)
+            box = geometry.GetBoundingBox(False)
+            lizkey = '{0}:{1}:{2}:{3}'.format(GHComponentID, obj_items, box.Min, box.Max)
+            if parent is not None:
+                record.Surfnum = parent.Surfnum
+            elif lizkey in collection:
+                record.Surfnum = collection[lizkey].Surfnum
+            else:
+                sc.sticky[sc.doc.Path]['Surface_Counter'] = sc.sticky[sc.doc.Path]['Surface_Counter'] + 1
+                record.Surfnum = sc.sticky[sc.doc.Path]['Surface_Counter']
+            collection[lizkey] = record
             geometry.UserDictionary.Set('LID', lizkey)
-            geometry.UserDictionary.Set('ID', info[obj_items].Surfnum)
+            geometry.UserDictionary.Set('ID', record.Surfnum)
             geometries.append(geometry)
         return geometries
     def callFromConstruction(self, geometryList):
@@ -1731,6 +1738,8 @@ class CONSTRUCTION:
             if 'list' in str(type(geometry)):
                 for gitem in geometry:
                     key = gitem.UserDictionary['LID']
+                    if not sc.sticky[sc.doc.Path]['Const_coll'][key].Construction:
+                        continue
                     for wall_item in library.Walls:
                         if sc.sticky[sc.doc.Path]['Const_coll'][key].Construction == wall_item.Name:
                             thickness_layer = wall_item.Thickness.split()
@@ -1756,44 +1765,33 @@ class CONSTRUCTION:
         except:
             pass
     def updateConstructionNew(self, geometry, dataclass):
-        if 1 > 0:
-            for gitem in geometry:
-                key = gitem.UserDictionary['LID']
-                if sc.sticky[sc.doc.Path]['Const_coll'].has_key(key):
-                    datadict = vars(dataclass)
-                    for keyitem in datadict.items():
-                        pass
-                        if keyitem[0] == 'Boundarycond':
-                            if 'BOUNDARY' or 'EXTFICALC' or 'EXTBOUNDARY' or 'EXTSKYBND' in keyitem[1]:
-                                if datadict['Boundarytemp'] and datadict['Boundarytemp'] !='':
-                                    bnd_dummy = datadict['Boundarytemp']
-                                    if re.search('^-?\d', str(bnd_dummy)):
-                                        pass
-                                    else:
-                                        appendtxt = ''
-                                        if keyitem[1] == 'EXTFICALC':
-                                            information = 'Surfnum'
-                                            lizard_coll = sc.sticky[sc.doc.Path]['CONSTRUCTION']()
-                                            collection = [gitem]
-                                            ObjectsFromLz = lizard_coll.callFromConstruction(collection)
-                                            _brep = []
-                                            for LO in range(len(ObjectsFromLz)):
-                                                appendtxt = ObjectsFromLz[LO].__dict__[information]
-                                        bnd_dummy = 'INPUT 1*{0}'.format(datadict['Boundarytemp'] + str(appendtxt))
-                                    sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Boundarytemp'] = bnd_dummy
-                                else:
-                                    sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Boundarytemp'] = 'Identical'
-                        if keyitem[0] == 'Construction' and 'WIN_' in keyitem[1]:
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Construction'] = keyitem[1] + '_' + getWinOrientation(gitem)
-                        elif keyitem[0] == 'Construction':
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Construction'] = keyitem[1]
-                        if keyitem[0] == 'Boundarytemp' or keyitem[0] == 'Construction':
-                            pass
-                        else:
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__[keyitem[0]] = keyitem[1]
-                    #print vars(sc.sticky[sc.doc.Path]['Const_coll'][key])
-        else:
-            pass
+        """Writes the settings on the surfaces. An empty setting keeps the value the surface already has."""
+        if dataclass is None:
+            return
+        for gitem in geometry:
+            key = gitem.UserDictionary['LID']
+            if not sc.sticky[sc.doc.Path]['Const_coll'].has_key(key):
+                continue
+            record = sc.sticky[sc.doc.Path]['Const_coll'][key]
+            datadict = vars(dataclass)
+            for name, value in datadict.items():
+                if name == 'Boundarytemp':
+                    continue
+                if value is None or value == '':
+                    if not hasattr(record, name):
+                        setattr(record, name, value)
+                elif name == 'Construction' and 'WIN_' in value:
+                    record.Construction = value + '_' + getWinOrientation(gitem)
+                else:
+                    setattr(record, name, value)
+            temperature = datadict.get('Boundarytemp')
+            if temperature:
+                if not re.search('^-?\\d', str(temperature)):
+                    appendtxt = ''
+                    if record.Boundarycond == 'EXTFICALC':
+                        appendtxt = record.Surfnum
+                    temperature = 'INPUT 1*{0}'.format(temperature + str(appendtxt))
+                record.Boundarytemp = temperature
 class ZONECOLL():
     def addToZones(self,GHComponentID,info):
         # check if the lizardzonedictionary already existed
