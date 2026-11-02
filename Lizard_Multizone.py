@@ -25,6 +25,14 @@ if "TrnflowNetwork" in locals():
     pass
 else:
     TrnflowNetwork = []
+if "AutoAdjacency" in locals():
+    pass
+else:
+    AutoAdjacency = None
+if "GapTolerance" in locals():
+    pass
+else:
+    GapTolerance = None
 
 
 class Multizone():
@@ -37,6 +45,8 @@ class Multizone():
         self.timebase = Timebase
         self.daylightmode = DaylightMode
         self.trnflownetwork = TrnflowNetwork
+        self.autoadjacency = AutoAdjacency
+        self.gaptolerance = GapTolerance
         #current_class = self.__class__
     def info(self):
         print self.name
@@ -65,6 +75,12 @@ Args:
     DaylightMode (object): Script input DaylightMode.
         Access: item
         Required: True
+    AutoAdjacency (bool): True = surfaces with the category EXTERNAL or BOUNDARY become adjacent where another room faces them, and are split along it; what no room faces keeps its category. Not connected = only surfaces with an empty, AUTOMATIC or ADJACENT category are looked at
+        Access: item
+        Required: False
+    GapTolerance (float): largest distance in m between two parallel surfaces of adjacent rooms, for models with net room volumes. Not connected = 0.02
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!

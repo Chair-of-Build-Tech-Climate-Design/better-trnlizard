@@ -167,7 +167,7 @@ exe_mode                = sc.sticky[sc.doc.Path]["Exe_mode"]
 #bui_file_base = sc.sticky[sc.doc.Path]["BUI_FILE"]
 TRNSYS = sc.sticky[sc.doc.Path]["TRNSYS"]
 getInputs           = sc.sticky[sc.doc.Path]["getInputs"]
-checkAdjacent       = sc.sticky[sc.doc.Path]["checkAdjacent"]
+compileModel        = sc.sticky[sc.doc.Path]["compileModel"]
 findMaxSurfNum      = sc.sticky[sc.doc.Path]["findMaxSurfNum"]
 library             = sc.sticky[sc.doc.Path]["library"]
 hemisphere          = sc.sticky[sc.doc.Path]["Hemisphere"]
@@ -220,7 +220,7 @@ def checkTreeSurfaceOrientation(Airnodeinfo):
         print '*'*20
         print Airnode
         surfaces = [x for x in Airnode.Surfaces if x.Construction=='WOOD']
-        windows = [x for x in Airnode.Surfaces if 'TREE' in x.Construction]
+        windows = [x for x in Airnode.Surfaces if 'TREE' in (x.Construction or '')]
         print 'Tree surfaces: %s' %len(surfaces)
         print 'Tree windows: %s' %len(windows)
 
@@ -5024,7 +5024,7 @@ if WriteSimulationFiles:
                 for setitem in GeneralSettings:
                     if setitem.Type == "GEOMETRY":
                         for sitem in Airnode_item.Surfaces:
-                            if re.search(setitem.Search1,getattr(sitem,"%s"%setitem.Filter1)):
+                            if re.search(setitem.Search1,str(getattr(sitem,"%s"%setitem.Filter1))):
                                 #print getattr(sitem,setitem.ChangeAttr)
                                 setattr(sitem, setitem.ChangeAttr, setitem.ChangeTo)
         """
@@ -5211,15 +5211,28 @@ if WriteSimulationFiles:
                          Airnode_item.surfaces.append(item)
         if 'OC_command_lines_global_variables' in sc.sticky[sc.doc.Path]:
             checkTreeSurfaceOrientation(Airnodeinfo)
-        adjacent,mismatched_adjacent,message  = checkAdjacent(surfaceinfo,mismatched_adjacent)
+        modelissues = compileModel(Airnodeinfo,library,dummyMulti.autoadjacency,dummyMulti.gaptolerance,RunSingleAirnodes == 1)
+        surfaceinfo = []
+        for Airnode_item in Airnodeinfo:
+            surfaceinfo.extend(Airnode_item.Surfaces)
         if 'OC_command_lines_global_variables' in sc.sticky[sc.doc.Path]:
             checkTreeSurfaceOrientation(Airnodeinfo)
-        for mitem in message:
-            ghenv.Component.AddRuntimeMessage(w, mitem)
-            collmessages += mitem + '\n'
+        modelerror = False
+        for mitem in modelissues:
+            if mitem['level'] == 'error':
+                modelerror = True
+                ghenv.Component.AddRuntimeMessage(err, mitem['message'])
+            else:
+                ghenv.Component.AddRuntimeMessage(w, mitem['message'])
+            collmessages += mitem['message'] + '\n'
+            for sitem in mitem['surfaces']:
+                mismatched_adjacent.append(sitem.Faces)
         MismatchedAdjacent = mismatched_adjacent
-        #if len(message) > 0:
-        #    sys.exit()
+        if modelerror:
+            print collmessages
+            ghenv.Component.Message = 'Model not written: see the errors'
+            rs.EnableRedraw(True)
+            sys.exit()
         SurfaceVolumes = []
         if showWallThickness == True:
             for surface in surfaceinfo:
