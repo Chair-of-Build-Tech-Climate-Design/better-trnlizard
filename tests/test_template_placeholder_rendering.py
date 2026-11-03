@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-COMPONENT_SOURCE = REPO_ROOT / "Lizard_Component.py"
+COMPONENT_SOURCE = REPO_ROOT / "components" / "Lizard_Component.py"
 
 
 class OrderedAttributes(OrderedDict):

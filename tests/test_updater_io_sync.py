@@ -16,7 +16,7 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-UPDATER_SOURCE = REPO_ROOT / "Lizard_Updater.py"
+UPDATER_SOURCE = REPO_ROOT / "components" / "Lizard_Updater.py"
 
 
 def load_updater(extra_modules=None):
@@ -108,7 +108,7 @@ class UpdaterModuleTests(unittest.TestCase):
         self.assertEqual((["a"], []), self.updater.parseIONames('"""\nArgs:\n    a (int): x\n"""\n'))
 
     def test_names_are_the_ones_of_the_parser_of_before_for_every_script_of_the_repo(self):
-        for path in sorted(REPO_ROOT.glob("Lizard_*.py")):
+        for path in sorted((REPO_ROOT / "components").glob("Lizard_*.py")):
             with self.subTest(script=path.name):
                 code = path.read_text(encoding="utf-8-sig")
                 self.assertEqual(old_parser(code), self.updater.parseIONames(code))

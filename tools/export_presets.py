@@ -25,7 +25,7 @@ Args:
     outFolder (str): folder for the export (created; existing files with the same names are overwritten)
         Access: item
         Required: True
-    repoFolder (str): TRNLizard repository folder with Lizard_*.py (to list the scripts it does not have); optional
+    repoFolder (str): TRNLizard repository folder with components/Lizard_*.py (to list the scripts it does not have); optional
         Access: item
         Required: False
     run (bool): True = export
@@ -452,7 +452,9 @@ def exportPreset(path, ctx):
 def repoScripts(repoFolder):
     if not repoFolder or not os.path.isdir(repoFolder):
         return None
-    return dict((os.path.splitext(n)[0].lower(), os.path.splitext(n)[0]) for n in os.listdir(repoFolder)
+    components = os.path.join(repoFolder, 'components')
+    folder = components if os.path.isdir(components) else repoFolder
+    return dict((os.path.splitext(n)[0].lower(), os.path.splitext(n)[0]) for n in os.listdir(folder)
                 if n.endswith('.py') and not n.startswith('_'))
 
 

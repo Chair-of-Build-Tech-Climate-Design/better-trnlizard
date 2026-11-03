@@ -29,7 +29,7 @@ TEMPLATE = ('<Archive><chunk name="Object"><items>'
 
 class BuildInstallerTests(unittest.TestCase):
     def test_the_updater_code_is_replaced_and_escaped(self):
-        code = (REPO_ROOT / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
+        code = (REPO_ROOT / "components" / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
         result = TOOL.fillTemplate(TEMPLATE, code)
         items = TOOL.updaterItems(result)
         self.assertEqual(1, len(items))
@@ -113,7 +113,7 @@ class PinReleaseTests(unittest.TestCase):
         self.assertEqual(len(guids), len(set(guids)))
 
     def test_the_updater_reads_the_commit(self):
-        text = (REPO_ROOT / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
         first = text.index("GITHUB_PREFIXES = (")
         scope = {"re": re, "DEFAULT_SOURCE": "x", "DEFAULT_REF": "main", "SCRIPTS_FOLDER": "components"}
         exec(text[first:text.index("def isCommitSha(text):", first)], scope)
@@ -126,7 +126,7 @@ class PinReleaseTests(unittest.TestCase):
         self.assertNotIn("Optional: connect", items["UserText"].text)
 
     def test_the_updater_code_is_still_current(self):
-        code = (REPO_ROOT / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
+        code = (REPO_ROOT / "components" / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
         items = TOOL.updaterItems(self.xml)
         self.assertEqual(1, len(items))
         self.assertEqual(code.replace("\n", "\r\n"), html.unescape(items[0].group(2)))

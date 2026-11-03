@@ -23,8 +23,8 @@ from test_updater_io_sync import load_updater  # noqa: E402
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-UPDATER_SOURCE = REPO_ROOT / "Lizard_Updater.py"
-HYGRO_SOURCE = REPO_ROOT / "Lizard_Hygro.py"
+UPDATER_SOURCE = REPO_ROOT / "components" / "Lizard_Updater.py"
+HYGRO_SOURCE = REPO_ROOT / "components" / "Lizard_Hygro.py"
 CLUSTER_ID = "f31d8d7a-7536-4ac8-9c96-fde6ecda4d0a"
 
 

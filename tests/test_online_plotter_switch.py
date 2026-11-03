@@ -18,8 +18,8 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
-TEMPLATE_SOURCE = REPO_ROOT / "Lizard_DCK_Template.py"
+SYSTEM_SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
+TEMPLATE_SOURCE = REPO_ROOT / "components" / "Lizard_DCK_Template.py"
 
 # Type65 plotters that Lizard_System.py writes through PrintOnline() into the deck.
 ONLINE_PLOTTER_NAMES = (

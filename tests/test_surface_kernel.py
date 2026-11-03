@@ -12,7 +12,7 @@ from itertools import permutations
 from pathlib import Path
 
 
-SOURCE = Path(__file__).resolve().parents[1] / "Lizard_Component.py"
+SOURCE = Path(__file__).resolve().parents[1] / "components" / "Lizard_Component.py"
 BEGIN = "# ---- Surface kernel (begin)"
 END = "# ---- Surface kernel (end)"
 

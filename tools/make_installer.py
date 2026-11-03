@@ -1,7 +1,8 @@
 """
 Build the TRNLizard installer definition: one Lizard_Updater (legacy GhPython, runs in Rhino 7 and 8), a toggle per
 switch (makeUserObjects = True, cleanOldUserObjects = True, runUpdate = False), a panel on its log and a panel with
-the instructions; saved as a .ghx that tools/build_installer.py fills with the Lizard_Updater.py of each release.
+the instructions; saved as a .ghx that tools/build_installer.py fills with the components/Lizard_Updater.py of each
+release.
 -
 One-off helper: put it into a Python script component (Rhino 7 GhPython or Rhino 8), add the inputs, set run to True
 once. The current Grasshopper document is not changed; the installer is built in a new document and saved.
@@ -9,7 +10,7 @@ once. The current Grasshopper document is not changed; the installer is built in
 TRNLizard
 
 Args:
-    updaterFile (str): Lizard_Updater.py of the repository
+    updaterFile (str): components/Lizard_Updater.py of the repository
         Access: item
         Required: True
     outFile (str): the installer template to write, e.g. ...\\installer\\TRNLizard_Installer.ghx

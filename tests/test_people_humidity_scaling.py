@@ -6,7 +6,7 @@ from textwrap import dedent
 import unittest
 
 
-SOURCE = Path(__file__).resolve().parents[1] / "Lizard_System.py"
+SOURCE = Path(__file__).resolve().parents[1] / "components" / "Lizard_System.py"
 
 
 def execute_source_block(source, start, end, namespace):

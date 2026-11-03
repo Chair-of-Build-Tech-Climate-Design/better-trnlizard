@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 
-SOURCE = Path(__file__).resolve().parents[1] / "Lizard_Thermal_Airnode.py"
+SOURCE = Path(__file__).resolve().parents[1] / "components" / "Lizard_Thermal_Airnode.py"
 
 
 def capacitance(volume, factor_input):

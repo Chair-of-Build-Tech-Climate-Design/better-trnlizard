@@ -15,7 +15,7 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SOURCE = REPO_ROOT / "Lizard_Component.py"
+SOURCE = REPO_ROOT / "components" / "Lizard_Component.py"
 
 
 class Vec:
@@ -677,7 +677,7 @@ class SettingsTests(unittest.TestCase):
 
 def run_surface_component(settings, walls=("WALL",)):
     """The real Lizard_Surface.py on a fake CONSTRUCTION; returns (written settings, runtime messages, SurfaceInfo)."""
-    source = (REPO_ROOT / "Lizard_Surface.py").read_text(encoding="utf-8-sig")
+    source = (REPO_ROOT / "components" / "Lizard_Surface.py").read_text(encoding="utf-8-sig")
     written = []
     messages = []
 
@@ -770,10 +770,10 @@ class BuildingTests(unittest.TestCase):
 
 class WiringTests(unittest.TestCase):
     def read(self, name):
-        return (REPO_ROOT / name).read_text(encoding="utf-8-sig")
+        return (REPO_ROOT / "components" / name).read_text(encoding="utf-8-sig")
 
     def test_check_adjacent_is_gone(self):
-        for path in REPO_ROOT.glob("Lizard_*.py"):
+        for path in (REPO_ROOT / "components").glob("Lizard_*.py"):
             self.assertNotIn("checkAdjacent", path.read_text(encoding="utf-8-sig"), path.name)
 
     def test_system_compiles_the_model_and_stops_on_errors(self):

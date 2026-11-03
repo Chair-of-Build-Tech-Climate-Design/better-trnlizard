@@ -1,9 +1,9 @@
-"""Make the TRNLizard installer of a release: the installer template with the current Lizard_Updater.py.
+"""Make the TRNLizard installer of a release: the installer template with the current components/Lizard_Updater.py.
 
     python tools/build_installer.py [--out FILE] [--template FILE] [--source URL --release NAME]
 
 installer/TRNLizard_Installer.ghx (made once in Grasshopper by tools/make_installer.py) holds a Lizard_Updater
-component; its code item is replaced by Lizard_Updater.py of the repository and the result written to --out
+component; its code item is replaced by components/Lizard_Updater.py and the result written to --out
 (default dist/TRNLizard_Installer.ghx). The code item is found by its text (the updater's docstring and runUpdater).
 With --source and --release a panel with that source is wired to the updater's input source, so the installer keeps
 installing the scripts of its release, and the panels carry the name of the release. Nothing else of the definition is
@@ -21,7 +21,7 @@ from xml.sax.saxutils import escape
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATE = os.path.join(REPO_ROOT, "installer", "TRNLizard_Installer.ghx")
-UPDATER = os.path.join(REPO_ROOT, "Lizard_Updater.py")
+UPDATER = os.path.join(REPO_ROOT, "components", "Lizard_Updater.py")
 MARKERS = ("Update the TRNLizard script components", "def runUpdater(")
 STRING_ITEM = re.compile(r'(<item name="[^"]*"[^>]*type_name="gh_string"[^>]*>)(.*?)(</item>)', re.S)
 SOURCE_PANEL_PIVOT = (150, 240)                         # below the toggles

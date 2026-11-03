@@ -144,7 +144,7 @@ class FakeInspectBrep(FakeBrep):
 
 
 def run_component(nodes, standalone=None, upstream=(), **multizone):
-    source = (REPO_ROOT / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
+    source = (REPO_ROOT / "components" / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
     messages = []
     class Zones:
         def callFromZones(self, breps):
@@ -183,13 +183,13 @@ def with_breps(item):
 
 class ComponentTests(unittest.TestCase):
     def test_name_and_outputs(self):
-        text = (REPO_ROOT / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
         self.assertIn('ghenv.Component.Name = "Lizard_Model_Inspect"', text)
         for group in M["INSPECT_GROUPS"]:
             self.assertIn("    {0} (object):".format(group), text)
 
     def test_shared_functions_are_registered(self):
-        text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Component.py").read_text(encoding="utf-8-sig")
         for name in ("inspectModel", "inspectTable", "INSPECT_GROUPS", "INSPECT_COLOURS"):
             self.assertIn('sc.sticky[sc.doc.Path]["%s"]' % name, text)
 
@@ -249,7 +249,7 @@ class ComponentTests(unittest.TestCase):
         self.assertIn("NOPE", result["Problems"][0])
 
     def test_nothing_connected_does_nothing(self):
-        source = (REPO_ROOT / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
+        source = (REPO_ROOT / "components" / "Lizard_Model_Inspect.py").read_text(encoding="utf-8-sig")
         self.assertIn("if Multizone:", source)
 
 

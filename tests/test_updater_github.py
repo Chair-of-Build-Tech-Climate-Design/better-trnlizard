@@ -20,7 +20,7 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-UPDATER_SOURCE = REPO_ROOT / "Lizard_Updater.py"
+UPDATER_SOURCE = REPO_ROOT / "components" / "Lizard_Updater.py"
 TOOL_SOURCE = REPO_ROOT / "tools" / "build_manifest.py"
 SHA = "0123456789abcdef0123456789abcdef01234567"
 DEFAULT_OWNER = "Chair-of-Build-Tech-Climate-Design"
@@ -286,7 +286,7 @@ class BuildManifestToolTests(unittest.TestCase):
         for text in samples:
             self.assertEqual(UPDATER.normalizeCode(text), self.tool.normalizeCode(text))
             self.assertEqual(UPDATER.getHash(text), self.tool.getHash(text))
-        for path in REPO_ROOT.glob("*.py"):
+        for path in (REPO_ROOT / "components").glob("*.py"):
             text = path.read_bytes().decode("utf-8-sig")
             self.assertEqual(UPDATER.getHash(text), self.tool.getHash(text), path.name)
 
@@ -306,9 +306,12 @@ class BuildManifestToolTests(unittest.TestCase):
     def test_generate_check_and_idempotence(self):
         root = Path(tempfile.mkdtemp())
         self.addCleanup(shutil.rmtree, root)
-        (root / "Lizard_A.py").write_bytes(b"\xef\xbb\xbfa = 1\r\n")
-        (root / "_private.py").write_text("x = 1\n", encoding="utf-8")
-        (root / "notes.txt").write_text("x", encoding="utf-8")
+        scripts = root / "components"
+        scripts.mkdir()
+        (scripts / "Lizard_A.py").write_bytes(b"\xef\xbb\xbfa = 1\r\n")
+        (scripts / "_private.py").write_text("x = 1\n", encoding="utf-8")
+        (scripts / "notes.txt").write_text("x", encoding="utf-8")
+        (root / "setup.py").write_text("x = 1\n", encoding="utf-8")   # next to the folder: not a script
         out = mock.patch("sys.stdout", new=__import__("io").StringIO())
         with out:
             self.assertEqual(1, self.tool.main(["--check", "--root", str(root)]))   # missing
@@ -316,8 +319,9 @@ class BuildManifestToolTests(unittest.TestCase):
         path = root / "trnlizard_manifest.json"
         first = path.read_text(encoding="utf-8")
         data = json.loads(first)
-        self.assertEqual(["Lizard_A.py"], list(data["files"]))
-        self.assertEqual({"sha256": UPDATER.getHash("a = 1"), "size": 5}, data["files"]["Lizard_A.py"])
+        self.assertEqual(2, data["format"])
+        self.assertEqual(["components/Lizard_A.py"], list(data["files"]))
+        self.assertEqual({"sha256": UPDATER.getHash("a = 1"), "size": 5}, data["files"]["components/Lizard_A.py"])
         self.assertRegex(data["generated"], r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
         with out:
             self.assertEqual(0, self.tool.main(["--check", "--root", str(root)]))
@@ -329,16 +333,17 @@ class BuildManifestToolTests(unittest.TestCase):
         with out:
             self.assertEqual(0, self.tool.main(["--check", "--root", str(root)]))
         # a changed, added or removed script does
-        (root / "Lizard_A.py").write_text("a = 2\n", encoding="utf-8")
+        (scripts / "Lizard_A.py").write_text("a = 2\n", encoding="utf-8")
         with out:
             self.assertEqual(1, self.tool.main(["--check", "--root", str(root)]))
             self.assertEqual(0, self.tool.main(["--root", str(root)]))
             self.assertEqual(0, self.tool.main(["--check", "--root", str(root)]))
         self.assertNotEqual("2000-01-01T00:00:00Z", json.loads(path.read_text(encoding="utf-8"))["generated"])
-        (root / "Lizard_B.py").write_text("b = 1\n", encoding="utf-8")
-        self.assertEqual(["Lizard_B.py"], self.tool.staleFiles(str(root), self.tool.readManifest(str(path))))
-        (root / "Lizard_A.py").unlink()
-        self.assertEqual(["Lizard_A.py", "Lizard_B.py"], self.tool.staleFiles(str(root), self.tool.readManifest(str(path))))
+        (scripts / "Lizard_B.py").write_text("b = 1\n", encoding="utf-8")
+        self.assertEqual(["components/Lizard_B.py"], self.tool.staleFiles(str(root), self.tool.readManifest(str(path))))
+        (scripts / "Lizard_A.py").unlink()
+        self.assertEqual(["components/Lizard_A.py", "components/Lizard_B.py"],
+                         self.tool.staleFiles(str(root), self.tool.readManifest(str(path))))
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -399,7 +404,7 @@ class IconsFileTests(unittest.TestCase):
 
     def test_committed_icons_cover_every_component_script(self):
         icons = UPDATER.parseIcons((REPO_ROOT / "trnlizard_icons.json").read_text(encoding="utf-8"))
-        scripts = sorted(p.stem for p in REPO_ROOT.glob("Lizard_*.py"))
+        scripts = sorted(p.stem for p in (REPO_ROOT / "components").glob("Lizard_*.py"))
         self.assertEqual([], [name for name in scripts if name not in icons])
         for name, data in icons.items():
             self.assertTrue(base64.b64decode(data).startswith(b"\x89PNG"), name)
@@ -842,6 +847,55 @@ class ComponentsFolderSyncTests(unittest.TestCase):
         folder, log, errors = self.sync()
         self.assertIsNone(folder)
         self.assertTrue(any("No complete cached copy" in line for line in errors), errors)
+
+
+class RepositoryLayoutTests(unittest.TestCase):
+    def test_no_script_is_left_at_the_repository_root(self):
+        self.assertEqual([], sorted(path.name for path in REPO_ROOT.glob("*.py")))
+
+    def test_the_updater_is_one_of_the_components(self):
+        self.assertTrue((REPO_ROOT / "components" / "Lizard_Updater.py").is_file())
+
+    def test_the_tool_writes_the_format_the_updater_reads(self):
+        self.assertEqual(UPDATER.MANIFEST_FORMAT, load_tool().MANIFEST_FORMAT)
+
+    def test_the_committed_manifest_names_files_of_the_repository(self):
+        manifest = UPDATER.parseManifest((REPO_ROOT / "trnlizard_manifest.json").read_text(encoding="utf-8"))
+        self.assertEqual(2, manifest["format"])
+        self.assertEqual([], manifest["ignored"])
+        scripts = [name for name in manifest["files"] if name.endswith(".py")]
+        self.assertIn("components/Lizard_Updater.py", scripts)
+        self.assertEqual([], [name for name in scripts if not name.startswith("components/")])
+        self.assertEqual([], [name for name in manifest["files"] if not (REPO_ROOT / name).is_file()])
+        self.assertIn("trnlizard_icons.json", manifest["files"])     # the bundles stay at the root
+        self.assertIn("trnlizard_presets.json", manifest["files"])
+
+    def test_a_clone_of_the_repository_is_a_source_folder(self):
+        scripts = UPDATER.findScripts(str(REPO_ROOT), [])
+        self.assertEqual(sorted(path.stem for path in (REPO_ROOT / "components").glob("Lizard_*.py")), sorted(scripts))
+
+
+class ExportPresetsRepoScriptsTests(unittest.TestCase):
+    def setUp(self):
+        self.folder = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.folder)
+        grasshopper = ModuleType("Grasshopper")
+        modules = {"System": ModuleType("System"), "Grasshopper": grasshopper}
+        with mock.patch.dict(sys.modules, modules):
+            spec = importlib.util.spec_from_file_location("export_presets_under_test",
+                                                          REPO_ROOT / "tools" / "export_presets.py")
+            self.tool = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(self.tool)
+
+    def test_a_clone_of_the_repository(self):
+        (self.folder / "components").mkdir()
+        (self.folder / "components" / "Lizard_A.py").write_text("a = 1\n", encoding="utf-8")
+        (self.folder / "setup.py").write_text("a = 1\n", encoding="utf-8")
+        self.assertEqual({"lizard_a": "Lizard_A"}, self.tool.repoScripts(str(self.folder)))
+
+    def test_the_folder_of_the_scripts_itself(self):
+        (self.folder / "Lizard_A.py").write_text("a = 1\n", encoding="utf-8")
+        self.assertEqual({"lizard_a": "Lizard_A"}, self.tool.repoScripts(str(self.folder)))
 
 
 if __name__ == "__main__":

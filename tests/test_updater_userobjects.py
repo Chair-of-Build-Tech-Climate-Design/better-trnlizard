@@ -24,8 +24,8 @@ from test_updater_io_sync import load_updater  # noqa: E402
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-UPDATER_SOURCE = REPO_ROOT / "Lizard_Updater.py"
-HYGRO_SOURCE = REPO_ROOT / "Lizard_Hygro.py"
+UPDATER_SOURCE = REPO_ROOT / "components" / "Lizard_Updater.py"
+HYGRO_SOURCE = REPO_ROOT / "components" / "Lizard_Hygro.py"
 IRONPYTHON2_ID = "97aa26ef-88ae-4ba6-98a6-ed6ddeca11d1"   # Rhino 8 Python 2 Script (any id of the fakes)
 ICON = object()
 
@@ -193,7 +193,7 @@ class UserObjectLogicTests(unittest.TestCase):
     def test_every_repo_script_declares_its_own_file_name(self):
         # the canvas update and the UserObjects match a component to <Name>.py: two scripts with one Name would
         # overwrite each other's UserObject, and a component would run the other script after its first solution
-        for path in sorted(REPO_ROOT.glob("Lizard_*.py")):
+        for path in sorted((REPO_ROOT / "components").glob("Lizard_*.py")):
             with self.subTest(script=path.stem):
                 info = self.updater.parseComponentInfo(path.read_text(encoding="utf-8-sig"), path.stem)
                 self.assertEqual(path.stem, info["name"])
@@ -210,9 +210,9 @@ class UserObjectLogicTests(unittest.TestCase):
         }
         for base, values in expected.items():
             with self.subTest(script=base):
-                info = self.updater.parseComponentInfo((REPO_ROOT / (base + ".py")).read_text(encoding="utf-8-sig"), base)
+                info = self.updater.parseComponentInfo((REPO_ROOT / "components" / (base + ".py")).read_text(encoding="utf-8-sig"), base)
                 self.assertEqual(values, (info["name"], info["nickName"], info["category"], info["subCategory"]))
-        message = self.updater.parseComponentInfo((REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig"),
+        message = self.updater.parseComponentInfo((REPO_ROOT / "components" / "Lizard_Component.py").read_text(encoding="utf-8-sig"),
                                                   "Lizard_Component")["message"]
         self.assertEqual("", message)   # 'VER %s\n%s'%(version,date): set by the script when it runs
 
@@ -222,7 +222,7 @@ class UserObjectLogicTests(unittest.TestCase):
         self.assertTrue(self.updater.isComponentScript('ghenv.Component.Name = "Lizard_X"\n'))
         self.assertFalse(self.updater.isComponentScript('"""A helper module."""\nx = 1\n'))
         self.assertFalse(self.updater.isComponentScript('#ghenv.Component.Name = "Lizard_X"\nx = 1\n'))
-        for path in sorted(REPO_ROOT.glob("Lizard_*.py")):
+        for path in sorted((REPO_ROOT / "components").glob("Lizard_*.py")):
             with self.subTest(script=path.name):
                 self.assertTrue(self.updater.isComponentScript(path.read_text(encoding="utf-8-sig")))
 

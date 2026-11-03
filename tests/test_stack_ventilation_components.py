@@ -15,11 +15,11 @@ from pathlib import Path
 from types import ModuleType, SimpleNamespace
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
+SYSTEM_SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
 
 
 def run_component(number, **inputs):
-    path = REPO_ROOT / f"Lizard_Stack_Ventilation_{number}.py"
+    path = REPO_ROOT / "components" / f"Lizard_Stack_Ventilation_{number}.py"
     source = re.sub(r"^(\s*)print (.+)$", r"\1print(\2)", path.read_text(encoding="utf-8-sig"), flags=re.M)
     scriptcontext = ModuleType("scriptcontext")
     scriptcontext.sticky = {}
@@ -58,7 +58,7 @@ class StackVentilationComponentTests(unittest.TestCase):
 
     def test_both_components_declare_the_same_inputs(self):
         def inputs(number):
-            doc = (REPO_ROOT / f"Lizard_Stack_Ventilation_{number}.py").read_text(encoding="utf-8-sig").split('"""')[1]
+            doc = (REPO_ROOT / "components" / f"Lizard_Stack_Ventilation_{number}.py").read_text(encoding="utf-8-sig").split('"""')[1]
             return re.findall(r"^\s{4}(\S+) \(object\)", doc.split("Args:")[1].split("Returns:")[0], flags=re.M)
         self.assertEqual(inputs(1), inputs(2))
 

@@ -42,8 +42,8 @@ from test_updater_io_sync import load_updater  # noqa: E402
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-HYGRO_SOURCE = REPO_ROOT / "Lizard_Hygro.py"
-COMPONENT_SOURCE = REPO_ROOT / "Lizard_Component.py"
+HYGRO_SOURCE = REPO_ROOT / "components" / "Lizard_Hygro.py"
+COMPONENT_SOURCE = REPO_ROOT / "components" / "Lizard_Component.py"
 
 # The ten PARAMETERS lines of the Type 395 block in the DCK template of d2a3ce8 (before this change), byte for byte.
 # Existing Grasshopper definitions keep this template until the DCK template component is reloaded/updated.
@@ -647,7 +647,7 @@ class HygroDocstringTests(unittest.TestCase):
         self.assertIn("0.0001", specs["report_interval"]["description"])
 
     def test_ironpython_sources_stay_ascii(self):
-        for path in (HYGRO_SOURCE, COMPONENT_SOURCE, SYSTEM_SOURCE, REPO_ROOT / "Lizard_DCK_Template.py"):
+        for path in (HYGRO_SOURCE, COMPONENT_SOURCE, SYSTEM_SOURCE, REPO_ROOT / "components" / "Lizard_DCK_Template.py"):
             with self.subTest(source=path.name):
                 path.read_bytes().decode("ascii")
 

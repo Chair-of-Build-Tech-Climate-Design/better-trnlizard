@@ -360,7 +360,7 @@ class FakeFaceList(list):
 
 class SolidFacesTests(unittest.TestCase):
     def setUp(self):
-        text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Component.py").read_text(encoding="utf-8-sig")
         first = text.index("def solidFaces(solid):")
         self.scope = {"abs_tolerance": 0.001, "rc": SimpleNamespace(Geometry=SimpleNamespace(BrepSolidOrientation=SimpleNamespace(Inward="Inward")))}
         exec(text[first:text.index("def flipSurfaceBreps(item):", first)], self.scope)
@@ -421,7 +421,7 @@ class FakeBrepFace:
 
 class SurfaceNormalTests(unittest.TestCase):
     def setUp(self):
-        self.text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        self.text = (REPO_ROOT / "components" / "Lizard_Component.py").read_text(encoding="utf-8-sig")
         first = self.text.index("def surfaceNormal(brep):")
         self.scope = {}
         exec(self.text[first:self.text.index("def makeSurfaceVertices(points):", first)], self.scope)
@@ -500,7 +500,7 @@ class FakeDocObject:
 
 class UpstreamTests(unittest.TestCase):
     def setUp(self):
-        text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Component.py").read_text(encoding="utf-8-sig")
         first = text.index("def upstreamErrors(component, level):")
         scope = {}
         exec(text[first:text.index("def solidFaces(solid):", first)], scope)
@@ -536,7 +536,7 @@ class UpstreamTests(unittest.TestCase):
 
 
 def run_set_component(known=("OUT",), **slots):
-    source = (REPO_ROOT / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
+    source = (REPO_ROOT / "components" / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
     messages = []
     scriptcontext = ModuleType("scriptcontext")
     scriptcontext.doc = SimpleNamespace(Path="doc")
@@ -571,28 +571,28 @@ class SetComponentTests(unittest.TestCase):
 class ComponentTests(unittest.TestCase):
     def test_the_next_components_react_to_errors(self):
         for name in ("Lizard_Thermal_Airnode.py", "Lizard_Multizone.py"):
-            text = (REPO_ROOT / name).read_text(encoding="utf-8-sig")
+            text = (REPO_ROOT / "components" / name).read_text(encoding="utf-8-sig")
             self.assertIn('["upstreamErrors"](ghenv.Component, err)', text)
             self.assertIn('["isFailure"](ConstructionSet)', text)
 
     def test_system_stops_on_upstream_errors_before_it_writes(self):
-        text = (REPO_ROOT / "Lizard_System.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_System.py").read_text(encoding="utf-8-sig")
         self.assertRegex(text, r"if WriteSimulationFiles:\s+upstreamerrors = [^\n]*upstreamErrors[\s\S]{0,300}sys\.exit\(\)\s+for rui,runitem")
 
     def test_component_has_all_the_slots_and_their_docs(self):
-        text = (REPO_ROOT / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_Construction_Set.py").read_text(encoding="utf-8-sig")
         self.assertIn('ghenv.Component.Name = "Lizard_Construction_Set"', text)
         for slot in M["CONSTRUCTION_SLOTS"]:
             self.assertIn("    {0} (str):".format(slot), text)
             self.assertIn("self.{0} = {0}".format(slot), text)
 
     def test_genmatrices_survives_an_empty_construction(self):
-        text = (REPO_ROOT / "Lizard_GenMatrices.py").read_text(encoding="utf-8-sig")
+        text = (REPO_ROOT / "components" / "Lizard_GenMatrices.py").read_text(encoding="utf-8-sig")
         self.assertIn('"Virtual" in (item.Construction or \'\')', text)
 
     def test_inputs_are_registered(self):
-        airnode_text = (REPO_ROOT / "Lizard_Thermal_Airnode.py").read_text(encoding="utf-8-sig")
-        multizone_text = (REPO_ROOT / "Lizard_Multizone.py").read_text(encoding="utf-8-sig")
+        airnode_text = (REPO_ROOT / "components" / "Lizard_Thermal_Airnode.py").read_text(encoding="utf-8-sig")
+        multizone_text = (REPO_ROOT / "components" / "Lizard_Multizone.py").read_text(encoding="utf-8-sig")
         self.assertIn('"ConstructionSet",', airnode_text)
         self.assertIn("ConstructionSet (object):", airnode_text)
         self.assertIn("ConstructionSet (object):", multizone_text)

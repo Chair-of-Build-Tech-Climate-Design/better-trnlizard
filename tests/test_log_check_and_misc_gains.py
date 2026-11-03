@@ -26,8 +26,8 @@ from test_updater_io_sync import load_updater  # noqa: E402
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-LOG_CHECK_SOURCE = REPO_ROOT / "Lizard_Log_Check.py"
-MISC_GAINS_SOURCE = REPO_ROOT / "Lizard_Misc_Gains.py"
+LOG_CHECK_SOURCE = REPO_ROOT / "components" / "Lizard_Log_Check.py"
+MISC_GAINS_SOURCE = REPO_ROOT / "components" / "Lizard_Misc_Gains.py"
 
 # outputs of the canvas copy e7ae18b2 that the script never assigned (removed from the script)
 LOG_CHECK_OUTPUTS = ["iteration_reached_timestep_count", "total_warning_count", "last_warning_timestep", "running_time"]

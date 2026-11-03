@@ -44,7 +44,7 @@ The installer also moves the UserObjects of earlier TRNLizard installs out of th
 
 ### Updating an existing definition
 
-Add a `Lizard_Updater` component to the definition and set `runUpdate` to `True`. With an empty `source`, it follows `main` of the [chair's repository](https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard). A component that lost inputs or outputs is replaced by a new copy in a red group, next to the locked old one. The docstring at the top of [Lizard_Updater.py](Lizard_Updater.py) has the details.
+Add a `Lizard_Updater` component to the definition and set `runUpdate` to `True`. With an empty `source`, it follows `main` of the [chair's repository](https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard). A component that lost inputs or outputs is replaced by a new copy in a red group, next to the locked old one. The docstring at the top of [components/Lizard_Updater.py](components/Lizard_Updater.py) has the details.
 
 ## About the chair
 
@@ -62,7 +62,7 @@ For a bug report, the Rhino and TRNSYS versions and the smallest definition that
 
 For a pull request:
 
-- The `Lizard_*.py` scripts are IronPython 2 code. The tests run on plain Python 3: `python -m unittest discover -s tests`
+- The `components/Lizard_*.py` scripts are IronPython 2 code. The tests run on plain Python 3: `python -m unittest discover -s tests`
 - After changing a script, icon or preset, run `python tools/build_manifest.py` and commit the result. CI checks it.
 - When a change can stop a definition or change results, add an entry to [docs/breaking-changes](docs/breaking-changes/README.md).
 

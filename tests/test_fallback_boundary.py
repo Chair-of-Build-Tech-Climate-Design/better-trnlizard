@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def read(name):
-    return (ROOT / name).read_text(encoding="utf-8-sig")
+    return (ROOT / "components" / name).read_text(encoding="utf-8-sig")
 
 
 def wall(z0, z1, **options):

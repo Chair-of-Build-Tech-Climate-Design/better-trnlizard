@@ -30,7 +30,7 @@ import test_type395_side2_boundary as side2  # noqa: E402  (the option A harness
 REPO_ROOT = side2.REPO_ROOT
 SYSTEM_SOURCE = side2.SYSTEM_SOURCE
 TEMPLATE_SOURCE = side2.TEMPLATE_SOURCE
-COMPONENT_SOURCE = REPO_ROOT / "Lizard_Component.py"
+COMPONENT_SOURCE = REPO_ROOT / "components" / "Lizard_Component.py"
 
 HELPER_START = "# ---- thermal mirror walls (begin)"
 HELPER_END = "# ---- thermal mirror walls (end)"

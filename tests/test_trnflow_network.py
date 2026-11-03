@@ -22,9 +22,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import test_type395_side2_boundary as side2  # noqa: E402  (run_source for the IronPython 2 sources)
 
 REPO_ROOT = side2.REPO_ROOT
-SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
-COMPONENT_SOURCE = REPO_ROOT / "Lizard_Component.py"
-NETWORK_SOURCE = REPO_ROOT / "Lizard_Trnflow_Network.py"
+SYSTEM_SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
+COMPONENT_SOURCE = REPO_ROOT / "components" / "Lizard_Component.py"
+NETWORK_SOURCE = REPO_ROOT / "components" / "Lizard_Trnflow_Network.py"
 TEMPLATE_STRUCTURE = REPO_ROOT / "presets" / "_shared" / "Lizard_Building_Template" / "structure.json"
 
 HELPERS_START = "# ---- TRNFlow helpers (begin)"

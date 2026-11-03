@@ -10,11 +10,11 @@ from unittest.mock import patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SYSTEM = (ROOT / "Lizard_System.py").read_text(encoding="utf-8-sig")
-TEMPLATE = (ROOT / "Lizard_DCK_Template.py").read_text(encoding="utf-8-sig")
-AIRNODE = (ROOT / "Lizard_Thermal_Airnode.py").read_text(encoding="utf-8-sig")
-REGIME = (ROOT / "Lizard_Zone_Regime.py").read_text(encoding="utf-8-sig")
-UPDATER = (ROOT / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
+SYSTEM = (ROOT / "components" / "Lizard_System.py").read_text(encoding="utf-8-sig")
+TEMPLATE = (ROOT / "components" / "Lizard_DCK_Template.py").read_text(encoding="utf-8-sig")
+AIRNODE = (ROOT / "components" / "Lizard_Thermal_Airnode.py").read_text(encoding="utf-8-sig")
+REGIME = (ROOT / "components" / "Lizard_Zone_Regime.py").read_text(encoding="utf-8-sig")
+UPDATER = (ROOT / "components" / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
 
 
 def run_block(source, start, end, namespace):

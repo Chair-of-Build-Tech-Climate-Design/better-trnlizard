@@ -20,8 +20,8 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-UPDATER_SOURCE = REPO_ROOT / "Lizard_Updater.py"
-HYGRO_SOURCE = REPO_ROOT / "Lizard_Hygro.py"
+UPDATER_SOURCE = REPO_ROOT / "components" / "Lizard_Updater.py"
+HYGRO_SOURCE = REPO_ROOT / "components" / "Lizard_Hygro.py"
 
 LEGACY_ID = "410755b1-224a-4c1e-a407-bf32fb45ea7e"   # GhPython Script (ZuiPythonComponent)
 PYTHON3_ID = "719467e6-7cf5-4848-99b0-c5dd57e5442c"  # Rhino 8 Python 3 Script

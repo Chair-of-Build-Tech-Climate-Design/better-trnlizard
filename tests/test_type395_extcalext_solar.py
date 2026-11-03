@@ -20,8 +20,8 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
-TEMPLATE_SOURCE = REPO_ROOT / "Lizard_DCK_Template.py"
+SYSTEM_SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
+TEMPLATE_SOURCE = REPO_ROOT / "components" / "Lizard_DCK_Template.py"
 
 # The Type 15 block of a deck without EXTCALEXT walls, as generated before this change (must stay byte-identical).
 TYPE15_BLOCK_WITHOUT_TILTED_SURFACES = """

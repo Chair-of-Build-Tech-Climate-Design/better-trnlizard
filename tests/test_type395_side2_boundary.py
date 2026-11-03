@@ -31,8 +31,8 @@ from unittest import mock
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SYSTEM_SOURCE = REPO_ROOT / "Lizard_System.py"
-TEMPLATE_SOURCE = REPO_ROOT / "Lizard_DCK_Template.py"
+SYSTEM_SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
+TEMPLATE_SOURCE = REPO_ROOT / "components" / "Lizard_DCK_Template.py"
 
 # Longwave terms of the generated DIN deck (Hygrothermisch_Big_GKP_WithFoil.d18, EXTCALEXT surface 8). The exterior solar term in
 # front of them comes from a Type 15 tilted surface and is tested in test_type395_extcalext_solar.py; this harness maps none.

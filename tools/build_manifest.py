@@ -8,8 +8,8 @@ The manifest also lists trnlizard_icons.json (same hash rule), so the updater do
 trnlizard_presets.json, the preset templates of presets/<preset>/ and presets/_shared/<cluster>/ (preset.json,
 object.xml, icon.png; see tools/import_presets.py) in one file.
 
-The manifest lists every top-level *.py of the repository that Lizard_Updater.findScripts picks up (not starting with
-'_') with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
+The manifest lists every *.py of components/ that Lizard_Updater.findScripts picks up (not starting with '_'), named
+components/<script>.py, with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
 at the end, UTF-8) and the byte size of that normalized text, so CRLF checkouts and a BOM give the same manifest.
 Only 'files' is compared: 'generated' (UTC time of the last change of 'files') is kept when the files are unchanged,
 so writing the manifest again changes nothing.
@@ -28,7 +28,8 @@ import sys
 
 
 MANIFEST_NAME = "trnlizard_manifest.json"
-MANIFEST_FORMAT = 1
+MANIFEST_FORMAT = 2
+SCRIPTS_FOLDER = "components"
 ICONS_NAME = "trnlizard_icons.json"
 ICONS_FOLDER = "icons"
 ICONS_FORMAT = 1
@@ -53,9 +54,10 @@ def getHash(content):
 
 
 def scriptNames(root):
-    """Sorted file names of the scripts of a folder, as Lizard_Updater.findScripts selects them."""
-    return sorted(name for name in os.listdir(root)
-                  if name.endswith(".py") and not name.startswith("_") and os.path.isfile(os.path.join(root, name)))
+    """Sorted file names of the scripts of a repository, as Lizard_Updater.findScripts selects them."""
+    folder = os.path.join(root, SCRIPTS_FOLDER)
+    return sorted(name for name in os.listdir(folder)
+                  if name.endswith(".py") and not name.startswith("_") and os.path.isfile(os.path.join(folder, name)))
 
 
 def buildIcons(root):
@@ -97,9 +99,9 @@ def buildPresets(root):
 
 
 def manifestFiles(root):
-    """{file name: {'sha256', 'size'}} of the scripts (and trnlizard_icons.json) of a folder."""
+    """{file name: {'sha256', 'size'}} of the scripts (components/<script>.py) and the bundle files of a repository."""
     files = {}
-    names = scriptNames(root)
+    names = [SCRIPTS_FOLDER + "/" + name for name in scriptNames(root)]
     for extra in (ICONS_NAME, PRESETS_NAME):
         if os.path.isfile(os.path.join(root, extra)):
             names.append(extra)

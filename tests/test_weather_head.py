@@ -11,7 +11,7 @@ from textwrap import dedent
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SOURCE = REPO_ROOT / "Lizard_System.py"
+SOURCE = REPO_ROOT / "components" / "Lizard_System.py"
 
 
 def run_location_block(filename):
