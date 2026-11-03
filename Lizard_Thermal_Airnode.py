@@ -15,7 +15,7 @@ Args:
     AirnodeName (object): define airnode name
         Access: item
         Required: True
-    SurfaceInfo (Brep): link all airnode related surface definitions
+    SurfaceInfo (Brep): link all airnode related surface definitions and/or one closed solid. A solid becomes its faces, without boundary condition and construction; a surface given here that lies on one of its faces replaces that part of the face
         Access: list
         Required: True
     Regime (object): connect the regime component
@@ -63,6 +63,9 @@ Args:
     CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor. Not connected = 3
         Access: item
         Required: False
+    ConstructionSet (object): default constructions from Lizard_Construction_Set for the surfaces of this airnode that have none after the adjacency is solved; comes before the set of Lizard_Multizone, slot by slot
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -71,7 +74,7 @@ Returns:
         Access: item
     Center (object): 
         Access: item
-    OriToCheck (object): Script variable Thermal Airnode
+    OriToCheck (object): surfaces whose normal vector was turned outward
         Access: item
     PtsToCheck (object): Script variable Thermal Airnode
         Access: item
@@ -96,7 +99,7 @@ rem = gh.Kernel.GH_RuntimeMessageLevel.Remark
 bla = gh.Kernel.GH_RuntimeMessageLevel.Blank
 warn = gh.Kernel.GH_RuntimeMessageLevel.Warning
 #---- initial definition start
-InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence","CapacitanceFactor"]
+InputList = ["ZoneName","AirnodeName","SurfaceInfo","Regime","AreaPerPerson","VolumeUserDef","RefAreaBRepUserDef","BeamMode","DiffuseMode","LongwaveMode","ComfortPts","DaylightCtrl","OutputInfo","ComplexShade","Sequence","ConstructionSet","CapacitanceFactor"]
 OutputList = ["Out","Airnode","Center","OriToCheck","PtsToCheck"]
 def findInOut(info, pararray):
     oldpar = []
@@ -142,9 +145,24 @@ if len(newparo)>0:
     addPar("OUT",newparo)
 ghenv.Component.Params.OnParametersChanged()
 #---- initial definition end
+def regimeGains(value):
+    """The gains in one input of a regime: nothing, one gain, or a list, which holds None for a gain component that is switched off."""
+    if value is None or value == "":
+        return []
+    if not hasattr(value, '__iter__') or isinstance(value, str):
+        return [value]
+    gains = []
+    for gain in value:
+        if gain is not None and gain != "":
+            gains.append(gain)
+    return gains
 w = gh.Kernel.GH_RuntimeMessageLevel.Warning
 err = gh.Kernel.GH_RuntimeMessageLevel.Error
 warn = '*** Warning *** '
+for message in sc.sticky[sc.doc.Path]["upstreamErrors"](ghenv.Component, err):
+    ghenv.Component.AddRuntimeMessage(err, "Upstream error, %s"%message)
+if 'ConstructionSet' in locals() and sc.sticky[sc.doc.Path]["isFailure"](ConstructionSet):
+    ghenv.Component.AddRuntimeMessage(err, "ConstructionSet failed: %s"%ConstructionSet.Message)
 if len(SurfaceInfo) > 0:
     rs.EnableRedraw(False)
     getVolume = sc.sticky[sc.doc.Path]["getVolume"]
@@ -153,7 +171,7 @@ if len(SurfaceInfo) > 0:
     getOrientation = sc.sticky[sc.doc.Path]["getOrientation"]
     getSurfaceType = sc.sticky[sc.doc.Path]["getSurfaceType"]
     checkWindowsInWalls = sc.sticky[sc.doc.Path]["checkWindowsInWalls"]
-    defineGeosurf = sc.sticky[sc.doc.Path]["defineGeosurf"]
+    orientSurfaces = sc.sticky[sc.doc.Path]["orientSurfaces"]
     lizard_coll = sc.sticky[sc.doc.Path]["CONSTRUCTION"]()
     AIRNODE = sc.sticky[sc.doc.Path]["AIRNODE"]
     getFloorArea = sc.sticky[sc.doc.Path]["getFloorArea"]
@@ -180,6 +198,11 @@ if len(SurfaceInfo) > 0:
         geosurf_floor   = 0
     else:
         geosurf_floor   = 0.6
+    SurfaceInfo, solidproblem = lizard_coll.expandSolids(SurfaceInfo, ghenv.Component.InstanceGuid.ToString())
+    if solidproblem:
+        print solidproblem
+        ghenv.Component.AddRuntimeMessage(err, solidproblem)
+        sys.exit()
     ObjectsFromLz   = lizard_coll.callFromConstruction(SurfaceInfo)
     SurfaceInfo = []
 #collect first the additional windows
@@ -194,14 +217,25 @@ if len(SurfaceInfo) > 0:
     orientations = []
     if len(SurfaceInfo) <= 3:
         print '!At least four surfaces have to be connected!'
+        ghenv.Component.AddRuntimeMessage(err, "At least four surfaces have to be connected!")
         sys.exit()
     OriToCheck = []
     PtsToCheck = []
     Airnode             = AIRNODE(Airnode_name)
+    flipped_surfaces, closed_surfaces = orientSurfaces(SurfaceInfo)
+    for item in flipped_surfaces:
+        OriToCheck.append(item.Faces)
+    if flipped_surfaces:
+        print 'Normal vector turned outward: surfaces %s'%[item.Surfnum for item in flipped_surfaces]
+        ghenv.Component.AddRuntimeMessage(rem, "Normal vector turned outward: surfaces %s"%[item.Surfnum for item in flipped_surfaces])
+    if not closed_surfaces:
+        ghenv.Component.AddRuntimeMessage(rem, "The surfaces do not close a volume: their normal vectors are not checked")
     Airnode.Orientations= getSurfaceOrientation(SurfaceInfo)
     getSurfaceType(SurfaceInfo)
     Match               = checkWindowsInWalls(SurfaceInfo,Match)
     Airnode.Surfaces    = SurfaceInfo
+    if 'ConstructionSet' in locals():
+        Airnode.Constructionset = ConstructionSet
     Airnode.Zonename    = ZoneName
     Airnode.Beam        = BeamMode
     Airnode.Diffuse     = DiffuseMode
@@ -212,7 +246,6 @@ if len(SurfaceInfo) > 0:
     if Wcapr is not None:
         Airnode.Wcapr = Wcapr
     error = 0
-    error2 = 0
     if VolumeUserDef == 0 or VolumeUserDef =='Null' or VolumeUserDef is None:
         VolumeUserDef  = 0
         Airnode.Volume, Airnode.Center, error, box      = getVolume(SurfaceInfo)
@@ -235,32 +268,9 @@ if len(SurfaceInfo) > 0:
             print 'Some comfort pts are outside the volume and are automatically deleted!'
             ghenv.Component.AddRuntimeMessage(w, "Some comfort pts are outside the volume and are automatically deleted!")
         ComfortPoints = ptsdummy
-        subsurfaces = []
-        error2 = 0
-        for ix,item in enumerate(box.Faces):
-            subsurfaces.append(box.DuplicateSubBrep([ix]))
-            for sitem in SurfaceInfo:
-                dummyPolycurveX = rc.Geometry.PolylineCurve.JoinCurves(subsurfaces[ix].Edges)
-                dummyPolycurveY = rc.Geometry.PolylineCurve.JoinCurves(sitem.Faces.Edges)
-                dummy = rc.Geometry.PolyCurve.CreateBooleanIntersection(dummyPolycurveX[0],dummyPolycurveY[0])
-                if dummy:
-                    area_surf1 = rc.Geometry.AreaMassProperties.Compute(subsurfaces[ix].Faces[0]).Area
-                    area_surf2 = rc.Geometry.AreaMassProperties.Compute(sitem.Faces.Faces[0]).Area
-                    delta_area = abs(area_surf1 - area_surf2)
-                    if delta_area < 0.000001:
-                        if getOrientation(subsurfaces[ix]) != sitem.Orientation:
-                            print "Check surface %s, normal vector in wrong direction!"%sitem.Surfnum
-                            OriToCheck.append(sitem.Faces)
-                            ghenv.Component.AddRuntimeMessage(err, "Check surface %s!"%sitem.Surfnum)
-                            error2 = 1
         if error == 1:
             print 'Volume is not closed!'
             ghenv.Component.AddRuntimeMessage(err, "Volume is not closed!")
-        elif error2 == 1:
-            pass
-            #sys.exit()
-        else:
-            pass
         if Airnode.Volume <= 1:
             ghenv.Component.AddRuntimeMessage(err, "Check Volume - Value is too small!")
     else:
@@ -284,29 +294,19 @@ if len(SurfaceInfo) > 0:
         Airnode.Totfloorarea = AreaTotalLoadCalc
     #if Airnode.Totfloorarea == 0:
     #    Airnode.Totfloorarea = Airnode.Refarea
-    if Regime and Regime.Persgain != "":
-        Airnode.Gain.append(Regime.Persgain)
-    if Regime and Regime.Compgain  != "":
-        Airnode.Gain.append(Regime.Compgain)
-    if Regime and Regime.Lightgain != "":
-        Airnode.Gain.append(Regime.Lightgain)
-        if Regime.Lightgain.Dctrl == 'DLC':
-            if DaylightCtrl:
-                pass
-            else:
-                print 'Please link daylight ctrl component to use the feature of controling the artificial lighting!'
-                ghenv.Component.AddRuntimeMessage(err, "Please link daylight ctrl component to use the feature of controling the artificial lighting!")
-                sys.exit()
-    if Regime and len(Regime.Othergain) != 0:
-        other_gains = Regime.Othergain
-        if isinstance(other_gains, str):
-            other_gains = [other_gains]
-        for gain in other_gains:
-            if isinstance(other_gains, str):
-                if len(gain)>0:
-                    Airnode.Gain.append(gain)
-            else:
-                Airnode.Gain.append(gain)
+    if Regime:
+        Airnode.Gain.extend(regimeGains(Regime.Persgain))
+        Airnode.Gain.extend(regimeGains(Regime.Compgain))
+        for gain in regimeGains(Regime.Lightgain):
+            Airnode.Gain.append(gain)
+            if gain.Dctrl == 'DLC':
+                if DaylightCtrl:
+                    pass
+                else:
+                    print 'Please link daylight ctrl component to use the feature of controling the artificial lighting!'
+                    ghenv.Component.AddRuntimeMessage(err, "Please link daylight ctrl component to use the feature of controling the artificial lighting!")
+                    sys.exit()
+        Airnode.Gain.extend(regimeGains(Regime.Othergain))
     if Regime and Regime.Thbgain   != "":
         Airnode.Gain.append(Regime.Thbgain)
     if Regime and Regime.Udefgain != "":
@@ -364,8 +364,7 @@ if len(SurfaceInfo) > 0:
             Airnode.Daylight.append(item.Gridinfo)
     if 'ComplexShade' in locals() and ComplexShade:
         Airnode.Complexshade = ComplexShade
-    if geosurf_floor > 0:
-        defineGeosurf(geosurf_floor,SurfaceInfo)
+    Airnode.Geosurffloor = geosurf_floor
     Airnode.Activelayer = []
     for items in Airnode.Surfaces:
         items.Airnode = Airnode_name
@@ -410,6 +409,6 @@ if len(SurfaceInfo) > 0:
     earthduct = []
     domestic_hot_water = []
     DaylightInfo = []
-    if error == 1 or error2 == 1:
+    if error == 1:
         Airnode = None
     rs.EnableRedraw(True)

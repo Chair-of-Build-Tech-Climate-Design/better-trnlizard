@@ -54,12 +54,6 @@ import Grasshopper.Kernel as gh
 version='2.2.1'
 #standard ID assignment
 BRep = sc.sticky[sc.doc.Path]["CONSTRUCTION"]().addToConstruction(BRep,ghenv.Component.InstanceGuid.ToString())
-class Surface:
-    def __init__(self):
-        self.Boundarycond = 'BOUNDARY' #Options are EXTERNAL, ADJACENT, BOUNDARY
-        self.Construction = 'GFL_H' #Set wall type according to library
-        self.Boundarytemp = 'Tsoil'
-        self.Frontback = 'FRONT' #Options are FRONT or BACK
 w = gh.GH_RuntimeMessageLevel.Warning
 err = gh.GH_RuntimeMessageLevel.Error
 # Type 395 settings of these surfaces: (input, attribute of the surface in Lizard_Component). An input that is not connected,
@@ -127,15 +121,14 @@ for hygro_name, hygro_attribute in HYGRO_SETTINGS:
     hygro_values.append((hygro_attribute, hygro_value))
     if hygro_warning:
         ghenv.Component.AddRuntimeMessage(w, hygro_warning)
-if Settings:
-    surface = Settings
-else:
-    surface = Surface()
+surface = Settings
 library = sc.sticky[sc.doc.Path]["library"]
-found = 0
-for wall_item in library.Walls:
-    if surface.Construction == wall_item.Name or surface.Construction == "Virtual":
-        found = 1
+found = 1
+if surface and surface.Construction and surface.Construction != "Virtual":
+    found = 0
+    for wall_item in library.Walls:
+        if surface.Construction == wall_item.Name:
+            found = 1
 if found == 0:
     SurfaceInfo = None
     ghenv.Component.AddRuntimeMessage(err, "Construction name not found in the library!")
@@ -144,11 +137,12 @@ else:
     sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstructionNew(BRep,surface)
     for items in BRep:
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(items,'Filemat',datafile_assembly)
+        sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(items,'Hygrothermal',True)
         for hygro_attribute, hygro_value in hygro_values:
             sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(items,hygro_attribute,hygro_value)
-        if surface.Boundarycond == 'BOUNDARY':
+        if surface and surface.Boundarycond == 'BOUNDARY':
             sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(items,'Boundarycond','EXTCALBND')
-        if surface.Boundarycond == 'EXTERNAL':
+        if surface and surface.Boundarycond == 'EXTERNAL':
             sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(items,'Boundarycond','EXTCALEXT')
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().getWallThickness(BRep)
     lizard_coll = sc.sticky[sc.doc.Path]["CONSTRUCTION"]()
@@ -158,11 +152,11 @@ else:
     for item in ObjectsFromLz:
         print(item.__dict__.keys())
         if hasattr(item, 'Filemat') and item.Filemat is not None:
-            ghenv.Component.Message = '%s'%(surface.Boundarycond)
+            ghenv.Component.Message = '%s'%(getattr(item,'Boundarycond',None))
         else:
             try:
                 Uvalue = round(item.Uvalue,2)
-                ghenv.Component.Message = '%s\n%s\nUval = %s W/(m?.K)'%(surface.Boundarycond,surface.Construction,Uvalue)
+                ghenv.Component.Message = '%s\n%s\nUval = %s W/(m?.K)'%(item.Boundarycond,item.Construction,Uvalue)
             except:
-                ghenv.Component.Message = '%s\n%s\n%s'%(surface.Boundarycond,surface.Construction,surface.Frontback)
+                ghenv.Component.Message = '%s\n%s\n%s'%(item.Boundarycond,item.Construction,item.Frontback)
     SurfaceInfo = BRep

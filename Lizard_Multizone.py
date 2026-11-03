@@ -25,6 +25,18 @@ if "TrnflowNetwork" in locals():
     pass
 else:
     TrnflowNetwork = []
+if "AutoAdjacency" in locals():
+    pass
+else:
+    AutoAdjacency = None
+if "GapTolerance" in locals():
+    pass
+else:
+    GapTolerance = None
+if "ConstructionSet" in locals():
+    pass
+else:
+    ConstructionSet = None
 
 
 class Multizone():
@@ -37,6 +49,9 @@ class Multizone():
         self.timebase = Timebase
         self.daylightmode = DaylightMode
         self.trnflownetwork = TrnflowNetwork
+        self.autoadjacency = AutoAdjacency
+        self.gaptolerance = GapTolerance
+        self.constructionset = ConstructionSet
         #current_class = self.__class__
     def info(self):
         print self.name
@@ -65,6 +80,15 @@ Args:
     DaylightMode (object): Script input DaylightMode.
         Access: item
         Required: True
+    AutoAdjacency (bool): True = surfaces with the category EXTERNAL or BOUNDARY become adjacent where another room faces them, and are split along it; what no room faces keeps its category. Not connected = only surfaces with an empty, AUTOMATIC or ADJACENT category are looked at
+        Access: item
+        Required: False
+    GapTolerance (float): largest distance in m between two parallel surfaces of adjacent rooms, for models with net room volumes. Not connected = 0.02
+        Access: item
+        Required: False
+    ConstructionSet (object): default constructions from Lizard_Construction_Set for surfaces that have none after the adjacency is solved; a set on the airnode comes first, slot by slot. Not connected = such a surface is an error
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -78,6 +102,11 @@ Returns:
 """
         return "{}:{}".format(self.__class__.__name__, self.name)
 
+err = gh.GH_RuntimeMessageLevel.Error
+for message in sc.sticky[sc.doc.Path]["upstreamErrors"](ghenv.Component, err):
+    ghenv.Component.AddRuntimeMessage(err, "Upstream error, %s"%message)
+if sc.sticky[sc.doc.Path]["isFailure"](ConstructionSet):
+    ghenv.Component.AddRuntimeMessage(err, "ConstructionSet failed: %s"%ConstructionSet.Message)
 Multizone = Multizone()
 Brep_ = copy.deepcopy(Multizone.airnode)
 Brep_.extend(Multizone.shading)

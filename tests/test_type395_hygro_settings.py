@@ -413,7 +413,7 @@ class HamtZoneAggregationTests(unittest.TestCase):
         execute_source_block(
             source,
             "    # Auto-define HAMT gains for zones with EXTCALEXT/EXTCALBND surfaces (multi-HAMT support)",
-            "    for item in dataset:\n        for item2 in item.Gain:",
+            "    for item in dataset:\n        for item2, suffix in gainInstances(item):",
             namespace,
         )
         gains = re.findall(r"GAIN (HAMT_Gain_\w+)\r\n.*HUMIDITY=INPUT 1\*(\w+)", "".join(namespace["lines"]))
@@ -545,6 +545,15 @@ class LizardHygroComponentTests(unittest.TestCase):
                     self.assertEqual(dict.fromkeys(SETTING_ATTRIBUTES), self.settings(stored, brep))
                     self.assertEqual("GKP.idf", stored[brep]["Filemat"])
                     self.assertEqual("EXTCALBND", stored[brep]["Boundarycond"])
+
+    def test_surface_settings_are_optional(self):
+        stored, messages = run_hygro(Settings=None)
+
+        self.assertEqual([], messages)
+        for brep in ("brep1", "brep2"):
+            self.assertIs(True, stored[brep]["Hygrothermal"])
+            self.assertEqual("GKP.idf", stored[brep]["Filemat"])
+            self.assertNotIn("Boundarycond", stored[brep])
 
     def test_values_are_stored_on_every_surface_of_the_component(self):
         stored, messages = run_hygro(write_report=False, report_interval=0.5, add_heat_depth=0.0125, add_heat=10.0, layer_min_div=8)

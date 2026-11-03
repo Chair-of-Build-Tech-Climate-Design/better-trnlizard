@@ -1107,6 +1107,25 @@ def applyParamChanges(comp, kind, action, notes):
         comp.Attributes.ExpireLayout()
 
 
+# Inputs that became lists while definitions exist with item access. Only these change: elsewhere item access can be what the user chose.
+LIST_ACCESS_INPUTS = {'Lizard_Zone_Regime': ('PeopleGain', 'EquipmentGain', 'LightGain', 'MiscGain')}
+
+
+def inputsWithoutListAccess(comp):
+    """The inputs in LIST_ACCESS_INPUTS that still have item access: several wires would run the script once per item."""
+    names = LIST_ACCESS_INPUTS.get(str(comp.Name), ())
+    return [param for param in comp.Params.Input if str(param.Name) in names and param.Access == accessValue('item')]
+
+
+def applyListAccess(comp, notes):
+    params = inputsWithoutListAccess(comp)
+    for param in params:
+        param.Access = accessValue('list')
+        notes.append('{0} now has list access'.format(param.Name))
+    if params:
+        comp.Params.OnParametersChanged()
+
+
 def recordUndo(doc, obj, how='change'):
     """Undo record for a change ('change'), an added object ('add') or the wires of a param ('wire'); False if not possible."""
     try:
@@ -1195,6 +1214,7 @@ def applyInPlace(doc, action, log):
         notes.append('no undo record')
     if action['what'] == 'add':
         applyParamChanges(comp, action['kind'], action, notes)
+    applyListAccess(comp, notes)
     if action['codeChanged']:
         writeComponentCode(comp, action['kind'], action['code'])
     comp.ExpireSolution(False)
@@ -1210,6 +1230,7 @@ def applyReplacement(doc, action, log):
     notes = []
     new = copyComponent(old)
     applyParamChanges(new, action['kind'], action, notes)
+    applyListAccess(new, notes)
     writeComponentCode(new, action['kind'], action['code'])
     pivot = old.Attributes.Pivot
     new.Attributes.Pivot = drawing().PointF(pivot.X + REPLACEMENT_OFFSET, pivot.Y + REPLACEMENT_OFFSET)
@@ -1314,6 +1335,8 @@ def planComponent(comp, cluster, path, log):
     for note in plan['notes']:
         log.append('Note: ' + note)
     what = decideAction(codeChanged, plan, cluster is not None, bool(comp.Locked))
+    if what == 'skip' and inputsWithoutListAccess(comp):
+        what = 'code'  # an updater from before LIST_ACCESS_INPUTS brought the code and left the access
     if what == 'skip':
         return 'skipped', 'Component {0} is already up to date.'.format(name)
     if what == 'locked':
@@ -1801,11 +1824,13 @@ def updateTemplateDocument(doc, scripts, shared, counts):
             if result['what'] == 'replace':
                 new = copyComponent(obj)
                 applyParamChanges(new, result['kind'], result, notes)
+                applyListAccess(new, notes)
                 writeComponentCode(new, result['kind'], result['code'])
                 swapObject(doc, obj, new)
             else:
                 if result['what'] == 'add':
                     applyParamChanges(obj, result['kind'], result, notes)
+                applyListAccess(obj, notes)
                 if result['codeChanged']:
                     writeComponentCode(obj, result['kind'], result['code'])
             counts['scripts'] += 1

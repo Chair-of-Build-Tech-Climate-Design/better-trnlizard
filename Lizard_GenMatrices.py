@@ -88,7 +88,7 @@ if "Multizone" in locals() and Multizone:
             zonedict[zitem.Name][zitem.Airnode.Name]['BREP'][-1].UserDictionary.Set("ANR", zitem.Anr)
             zonedict[zitem.Name][zitem.Airnode.Name]['BREP'][-1].UserDictionary.Set("ZNR", zitem.Znr)
             zonedict[zitem.Name][zitem.Airnode.Name]['BREP'][-1].UserDictionary.Set("AIRNODE", zitem.Airnode.Name)
-            if "Virtual" in item.Construction:
+            if "Virtual" in (item.Construction or ''):
                 zonedict[zitem.Name][zitem.Airnode.Name]['BREP'][-1].UserDictionary.Set("TYPE", 'VIRTUAL')
     if len(zone[0].Shader) > 0:
         Shader = rc.Geometry.Brep.JoinBreps(zone[0].Shader,tolerance)

@@ -15,6 +15,12 @@ def execute_source_block(source, start, end, namespace):
     exec(compile(block, str(SOURCE), "exec"), namespace)
 
 
+def gain_instances(source):
+    namespace = {}
+    execute_source_block(source, "def gainInstances(airnode):", "def gainPowerEquation(", namespace)
+    return namespace["gainInstances"]
+
+
 class PeopleHumidityScalingTests(unittest.TestCase):
     def test_people_moisture_uses_weekly_and_annual_scales_once(self):
         source = SOURCE.read_text(encoding="utf-8-sig")
@@ -40,6 +46,7 @@ class PeopleHumidityScalingTests(unittest.TestCase):
                     "            if item2.Computergain == 1:",
                     {
                         "item2": gain,
+                        "suffix": "",
                         "item": SimpleNamespace(Name="A1", Areaperperson=30),
                         "lines": rendered,
                         "printsingledata": lambda obj, kind: "GAIN {} : HUMIDITY={}".format(obj.Name, obj.Humidity),
@@ -48,10 +55,11 @@ class PeopleHumidityScalingTests(unittest.TestCase):
                 regime = {
                     "Airnodes": SimpleNamespace(Name="A1", Gain=[gain]),
                     "regimelines": "",
+                    "gainInstances": gain_instances(source),
                 }
                 execute_source_block(
                     source,
-                    "        for gain_item in Airnodes.Gain:",
+                    "        for gain_item, suffix in gainInstances(Airnodes):",
                     "        hamt_gain_exists = False",
                     regime,
                 )

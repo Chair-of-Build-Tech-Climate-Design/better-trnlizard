@@ -35,6 +35,12 @@ Args:
     Altitude (object): define the building altitude for thermal simulation
         Access: item
         Required: True
+    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height. Not connected = 0
+        Access: item
+        Required: False
+    FallbackBoundary (bool): for a surface without a category and without a partner. True = GROUND if all its vertices are at or below GroundLevel and it has no window and is no ADDWINDOW, otherwise EXTERNAL. False = an error. Not connected = True
+        Access: item
+        Required: False
     AnnualMeanOutsideTemp (object): Script variable Lizard
         Access: item
         Required: True
@@ -211,12 +217,12 @@ class GEOMETRY:
         self.Type           = 'WALL'
         self.Subsurface     = []
         self.Subsurfacedef  = []
-        self.Boundarycond   = ''
+        self.Boundarycond   = None                  #None = not set: filled in by compileModel
         self.Boundarytemp   = 0
         self.Geosurf        = 0
         self.Faces          = []
         self.Orientation    = []
-        self.Construction   = ''
+        self.Construction   = None                  #None = not set: must be set before compileModel ends
         self.Area           = ''
         self.Insthick       = 0.2
         self.Surfnum        = ''
@@ -253,7 +259,10 @@ class GEOMETRY:
         self.Adjsurf        = 0
         self.Airnode        = ''
         self.Adjairnode     = ''
-        self.Frontback      = 'FRONT'
+        self.Frontback      = None                  #None = not set: filled in by compileModel
+        self.Hygrothermal   = False                 #True = Lizard_Hygro: Type 395 model of the final EXTERNAL or BOUNDARY
+        self.Sourcesurf     = None                  #Surfnum of the surface this one was split from
+        self.Frontguessed   = False                 #True = neither the settings nor the surface type chose the FRONT side of the pair
         self.Coupling       = 0
         self.Couplupper     = ''
         self.Coupllower     = ''
@@ -351,6 +360,8 @@ class AIRNODE:
         self.Refarea = 1
         self.Comfortpts = []
         self.Wcapr = 3
+        self.Geosurffloor = 0
+        self.Constructionset = None                 #defaults for the surfaces of this airnode, before the ones of the model
     def __repr__(self):
         """Airnode representation."""
         return "{}:{}".format(self.__class__.__name__, self.Name)
@@ -706,6 +717,1191 @@ def checkVerticesOrder(Points, Normal):
                 attached_points.append(pitem)
     new_points.extend(attached_points)
     return new_points
+# ---- Surface kernel (begin)
+# Plain geometry on tuples: no Rhino, no sticky, the same code under IronPython 2 and CPython 3
+# (tests/test_surface_kernel.py). Loops are lists of points without a repeated last point.
+def vecAdd(a, b, scale=1.0):
+    return (a[0]+scale*b[0], a[1]+scale*b[1], a[2]+scale*b[2])
+def vecSub(a, b):
+    return (a[0]-b[0], a[1]-b[1], a[2]-b[2])
+def vecDot(a, b):
+    return a[0]*b[0]+a[1]*b[1]+a[2]*b[2]
+def vecCross(a, b):
+    return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
+def vecUnit(a):
+    length = vecDot(a, a)**0.5
+    return (a[0]/length, a[1]/length, a[2]/length)
+def polyAreaVector(points):
+    """Area vector of a planar 3D loop: its length is the area, its direction follows the right hand rule."""
+    total = (0.0, 0.0, 0.0)
+    for i in range(len(points)):
+        total = vecAdd(total, vecCross(points[i], points[(i+1) % len(points)]))
+    return (total[0]/2.0, total[1]/2.0, total[2]/2.0)
+def polyArea2d(loop):
+    """Signed area of a 2D loop, positive for counter-clockwise."""
+    total = 0.0
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        total += a[0]*b[1]-b[0]*a[1]
+    return total/2.0
+def polyPerimeter2d(loop):
+    total = 0.0
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        total += ((b[0]-a[0])**2+(b[1]-a[1])**2)**0.5
+    return total
+def pointInLoop2d(point, loop):
+    """Even-odd test; a point exactly on the boundary may give either answer."""
+    inside = False
+    for i in range(len(loop)):
+        a, b = loop[i], loop[(i+1) % len(loop)]
+        if (a[1] > point[1]) != (b[1] > point[1]):
+            if a[0]+(point[1]-a[1])*(b[0]-a[0])/(b[1]-a[1]) > point[0]:
+                inside = not inside
+    return inside
+def pointSegmentDistance2d(p, a, b):
+    dx, dy = b[0]-a[0], b[1]-a[1]
+    length2 = dx*dx+dy*dy
+    if length2 == 0:
+        return ((p[0]-a[0])**2+(p[1]-a[1])**2)**0.5
+    t = max(0.0, min(1.0, ((p[0]-a[0])*dx+(p[1]-a[1])*dy)/length2))
+    return ((p[0]-a[0]-t*dx)**2+(p[1]-a[1]-t*dy)**2)**0.5
+def pointOnLoop2d(point, loop, tolerance):
+    for i in range(len(loop)):
+        if pointSegmentDistance2d(point, loop[i], loop[(i+1) % len(loop)]) < tolerance:
+            return True
+    return False
+def cleanLoop2d(loop, tolerance):
+    """The loop without repeated and collinear vertices."""
+    result = list(loop)
+    changed = True
+    while changed and len(result) > 3:
+        changed = False
+        for i in range(len(result)):
+            before, after = result[i-1], result[(i+1) % len(result)]
+            if pointSegmentDistance2d(result[i], before, after) < tolerance:
+                del result[i]
+                changed = True
+                break
+    return result
+def loopInterior2d(loops):
+    """A point inside a region given by its outer loop and hole loops, in the widest span of the widest band."""
+    heights = sorted(set([point[1] for loop in loops for point in loop]))
+    bands = sorted([(heights[i+1]-heights[i], i) for i in range(len(heights)-1)], reverse=True)
+    for gap, index in bands:
+        y = heights[index]+gap/2.0
+        crossings = []
+        for loop in loops:
+            for i in range(len(loop)):
+                a, b = loop[i], loop[(i+1) % len(loop)]
+                if (a[1] > y) != (b[1] > y):
+                    crossings.append(a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1]))
+        crossings.sort()
+        spans = [(crossings[i+1]-crossings[i], crossings[i]) for i in range(0, len(crossings)-1, 2)]
+        if spans:
+            width, start = max(spans)
+            if width > 0:
+                return (start+width/2.0, y)
+    return None
+class PointSnapper:
+    """Maps every point closer than the tolerance to the first point seen there, through a grid of tolerance-sized cells."""
+    def __init__(self, tolerance):
+        self.tolerance = tolerance
+        self.cells = {}
+    def snap(self, point):
+        cx, cy = int(point[0]//self.tolerance), int(point[1]//self.tolerance)
+        for dx in (-1, 0, 1):
+            for dy in (-1, 0, 1):
+                for other in self.cells.get((cx+dx, cy+dy), ()):
+                    if ((other[0]-point[0])**2+(other[1]-point[1])**2)**0.5 < self.tolerance:
+                        return other
+        self.cells.setdefault((cx, cy), []).append(point)
+        return point
+def segmentCrossing2d(a, b, c, d):
+    """Crossing point of the segments a-b and c-d, None for parallel segments or when they do not meet."""
+    rx, ry = b[0]-a[0], b[1]-a[1]
+    sx, sy = d[0]-c[0], d[1]-c[1]
+    denominator = rx*sy-ry*sx
+    if abs(denominator) < 1e-12:
+        return None
+    t = ((c[0]-a[0])*sy-(c[1]-a[1])*sx)/denominator
+    u = ((c[0]-a[0])*ry-(c[1]-a[1])*rx)/denominator
+    if t < 0 or t > 1 or u < 0 or u > 1:
+        return None
+    return (a[0]+t*rx, a[1]+t*ry)
+def nodeSegments(segments, snapper):
+    """Splits the undirected segments (pairs of snapped points) at every crossing and every point lying on them."""
+    tolerance = snapper.tolerance
+    segments = set([(min(a, b), max(a, b)) for a, b in segments if a != b])
+    for attempt in range(8):
+        ordered = sorted(segments)
+        boxes = [(min(s[0][0], s[1][0])-tolerance, max(s[0][0], s[1][0])+tolerance,
+                  min(s[0][1], s[1][1])-tolerance, max(s[0][1], s[1][1])+tolerance) for s in ordered]
+        cuts = {}
+        for i in range(len(ordered)):
+            a, b = ordered[i]
+            for j in range(i+1, len(ordered)):
+                if boxes[i][1] < boxes[j][0] or boxes[j][1] < boxes[i][0] or boxes[i][3] < boxes[j][2] or boxes[j][3] < boxes[i][2]:
+                    continue
+                c, d = ordered[j]
+                crossing = segmentCrossing2d(a, b, c, d)
+                if crossing is not None:
+                    point = snapper.snap(crossing)
+                    if point not in (a, b):
+                        cuts.setdefault(ordered[i], set()).add(point)
+                    if point not in (c, d):
+                        cuts.setdefault(ordered[j], set()).add(point)
+                for point in (c, d):
+                    if point not in (a, b) and pointSegmentDistance2d(point, a, b) < tolerance:
+                        cuts.setdefault(ordered[i], set()).add(point)
+                for point in (a, b):
+                    if point not in (c, d) and pointSegmentDistance2d(point, c, d) < tolerance:
+                        cuts.setdefault(ordered[j], set()).add(point)
+        if not cuts:
+            return segments
+        for segment in cuts:
+            segments.discard(segment)
+            a, b = segment
+            chain = sorted(cuts[segment], key=lambda p: (p[0]-a[0])**2+(p[1]-a[1])**2)
+            chain = [a]+chain+[b]
+            for k in range(len(chain)-1):
+                if chain[k] != chain[k+1]:
+                    segments.add((min(chain[k], chain[k+1]), max(chain[k], chain[k+1])))
+    return segments
+def edgeAngle2d(a, b):
+    return math.atan2(b[1]-a[1], b[0]-a[0])
+def traceLoops(edges):
+    """Closed loops of directed edges, each with the region on its left: counter-clockwise shells, clockwise holes."""
+    outgoing = {}
+    for a, b in edges:
+        outgoing.setdefault(a, []).append(b)
+    loops = []
+    unused = set(edges)
+    for start in sorted(edges):
+        if start not in unused:
+            continue
+        loop = []
+        edge = start
+        while edge in unused:
+            unused.discard(edge)
+            loop.append(edge[0])
+            a, b = edge
+            back = edgeAngle2d(b, a)
+            best, bestturn = None, None
+            for other in outgoing[b]:
+                turn = (back-edgeAngle2d(b, other)) % (2*math.pi)
+                if turn < 1e-12:
+                    turn = 2*math.pi
+                if bestturn is None or turn < bestturn:
+                    best, bestturn = other, turn
+            edge = (b, best)
+        if len(loop) >= 3:
+            loops.append(loop)
+    return loops
+def planarFaces(segments):
+    """Faces of a noded set of segments: dicts with 'outer' (counter-clockwise) and 'holes' (clockwise); dangling edges are dropped."""
+    neighbours = {}
+    for a, b in segments:
+        neighbours.setdefault(a, set()).add(b)
+        neighbours.setdefault(b, set()).add(a)
+    dangling = [p for p in neighbours if len(neighbours[p]) == 1]
+    while dangling:
+        point = dangling.pop()
+        for other in list(neighbours.get(point, ())):
+            neighbours[other].discard(point)
+            if len(neighbours[other]) == 1:
+                dangling.append(other)
+        neighbours.pop(point, None)
+    edges = []
+    for point in neighbours:
+        for other in neighbours[point]:
+            edges.append((point, other))
+    component = {}
+    for point in sorted(neighbours):
+        if point not in component:
+            stack = [point]
+            component[point] = point
+            while stack:
+                for other in neighbours[stack.pop()]:
+                    if other not in component:
+                        component[other] = point
+                        stack.append(other)
+    loops = traceLoops(edges)
+    faces = [{'outer': loop, 'holes': []} for loop in loops if polyArea2d(loop) > 0]
+    faces.sort(key=lambda face: polyArea2d(face['outer']))
+    for loop in loops:
+        if polyArea2d(loop) > 0:
+            continue
+        for face in faces:  # smallest first: the first one that holds the loop is its direct parent
+            if component[face['outer'][0]] != component[loop[0]] and pointInLoop2d(loop[0], face['outer']):
+                face['holes'].append(loop)
+                break
+    return faces
+def faceEdges(face):
+    edges = []
+    for loop in [face['outer']]+face['holes']:
+        for i in range(len(loop)):
+            edges.append((loop[i], loop[(i+1) % len(loop)]))
+    return edges
+def splitHoles(face, snapper):
+    """Simple loops that together make up a face with holes: b18 surfaces have one loop of vertices, so a hole is cut
+    open with a horizontal line through it to the nearest boundary on both sides."""
+    if not face['holes']:
+        return [face['outer']]
+    hole = sorted(face['holes'], key=lambda loop: min(loop))[0]
+    heights = sorted(set([point[1] for point in hole]))
+    gap, index = max([(heights[i+1]-heights[i], i) for i in range(len(heights)-1)])
+    y = heights[index]+gap/2.0
+    edges = faceEdges(face)
+    own = []
+    others = []
+    for a, b in edges:
+        if (a[1] > y) != (b[1] > y):
+            x = a[0]+(y-a[1])*(b[0]-a[0])/(b[1]-a[1])
+            if a in hole and b in hole:
+                own.append(x)
+            else:
+                others.append(x)
+    left = max([x for x in others if x < min(own)])
+    right = min([x for x in others if x > max(own)])
+    segments = [(a, b) for a, b in edges]
+    for x0, x1 in ((left, min(own)), (max(own), right)):
+        segments.append((snapper.snap((x0, y)), snapper.snap((x1, y))))
+    pieces = []
+    for part in planarFaces(nodeSegments(segments, snapper)):
+        point = loopInterior2d([part['outer']]+part['holes'])
+        if point is None or not pointInLoop2d(point, face['outer']):
+            continue
+        if True in [pointInLoop2d(point, other) for other in face['holes']]:
+            continue
+        pieces.extend(splitHoles(part, snapper))
+    return pieces
+def arrangePolygons(polygons, tolerance, slivertolerance=None):
+    """Splits overlapping simple polygons of one plane into regions with one set of sources.
+
+    polygons: list of (key, 2D loop). Returns a list of dicts sorted by cover and size: 'cover' = sorted tuple of the keys
+    whose polygon holds the region (never empty), 'loop' = one simple counter-clockwise loop, 'area'. A region of one cover
+    with holes comes as several loops. Regions narrower than slivertolerance (default: tolerance) go to the neighbour that
+    shares the longest edge. The result does not depend on the order of the polygons.
+    """
+    if slivertolerance is None:
+        slivertolerance = tolerance
+    snapper = PointSnapper(tolerance)
+    for point in sorted(set([point for key, loop in polygons for point in loop])):
+        snapper.snap(point)
+    sources = []
+    segments = []
+    for key, loop in sorted(polygons, key=lambda polygon: polygon[0]):
+        snapped = []
+        for point in loop:
+            point = snapper.snap(point)
+            if not snapped or snapped[-1] != point:
+                snapped.append(point)
+        if len(snapped) > 1 and snapped[0] == snapped[-1]:
+            snapped.pop()
+        if len(snapped) < 3:
+            continue
+        sources.append((key, snapped))
+        for i in range(len(snapped)):
+            segments.append((snapped[i], snapped[(i+1) % len(snapped)]))
+    faces = planarFaces(nodeSegments(segments, snapper))
+    faceofedge = {}
+    for index, face in enumerate(faces):
+        for edge in faceEdges(face):
+            faceofedge[edge] = index
+        point = loopInterior2d([face['outer']]+face['holes'])
+        face['cover'] = ()
+        if point is not None:
+            face['cover'] = tuple(sorted([key for key, loop in sources if pointInLoop2d(point, loop)]))
+    for index, face in enumerate(faces):
+        area = polyArea2d(face['outer'])+sum([polyArea2d(hole) for hole in face['holes']])
+        perimeter = polyPerimeter2d(face['outer'])+sum([polyPerimeter2d(hole) for hole in face['holes']])
+        face['sliver'] = bool(face['cover']) and 2.0*area/perimeter < slivertolerance
+    for index, face in enumerate(faces):
+        if not face['sliver']:
+            continue
+        shared = {}
+        for a, b in faceEdges(face):
+            other = faceofedge.get((b, a))
+            if other is not None and other != index and faces[other]['cover'] and not faces[other]['sliver']:
+                length = ((b[0]-a[0])**2+(b[1]-a[1])**2)**0.5
+                shared[faces[other]['cover']] = shared.get(faces[other]['cover'], 0.0)+length
+        if shared:
+            face['cover'] = max([(shared[cover], cover) for cover in shared])[1]
+    grouped = {}
+    for face in faces:
+        if face['cover']:
+            grouped.setdefault(face['cover'], []).extend(faceEdges(face))
+    regions = []
+    for cover in sorted(grouped):
+        edges = set(grouped[cover])
+        remaining = [edge for edge in sorted(edges) if (edge[1], edge[0]) not in edges]
+        loops = traceLoops(remaining)
+        shells = [{'outer': loop, 'holes': []} for loop in loops if polyArea2d(loop) > 0]
+        shells.sort(key=lambda face: polyArea2d(face['outer']))
+        for loop in loops:
+            if polyArea2d(loop) > 0:
+                continue
+            middle = ((loop[0][0]+loop[1][0])/2.0, (loop[0][1]+loop[1][1])/2.0)
+            for shell in shells:
+                if pointInLoop2d(middle, shell['outer']):
+                    shell['holes'].append(loop)
+                    break
+        for shell in shells:
+            for loop in splitHoles(shell, snapper):
+                loop = cleanLoop2d(loop, tolerance)
+                regions.append({'cover': cover, 'loop': loop, 'area': polyArea2d(loop)})
+    regions.sort(key=lambda region: (region['cover'], -region['area'], region['loop'][0]))
+    return regions
+def planeBasis(normal):
+    """Unit vectors u, v of a plane with u x v = normal."""
+    helper = (1.0, 0.0, 0.0)
+    if abs(normal[0]) >= 0.9:
+        helper = (0.0, 1.0, 0.0)
+    u = vecUnit(vecCross(normal, helper))
+    return u, vecCross(normal, u)
+def canonicalDirection(normal):
+    """The normal or its opposite, the same for both: the first clear component is positive."""
+    for value in normal:
+        if abs(value) > 1e-6:
+            if value < 0:
+                return (-normal[0], -normal[1], -normal[2])
+            break
+    return normal
+def groupPlanes(faces, gaptolerance, angletolerance):
+    """Groups of faces (dicts with 'key', 'points', 'normal') that lie in one plane, up to the gap: list of (direction, faces)."""
+    cosine = math.cos(math.radians(angletolerance))
+    directions = []
+    for face in sorted(faces, key=lambda item: item['key']):
+        direction = canonicalDirection(vecUnit(face['normal']))
+        for known in directions:
+            if abs(vecDot(known[0], direction)) >= cosine:
+                known[1].append(face)
+                break
+        else:
+            directions.append((direction, [face]))
+    groups = []
+    for direction, members in directions:
+        offsets = sorted([(vecDot(direction, member['points'][0]), member['key'], member) for member in members], key=lambda entry: entry[:2])
+        current = []
+        for offset, key, member in offsets:
+            if current and offset-current[0][0] > gaptolerance:
+                groups.append((direction, [entry[1] for entry in current]))
+                current = []
+            current.append((offset, member))
+        if current:
+            groups.append((direction, [entry[1] for entry in current]))
+    return groups
+def convexStartIndex(points, normal):
+    """Index of the first convex vertex (seen along the normal) of a loop, the start checkVerticesOrder looks for."""
+    area = polyAreaVector(points)
+    sign = 1.0
+    if vecDot(area, normal) < 0:
+        sign = -1.0
+    for i in range(len(points)):
+        turn = vecCross(vecSub(points[i], points[i-1]), vecSub(points[(i+1) % len(points)], points[i]))
+        if sign*vecDot(turn, area) > 0:
+            return i
+    return 0
+def rotateConvexStart(points, normal):
+    start = convexStartIndex(points, normal)
+    return points[start:]+points[:start]
+def arrangeFaces(faces, tolerance, gaptolerance, angletolerance=1.0):
+    """Regions of 3D faces (dicts with 'key', 'points', 'normal').
+
+    Faces of one plane, up to gaptolerance between parallel planes, are arranged together. Returns a list of dicts: 'cover',
+    'area', 'sides' {key: +1 or -1, side of the plane the normal of that face points to} and 'loops' {key: the region as a
+    3D loop in the plane of that face and with the winding of that face}.
+    """
+    regions = []
+    for direction, members in groupPlanes(faces, gaptolerance, angletolerance):
+        u, v = planeBasis(direction)
+        polygons = [(member['key'], [(vecDot(point, u), vecDot(point, v)) for point in member['points']]) for member in members]
+        bykey = dict([(member['key'], member) for member in members])
+        for region in arrangePolygons(polygons, tolerance, max(tolerance, gaptolerance)):
+            loops = {}
+            sides = {}
+            for key in region['cover']:
+                member = bykey[key]
+                normal = vecUnit(member['normal'])
+                sides[key] = 1
+                if vecDot(normal, direction) < 0:
+                    sides[key] = -1
+                planeoffset = vecDot(normal, member['points'][0])
+                points = []
+                for x, y in region['loop']:
+                    point = vecAdd(vecAdd((0.0, 0.0, 0.0), u, x), v, y)
+                    points.append(vecAdd(point, direction, (planeoffset-vecDot(point, normal))/vecDot(direction, normal)))
+                if vecDot(polyAreaVector(member['points']), direction) < 0:
+                    points.reverse()
+                loops[key] = rotateConvexStart(points, polyAreaVector(points))
+            regions.append({'cover': region['cover'], 'area': region['area'], 'sides': sides, 'loops': loops})
+    return regions
+def triangulateLoop3d(points):
+    """Triangles of a planar loop, by ear clipping; the loop may be concave."""
+    area = polyAreaVector(points)
+    remaining = list(points)
+    triangles = []
+    def holds(point, a, b, c):
+        for p, q in ((a, b), (b, c), (c, a)):
+            if vecDot(vecCross(vecSub(q, p), vecSub(point, p)), area) <= 0:
+                return False
+        return True
+    while len(remaining) > 3:
+        for k in range(len(remaining)):
+            a, b, c = remaining[k-1], remaining[k], remaining[(k+1) % len(remaining)]
+            if vecDot(vecCross(vecSub(b, a), vecSub(c, b)), area) <= 0:
+                continue
+            if True in [holds(point, a, b, c) for point in remaining if point not in (a, b, c)]:
+                continue
+            triangles.append((a, b, c))
+            del remaining[k]
+            break
+        else:
+            break
+    if len(remaining) == 3:
+        triangles.append(tuple(remaining))
+    return triangles
+def rayCrossesPolygon(origin, direction, points):
+    """True/False: the ray crosses the polygon or not. None: it passes too close to the boundary to tell."""
+    normal = vecUnit(polyAreaVector(points))
+    denominator = vecDot(normal, direction)
+    if abs(denominator) < 1e-9:
+        return False
+    distance = vecDot(normal, vecSub(points[0], origin))/denominator
+    if distance <= 1e-7:
+        return False
+    hit = vecAdd(origin, direction, distance)
+    u, v = planeBasis(normal)
+    loop = [(vecDot(point, u), vecDot(point, v)) for point in points]
+    point = (vecDot(hit, u), vecDot(hit, v))
+    if pointOnLoop2d(point, loop, 1e-6):
+        return None
+    return pointInLoop2d(point, loop)
+ORIENT_SAMPLES = ((0.34, 0.33, 0.33), (0.61, 0.26, 0.13), (0.17, 0.71, 0.12), (0.13, 0.19, 0.68), (0.47, 0.09, 0.44), (0.08, 0.41, 0.51))
+def orientClosedPolygons(polygons, normals):
+    """Which faces of one closed volume have a normal that points into the volume.
+
+    A ray from the face along an outward normal starts outside, so it crosses the other faces an even number of times, and an
+    inward one an odd number of times. The count ignores the normals of the others: any mix of wrong faces, concave rooms
+    and T-junctions give the right answer. The answer is only used when the corrected faces close (areas times normals add up
+    to zero, positive volume). Returns (indices to flip, closed).
+    """
+    flips = []
+    votes = []
+    for index in range(len(polygons)):
+        direction = vecUnit(normals[index])
+        triangles = triangulateLoop3d(polygons[index])
+        triangles.sort(key=lambda t: -vecDot(polyAreaVector(t), polyAreaVector(t)))
+        counts = []
+        for triangle in triangles:
+            for w0, w1, w2 in ORIENT_SAMPLES:
+                origin = (w0*triangle[0][0]+w1*triangle[1][0]+w2*triangle[2][0],
+                          w0*triangle[0][1]+w1*triangle[1][1]+w2*triangle[2][1],
+                          w0*triangle[0][2]+w1*triangle[1][2]+w2*triangle[2][2])
+                hits = [rayCrossesPolygon(origin, direction, polygons[other]) for other in range(len(polygons)) if other != index]
+                if None not in hits:
+                    counts.append(hits.count(True) % 2)
+            if len(counts) >= len(ORIENT_SAMPLES):
+                break
+        votes.append(counts)
+        if counts and sum(counts) == len(counts):
+            flips.append(index)
+    closure = (0.0, 0.0, 0.0)
+    total = 0.0
+    volume = 0.0
+    for index in range(len(polygons)):
+        sign = 1.0
+        if index in flips:
+            sign = -1.0
+        area = vecDot(polyAreaVector(polygons[index]), polyAreaVector(polygons[index]))**0.5
+        oriented = vecAdd((0.0, 0.0, 0.0), vecUnit(normals[index]), sign*area)
+        closure = vecAdd(closure, oriented)
+        total += area
+        volume += vecDot(polygons[index][0], oriented)/3.0
+    agreed = True not in [len(set(counts)) != 1 for counts in votes]
+    closed = agreed and vecDot(closure, closure)**0.5 <= 1e-3*total and volume > 0
+    if not closed:
+        return [], False
+    return flips, True
+# ---- Surface kernel (end)
+# ---- Surface model (begin)
+# From the surfaces of the airnodes to what the b18 writer reads. No Rhino here either: makeSurfaceVertices, makeSurfaceBrep and
+# flipSurfaceBreps below this block are the only contact (tests/test_surface_model.py replaces them).
+ADJACENCY_TOLERANCE = 0.01      # m, points closer than this are one point
+DEFAULT_GAP_TOLERANCE = 0.02    # m, parallel planes closer than this are one plane
+NEAR_MISS_DISTANCE = 0.5        # m, faces this close get a hint when they are not adjacent
+GROUND_LEVEL = 0.0              # m, input GroundLevel
+FALLBACK_BOUNDARY = True        # input FallbackBoundary
+GROUND_TEMPERATURE = 'INPUT 1*Tsoil'
+CONSTRUCTION_SLOTS = ('ExteriorWall', 'InteriorWall', 'Roof', 'InteriorCeiling', 'InteriorFloor', 'GroundFloor', 'ExposedFloor')
+EXTERIOR_CATEGORIES = ('EXTERNAL', 'EXTBOUNDARY', 'EXTCALC', 'EXTSKYBND', 'EXTVERTF', 'EXTBOUNDADJ', 'EXTCALEXT')
+class ComponentFailure:
+    """What a component outputs when it could not do its work. None would look like an input that is not connected, and the next
+    component would go on with its defaults."""
+    Failed = True
+    def __init__(self, component, message):
+        self.Component = component
+        self.Message = message
+    def __repr__(self):
+        return "Failed:{0}:{1}".format(self.Component, self.Message)
+def isFailure(value):
+    """Asks the value and not its class: the class is defined again whenever Lizard_Component runs."""
+    return getattr(value, 'Failed', False) is True
+def isWindowSurface(item):
+    return item.Type in ('WINDOW', 'BSDFWINDOW')
+def isVirtualSurface(item):
+    return item.Boundarycond == 'VIRTUAL' or 'Virtual' in (item.Construction or '')
+def pointTuple(point):
+    return (point.X, point.Y, point.Z)
+def surfacePoints(item):
+    return [pointTuple(point) for point in item.Vertices]
+def surfaceFace(item):
+    return {'key': item.Surfnum, 'points': surfacePoints(item), 'normal': pointTuple(item.Normalvector)}
+def addIssue(issues, level, message, surfaces=()):
+    issues.append({'level': level, 'message': message, 'surfaces': list(surfaces)})
+def flipSurface(item):
+    """The surface with the opposite normal; everything derived from the normal is computed after this."""
+    item.Normalvector = item.Normalvector * -1.0
+    vertices = list(reversed(item.Vertices))
+    start = convexStartIndex([pointTuple(point) for point in vertices], pointTuple(item.Normalvector))
+    item.Vertices = vertices[start:]+vertices[:start]
+    flipSurfaceBreps(item)
+def orientSurfaces(surfaces):
+    """Corrects the normals of the surfaces of one airnode so that they point out of the room. Returns (flipped surfaces, closed);
+    nothing is changed when the surfaces do not close a volume."""
+    closing = [item for item in surfaces if not isWindowSurface(item)]
+    if len(closing) < 4:
+        return [], False
+    flips, closed = orientClosedPolygons([surfacePoints(item) for item in closing], [pointTuple(item.Normalvector) for item in closing])
+    if not closed:
+        return [], False
+    flipped = [closing[index] for index in flips]
+    for item in flipped:
+        flipSurface(item)
+    cosine = math.cos(math.radians(1.0))
+    for window in surfaces:
+        if not isWindowSurface(window):
+            continue
+        points = surfacePoints(window)
+        normal = pointTuple(window.Normalvector)
+        for host in closing:
+            hostnormal = pointTuple(host.Normalvector)
+            hostpoints = surfacePoints(host)
+            if abs(vecDot(normal, hostnormal)) < cosine or abs(vecDot(vecSub(points[0], hostpoints[0]), hostnormal)) > ADJACENCY_TOLERANCE:
+                continue
+            u, v = planeBasis(vecUnit(hostnormal))
+            if pointInLoop2d(loopInterior2d([[(vecDot(point, u), vecDot(point, v)) for point in points]]), [(vecDot(point, u), vecDot(point, v)) for point in hostpoints]):
+                if vecDot(normal, hostnormal) < 0:
+                    flipSurface(window)
+                    flipped.append(window)
+                break
+    return flipped, True
+def isMirrorBoundary(item):
+    """BOUNDARY with the room's own air temperature (or nothing) on the other side: the wall stands for a neighbour that is not modelled."""
+    temperature = item.Boundarytemp
+    if not temperature or temperature == 'Identical':
+        return True
+    return 'TAIR_@ANAME' in str(temperature) or str(temperature) == 'INPUT 1*TAIR_{0}'.format(item.Airnode)
+def surfaceParticipates(item, autoadjacency):
+    """Whether a surface looks for a partner: an unset or ADJACENT category always, the plain categories on request."""
+    category = item.Boundarycond
+    if not category or category in ('ADJACENT', 'AUTOBOUND'):
+        return True
+    if not autoadjacency or item.Hygrothermal:
+        return False
+    return category == 'EXTERNAL' or (category == 'BOUNDARY' and isMirrorBoundary(item))
+def makeSurfacePiece(parent, points):
+    """A copy of the parent surface with the geometry of one region; windows are hosted afterwards."""
+    piece = copy.copy(parent)
+    piece.Vertices = makeSurfaceVertices(points)
+    piece.Surface = piece.Faces = makeSurfaceBrep(points, parent.Normalvector)
+    piece.Area = vecDot(polyAreaVector(points), polyAreaVector(points))**0.5
+    piece.Subsurface = []
+    piece.Subsurfacedef = []
+    piece.Sourcesurf = parent.Surfnum
+    return piece
+def loopHolds(points, inner, normal):
+    """Whether the 3D loop inner lies within the 3D loop points of the same plane."""
+    u, v = planeBasis(vecUnit(normal))
+    outer2d = [(vecDot(point, u), vecDot(point, v)) for point in points]
+    inner2d = [(vecDot(point, u), vecDot(point, v)) for point in inner]
+    for i in range(len(inner2d)):
+        a, b = inner2d[i], inner2d[(i+1) % len(inner2d)]
+        for point in (a, ((a[0]+b[0])/2.0, (a[1]+b[1])/2.0)):
+            if not pointInLoop2d(point, outer2d) and not pointOnLoop2d(point, outer2d, ADJACENCY_TOLERANCE):
+                return False
+    return True
+def hostWindows(parent, pieces, issues):
+    """Hands the windows of a split surface to the piece that holds them; the first piece is the biggest one."""
+    for window in parent.Subsurfacedef:
+        points = surfacePoints(window)
+        host = None
+        for piece in pieces:
+            if loopHolds(surfacePoints(piece), points, pointTuple(parent.Normalvector)):
+                host = piece
+                break
+        if host is None:
+            addIssue(issues, 'error', "Window {0} crosses the line where surface {1} is split: move the window or split the wall yourself".format(window.Surfnum, parent.Surfnum), [parent, window])
+            host = pieces[0]
+        host.Subsurface.append(window.Surface)
+        host.Subsurfacedef.append(window)
+        host.Area = host.Area-window.Area
+def wallLayers(name, walls):
+    wall = walls.get(name)
+    if wall is None:
+        return None
+    return list(zip(wall.Layers.split(), wall.Thickness.split()))
+def frontOfPair(a, b):
+    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with a construction (it
+    lists its layers from its own side), then the floor (floor constructions list their layers from the walking surface down). Between
+    walls the airnode that sorts first is the front: guessed."""
+    if a.Frontback != b.Frontback and (a.Frontback or b.Frontback):
+        if a.Frontback == 'FRONT' or b.Frontback == 'BACK':
+            return a, b, False
+        return b, a, False
+    if bool(a.Construction) != bool(b.Construction):
+        if a.Construction:
+            return a, b, False
+        return b, a, False
+    if a.Type == 'FLOOR' or b.Type == 'FLOOR':
+        if a.Type == 'FLOOR':
+            return a, b, False
+        return b, a, False
+    front, back = sorted([a, b], key=lambda item: (item.Airnode, item.Surfnum))
+    return front, back, True
+def isSymmetric(layers):
+    return layers == list(reversed(layers))
+def matchConstructions(front, back, walls, issues):
+    """Both sides of a pair end up with a construction: an empty side follows the other one; two constructions must be the same or mirrored."""
+    if front.Type == 'ADDWINDOW':
+        back.Construction = front.Construction
+        return
+    if back.Type == 'ADDWINDOW':
+        front.Construction = back.Construction
+        return
+    if not front.Construction and not back.Construction:
+        return
+    if not front.Construction:
+        layers = wallLayers(back.Construction, walls)
+        if layers and not isSymmetric(layers):
+            addIssue(issues, 'error', "Surface {0} is the FRONT of the pair but has no construction, and the construction {1} of surface {2} lists its layers from the other side: fill {3}".format(front.Surfnum, back.Construction, back.Surfnum, constructionSlot(front)), [front, back])
+        front.Construction = back.Construction
+        return
+    if not back.Construction:
+        back.Construction = front.Construction
+    if front.Construction == back.Construction:
+        layers = wallLayers(front.Construction, walls)
+        if front.Frontguessed and layers and not isSymmetric(layers):
+            addIssue(issues, 'warning', "Surfaces {0} & {1} have no FRONT/BACK of their own and the non-symmetric construction {2}: {0} is used as FRONT".format(front.Surfnum, back.Surfnum, front.Construction), [front, back])
+        return
+    frontlayers, backlayers = wallLayers(front.Construction, walls), wallLayers(back.Construction, walls)
+    if frontlayers is None or backlayers is None or frontlayers != list(reversed(backlayers)):
+        addIssue(issues, 'error', "Surfaces {0} & {1} are adjacent but have the different constructions {2} and {3}".format(front.Surfnum, back.Surfnum, front.Construction, back.Construction), [front, back])
+def sumPoints(points):
+    total = (0.0, 0.0, 0.0)
+    for point in points:
+        total = vecAdd(total, point)
+    return total
+def pairWindows(front, back, issues):
+    """Windows in adjacent walls need a window on the other side at the same place."""
+    remaining = list(back.Subsurfacedef)
+    for window in front.Subsurfacedef:
+        points = surfacePoints(window)
+        centre = vecAdd((0.0, 0.0, 0.0), sumPoints(points), 1.0/len(points))
+        partner = None
+        for other in remaining:
+            others = surfacePoints(other)
+            othercentre = vecAdd((0.0, 0.0, 0.0), sumPoints(others), 1.0/len(others))
+            offset = vecSub(centre, othercentre)
+            parallel = vecDot(offset, vecUnit(pointTuple(front.Normalvector)))
+            if vecDot(offset, offset)-parallel*parallel < ADJACENCY_TOLERANCE**2 and abs(window.Area-other.Area) < ADJACENCY_TOLERANCE*(window.Area**0.5):
+                partner = other
+                break
+        if partner is None:
+            addIssue(issues, 'error', "Window {0} is in the adjacent surface {1} but surface {2} has no window at the same place".format(window.Surfnum, front.Surfnum, back.Surfnum), [window])
+            continue
+        remaining.remove(partner)
+        window.Adjsurf, partner.Adjsurf = partner.Surfnum, window.Surfnum
+        window.Adjairnode, partner.Adjairnode = partner.Airnode, window.Airnode
+        partner.Orientation = window.Orientation
+        partner.Construction = window.Construction
+    for window in remaining:
+        addIssue(issues, 'error', "Window {0} is in the adjacent surface {1} but surface {2} has no window at the same place".format(window.Surfnum, back.Surfnum, front.Surfnum), [window])
+def pairSurfaces(a, b, issues):
+    """Makes two surfaces of one region adjacent. Returns (front, back) for the orientation that is shared at the end."""
+    if a.Hygrothermal or b.Hygrothermal:
+        addIssue(issues, 'error', "Surfaces {0} & {1} are adjacent but a HAMT surface can only be EXTERNAL or BOUNDARY".format(a.Surfnum, b.Surfnum), [a, b])
+    front, back, guessed = frontOfPair(a, b)
+    front.Frontguessed = guessed
+    front.Frontback, back.Frontback = 'FRONT', 'BACK'
+    front.Boundarycond = back.Boundarycond = 'ADJACENT'
+    front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
+    front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
+    if front.Activelayer == 1:
+        back.Activelayer = 1
+        back.Intemp = front.Intemp
+    if front.Coupling != 0 or back.Coupling != 0:
+        front.Coupling = "INPUT 1*MF_{0}_{1}".format(back.Airnode, front.Airnode)
+        back.Coupling = "INPUT 1*MF_{0}_{1}".format(front.Airnode, back.Airnode)
+    for host in (front, back):
+        for window in host.Subsurfacedef:
+            window.Frontback = host.Frontback
+            window.Boundarycond = 'ADJACENT'
+    pairWindows(front, back, issues)
+    if abs(front.Area-back.Area) > 0.01*max(front.Area, back.Area):
+        addIssue(issues, 'warning', "Adjacent surfaces {0} & {1} differ in area: {2:.2f} and {3:.2f} m2".format(front.Surfnum, back.Surfnum, front.Area, back.Area), [front, back])
+    return front, back
+def fallbackBoundary(item, issues):
+    """The boundary condition of a surface without a category and without a partner. Like the walls, a floor only has its height to go by."""
+    if not FALLBACK_BOUNDARY:
+        addIssue(issues, 'error', "Surface {0} of {1} has no boundary condition and no partner, and FallbackBoundary is off: set its Category".format(item.Surfnum, item.Airnode), [item])
+        return
+    below = max([point[2] for point in surfacePoints(item)]) <= GROUND_LEVEL + ADJACENCY_TOLERANCE
+    if below and not item.Subsurfacedef and item.Type != 'ADDWINDOW':
+        item.Boundarycond = 'BOUNDARY'
+        item.Boundarytemp = GROUND_TEMPERATURE
+        addIssue(issues, 'warning', "Surface {0} of {1} has no boundary condition and no partner, and lies at or below GroundLevel {2}: GROUND is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
+    else:
+        item.Boundarycond = 'EXTERNAL'
+        if below and item.Subsurfacedef:
+            addIssue(issues, 'warning', "Surface {0} of {1} lies at or below GroundLevel {2} but has a window: EXTERNAL is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
+        elif item.Type == 'FLOOR':
+            addIssue(issues, 'warning', "Floor surface {0} of {1} has no boundary condition and no surface below, and lies above GroundLevel {2}: EXTERNAL is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
+def finishUnmatched(item, standalone, issues):
+    """The boundary condition of a surface (or a part of one) that has no partner."""
+    category = item.Boundarycond
+    if category == 'ADJACENT' and standalone:
+        item.Boundarycond = 'BOUNDARY'
+        item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item.Airnode)
+    elif category == 'ADJACENT':
+        addIssue(issues, 'error', "No adjacent surface found for surface {0} of {1}".format(item.Surfnum, item.Airnode), [item])
+    elif category == 'AUTOBOUND':
+        addIssue(issues, 'warning', "No opposite AUTOBOUND surface for surface {0}: BOUNDARY with the air temperature of {1} is used".format(item.Surfnum, item.Airnode), [item])
+        item.Boundarycond = 'BOUNDARY'
+        item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item.Airnode)
+    elif not category:
+        fallbackBoundary(item, issues)
+    for window in item.Subsurfacedef:
+        window.Boundarycond = item.Boundarycond
+def addFacingHints(unmatched, walls, gaptolerance, issues):
+    """Hints for faces without a partner that do face a surface of another room within NEAR_MISS_DISTANCE."""
+    cosine = math.cos(math.radians(1.0))
+    for item in unmatched:
+        points = surfacePoints(item)
+        normal = vecUnit(pointTuple(item.Normalvector))
+        u, v = planeBasis(normal)
+        loop = [(vecDot(point, u), vecDot(point, v)) for point in points]
+        for other in walls:
+            if other.Airnode == item.Airnode or other is item:
+                continue
+            othernormal = vecUnit(pointTuple(other.Normalvector))
+            otherpoints = surfacePoints(other)
+            distance = abs(vecDot(vecSub(otherpoints[0], points[0]), normal))
+            if vecDot(normal, othernormal) > -cosine or distance > NEAR_MISS_DISTANCE:
+                continue
+            otherloop = [(vecDot(point, u), vecDot(point, v)) for point in otherpoints]
+            shared = [region for region in arrangePolygons([(0, loop), (1, otherloop)], ADJACENCY_TOLERANCE) if len(region['cover']) == 2]
+            if not shared or sum([region['area'] for region in shared]) < 0.01:
+                continue
+            if distance > gaptolerance:
+                addIssue(issues, 'warning', "Surface {0} of {1} has no partner but surface {2} of {3} is {4:.2f} m away: raise GapTolerance if they are one wall".format(item.Surfnum, item.Airnode, other.Surfnum, other.Airnode, distance), [item, other])
+            else:
+                addIssue(issues, 'warning', "Surface {0} of {1} faces surface {2} of {3}, which keeps its own {4}".format(item.Surfnum, item.Airnode, other.Surfnum, other.Airnode, other.Boundarycond), [item, other])
+            break
+def expandSurfaceOutputs(airnodes, splits):
+    """Surface outputs of a split surface cover all of its pieces."""
+    for airnode in airnodes:
+        for output in airnode.Output or []:
+            if output and output.Type == 'SURFACE':
+                for number in list(output.SurfaceID):
+                    for new in splits.get(number, ()):
+                        if new not in output.SurfaceID:
+                            output.SurfaceID.append(new)
+                            for short in output.Ntype:
+                                output.NtypesShort.append('{0}_S{1}'.format(short, new))
+def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
+    """Splits the surfaces that look for a partner along what faces them and sets their boundary conditions.
+
+    A pair needs two surfaces of different airnodes with opposite normals in one plane. Returns the (front, back) pairs."""
+    allnumbers = []
+    participants = []
+    others = []
+    for airnode in airnodes:
+        for item in airnode.Surfaces:
+            allnumbers.append(item.Surfnum)
+            if isWindowSurface(item) or isVirtualSurface(item):
+                continue
+            if surfaceParticipates(item, autoadjacency):
+                participants.append(item)
+            else:
+                others.append(item)
+    bynumber = dict([(item.Surfnum, item) for item in participants])
+    regions = arrangeFaces([surfaceFace(item) for item in participants], ADJACENCY_TOLERANCE, gaptolerance)
+    regionsof = {}
+    regionpairs = {}
+    for index, region in enumerate(regions):
+        cover = region['cover']
+        for key in cover:
+            regionsof.setdefault(key, []).append(index)
+        if len(cover) == 1:
+            continue
+        if len(cover) > 2 or region['sides'][cover[0]] == region['sides'][cover[1]]:
+            addIssue(issues, 'error', "Surfaces {0} overlap on the same side of a wall: {1:.2f} m2".format(', '.join([str(key) for key in cover]), region['area']), [bynumber[key] for key in cover])
+        elif bynumber[cover[0]].Airnode == bynumber[cover[1]].Airnode:
+            addIssue(issues, 'warning', "Surfaces {0} & {1} of {2} face each other and are not coupled".format(cover[0], cover[1], bynumber[cover[0]].Airnode), [bynumber[key] for key in cover])
+        else:
+            regionpairs[index] = cover
+    nextnumber = max(allnumbers or [0])+1
+    pieces = {}
+    splits = {}
+    replaced = {}
+    for key in sorted(regionsof):
+        parent = bynumber[key]
+        own = sorted(regionsof[key], key=lambda index: (-regions[index]['area'], index))
+        if len(own) == 1:
+            pieces[(key, own[0])] = parent
+            continue
+        chained = 'TOFL_S' in str(parent.Intemp) and parent.Activelayer != 0
+        for airnode in airnodes:
+            for item in airnode.Surfaces:
+                chained = chained or 'TOFL_S{0}'.format(key) == str(item.Intemp).replace('INPUT 1*', '')
+        if chained:
+            addIssue(issues, 'error', "Surface {0} would be split but belongs to a serial active layer circuit: split it yourself".format(key), [parent])
+        created = []
+        for rank, index in enumerate(own):
+            piece = makeSurfacePiece(parent, regions[index]['loops'][key])
+            if rank > 0:
+                piece.Surfnum = nextnumber
+                splits.setdefault(key, []).append(nextnumber)
+                nextnumber += 1
+            pieces[(key, index)] = piece
+            created.append(piece)
+        hostWindows(parent, created, issues)
+        replaced[key] = created
+    for airnode in airnodes:
+        surfaces = []
+        for item in airnode.Surfaces:
+            if item.Surfnum in replaced and item is bynumber.get(item.Surfnum):
+                surfaces.extend(replaced[item.Surfnum])
+            else:
+                surfaces.append(item)
+        airnode.Surfaces = surfaces
+    expandSurfaceOutputs(airnodes, splits)
+    pairs = []
+    changed = []
+    unmatched = []
+    converted = {}
+    for index in sorted(regionpairs):
+        first, second = regionpairs[index]
+        a, b = pieces[(first, index)], pieces[(second, index)]
+        changed.extend([a, b])
+        if a.Boundarycond == 'AUTOBOUND' and b.Boundarycond == 'AUTOBOUND':
+            for item, other in ((a, b), (b, a)):
+                item.Boundarycond = 'BOUNDARY'
+                item.Bndairnode = other.Airnode
+                item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(other.Airnode)
+                for window in item.Subsurfacedef:
+                    window.Boundarycond = 'BOUNDARY'
+        elif a.Boundarycond == 'AUTOBOUND' or b.Boundarycond == 'AUTOBOUND':
+            addIssue(issues, 'warning', "Surfaces {0} & {1} face each other but only one of them is AUTOBOUND".format(a.Surfnum, b.Surfnum), [a, b])
+            finishUnmatched(a, standalone, issues)
+            finishUnmatched(b, standalone, issues)
+        else:
+            for item in (a, b):
+                if item.Boundarycond in ('EXTERNAL', 'BOUNDARY') and item.Construction:
+                    converted.setdefault(item.Construction, []).append(item)
+            pairs.append(pairSurfaces(a, b, issues))
+    for construction in sorted(converted, key=str):
+        items = converted[construction]
+        addIssue(issues, 'warning', "Surfaces {0} were not declared adjacent but face another room: they keep the construction {1}, check that it suits an inner wall".format(', '.join(sorted(set([str(item.Surfnum) for item in items]))), construction), items)
+    paired = [index for index in regionpairs]
+    for key, index in sorted(pieces):
+        if index not in paired:
+            item = pieces[(key, index)]
+            unmatched.append(item)
+            changed.append(item)
+            finishUnmatched(item, standalone, issues)
+    for item in participants:
+        if item.Surfnum not in regionsof:  # too small for any region
+            unmatched.append(item)
+            changed.append(item)
+            finishUnmatched(item, standalone, issues)
+    getSurfaceType(changed)
+    allwalls = []
+    for airnode in airnodes:
+        allwalls.extend([item for item in airnode.Surfaces if not isWindowSurface(item) and not isVirtualSurface(item)])
+    if not standalone:
+        addFacingHints(unmatched, allwalls, gaptolerance, issues)
+    return pairs
+def constructionSlot(item):
+    """The slot of a construction set for a surface with its final type and boundary condition."""
+    exterior = item.Boundarycond in EXTERIOR_CATEGORIES
+    ground = item.Boundarycond in ('BOUNDARY', 'EXTCALBND') and re.search(r'\bTsoil\b', str(item.Boundarytemp)) is not None
+    if item.Type == 'FLOOR':
+        if exterior:
+            return 'ExposedFloor'
+        if item.Boundarycond in ('ADJACENT', 'INTERNAL') or isMirrorBoundary(item):
+            return 'InteriorFloor'
+        return 'GroundFloor'
+    if item.Type in ('ROOF', 'CEILING'):
+        if exterior or ground:
+            return 'Roof'
+        return 'InteriorCeiling'
+    if exterior or ground:
+        return 'ExteriorWall'
+    return 'InteriorWall'
+def fillConstructions(airnodes, pairs, modelset, library, issues):
+    """Gives the surfaces without a construction the one of their slot, from the set of the airnode and then from the set of the model. A
+    surface whose partner has a construction follows that one. Matches the two sides of every pair afterwards."""
+    walls = dict([(wall.Name, wall) for wall in library.Walls])
+    following = []
+    for front, back in pairs:
+        if front.Construction:
+            following.append(id(back))
+        if back.Construction:
+            following.append(id(front))
+    filled = {}
+    for airnode in airnodes:
+        sets = [item for item in (airnode.Constructionset, modelset) if item is not None and not isFailure(item)]
+        for item in airnode.Surfaces:
+            if item.Construction or isWindowSurface(item) or isVirtualSurface(item) or item.Type == 'ADDWINDOW' or id(item) in following:
+                continue
+            slot = constructionSlot(item)
+            for constructions in sets:
+                name = getattr(constructions, slot, None)
+                if name:
+                    item.Construction = name
+                    filled.setdefault((slot, name), []).append(item)
+                    break
+    for front, back in pairs:
+        matchConstructions(front, back, walls, issues)
+    for slot, name in sorted(filled):
+        items = filled[(slot, name)]
+        addIssue(issues, 'info', "Construction set: {0} = {1} on surfaces {2}".format(slot, name, ', '.join([str(item.Surfnum) for item in items])), items)
+def subtractSurfaces(faces, explicit):
+    """What remains of the faces of a solid when other surfaces lie on them. Returns ({number of a face with a surface on it: the 3D loops
+    that remain}, [surfaces, or parts of them, beside the faces])."""
+    if not explicit:
+        return {}, []
+    numbers = [item.Surfnum for item in faces]
+    bynumber = dict([(item.Surfnum, item) for item in explicit])
+    touched = []
+    remaining = {}
+    outside = []
+    for region in arrangeFaces([surfaceFace(item) for item in list(faces)+list(explicit)], ADJACENCY_TOLERANCE, DEFAULT_GAP_TOLERANCE):
+        own = [key for key in region['cover'] if key in numbers]
+        others = [key for key in region['cover'] if key not in numbers]
+        if not others:
+            for key in own:
+                remaining.setdefault(key, []).append(region['loops'][key])
+        elif own:
+            touched.extend(own)
+        else:
+            outside.extend([bynumber[key] for key in others if bynumber[key] not in outside])
+    return dict([(key, remaining.get(key, [])) for key in touched]), outside
+def setFailures(airnodes, modelset):
+    """The messages of the construction sets that failed. Such a set stops the model: its surfaces must not go on without their defaults."""
+    messages = []
+    for airnode in airnodes:
+        if isFailure(airnode.Constructionset):
+            messages.append("Airnode {0}: {1}".format(airnode.Name, airnode.Constructionset.Message))
+    if isFailure(modelset):
+        messages.append("Multizone: {0}".format(modelset.Message))
+    return messages
+def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
+    """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values. A surface
+    without a construction is not reported when a set has failed: that error says it already."""
+    walls = dict([(wall.Name, wall) for wall in library.Walls])
+    for airnode in airnodes:
+        for item in airnode.Surfaces:
+            if not item.Frontback:
+                item.Frontback = 'FRONT'
+            if isWindowSurface(item) or isVirtualSurface(item):
+                continue
+            if item.Hygrothermal:
+                if item.Boundarycond == 'EXTERNAL':
+                    item.Boundarycond = 'EXTCALEXT'
+                elif item.Boundarycond == 'BOUNDARY':
+                    item.Boundarycond = 'EXTCALBND'
+            if not item.Boundarytemp:
+                item.Boundarytemp = 'Identical'
+            if item.Type == 'ADDWINDOW':
+                continue
+            if not item.Construction:
+                if setfailed:
+                    continue
+                addIssue(issues, 'error', "Surface {0} of {1} ({2}, {3}) has no construction: set one on the surface or fill {4} in a construction set".format(item.Surfnum, item.Airnode, item.Type, item.Boundarycond, constructionSlot(item)), [item])
+            elif item.Construction not in walls:
+                addIssue(issues, 'error', "Surface {0} of {1}: construction {2} is not in the library".format(item.Surfnum, item.Airnode, item.Construction), [item])
+            else:
+                wall = walls[item.Construction]
+                item.Uvalue = wall.Uvalue
+                item.Abs_front = wall.Abs_front
+                item.Abs_back = wall.Abs_back
+                item.Wallthickness = sum([float(value) for value in wall.Thickness.split()])
+    if True in [issue['level'] == 'error' for issue in issues]:
+        return
+    for airnode in airnodes:
+        if airnode.Geosurffloor > 0:
+            defineGeosurf(airnode.Geosurffloor, airnode.Surfaces)
+    for front, back in pairs:
+        back.Orientation = front.Orientation
+def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False, constructionset=None):
+    """The one path from the airnodes to the surfaces the b18 writer reads, for System and for inspection.
+
+    Works on the given airnodes (deep copies from callFromZones). Returns the issues: dicts with 'level' ('error', 'warning' or 'info'),
+    'message' and 'surfaces'. With an error the surfaces are not complete and must not be written. AUTOMATIC is the same as an empty
+    category: it only exists because an empty setting keeps the value of the surface.
+    """
+    issues = []
+    if gaptolerance is None:
+        gaptolerance = DEFAULT_GAP_TOLERANCE
+    gaptolerance = max(float(gaptolerance), ADJACENCY_TOLERANCE)
+    for airnode in airnodes:
+        for item in airnode.Surfaces:
+            item.Airnode = airnode.Name
+            if item.Boundarycond == 'AUTOMATIC':
+                item.Boundarycond = None
+    failures = setFailures(airnodes, constructionset)
+    for message in failures:
+        addIssue(issues, 'error', message)
+    pairs = resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues)
+    fillConstructions(airnodes, pairs, constructionset, library, issues)
+    finalizeSurfaces(airnodes, library, pairs, issues, len(failures) > 0)
+    return issues
+INSPECT_GROUPS = ('External', 'Adjacent', 'Boundary', 'Mirror', 'Window', 'Other', 'Unresolved')
+INSPECT_COLOURS = {'External': (66, 133, 200), 'Adjacent': (92, 170, 100), 'Boundary': (226, 142, 50), 'Mirror': (150, 105, 190),
+                   'Window': (150, 215, 230), 'Other': (160, 160, 160), 'Unresolved': (214, 50, 50)}
+INSPECT_COLUMNS = ('airnode', 'surface', 'source', 'type', 'group', 'category', 'temperature', 'construction', 'fromset', 'slot', 'frontback', 'partner', 'area')
+def inspectGroup(item):
+    """The group of a surface in the inspection, from its final boundary condition."""
+    if isWindowSurface(item) or item.Type == 'ADDWINDOW':
+        return 'Window'
+    if isVirtualSurface(item):
+        return 'Other'
+    category = item.Boundarycond
+    if not category or (category == 'ADJACENT' and not item.Adjsurf):
+        return 'Unresolved'
+    if category == 'ADJACENT':
+        return 'Adjacent'
+    if category in EXTERIOR_CATEGORIES:
+        return 'External'
+    if category in ('BOUNDARY', 'EXTCALBND') and isMirrorBoundary(item):
+        return 'Mirror'
+    if category in ('BOUNDARY', 'EXTCALBND', 'EXTFICALC', 'BNDCALC', 'AUTOBOUND'):
+        return 'Boundary'
+    return 'Other'
+def inspectRow(airnode, item, group, filled):
+    slot = ''
+    if group != 'Window' and not isVirtualSurface(item):
+        slot = constructionSlot(item)
+    partner = ''
+    if item.Adjsurf:
+        partner = '{0}:{1}'.format(item.Adjairnode, item.Adjsurf)
+    return {'airnode': airnode.Name, 'surface': item.Surfnum, 'source': item.Sourcesurf if item.Sourcesurf is not None else item.Surfnum, 'type': item.Type,
+            'group': group, 'category': item.Boundarycond, 'temperature': item.Boundarytemp, 'construction': item.Construction, 'fromset': id(item) in filled,
+            'slot': slot, 'frontback': item.Frontback, 'partner': partner, 'area': float(item.Area or 0.0)}
+def inspectModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False, constructionset=None):
+    """compileModel for looking at the result, also when it has errors. Works on the given airnodes (deep copies from callFromZones).
+
+    Returns a dict: 'airnodes' (names), 'groups' {group: one list of surfaces per airnode}, 'rows' (one dict per surface), 'summary' and 'issues'."""
+    issues = []
+    if standalone:
+        for airnode in airnodes:
+            issues.extend(compileModel([airnode], library, autoadjacency, gaptolerance, True, constructionset))
+    else:
+        issues = compileModel(airnodes, library, autoadjacency, gaptolerance, False, constructionset)
+    filled = []
+    for issue in issues:
+        if issue['level'] == 'info':
+            filled.extend([id(item) for item in issue['surfaces']])
+    groups = dict([(group, [[] for airnode in airnodes]) for group in INSPECT_GROUPS])
+    rows = []
+    for index, airnode in enumerate(airnodes):
+        for item in airnode.Surfaces:
+            group = inspectGroup(item)
+            groups[group][index].append(item)
+            rows.append(inspectRow(airnode, item, group, filled))
+    summary = []
+    for group in INSPECT_GROUPS:
+        own = [row for row in rows if row['group'] == group]
+        if own:
+            summary.append('{0}: {1} surfaces, {2:.2f} m2'.format(group, len(own), sum([row['area'] for row in own])))
+    return {'airnodes': [airnode.Name for airnode in airnodes], 'groups': groups, 'rows': rows, 'summary': summary, 'issues': issues}
+def inspectTable(rows):
+    """Tab-separated lines with a header, for a panel or a spreadsheet."""
+    lines = ['\t'.join([column.capitalize() for column in INSPECT_COLUMNS])]
+    for row in rows:
+        values = []
+        for column in INSPECT_COLUMNS:
+            if column == 'area':
+                values.append('{0:.2f}'.format(row[column]))
+            elif row[column] is None:
+                values.append('')
+            else:
+                values.append(str(row[column]))
+        lines.append('\t'.join(values))
+    return lines
+# ---- Surface model (end)
+def surfaceNormal(brep):
+    """Normal of the single face of a surface as Rhino shows it: a face can be flipped against its underlying surface. It is read from that
+    surface, because the docs do not say whether BrepFace.NormalAt already includes the flag, and in the middle of it: (0,0) can lie outside."""
+    face = brep.Faces[0]
+    surface = face.UnderlyingSurface()
+    normal = surface.NormalAt(surface.Domain(0).Mid, surface.Domain(1).Mid)
+    if face.OrientationIsReversed:
+        normal.Reverse()
+    return normal
+def makeSurfaceVertices(points):
+    return [rc.Geometry.Point3d(point[0],point[1],point[2]) for point in points]
+def makeSurfaceBrep(points, normal):
+    curve = rc.Geometry.Polyline(makeSurfaceVertices(list(points)+[points[0]])).ToNurbsCurve()
+    brep = rc.Geometry.Brep.CreatePlanarBreps(curve,ADJACENCY_TOLERANCE)[0]
+    if rc.Geometry.Vector3d.Multiply(surfaceNormal(brep),normal) < 0:
+        brep.Flip()
+    return brep
+def upstreamErrors(component, level):
+    """The errors of everything upstream of a component, as 'name: message'. A component in error leaves its output empty, which looks
+    like nothing connected, also behind a merge. level = GH_RuntimeMessageLevel.Error."""
+    found = []
+    seen = set([component.InstanceGuid])
+    stack = [component]
+    while stack:
+        current = stack.pop()
+        if current is not component:
+            for message in current.RuntimeMessages(level):
+                found.append("{0}: {1}".format(current.NickName, message))
+        inputs = [current]
+        if hasattr(current, 'Params'):
+            inputs = current.Params.Input
+        for param in inputs:
+            for source in param.Sources:
+                owner = source.Attributes.GetTopLevel.DocObject
+                if owner.InstanceGuid not in seen:
+                    seen.add(owner.InstanceGuid)
+                    stack.append(owner)
+    return found
+def solidFaces(solid):
+    """The faces of a room solid as single-face Breps with outward normals. Returns (faces, problem)."""
+    brep = solid.DuplicateBrep()
+    brep.MergeCoplanarFaces(abs_tolerance)
+    if not brep.IsSolid:
+        return [], "The Brep with {0} faces given to the airnode is not a closed solid".format(brep.Faces.Count)
+    if brep.SolidOrientation == rc.Geometry.BrepSolidOrientation.Inward:
+        brep.Flip()
+    faces = []
+    for face in brep.Faces:
+        if not face.IsPlanar(abs_tolerance):
+            return [], "The solid has a curved face: rebuild it from planar faces"
+        if face.Loops.Count > 1:
+            return [], "The solid has a face with a hole: split that face first, a surface of the b18 has one loop of vertices"
+        faces.append(face.DuplicateFace(False))
+    return faces, None
+def flipSurfaceBreps(item):
+    item.Faces.Flip()
+    if item.Surface is not item.Faces:
+        item.Surface.Flip()
 class CONSTRUCTION:
     def addToConstruction(self, Brep, GHComponentID):
         # check if the lizarddictionary already existed
@@ -717,34 +1913,75 @@ class CONSTRUCTION:
         if not sc.sticky[sc.doc.Path].has_key('Const_coll'): sc.sticky[sc.doc.Path]['Const_coll'] = {}
         if not sc.sticky[sc.doc.Path].has_key('Surface_Counter'): sc.sticky[sc.doc.Path]['Surface_Counter'] = 0
         geometries = []
-        info       = []
-        itemcount = 0
+        collection = sc.sticky[sc.doc.Path]['Const_coll']
         for obj_items in range(len(Brep)):
-            info.append(sc.sticky[sc.doc.Path]["GEOMETRY"](Brep[obj_items]))
-            info[-1].Faces         = Brep[obj_items]
-            info[-1].Area          = Brep[obj_items].GetArea()
-            ori_normal             = Brep[obj_items].Faces[0].NormalAt(0,0)
-            info[-1].Vertices      = getSurfaceVertices(ori_normal,Brep[obj_items])
-            info[-1].Normalvector  = ori_normal
-            if len(info[-1].Vertices) > 4:
-                info[-1].Vertices = cleanVertices(info[-1].Vertices)
-            info[-1].Vertices = checkVerticesOrder(info[-1].Vertices, ori_normal)
-            lizkey = ("%s"%Brep[obj_items]).split()[3]
-            if sc.sticky[sc.doc.Path].has_key('Const_coll'):
-                if sc.sticky[sc.doc.Path]['Const_coll'].has_key(lizkey):
-                    info[obj_items].Surfnum = sc.sticky[sc.doc.Path]['Const_coll'][lizkey].Surfnum
-                else:
-                    sc.sticky[sc.doc.Path]['Surface_Counter'] = sc.sticky[sc.doc.Path]['Surface_Counter'] + 1
-                    info[obj_items].Surfnum  = sc.sticky[sc.doc.Path]['Surface_Counter']
-            sc.sticky[sc.doc.Path]['Const_coll'][lizkey] = info[obj_items]
-            geometry = info[obj_items].Surface
-            #for ditem in [a for a in dir(info[obj_items]) if not a.startswith('__')]:
-            #    print ditem, getattr(info[obj_items], ditem)
-            #    geometry.UserDictionary.Set(ditem, getattr(info[obj_items], ditem))
+            # the copy takes the new LID: the output of the upstream component keeps its own
+            geometry = Brep[obj_items].DuplicateBrep()
+            parent = None
+            if geometry.UserDictionary.ContainsKey('LID'):
+                parent = collection.get(geometry.UserDictionary['LID'])
+            if parent is not None:
+                # later settings go on top of the ones this surface already has
+                record = copy.copy(parent)
+                record.Surface = geometry
+            else:
+                record = sc.sticky[sc.doc.Path]["GEOMETRY"](geometry)
+            record.Faces           = geometry
+            record.Area            = geometry.GetArea()
+            ori_normal             = surfaceNormal(geometry)
+            record.Vertices        = getSurfaceVertices(ori_normal,geometry)
+            record.Normalvector    = ori_normal
+            if len(record.Vertices) > 4:
+                record.Vertices = cleanVertices(record.Vertices)
+            record.Vertices = checkVerticesOrder(record.Vertices, ori_normal)
+            box = geometry.GetBoundingBox(False)
+            lizkey = '{0}:{1}:{2}:{3}'.format(GHComponentID, obj_items, box.Min, box.Max)
+            if parent is not None:
+                record.Surfnum = parent.Surfnum
+            elif lizkey in collection:
+                record.Surfnum = collection[lizkey].Surfnum
+            else:
+                sc.sticky[sc.doc.Path]['Surface_Counter'] = sc.sticky[sc.doc.Path]['Surface_Counter'] + 1
+                record.Surfnum = sc.sticky[sc.doc.Path]['Surface_Counter']
+            collection[lizkey] = record
             geometry.UserDictionary.Set('LID', lizkey)
-            geometry.UserDictionary.Set('ID', info[obj_items].Surfnum)
+            geometry.UserDictionary.Set('ID', record.Surfnum)
             geometries.append(geometry)
         return geometries
+    def expandSolids(self, breps, GHComponentID):
+        """The input of an airnode as surfaces. What comes from a surface component stays, a bare face is registered, and a solid becomes
+        its faces (no boundary condition, no construction) without the parts covered by the other surfaces. Returns (breps, problem)."""
+        surfaces = []
+        bare = []
+        solids = []
+        for brep in breps:
+            if brep.UserDictionary.ContainsKey('LID'):
+                surfaces.append(brep)
+            elif brep.Faces.Count > 1:
+                solids.append(brep)
+            else:
+                bare.append(brep)
+        if len(solids) > 1:
+            return [], "An airnode takes one solid, {0} were connected".format(len(solids))
+        surfaces.extend(self.addToConstruction(bare, GHComponentID + ':face'))
+        if not solids:
+            return surfaces, None
+        faces, problem = solidFaces(solids[0])
+        if problem:
+            return [], problem
+        facebreps = self.addToConstruction(faces, GHComponentID + ':solid')
+        records = self.callFromConstruction(facebreps)
+        explicit = [item for item in self.callFromConstruction(surfaces) if not isWindowSurface(item) and not isVirtualSurface(item) and item.Type != 'ADDWINDOW']
+        pieces, outside = subtractSurfaces(records, explicit)
+        if outside:
+            return [], "Surfaces {0} do not lie on a face of the solid".format(', '.join([str(item.Surfnum) for item in outside]))
+        for brep, record in zip(facebreps, records):
+            if record.Surfnum in pieces:
+                loops = pieces[record.Surfnum]
+                surfaces.extend(self.addToConstruction([makeSurfaceBrep(loop, record.Normalvector) for loop in loops], '{0}:piece:{1}'.format(GHComponentID, record.Surfnum)))
+            else:
+                surfaces.append(brep)
+        return surfaces, None
     def callFromConstruction(self, geometryList):
         Objects = []
         for geometry in geometryList:
@@ -781,6 +2018,8 @@ class CONSTRUCTION:
             if 'list' in str(type(geometry)):
                 for gitem in geometry:
                     key = gitem.UserDictionary['LID']
+                    if not sc.sticky[sc.doc.Path]['Const_coll'][key].Construction:
+                        continue
                     for wall_item in library.Walls:
                         if sc.sticky[sc.doc.Path]['Const_coll'][key].Construction == wall_item.Name:
                             thickness_layer = wall_item.Thickness.split()
@@ -806,44 +2045,33 @@ class CONSTRUCTION:
         except:
             pass
     def updateConstructionNew(self, geometry, dataclass):
-        if 1 > 0:
-            for gitem in geometry:
-                key = gitem.UserDictionary['LID']
-                if sc.sticky[sc.doc.Path]['Const_coll'].has_key(key):
-                    datadict = vars(dataclass)
-                    for keyitem in datadict.items():
-                        pass
-                        if keyitem[0] == 'Boundarycond':
-                            if 'BOUNDARY' or 'EXTFICALC' or 'EXTBOUNDARY' or 'EXTSKYBND' in keyitem[1]:
-                                if datadict['Boundarytemp'] and datadict['Boundarytemp'] !='':
-                                    bnd_dummy = datadict['Boundarytemp']
-                                    if re.search('^-?\d', str(bnd_dummy)):
-                                        pass
-                                    else:
-                                        appendtxt = ''
-                                        if keyitem[1] == 'EXTFICALC':
-                                            information = 'Surfnum'
-                                            lizard_coll = sc.sticky[sc.doc.Path]['CONSTRUCTION']()
-                                            collection = [gitem]
-                                            ObjectsFromLz = lizard_coll.callFromConstruction(collection)
-                                            _brep = []
-                                            for LO in range(len(ObjectsFromLz)):
-                                                appendtxt = ObjectsFromLz[LO].__dict__[information]
-                                        bnd_dummy = 'INPUT 1*{0}'.format(datadict['Boundarytemp'] + str(appendtxt))
-                                    sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Boundarytemp'] = bnd_dummy
-                                else:
-                                    sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Boundarytemp'] = 'Identical'
-                        if keyitem[0] == 'Construction' and 'WIN_' in keyitem[1]:
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Construction'] = keyitem[1] + '_' + getWinOrientation(gitem)
-                        elif keyitem[0] == 'Construction':
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__['Construction'] = keyitem[1]
-                        if keyitem[0] == 'Boundarytemp' or keyitem[0] == 'Construction':
-                            pass
-                        else:
-                            sc.sticky[sc.doc.Path]['Const_coll'][key].__dict__[keyitem[0]] = keyitem[1]
-                    #print vars(sc.sticky[sc.doc.Path]['Const_coll'][key])
-        else:
-            pass
+        """Writes the settings on the surfaces. An empty setting keeps the value the surface already has."""
+        if dataclass is None:
+            return
+        for gitem in geometry:
+            key = gitem.UserDictionary['LID']
+            if not sc.sticky[sc.doc.Path]['Const_coll'].has_key(key):
+                continue
+            record = sc.sticky[sc.doc.Path]['Const_coll'][key]
+            datadict = vars(dataclass)
+            for name, value in datadict.items():
+                if name == 'Boundarytemp':
+                    continue
+                if value is None or value == '':
+                    if not hasattr(record, name):
+                        setattr(record, name, value)
+                elif name == 'Construction' and 'WIN_' in value:
+                    record.Construction = value + '_' + getWinOrientation(gitem)
+                else:
+                    setattr(record, name, value)
+            temperature = datadict.get('Boundarytemp')
+            if temperature:
+                if not re.search('^-?\\d', str(temperature)):
+                    appendtxt = ''
+                    if record.Boundarycond == 'EXTFICALC':
+                        appendtxt = record.Surfnum
+                    temperature = 'INPUT 1*{0}'.format(temperature + str(appendtxt))
+                record.Boundarytemp = temperature
 class ZONECOLL():
     def addToZones(self,GHComponentID,info):
         # check if the lizardzonedictionary already existed
@@ -964,7 +2192,7 @@ def getSurfaceVertices(refnormalvector,surface):
     #        cleaned_vertices.append(item)
     sort_vertices = refined_vertices
     new_srf = rc.Geometry.Brep.CreatePlanarBreps(polyline.ToNurbsCurve(),abs_tolerance)[0]
-    new_normal = new_srf.Faces[0].NormalAt(0,0)
+    new_normal = surfaceNormal(new_srf)
     vector_deviation = 1-rc.Geometry.Vector3d.Multiply(new_normal,refnormalvector)
     if sort_vertices[-1] == sort_vertices[0]:
         sort_vertices.pop()
@@ -1043,147 +2271,6 @@ def getFloorArea(surfacecoll):
     return round(floorarea,2)
     if floorarea == 0:
         ghenv.Component.AddRuntimeMessage(w, "Attention floor area is zero!")
-#this function searches through ADJACENT constructions and searches the matching surface
-@timing
-def checkAdjacent(surfacecoll,mismatched_adjacent):
-    #This block checks whether adjacent walls are found
-    match = []
-    error = []
-    matchfound = 0
-    for item2 in surfacecoll:
-        item2.Adjsearch = 0
-        item2.Bndsearch = 0
-    for item2 in surfacecoll:
-        if (item2.Boundarycond == "ADJACENT" or item2.Boundarycond == "AUTOMATIC") and item2.Type != "WINDOW" and item2.Adjsearch == 0:
-            item2.Adjsearch = 1
-            found = 0
-            for item in surfacecoll:
-                if (item.Boundarycond == "ADJACENT" or item.Boundarycond == "AUTOMATIC") and (item.Type != "WINDOW") and item.Surfnum != item2.Surfnum and item.Adjsearch == 0:
-                    orivec = item2.Faces.Faces[0].NormalAt(0,0)
-                    orivec.Reverse()
-                    compare = orivec.IsParallelTo(item.Faces.Faces[0].NormalAt(0,0))
-                    if compare == 1 or compare == -1:
-                        oricenter = rc.Geometry.AreaMassProperties.Compute(item2.Faces.Faces[0]).Centroid
-                        secondcenter = rc.Geometry.AreaMassProperties.Compute(item.Faces.Faces[0]).Centroid
-                        newvector = secondcenter - oricenter
-                        #here it is looked for whether two surfaces with an inverse normal vector are the same
-                        if newvector.Length < 0.5:
-                            orisurface = copy.deepcopy(item2.Faces)
-                            orisurface.Translate(newvector)
-                            dummyPolycurveX = rc.Geometry.PolylineCurve.JoinCurves(item.Faces.Edges)
-                            dummyPolycurveY = rc.Geometry.PolylineCurve.JoinCurves(orisurface.Edges)
-                            dummy = rc.Geometry.PolyCurve.CreateBooleanIntersection(dummyPolycurveX[0],dummyPolycurveY[0])
-                            if dummy:
-                                matchfound = matchfound  + 1
-                                area_surf1 = rc.Geometry.AreaMassProperties.Compute(orisurface.Faces[0]).Area
-                                area_surf2 = rc.Geometry.AreaMassProperties.Compute(item.Faces.Faces[0]).Area
-                                delta_area = abs(area_surf1 - area_surf2)
-                                if (delta_area < abs_tolerance):
-                                    item2.Boundarycond = "ADJACENT"
-                                    item.Boundarycond = "ADJACENT"
-                                    item.Adjsurf = item2.Surfnum
-                                    item2.Adjsurf = item.Surfnum
-                                    item.Adjairnode = item2.Airnode
-                                    item2.Adjairnode = item.Airnode
-                                    if item.Frontback == 'FRONT' and item2.Frontback == 'FRONT':
-                                        item2.Frontback = 'BACK'
-                                        mismatched_adjacent.append(item.Faces)
-                                        message = "!Surfaces have the same FRONT/BACK definition!Surface {0} & {1}".format(item.Surfnum,item2.Surfnum)
-                                        error.append(message)
-                                    if item.Frontback == 'BACK' and item2.Frontback == 'BACK':
-                                        item.Frontback = 'FRONT'
-                                        mismatched_adjacent.append(item.Faces)
-                                        message = "!Surfaces have the same FRONT/BACK definition!Surface {0} & {1}".format(item.Surfnum,item2.Surfnum)
-                                        error.append(message)
-                                    if item.Frontback == 'FRONT':
-                                        item2.Orientation = item.Orientation
-                                        if item.Type == "ADDWINDOW":
-                                            item2.Construction = item.Construction
-                                        if item.Activelayer == 1:
-                                            item2.Activelayer = 1
-                                            item2.Intemp = item.Intemp
-                                    else:
-                                        item.Orientation = item2.Orientation
-                                        if item2.Type == "ADDWINDOW":
-                                            item.Construction = item2.Construction
-                                        if item2.Activelayer == 1:
-                                            item.Activelayer = 1
-                                            item.Intemp = item2.Intemp
-                                    match.append(item.Faces)
-                                    item.Adjsearch = 1
-                                    found = 1
-                                    if item.Coupling != 0 or item2.Coupling != 0:
-                                        item.Coupling  = "INPUT 1*MF_{0}_{1}".format(item2.Airnode,item.Airnode)
-                                        item2.Coupling = "INPUT 1*MF_{0}_{1}".format(item.Airnode,item2.Airnode)
-                                        print 'found coupling'
-                                    break
-                                else:
-                                    mismatched_adjacent.append(item.Faces)
-                                    message = "!Some adjacent surfaces are not correct!Surface {0} & {1}".format(item.Surfnum,item2.Surfnum)
-                                    error.append(message)
-            if found == 0 and item2.Boundarycond == "ADJACENT":
-                message = "!Adjacent surface not found for Surface {0}!\n Surface boundary condition is set to BOUNDARY!".format(item2.Surfnum)
-                error.append(message)
-                item2.Boundarycond = "BOUNDARY"
-                item2.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item2.Airnode)
-                mismatched_adjacent.append(item2.Faces)
-            elif found == 0 and item2.Boundarycond == "AUTOMATIC":
-                item2.Boundarycond = "EXTERNAL"
-        if (item2.Boundarycond == "AUTOBOUND") and item2.Type != "WINDOW" and item2.Bndsearch == 0:
-            item2.Bndsearch = 1
-            bndfound = 0
-            for item in surfacecoll:
-                if (item.Boundarycond == "AUTOBOUND") and (item.Type != "WINDOW") and item.Surfnum != item2.Surfnum and item.Bndsearch == 0:
-                    orivec = item2.Faces.Faces[0].NormalAt(0,0)
-                    oricenter = rc.Geometry.AreaMassProperties.Compute(item2.Faces.Faces[0]).Centroid
-                    curve = rc.Geometry.Line(oricenter,orivec).ToNurbsCurve()
-                    compare = rc.Geometry.Intersect.Intersection.CurveBrep(curve,item.Faces,abs_tolerance)
-                    if len(compare[2])>0:
-                        item2.Boundarycond = "BOUNDARY"
-                        item.Boundarycond = "BOUNDARY"
-                        item.Bndairnode = item2.Airnode
-                        item2.Bndairnode = item.Airnode
-                        item2.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item.Airnode)
-                        item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item2.Airnode)
-                        item.Bndsearch = 1
-                        bndfound = 1
-                        break
-            if bndfound == 0 and item2.Boundarycond == "AUTOBOUND":
-                message = "!Automatic airnode name not found for Surface {0}!\n Surface boundary condition is set to BOUNDARY!".format(item2.Surfnum)
-                error.append(message)
-                item2.Boundarycond = "BOUNDARY"
-                item2.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item2.Airnode)
-                mismatched_adjacent.append(item2.Faces)
-        if (item2.Boundarycond == "ADJACENT" or item2.Boundarycond == "AUTOMATIC") and item2.Type == "WINDOW" and item2.Adjsearch == 0:
-            item2.Adjsearch = 1
-            for item in surfacecoll:
-                if (item.Boundarycond == "ADJACENT" or item.Boundarycond == "AUTOMATIC") and item.Type == "WINDOW" and item.Surfnum != item2.Surfnum and item.Adjsearch == 0:
-                    dummyPolycurveX = rc.Geometry.PolylineCurve.JoinCurves(item.Faces.Edges)
-                    dummyPolycurveY = rc.Geometry.PolylineCurve.JoinCurves(item2.Faces.Edges)
-                    dummy = rc.Geometry.PolyCurve.CreateBooleanIntersection(dummyPolycurveX[0],dummyPolycurveY[0])
-                    if dummy:
-                        matchfound = matchfound  + 1
-                        area_surf1 = rc.Geometry.Brep.GetArea(item2.Faces)
-                        area_surf2 = rc.Geometry.Brep.GetArea(item.Faces)
-                        delta_area = abs(area_surf1 - area_surf2)
-                        if (delta_area < abs_tolerance):
-                            item.Adjsurf = item2.Surfnum
-                            item2.Adjsurf = item.Surfnum
-                            item.Adjairnode = item2.Airnode
-                            item2.Adjairnode = item.Airnode
-                            match.append(item.Faces)
-                            item.Adjsearch = 1
-                            if item.Frontback == 'FRONT':
-                                item2.Orientation = item.Orientation
-                                item2.Construction = item.Construction
-                            else:
-                                item.Orientation = item2.Orientation
-                                item.Construction = item2.Construction
-                        else:
-                            mismatched_adjacent.append(item.Faces)
-                            message = "!Some adjacent window surfaces are not correct!Surface {0} & {1}".format(item.Surfnum,item2.Surfnum)
-                            error.append(message)
-    return match, mismatched_adjacent, error
 def HemisphereAzimuth(Hemisphere = 'SOUTHERN', azimuth = 225):
     if Hemisphere == 'SOUTHERN':
         if azimuth == 0:
@@ -1209,7 +2296,7 @@ def getSurfaceOrientation(surfacecoll):
     ori_point = rc.Geometry.Point3d(0,0,0)
     oriprefix = ''
     for item in dummy_array:
-        facenormal = item.Faces.Faces[0].NormalAt(0,0)
+        facenormal = item.Normalvector
         plane = rc.Geometry.Plane(ori_point,facenormal,slope_vector)
         slope_rad = rc.Geometry.Vector3d.VectorAngle(facenormal,slope_vector,plane)
         slope_deg = slope_rad * 180/math.pi
@@ -1263,7 +2350,7 @@ def getOrientation(surfacebrep):
     oriprefix = ''
     if 1 > 0:
         item = surfacebrep
-        facenormal = item.Faces[0].NormalAt(0,0)
+        facenormal = surfaceNormal(item)
         plane = rc.Geometry.Plane(ori_point,facenormal,slope_vector)
         slope_rad = rc.Geometry.Vector3d.VectorAngle(facenormal,slope_vector,plane)
         slope_deg = slope_rad * 180/math.pi
@@ -1324,7 +2411,7 @@ def getWinOrientation(items):
     slope_vector = rc.Geometry.Vector3d(0,0,1)
     ori_point = rc.Geometry.Point3d(0,0,0)
     oriprefix = ''
-    facenormal = items.Faces[0].NormalAt(0,0)
+    facenormal = surfaceNormal(items)
     plane = rc.Geometry.Plane(ori_point,facenormal,slope_vector)
     slope_rad = rc.Geometry.Vector3d.VectorAngle(facenormal,slope_vector,plane)
     slope_deg = slope_rad * 180/math.pi
@@ -1696,6 +2783,10 @@ def getdata(search_pattern,dataset):
             data=line.split( )
             output.append(data[1])
     return output
+if 'GroundLevel' in locals() and GroundLevel != None:
+    GROUND_LEVEL = float(GroundLevel)
+if 'FallbackBoundary' in locals() and FallbackBoundary != None:
+    FALLBACK_BOUNDARY = bool(FallbackBoundary)
 checkUnits()
 if 'default_constructions' in locals() and default_constructions != None:
     defaultconstr = default_constructions
@@ -1729,7 +2820,16 @@ if exe_mode == '':
 sc.sticky[sc.doc.Path]["Build_mode"]         = build_mode
 sc.sticky[sc.doc.Path]["Exe_mode"]           = exe_mode
 sc.sticky[sc.doc.Path]["findMaxSurfNum"]     = findMaxSurfNum
-sc.sticky[sc.doc.Path]["checkAdjacent"]      = checkAdjacent
+sc.sticky[sc.doc.Path]["compileModel"]       = compileModel
+sc.sticky[sc.doc.Path]["orientSurfaces"]     = orientSurfaces
+sc.sticky[sc.doc.Path]["ComponentFailure"]   = ComponentFailure
+sc.sticky[sc.doc.Path]["isFailure"]          = isFailure
+sc.sticky[sc.doc.Path]["setFailures"]        = setFailures
+sc.sticky[sc.doc.Path]["upstreamErrors"]     = upstreamErrors
+sc.sticky[sc.doc.Path]["inspectModel"]       = inspectModel
+sc.sticky[sc.doc.Path]["inspectTable"]       = inspectTable
+sc.sticky[sc.doc.Path]["INSPECT_GROUPS"]     = INSPECT_GROUPS
+sc.sticky[sc.doc.Path]["INSPECT_COLOURS"]    = INSPECT_COLOURS
 sc.sticky[sc.doc.Path]["checkWindowsInWalls"] = checkWindowsInWalls
 sc.sticky[sc.doc.Path]["defineGeosurf"]      = defineGeosurf
 sc.sticky[sc.doc.Path]["getFloorArea"]       = getFloorArea
