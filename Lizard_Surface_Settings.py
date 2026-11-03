@@ -11,7 +11,7 @@ Args:
     Construction (object): define surface construction (refer to Wall Type Library). Empty = keep the value of the surface; a surface without one is an error before the simulation
         Access: item
         Required: False
-    Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise EXTERNAL (a floor without a room below is an error). AUTOMATIC = back to that rule
+    Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise what FallbackBoundary of Lizard_Component gives. AUTOMATIC = back to that rule. GROUND = BOUNDARY with BoundaryTemperature Tsoil
         Access: item
         Required: False
     --------------------- Boundary
@@ -30,6 +30,7 @@ Returns:
         Access: item
 """
 
+import Grasshopper.Kernel as gh
 version='2.2.1'
 ghenv.Component.Name = "Lizard_Surface_Settings"
 ghenv.Component.NickName = 'Surface Settings'
@@ -45,6 +46,11 @@ class SurfaceDefinition:
         """Class representation."""
         return "{0}:{1}:{2}".format('Settings:Surface',self.Construction,self.Boundarycond)
 Settings = SurfaceDefinition()
+if Settings.Boundarycond == 'GROUND':
+    if Settings.Boundarytemp and Settings.Boundarytemp != 'Tsoil':
+        ghenv.Component.AddRuntimeMessage(gh.GH_RuntimeMessageLevel.Error, "GROUND means BoundaryTemperature Tsoil: use BOUNDARY for %s"%Settings.Boundarytemp)
+    Settings.Boundarycond = 'BOUNDARY'
+    Settings.Boundarytemp = 'Tsoil'
 if "InternalWallGain" in locals():
     Settings.Wagain = InternalWallGain
 if "ExternalWallGain" in locals():

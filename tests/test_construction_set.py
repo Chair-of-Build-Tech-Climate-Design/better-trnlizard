@@ -44,12 +44,12 @@ class AutomaticTests(unittest.TestCase):
         self.assertEqual([], errors(compile_model(airnode("A1", wall, roof))))
         self.assertEqual(("EXTERNAL", "EXTERNAL", "ROOF"), (wall.Boundarycond, roof.Boundarycond, roof.Type))
 
-    def test_unmatched_automatic_floor_is_an_error(self):
+    def test_unmatched_automatic_floor_at_the_ground_is_ground_with_a_warning(self):
         item = floor(category="AUTOMATIC")
         issues = compile_model(airnode("A1", item))
-        self.assertEqual(1, len(errors(issues)))
-        self.assertIn("Floor surface", errors(issues)[0])
-        self.assertNotEqual("EXTERNAL", item.Boundarycond)
+        self.assertEqual([], errors(issues))
+        self.assertEqual(("BOUNDARY", "INPUT 1*Tsoil"), (item.Boundarycond, item.Boundarytemp))
+        self.assertIn("GROUND is used", warnings_of(issues)[0])
 
     def test_explicit_external_floor_stays(self):
         item = floor(category="EXTERNAL")

@@ -14,16 +14,16 @@ wins. Windows and active layers need that explicit construction: a set does not 
 whole set fail: the components after it then stop the model, and none of its slots is used.
 
 Args:
-    ExteriorWall (str): wall with outside air
+    ExteriorWall (str): wall with outside air or against the ground (Tsoil)
         Access: item
         Required: False
-    InteriorWall (str): wall towards another airnode, or BOUNDARY
+    InteriorWall (str): wall towards another airnode, or any other BOUNDARY
         Access: item
         Required: False
-    Roof (str): ceiling or roof with outside air
+    Roof (str): ceiling or roof with outside air or against the ground (Tsoil)
         Access: item
         Required: False
-    InteriorCeiling (str): ceiling towards another airnode, or BOUNDARY. Mirror of InteriorFloor, or empty if that one is symmetric
+    InteriorCeiling (str): ceiling towards another airnode, or any other BOUNDARY. Mirror of InteriorFloor, or empty if that one is symmetric
         Access: item
         Required: False
     InteriorFloor (str): floor towards another airnode, or BOUNDARY with the air temperature of the room itself (an unmodelled neighbour below)

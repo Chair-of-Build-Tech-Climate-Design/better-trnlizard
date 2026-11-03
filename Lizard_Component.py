@@ -35,6 +35,12 @@ Args:
     Altitude (object): define the building altitude for thermal simulation
         Access: item
         Required: True
+    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height. Not connected = 0
+        Access: item
+        Required: False
+    FallbackBoundary (bool): for a surface without a category and without a partner. True = GROUND if all its vertices are at or below GroundLevel and it has no window and is no ADDWINDOW, otherwise EXTERNAL. False = an error. Not connected = True
+        Access: item
+        Required: False
     AnnualMeanOutsideTemp (object): Script variable Lizard
         Access: item
         Required: True
@@ -1225,6 +1231,9 @@ def orientClosedPolygons(polygons, normals):
 ADJACENCY_TOLERANCE = 0.01      # m, points closer than this are one point
 DEFAULT_GAP_TOLERANCE = 0.02    # m, parallel planes closer than this are one plane
 NEAR_MISS_DISTANCE = 0.5        # m, faces this close get a hint when they are not adjacent
+GROUND_LEVEL = 0.0              # m, input GroundLevel
+FALLBACK_BOUNDARY = True        # input FallbackBoundary
+GROUND_TEMPERATURE = 'INPUT 1*Tsoil'
 CONSTRUCTION_SLOTS = ('ExteriorWall', 'InteriorWall', 'Roof', 'InteriorCeiling', 'InteriorFloor', 'GroundFloor', 'ExposedFloor')
 EXTERIOR_CATEGORIES = ('EXTERNAL', 'EXTBOUNDARY', 'EXTCALC', 'EXTSKYBND', 'EXTVERTF', 'EXTBOUNDADJ', 'EXTCALEXT')
 class ComponentFailure:
@@ -1443,6 +1452,22 @@ def pairSurfaces(a, b, issues):
     if abs(front.Area-back.Area) > 0.01*max(front.Area, back.Area):
         addIssue(issues, 'warning', "Adjacent surfaces {0} & {1} differ in area: {2:.2f} and {3:.2f} m2".format(front.Surfnum, back.Surfnum, front.Area, back.Area), [front, back])
     return front, back
+def fallbackBoundary(item, issues):
+    """The boundary condition of a surface without a category and without a partner. Like the walls, a floor only has its height to go by."""
+    if not FALLBACK_BOUNDARY:
+        addIssue(issues, 'error', "Surface {0} of {1} has no boundary condition and no partner, and FallbackBoundary is off: set its Category".format(item.Surfnum, item.Airnode), [item])
+        return
+    below = max([point[2] for point in surfacePoints(item)]) <= GROUND_LEVEL + ADJACENCY_TOLERANCE
+    if below and not item.Subsurfacedef and item.Type != 'ADDWINDOW':
+        item.Boundarycond = 'BOUNDARY'
+        item.Boundarytemp = GROUND_TEMPERATURE
+        addIssue(issues, 'warning', "Surface {0} of {1} has no boundary condition and no partner, and lies at or below GroundLevel {2}: GROUND is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
+    else:
+        item.Boundarycond = 'EXTERNAL'
+        if below and item.Subsurfacedef:
+            addIssue(issues, 'warning', "Surface {0} of {1} lies at or below GroundLevel {2} but has a window: EXTERNAL is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
+        elif item.Type == 'FLOOR':
+            addIssue(issues, 'warning', "Floor surface {0} of {1} has no boundary condition and no surface below, and lies above GroundLevel {2}: EXTERNAL is used".format(item.Surfnum, item.Airnode, GROUND_LEVEL), [item])
 def finishUnmatched(item, standalone, issues):
     """The boundary condition of a surface (or a part of one) that has no partner."""
     category = item.Boundarycond
@@ -1456,10 +1481,7 @@ def finishUnmatched(item, standalone, issues):
         item.Boundarycond = 'BOUNDARY'
         item.Boundarytemp = 'INPUT 1*TAIR_{0}'.format(item.Airnode)
     elif not category:
-        if item.Type == 'FLOOR':
-            addIssue(issues, 'error', "Floor surface {0} of {1} has no boundary condition and no surface below: set its Category (for example BOUNDARY for the ground)".format(item.Surfnum, item.Airnode), [item])
-        else:
-            item.Boundarycond = 'EXTERNAL'
+        fallbackBoundary(item, issues)
     for window in item.Subsurfacedef:
         window.Boundarycond = item.Boundarycond
 def addFacingHints(unmatched, walls, gaptolerance, issues):
@@ -1615,6 +1637,7 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
 def constructionSlot(item):
     """The slot of a construction set for a surface with its final type and boundary condition."""
     exterior = item.Boundarycond in EXTERIOR_CATEGORIES
+    ground = item.Boundarycond in ('BOUNDARY', 'EXTCALBND') and re.search(r'\bTsoil\b', str(item.Boundarytemp)) is not None
     if item.Type == 'FLOOR':
         if exterior:
             return 'ExposedFloor'
@@ -1622,10 +1645,10 @@ def constructionSlot(item):
             return 'InteriorFloor'
         return 'GroundFloor'
     if item.Type in ('ROOF', 'CEILING'):
-        if exterior:
+        if exterior or ground:
             return 'Roof'
         return 'InteriorCeiling'
-    if exterior:
+    if exterior or ground:
         return 'ExteriorWall'
     return 'InteriorWall'
 def fillConstructions(airnodes, pairs, modelset, library, issues):
@@ -2758,6 +2781,10 @@ def getdata(search_pattern,dataset):
             data=line.split( )
             output.append(data[1])
     return output
+if 'GroundLevel' in locals() and GroundLevel != None:
+    GROUND_LEVEL = float(GroundLevel)
+if 'FallbackBoundary' in locals() and FallbackBoundary != None:
+    FALLBACK_BOUNDARY = bool(FallbackBoundary)
 checkUnits()
 if 'default_constructions' in locals() and default_constructions != None:
     defaultconstr = default_constructions

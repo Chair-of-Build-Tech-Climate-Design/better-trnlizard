@@ -281,9 +281,10 @@ class BoundaryConditionTests(unittest.TestCase):
         self.assertEqual([], compile_model(airnode("A1", wall)))
         self.assertEqual("EXTERNAL", wall.Boundarycond)
 
-    def test_unset_floor_without_a_room_below_is_an_error(self):
+    def test_unset_floor_without_a_room_below_gets_the_fallback(self):
         floor = surface([(0, 0, 0), (0, 4, 0), (5, 4, 0), (5, 0, 0)])
-        self.assertIn("no boundary condition", errors(compile_model(airnode("A1", floor)))[0])
+        self.assertIn("no boundary condition", warnings_of(compile_model(airnode("A1", floor)))[0])
+        self.assertEqual("INPUT 1*Tsoil", floor.Boundarytemp)
 
     def test_unset_floor_above_a_room_is_adjacent(self):
         floor = surface([(0, 0, 3), (0, 4, 3), (5, 4, 3), (5, 0, 3)], construction="IFL")
@@ -726,7 +727,7 @@ class SurfaceComponentTests(unittest.TestCase):
 
 
 def box_room(name, x0, x1, y0, y1, z0, z1, ground=False):
-    """A closed room whose surfaces leave everything to compileModel; only a floor on the ground gets a category."""
+    """A closed room whose surfaces leave everything to compileModel; a floor with ground=True gets the category BOUNDARY."""
     floor = surface([(x0, y0, z0), (x0, y1, z0), (x1, y1, z0), (x1, y0, z0)], category="BOUNDARY" if ground else None, construction="IFL" if not ground else "WALL")
     ceiling = surface([(x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1)], construction="ICL")
     walls = [surface([(x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1)]), surface([(x1, y0, z0), (x1, y1, z0), (x1, y1, z1), (x1, y0, z1)]),

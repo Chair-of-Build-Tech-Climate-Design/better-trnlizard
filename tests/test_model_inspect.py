@@ -85,7 +85,7 @@ class ReportTests(unittest.TestCase):
         self.assertEqual((False, "WALL"), (row_of(report, 31)["fromset"], row_of(report, 31)["construction"]))
 
     def test_a_model_with_errors_is_still_reported(self):
-        item = floor(number=40)
+        item = floor(number=40, category="ADJACENT")
         report = inspect(airnode("A1", item))
         self.assertEqual("Unresolved", row_of(report, 40)["group"])
         self.assertEqual(["error"], [issue["level"] for issue in report["issues"]])
@@ -215,7 +215,7 @@ class ComponentTests(unittest.TestCase):
         self.assertIsNone(window.Faces.moved)
 
     def test_errors_reach_the_component(self):
-        item = with_breps(floor(number=5))
+        item = with_breps(floor(number=5, category="ADJACENT"))
         result, messages = run_component([airnode("A", item)])
         self.assertEqual("ERROR", messages[0][0])
         self.assertTrue(result["Problems"][0].startswith("ERROR: "))
