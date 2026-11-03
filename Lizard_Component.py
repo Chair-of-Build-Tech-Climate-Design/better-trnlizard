@@ -1840,7 +1840,7 @@ def upstreamErrors(component, level):
     """The errors of everything upstream of a component, as 'name: message'. A component in error leaves its output empty, which looks
     like nothing connected, also behind a merge. level = GH_RuntimeMessageLevel.Error."""
     found = []
-    seen = [component.InstanceGuid]
+    seen = set([component.InstanceGuid])
     stack = [component]
     while stack:
         current = stack.pop()
@@ -1854,7 +1854,7 @@ def upstreamErrors(component, level):
             for source in param.Sources:
                 owner = source.Attributes.GetTopLevel.DocObject
                 if owner.InstanceGuid not in seen:
-                    seen.append(owner.InstanceGuid)
+                    seen.add(owner.InstanceGuid)
                     stack.append(owner)
     return found
 def solidFaces(solid):

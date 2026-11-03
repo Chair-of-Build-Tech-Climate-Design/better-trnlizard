@@ -249,6 +249,17 @@ def addRadmaterial(subitems):
             subitems.Radmaterial1 = s.UserDictionary['MAT']
     return subitems
 # @OC END
+def readWeatherHead(filename,linecount=None,stoppattern=None):
+    """The first lines of a weather file, up to linecount or the first line that matches stoppattern. The location is in the head, and the
+    file can lie on a slow drive."""
+    lines = []
+    f = open(filename, 'r')
+    for line in f:
+        lines.append(line)
+        if len(lines) == linecount or (stoppattern and re.search(stoppattern,line)):
+            break
+    f.close()
+    return lines
 def getparagraph(file,startpattern,stoppattern):
     output = []
     inparagraph = 'FALSE'
@@ -5121,11 +5132,8 @@ if WriteSimulationFiles:
         #convertTry2017ETRS892WSG84(3931500,3110500)
         #Get location information
         if '.epw' in weather_file:
-            f = open(weather_file, 'r')
-            datalines=f.readlines()
-            dummy = datalines[0].strip()
+            dummy = readWeatherHead(weather_file,1)[0].strip()
             dummy = dummy.split(',')
-            f.close()
             altitude =dummy[-1]
             longitude=str(-float(dummy[len(dummy)-3]))
             latitude =dummy[len(dummy)-4]
@@ -5135,45 +5143,35 @@ if WriteSimulationFiles:
                 print 'gmt of one is used because of solar definition in the dataset'
             timezone = str(float(gmt)*(-15))
         elif '.tmy3' in weather_file or '.tm3' in weather_file:
-            f = open(weather_file, 'r')
-            datalines=f.readlines()
-            dummy = datalines[0].strip()
+            dummy = readWeatherHead(weather_file,1)[0].strip()
             dummy = dummy.split(',')
-            f.close()
             altitude =dummy[-1]
             longitude=dummy[len(dummy)-3]
             latitude =dummy[len(dummy)-2]
             gmt      =dummy[len(dummy)-4]
             timezone = str(float(gmt)*(-15))
         elif '.tmy2' in weather_file or '.tm2' in weather_file:
-            f = open(weather_file, 'r')
-            datalines=f.readlines()
-            dummy = datalines[0].strip()
+            dummy = readWeatherHead(weather_file,1)[0].strip()
             dummy = dummy.split()
-            f.close()
             altitude =dummy[-1]
             longitude=dummy[len(dummy)-3] + '.' + dummy[len(dummy)-2]
             latitude =dummy[len(dummy)-6] + '.' + dummy[len(dummy)-5]
             gmt      =dummy[len(dummy)-8]
             timezone = str(float(gmt)*(-15))
         elif '.dat' in weather_file and ('TRY2015' in weather_file or 'TRY2045' in weather_file):
-            f = open(weather_file, 'r')
-            datalines=f.readlines()
+            datalines = readWeatherHead(weather_file,4)
             xval = datalines[1].strip()
             xval = (xval.split()[2])
             yval = datalines[2].strip()
             yval = (yval.split()[2])
             altdummy = datalines[3].strip()
             altitude = (altdummy.split()[2])
-            f.close()
             longitude, latitude = convertTry2017ETRS892WSG84(xval,yval)
             gmt = 1
             timezone = str(float(gmt)*(-15))
         else:
-            f = open(weather_file, 'r')
-            datalines=f.readlines()
+            datalines = readWeatherHead(weather_file,stoppattern='^<data>')
             paragraph=getparagraph(datalines,'^<userdefined>','^<data>')
-            f.close()
             dummy = paragraph[0].split( )
             dummyindex = len(dummy)-2
             altitude= dummy[dummyindex]
