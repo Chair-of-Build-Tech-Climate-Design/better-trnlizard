@@ -59,3 +59,16 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   - With a local clone as `source`, it stops with `No Python files found in source folder` and changes nothing.
   - In both cases, paste `components/Lizard_Updater.py` into it by hand, or take the installer of a newer release. An installer that is fixed to its release
     (COM-05) keeps installing that release.
+
+<a id="com-07"></a>
+## COM-07: Scripts changed by hand are no longer overwritten
+
+- **Before:** `Lizard_Updater` replaced every script that differed from the source, so changes made by hand in a component were lost without notice.
+- **Now:** every script it writes starts with a line that holds the hash of the script. A script that no longer matches that hash is left alone and listed under
+  `errors`, and so is a shared cluster that contains one. The new input `force` overwrites them when it is `True`, and those changes are lost.
+- **Existing definitions:**
+  - The first update adds the hash line to every script, also to those already up to date.
+  - A script without that line cannot be checked and is updated as before, so changes made before that first update are still overwritten.
+  - A script that stays changed keeps its old code, which can give other results than the current scripts.
+  - An updater that upgrades itself gets the input `force` by itself. For an updater pasted by hand, add an input named `force`, or take a new one from the
+    TRNLizard tab.

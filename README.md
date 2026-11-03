@@ -46,6 +46,10 @@ The installer also moves the UserObjects of earlier TRNLizard installs out of th
 
 Add a `Lizard_Updater` component to the definition and set `runUpdate` to `True`. With an empty `source`, it follows `main` of the [chair's repository](https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard). A component that lost inputs or outputs is replaced by a new copy in a red group, next to the locked old one. The docstring at the top of [components/Lizard_Updater.py](components/Lizard_Updater.py) has the details.
 
+With a GitHub source, `Lizard_Updater` also upgrades itself. It checks the new version, including its syntax, before it replaces its own code. If a check fails, it stays as it is and the log points to the installer.
+
+Scripts changed by hand are left alone and listed under `errors`. Setting `force` to `True` overwrites them, and those changes are lost.
+
 ## About the chair
 
 This project comes from the **Chair of Building Technology and Climate Responsive Design** (*Lehrstuhl für Gebäudetechnologie und klimagerechtes Bauen*), led by Prof. Thomas Auer at the TUM School of Engineering and Design, Technical University of Munich.
@@ -64,6 +68,7 @@ For a pull request:
 
 - The `components/Lizard_*.py` scripts are IronPython 2 code. The tests run on plain Python 3: `python -m unittest discover -s tests`
 - After changing a script, icon or preset, run `python tools/build_manifest.py` and commit the result. CI checks it.
+- After changing `components/Lizard_Updater.py`, raise its `UPDATER_VERSION`. Otherwise `tools/build_manifest.py` refuses to write the manifest.
 - When a change can stop a definition or change results, add an entry to [docs/breaking-changes](docs/breaking-changes/README.md).
 
 ## Citation
