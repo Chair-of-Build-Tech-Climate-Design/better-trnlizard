@@ -23,6 +23,9 @@ params and wires for reference;
 - order-only differences: the params are kept, a note is logged;
 - inside clusters only additions are applied, anything else is reported as manual update needed.
 All document changes are made right after this solution, then the report of the finished update is shown.
+Every script is written with the hash of its text in the first line. A script that no longer matches that hash was
+changed by hand: it is left alone and listed under errors, unless force is True, which overwrites it (the changes are
+lost). A script without that line, e.g. from an older updater, cannot be checked: it is updated as usual.
 The updater never updates itself: when its own code differs from Lizard_Updater.py of the source, a warning is
 logged and listed under errors; paste the new code into this component by hand.
 Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
@@ -57,6 +60,9 @@ Args:
         Access: item
         Required: False
     cleanOldUserObjects (bool): True = move the UserObjects of earlier TRNLizard installs out of the root of the UserObjects folder (into the Grasshopper AppData folder, TRNLizard/old_userobjects/<time>); not connected or False = only list them in the log
+        Access: item
+        Required: False
+    force (bool): True = also overwrite scripts that were changed by hand (they no longer match the hash in their first line): those changes are lost; not connected or False = such scripts are left alone and listed under errors
         Access: item
         Required: False
 
@@ -95,6 +101,8 @@ OUTDATED_MESSAGE = 'OUTDATED'                             # shown under the upda
 RESTART_KEY = 'Lizard_Updater_restart_'                   # sc.sticky key + updater InstanceGuid: ribbon changed
 RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rhino to load them into the TRNLizard '
                    u'tab.')
+SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  # first line of every script it writes
+SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -124,7 +132,7 @@ OLD_CATEGORIES = ('lizard', 'trnlizard')                  # tabs of earlier TRNL
 OLD_PREFIXES = ('lizard_', 'trnlizard_')                  # names of their components and presets
 USEROBJECT_SUBFOLDER = 'TRNLizard'                        # subfolder of the Grasshopper UserObjects folder
 USEROBJECT_STATE = 'lizard_userobjects.json'              # in that subfolder: {format, userObjects: {script: hash, file}}
-USEROBJECT_FORMAT = 2                                     # raise when the UserObject builder changes: rewrites them all
+USEROBJECT_FORMAT = 3                                     # raise when the UserObject builder changes: rewrites them all
 LEGACY_GHPYTHON_ID = '410755b1-224a-4c1e-a407-bf32fb45ea7e'  # GhPython Script (legacy, IronPython 2.7)
 DEFAULT_CATEGORY = 'TRNLizard'                              # UserObject category of a script that declares none
 DEFAULT_SUBCATEGORY = '9 | Other'                         # UserObject subcategory of a script that declares none
@@ -160,6 +168,30 @@ def getHash(content):
     return hashlib.sha256(normalizeCode(content).encode('utf-8')).hexdigest()
 
 
+def splitScriptHash(code):
+    """(hash in the first line or None, the script without that line)."""
+    code = code or u''
+    match = re.match(SCRIPT_HASH_PATTERN, code)
+    return (match.group(1).lower(), code[match.end():]) if match else (None, code)
+
+
+def stampCode(code):
+    """The script with the hash of its text in the first line, as this updater writes it into a component."""
+    body = splitScriptHash(code)[1]
+    return SCRIPT_HASH_LINE.format(getHash(body)) + body
+
+
+def isChangedByHand(code):
+    """True when a script no longer matches the hash in its first line; False when it matches or has no such line."""
+    stored, body = splitScriptHash(code)
+    return stored is not None and stored != getHash(body)
+
+
+def changedByHandMessage(name):
+    return (u'The script of {0} was changed by hand (it does not match the hash in its first line) and was not updated. '
+            u'Set force to True to overwrite it: your changes are then lost.').format(name)
+
+
 def firstDiff(a, b):
     """Short hint about the first differing line of two normalized script texts, None when they are equal."""
     aLines = normalizeCode(a).split(u'\n')
@@ -175,7 +207,10 @@ def firstDiff(a, b):
 def selfCheckMessage(ownCode, fileCode, path):
     """Warning when the code of this updater differs from its script in the folder, None when they are equal or one
     of them could not be read. The updater skips itself, so its own copy on the canvas only changes by hand."""
-    if ownCode is None or fileCode is None or getHash(ownCode) == getHash(fileCode):
+    if ownCode is None or fileCode is None:
+        return None
+    ownCode, fileCode = splitScriptHash(ownCode)[1], splitScriptHash(fileCode)[1]
+    if getHash(ownCode) == getHash(fileCode):
         return None
     return (u'This Lizard_Updater is outdated: it runs other code than {0} (first diff {1}). The updater never updates '
             u'itself: replace this component by a new Lizard_Updater from the TRNLizard tab (its UserObject is rewritten '
@@ -961,6 +996,8 @@ def readComponentCode(comp, kind):
 
 
 def writeComponentCode(comp, kind, code):
+    """Write a script into a component, with its hash in the first line."""
+    code = stampCode(code)
     if kind == KIND_GHPYTHON:
         comp.Code = code
     else:
@@ -1348,26 +1385,40 @@ def describePlan(plan):
     return '; '.join(parts)
 
 
-def planComponent(comp, cluster, path, log):
-    """Plan the update of one component; returns (status, action or message) with status 'action', 'skipped' or 'error'."""
+def planComponent(comp, cluster, path, log, force=False):
+    """Plan the update of one component to the script of a file; see planComponentCode."""
+    return planComponentCode(comp, cluster, path, readScript(path), log, force)
+
+
+def planComponentCode(comp, cluster, source, newCode, log, force=False):
+    """Plan the update of one component; returns (status, action or message) with status 'action', 'skipped' or 'error'.
+    A script changed by hand is an error unless force is True; source: where newCode comes from, for the log."""
     name = str(comp.Name)
     kind = scriptKind(comp)
     log.append('')
     log.append('--- Processing: {0}{1} ---'.format(name, ' (in cluster {0})'.format(cluster.NickName) if cluster is not None else ''))
-    log.append('Source: {0}'.format(path))
+    log.append('Source: {0}'.format(source))
     log.append('Component type: {0}'.format(kind))
-    newCode = readScript(path)
     currentCode = readComponentCode(comp, kind)
     if currentCode is None:
         return 'error', 'Could not read the code of {0} ({1}).'.format(name, kind)
-    currentHash, newHash = getHash(currentCode), getHash(newCode)
+    storedHash, currentBody = splitScriptHash(currentCode)
+    currentHash, newHash = getHash(currentBody), getHash(newCode)
     log.append('Current hash: {0}'.format(currentHash[:12]))
     log.append('New hash:     {0}'.format(newHash[:12]))
     codeChanged = currentHash != newHash
     if codeChanged:
-        diffHint = firstDiff(currentCode, newCode)
+        diffHint = firstDiff(currentBody, newCode)
         if diffHint:
             log.append('First diff: {0}'.format(diffHint))
+        if storedHash is None:
+            log.append('Note: the script of {0} has no hash in its first line: cannot tell whether it was changed by '
+                       'hand.'.format(name))
+        elif storedHash != currentHash:
+            if not force:
+                return 'error', changedByHandMessage(name)
+            log.append('WARNING: force: the changes by hand to the script of {0} are overwritten.'.format(name))
+    codeChanged = codeChanged or storedHash != newHash   # also when only the hash line is missing or outdated
     currentInputs, currentOutputs = paramNames(comp.Params.Input), paramNames(comp.Params.Output)
     inputSpecs, outputSpecs = parseDocstringIO(newCode)
     log.append('Current inputs:  {0}'.format(currentInputs))
@@ -1893,7 +1944,7 @@ def updateTemplateDocument(doc, scripts, shared, counts):
                 continue
             if scriptKind(obj) is None or name not in scripts:
                 continue
-            status, result = planComponent(obj, None, scripts[name], [])
+            status, result = planComponent(obj, None, scripts[name], [], True)  # a template holds no changes by hand
             if status == 'error':
                 counts['errors'].append(result)
                 continue
@@ -1937,8 +1988,23 @@ def buildPresetCluster(entry, scripts, shared, counts):
     return cluster
 
 
-def planSharedSync(doc, shared, scripts, log, updated, skipped):
-    """Actions that replace the outdated canvas copies of shared clusters with role 'sync' by their template."""
+def scriptsChangedByHand(cluster):
+    """Sorted names of the scripts changed by hand inside a cluster and its nested clusters."""
+    inner = cluster.Document('')
+    names = set()
+    for obj in (inner.Objects if inner is not None else []):
+        obj = _impl(obj)
+        kind = scriptKind(obj)
+        if isinstance(obj, Grasshopper.Kernel.Special.GH_Cluster):
+            names.update(scriptsChangedByHand(obj))
+        elif kind is not None and isChangedByHand(readComponentCode(obj, kind)):
+            names.add(str(obj.Name))
+    return sorted(names)
+
+
+def planSharedSync(doc, shared, scripts, log, updated, skipped, errors, force=False):
+    """Actions that replace the outdated canvas copies of shared clusters with role 'sync' by their template; a copy with
+    a script changed by hand is kept and listed under errors unless force is True."""
     actions = []
     for obj in doc.Objects:
         obj = _impl(obj)
@@ -1954,6 +2020,16 @@ def planSharedSync(doc, shared, scripts, log, updated, skipped):
             log.append('Shared cluster {0} is up to date.'.format(name))
             skipped.append(name)
             continue
+        changed = scriptsChangedByHand(obj)
+        if changed and not force:
+            message = (u'Shared cluster {0} was not updated: its scripts {1} were changed by hand. Set force to True to '
+                       u'replace the cluster: your changes are then lost.').format(name, u', '.join(changed))
+            log.append(message)
+            errors.append(message)
+            continue
+        if changed:
+            log.append('WARNING: force: the changes by hand to {0} in shared cluster {1} are overwritten.'.format(
+                ', '.join(changed), name))
         log.append('Planned: shared cluster {0} replaced by the repository copy (wires moved).'.format(name))
         actions.append({'name': name, 'what': 'sync', 'component': obj, 'entry': shared[name], 'scripts': scripts})
         updated.append(name)
@@ -2314,17 +2390,17 @@ def writeUserObjects(scripts, updater, log, errors, icons=None, presets=None, ch
     return summary
 
 
-def runUpdater(source, runUpdate, makeUserObjects=None, cleanOld=None):
+def runUpdater(source, runUpdate, makeUserObjects=None, cleanOld=None, force=None):
     """Plan the update of every matching script component and schedule the document changes, and write the UserObjects
     (unless makeUserObjects is False); (log, updated, skipped, errors). The run right after the scheduled changes shows
     the final report instead. An outdated updater is marked on the canvas on every run."""
     try:
-        return updateDocument(source, runUpdate, makeUserObjects, cleanOld)
+        return updateDocument(source, runUpdate, makeUserObjects, cleanOld, force)
     finally:
         showSelfState(ghenv.Component)  # noqa: F821
 
 
-def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
+def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None):
     updater = ghenv.Component  # noqa: F821 (global of every Grasshopper script component)
     reportKey = REPORT_KEY + str(updater.InstanceGuid)
     finished = sc.sticky.pop(reportKey, None)
@@ -2361,7 +2437,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
         if name not in scripts:
             continue
         try:
-            status, result = planComponent(comp, cluster, scripts[name], log)
+            status, result = planComponent(comp, cluster, scripts[name], log, force is True)
         except Exception as e:
             status, result = 'error', 'Error processing {0}: {1}'.format(name, e)
         if status == 'action':
@@ -2376,7 +2452,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
     presets = loadPresets(sourceFolder, log)
     if presets:
         try:
-            actions.extend(planSharedSync(doc, presets['shared'], scripts, log, updated, skipped))
+            actions.extend(planSharedSync(doc, presets['shared'], scripts, log, updated, skipped, errors, force is True))
         except Exception as e:
             errors.append('Shared clusters not checked: {0}'.format(e))
     userObjectsSummary = None
@@ -2421,4 +2497,5 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None):
 
 if 'ghenv' in globals():
     log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'),
-                                               globals().get('makeUserObjects'), globals().get('cleanOldUserObjects'))
+                                               globals().get('makeUserObjects'), globals().get('cleanOldUserObjects'),
+                                               globals().get('force'))

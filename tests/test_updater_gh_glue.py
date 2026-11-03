@@ -504,7 +504,7 @@ class UpdaterGlueTests(unittest.TestCase):
         self.apply_scheduled(doc)
         self.assertEqual(HYGRO_INPUTS_BEFORE + NEW_HYGRO_INPUTS, [p.Name for p in hygro.Params.Input])
         self.assertEqual(["SurfaceInfo"], [p.Name for p in hygro.Params.Output])
-        self.assertEqual(HYGRO_SOURCE.read_text(encoding="utf-8-sig").replace("\r\n", "\n"), hygro.Code)
+        self.assertEqual(self.updater.stampCode(HYGRO_SOURCE.read_text(encoding="utf-8-sig").replace("\r\n", "\n")), hygro.Code)
         new = {p.Name: p for p in hygro.Params.Input[4:]}
         for name in NEW_HYGRO_INPUTS:
             self.assertEqual(name, new[name].NickName)
@@ -552,7 +552,7 @@ class UpdaterGlueTests(unittest.TestCase):
         self.assertEqual([self.sources["S2"]], old.Params.Input[1].Sources)
         self.assertEqual([self.recipients["R3"]], old.Params.Output[2].Recipients)
         # the new component: new code, new IO, new ids, placed right and down
-        self.assertEqual(REPLACED_SCRIPT, new.Code)
+        self.assertEqual(self.updater.stampCode(REPLACED_SCRIPT), new.Code)
         self.assertEqual(["a", "c", "d"], [p.Name for p in new.Params.Input])
         self.assertEqual(["out", "r", "extra"], [p.Name for p in new.Params.Output])
         self.assertNotEqual(str(old.InstanceGuid), str(new.InstanceGuid))
@@ -631,7 +631,7 @@ class UpdaterGlueTests(unittest.TestCase):
         self.assertTrue(any("Rhino 8 Python 3 Script (CPython 3)" in line for line in log))
         self.apply_scheduled(doc)
 
-        self.assertEqual(HYGRO_SOURCE.read_text(encoding="utf-8-sig").replace("\r\n", "\n"), component.source)
+        self.assertEqual(self.updater.stampCode(HYGRO_SOURCE.read_text(encoding="utf-8-sig").replace("\r\n", "\n")), component.source)
         new = component.Params.Input[4:]
         self.assertEqual(NEW_HYGRO_INPUTS, [p.VariableName for p in new])
         self.assertEqual(NEW_HYGRO_INPUTS, [p.NickName for p in new])

@@ -342,7 +342,7 @@ class UserObjectGlueTests(unittest.TestCase):
         comp = hygro_uo.data
         self.assertIsInstance(comp, EmittedLegacy)
         hygro_code = HYGRO_SOURCE.read_text(encoding="utf-8-sig")
-        self.assertEqual(hygro_code, comp.Code)
+        self.assertEqual(self.updater.stampCode(hygro_code), comp.Code)
         inputs, outputs = self.updater.parseIONames(hygro_code)
         self.assertEqual(inputs, [p.Name for p in comp.Params.Input])           # separators included, x/y gone
         self.assertIn("------------------ hygrothermal", inputs)
@@ -373,7 +373,7 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual("A simple component.\nSecond line of the description.", simple.Description)
 
         updater_uo = saved["Lizard_Updater"].data
-        self.assertEqual(["source", "runUpdate", "makeUserObjects", "cleanOldUserObjects"], [p.Name for p in updater_uo.Params.Input])
+        self.assertEqual(["source", "runUpdate", "makeUserObjects", "cleanOldUserObjects", "force"], [p.Name for p in updater_uo.Params.Input])
         self.assertEqual(["out", "log", "updated", "skipped", "errors"], [p.Name for p in updater_uo.Params.Output])
 
         state = self.state()
@@ -451,7 +451,7 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual(3, len(comps))
         self.assertTrue(all(isinstance(comp, IronPython2Script) for comp in comps))
         simple = self.saved()["Lizard_Simple"].data
-        self.assertEqual(SIMPLE_SCRIPT, simple.source)
+        self.assertEqual(self.updater.stampCode(SIMPLE_SCRIPT), simple.source)
         self.assertEqual(["a", "-------- section", "b"], [p.VariableName for p in simple.Params.Input])
         self.assertEqual([("Type", "System.Double")], simple.Params.Input[0].TypeHints.selected)
         self.assertEqual([("Type", "System.String")], simple.Params.Input[2].TypeHints.selected)

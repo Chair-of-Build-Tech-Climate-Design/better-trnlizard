@@ -236,13 +236,13 @@ class PresetGlueTests(unittest.TestCase):
         hygro_code = HYGRO_SOURCE.read_text(encoding="utf-8-sig")
         expected_inputs = glue.HYGRO_INPUTS_BEFORE + glue.NEW_HYGRO_INPUTS
         for component in (top_hygro, nested.inner.Objects[0]):
-            self.assertEqual(hygro_code, component.Code)
+            self.assertEqual(self.updater.stampCode(hygro_code), component.Code)
             self.assertEqual(expected_inputs, [p.Name for p in component.Params.Input])
         self.assertNotIn(database, preset.inner.Objects)
         new = [o for o in preset.inner.Objects if isinstance(o, Cluster) and o.NickName == "Lizard_Database"]
         self.assertEqual(1, len(new))
         new = new[0]
-        self.assertEqual(hygro_code, new.inner.Objects[0].Code)                  # its scripts are updated too
+        self.assertEqual(self.updater.stampCode(hygro_code), new.inner.Objects[0].Code)                  # its scripts are updated too
         self.assertIn(self.updater.sharedMarker(self.shared["Lizard_Database"]), new.Description)
         for index, reader in enumerate(readers):                                 # Data x4 rewired by position
             self.assertEqual([new.Params.Output[index]], reader.Sources)
@@ -295,6 +295,23 @@ class PresetGlueTests(unittest.TestCase):
         self.assertEqual([], updated)
         self.assertIn("Lizard_Building_Template", skipped)
 
+    def test_a_building_template_with_a_script_changed_by_hand_stays_until_force(self):
+        canvas_copy = building_template()
+        changed = self.updater.stampCode("x = 1\n").replace("x = 1", "x = 2")
+        canvas_copy.inner.Objects.append(glue.LegacyGhPython("Lizard_Custom", [], [], code=changed))
+        doc = Document([canvas_copy])
+        self.write_bundle({})
+        log, updated, skipped, errors = self.run_updater(doc, make=False)
+        self.assertEqual([], updated)
+        self.assertEqual([], doc.scheduled)
+        self.assertEqual(1, len(errors))
+        for fragment in ("Lizard_Building_Template", "Lizard_Custom", "changed by hand", "force"):
+            self.assertIn(fragment, errors[0])
+        self.updater_component.OnPingDocument = lambda: doc
+        log, updated, skipped, errors = self.updater.runUpdater(str(self.folder), True, False, None, True)
+        self.assertEqual(["Lizard_Building_Template"], updated)
+        self.assertEqual([], errors)
+
     def test_a_database_on_the_canvas_is_never_replaced(self):
         canvas_copy = Cluster("Lizard_Database", [], outputs=["Data", "Data", "Data", "Data"])
         doc = Document([canvas_copy])
@@ -318,7 +335,7 @@ class PresetGlueTests(unittest.TestCase):
         self.assertEqual(("TRNLizard", "0 | Basic", "Template_Lite"), (
             preset.Description.Category, preset.Description.SubCategory, preset.Description.NickName))
         cluster = preset.data
-        self.assertEqual(HYGRO_SOURCE.read_text(encoding="utf-8-sig"), cluster.inner.Objects[0].Code)
+        self.assertEqual(self.updater.stampCode(HYGRO_SOURCE.read_text(encoding="utf-8-sig")), cluster.inner.Objects[0].Code)
         self.assertTrue(any(line.startswith("UserObject written: TRNLizard_Template_Lite") and
                             "3 script components updated, 1 shared clusters put in" in line for line in log))
 
