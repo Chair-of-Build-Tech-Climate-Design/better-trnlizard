@@ -605,11 +605,11 @@ class GitHubSyncTests(unittest.TestCase):
             self.assertIn(fragment, errors[0])
 
     def test_invalid_manifest_is_an_error(self):
-        self.github.manifest_override = json.dumps({"format": 9, "files": {}})
+        self.github.manifest_override = json.dumps({"format": 1, "files": {}})
         folder, log, errors = self.sync()
         self.assertIsNone(folder)
         self.assertIn("Invalid manifest", errors[0])
-        self.assertIn("newer than this updater", errors[0])
+        self.assertIn("no files", errors[0])
         self.assertFalse(os.path.exists(self.folder))
 
 
@@ -847,6 +847,99 @@ class ComponentsFolderSyncTests(unittest.TestCase):
         folder, log, errors = self.sync()
         self.assertIsNone(folder)
         self.assertTrue(any("No complete cached copy" in line for line in errors), errors)
+
+
+class TooOldUpdaterMessageTests(unittest.TestCase):
+    """A manifest format newer than this updater: what the user reads and what stays untouched."""
+
+    NEWER = UPDATER.MANIFEST_FORMAT + 1
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root)
+
+    def sync(self, github, ref="main"):
+        log, errors = [], []
+        info = {"kind": "github", "owner": "o", "repo": "r", "ref": ref}
+        return UPDATER.syncGitHubSource(info, log, errors, fetch=github, root=self.root), log, errors
+
+    def too_new_github(self):
+        github = FakeGitHub({"components/Lizard_A.py": "a = 1\n"})
+        github.manifest_override = manifest_text(github.scripts, fmt=self.NEWER)
+        return github
+
+    def test_a_github_source_says_to_install_the_latest_installer_from_the_page_of_the_repository(self):
+        folder, log, errors = self.sync(self.too_new_github())
+        self.assertIsNone(folder)
+        self.assertEqual(1, len(errors))
+        self.assertIn("too old", errors[0])
+        self.assertIn("Go to https://github.com/o/r and download TRNLizard_Installer.ghx of the latest release", errors[0])
+        self.assertIn("install over the current version", errors[0])
+        self.assertIn("new Lizard_Updater from the TRNLizard tab", errors[0])
+        self.assertIn("Error: " + errors[0], log)
+
+    def test_a_github_source_is_not_told_the_old_text(self):
+        folder, log, errors = self.sync(self.too_new_github())
+        self.assertNotIn("is newer than", errors[0])
+        self.assertNotIn("paste", errors[0].lower())
+        self.assertNotIn("raw.githubusercontent.com", errors[0])
+
+    def test_the_page_of_the_repository_does_not_depend_on_the_ref(self):
+        with mock.patch.object(UPDATER, "resolveCommit", lambda *args: SHA):
+            folder, log, errors = self.sync(self.too_new_github(), ref="feature/x")
+        self.assertIn("Go to https://github.com/o/r and download", errors[0])
+        self.assertNotIn("feature", errors[0])
+
+    def test_a_github_source_leaves_the_cache_alone(self):
+        self.sync(FakeGitHub({"Lizard_A.py": "a = 1\n"}))
+        cache = os.path.join(self.root, "o_r_main")
+        before = sorted(os.listdir(cache))
+        folder, log, errors = self.sync(self.too_new_github())
+        self.assertIsNone(folder)
+        self.assertEqual(before, sorted(os.listdir(cache)))
+
+    def local(self, fmt=None, text=None, updater=True):
+        folder = os.path.join(self.root, "clone")
+        os.makedirs(os.path.join(folder, "components"))
+        if updater:
+            with open(os.path.join(folder, "components", "Lizard_Updater.py"), "w") as handle:
+                handle.write("u = 1\n")
+        if fmt is not None or text is not None:
+            with open(os.path.join(folder, "trnlizard_manifest.json"), "w") as handle:
+                handle.write(text if text is not None else json.dumps({"format": fmt, "files": {}}))
+        return folder
+
+    def test_a_local_folder_says_to_paste_its_updater(self):
+        folder = self.local(self.NEWER)
+        log, errors = [], []
+        self.assertIsNone(UPDATER.resolveSource(folder, log, errors))
+        self.assertEqual(1, len(errors))
+        self.assertIn("too old", errors[0])
+        self.assertIn("Paste " + os.path.join(folder, "components", "Lizard_Updater.py"), errors[0])
+        self.assertNotIn("github.com", errors[0])
+        self.assertNotIn("is newer than", errors[0])
+        self.assertIn("Error: " + errors[0], log)
+
+    def test_a_local_folder_without_the_updater_still_says_to_paste(self):
+        log, errors = [], []
+        self.assertIsNone(UPDATER.resolveSource(self.local(self.NEWER, updater=False), log, errors))
+        self.assertIn("Paste the Lizard_Updater.py", errors[0])
+
+    def test_a_local_folder_of_a_format_this_updater_reads_is_used(self):
+        for fmt in (1, UPDATER.MANIFEST_FORMAT):
+            folder = self.local(fmt)
+            log, errors = [], []
+            self.assertEqual(folder, UPDATER.resolveSource(folder, log, errors))
+            self.assertEqual([], errors)
+            shutil.rmtree(folder)
+
+    def test_a_local_folder_without_a_readable_manifest_is_used_as_before(self):
+        for kwargs in ({}, {"text": "{not json"}, {"text": "[]"}, {"text": '{"format": "x"}'}, {"text": '{"format": true}'}):
+            folder = self.local(**kwargs)
+            log, errors = [], []
+            self.assertEqual(folder, UPDATER.resolveSource(folder, log, errors), kwargs)
+            self.assertEqual([], errors)
+            shutil.rmtree(folder)
 
 
 class RepositoryLayoutTests(unittest.TestCase):

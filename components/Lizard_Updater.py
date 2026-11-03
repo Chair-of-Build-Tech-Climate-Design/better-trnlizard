@@ -107,6 +107,7 @@ BUNDLE_NAMES = (ICONS_NAME, PRESETS_NAME)                 # files of the source 
 SHARED_MARKER = u'[TRNLizard shared {0}]'                 # in the Description of a shared cluster: its template hash
 MANIFEST_FORMAT = 2                                       # newest manifest format this updater reads: 2 lists the
                                                           # scripts as components/<name>.py, 1 as <name>.py
+GITHUB_HOST = 'https://github.com'
 RAW_HOST = 'https://raw.githubusercontent.com'
 API_HOST = 'https://api.github.com'
 SHA_MEDIA_TYPE = 'application/vnd.github.sha'             # Accept header: the commits API answers with the bare sha
@@ -670,6 +671,32 @@ def canUseCache(status):
     return status is None or status in RATE_LIMIT_STATUSES or status >= 500
 
 
+class NewerManifestError(ValueError):
+    """A manifest format newer than MANIFEST_FORMAT; version: its format number."""
+
+    def __init__(self, version):
+        ValueError.__init__(self, u'format {0} is newer than this updater reads ({1})'.format(version, MANIFEST_FORMAT))
+        self.version = version
+
+
+def tooOldForRepositoryMessage(owner, repo, version):
+    """What to do when a GitHub repository has a manifest format this updater cannot read."""
+    return (u'This Lizard_Updater is too old for the GitHub repository {0}/{1} and changed nothing (the repository uses '
+            u'manifest format {2}, this updater reads up to format {3}). Go to {4}/{0}/{1} and download '
+            u'TRNLizard_Installer.ghx of the latest release. Run it to install over the current version, then replace this '
+            u'component by a new Lizard_Updater from the TRNLizard tab.').format(owner, repo, version, MANIFEST_FORMAT,
+                                                                                 GITHUB_HOST)
+
+
+def tooOldForFolderMessage(folder, version, updaterPath):
+    """What to do when a source folder has a manifest format this updater cannot read; updaterPath: its Lizard_Updater
+    script, None when it was not found."""
+    script = updaterPath or u'the Lizard_Updater.py of that folder'
+    return (u'This Lizard_Updater is too old for the source folder {0} and changed nothing (the folder uses manifest '
+            u'format {1}, this updater reads up to format {2}). Paste {3} into this component by hand.').format(
+                folder, version, MANIFEST_FORMAT, script)
+
+
 def isSafeManifestName(name):
     """True for a file name without a path, or with the one path a manifest may name: SCRIPTS_FOLDER/<file name>."""
     if not isinstance(name, str):
@@ -685,9 +712,9 @@ def parseManifest(text):
 
     Files this updater does not know (neither a script without leading '_', at the root or in SCRIPTS_FOLDER, nor a file
     of BUNDLE_NAMES) are left out and listed under 'ignored', so a newer manifest with new kinds of files still works.
-    ValueError when the text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name
-    with another path (isSafeManifestName), names that only differ in case, or a sha256 that is not 64 hex digits. sha256
-    is getHash of the script text; size (bytes of the normalized UTF-8 text) is informative only.
+    ValueError when the text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT (NewerManifestError), no
+    files, a file name with another path (isSafeManifestName), names that only differ in case, or a sha256 that is not 64
+    hex digits. sha256 is getHash of the script text; size (bytes of the normalized UTF-8 text) is informative only.
     """
     try:
         data = json.loads(text)
@@ -699,8 +726,7 @@ def parseManifest(text):
     if not isinstance(version, int) or isinstance(version, bool) or version < 1:
         raise ValueError(u'no valid format number')
     if version > MANIFEST_FORMAT:
-        raise ValueError(u'format {0} is newer than this updater reads ({1}): paste the new Lizard_Updater.py into this '
-                         u'component by hand'.format(version, MANIFEST_FORMAT))
+        raise NewerManifestError(version)
     files = data.get('files')
     if not isinstance(files, dict) or not files:
         raise ValueError(u'no files listed')
@@ -1464,6 +1490,18 @@ def readCachedManifest(folder):
         return None
 
 
+def folderManifestFormat(folder):
+    """Format number of the manifest of a source folder, None when it has none or it cannot be read."""
+    path = os.path.join(folder, MANIFEST_NAME)
+    if not os.path.isfile(path):
+        return None
+    try:
+        version = json.loads(readScript(path)).get('format')
+    except Exception:
+        return None
+    return version if isinstance(version, int) and not isinstance(version, bool) else None
+
+
 def writeTextFile(path, text):
     """Write UTF-8 text (line endings as given) to a temporary file that then replaces path, so an interrupted write
     never leaves half a file under the real name."""
@@ -1627,6 +1665,11 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
         return fallBackToCache(folder, e, log, errors)
     try:
         manifest = parseManifest(manifestText)
+    except NewerManifestError as e:
+        message = tooOldForRepositoryMessage(owner, repo, e.version)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return None
     except ValueError as e:
         message = u'Invalid manifest {0}: {1}'.format(manifestUrl, e)
         errors.append(message)
@@ -1701,6 +1744,12 @@ def resolveSource(source, log, errors):
     if info['kind'] == 'folder':
         if not os.path.isdir(info['path']):
             errors.append(u'Invalid source folder path: {0}'.format(info['path']))
+            return None
+        version = folderManifestFormat(info['path'])
+        if version is not None and version > MANIFEST_FORMAT:
+            message = tooOldForFolderMessage(info['path'], version, findScripts(info['path'], []).get(UPDATER_SCRIPT))
+            errors.append(message)
+            log.append(u'Error: ' + message)
             return None
         return info['path']
     return syncGitHubSource(info, log, errors)
