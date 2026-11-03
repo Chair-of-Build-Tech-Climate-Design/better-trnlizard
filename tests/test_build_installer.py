@@ -115,7 +115,7 @@ class PinReleaseTests(unittest.TestCase):
     def test_the_updater_reads_the_commit(self):
         text = (REPO_ROOT / "Lizard_Updater.py").read_text(encoding="utf-8-sig")
         first = text.index("GITHUB_PREFIXES = (")
-        scope = {"re": re, "DEFAULT_SOURCE": "x", "DEFAULT_REF": "main"}
+        scope = {"re": re, "DEFAULT_SOURCE": "x", "DEFAULT_REF": "main", "SCRIPTS_FOLDER": "components"}
         exec(text[first:text.index("def isCommitSha(text):", first)], scope)
         self.assertEqual({"kind": "github", "owner": "o", "repo": "r", "ref": SHA}, scope["parseSource"](SOURCE))
 

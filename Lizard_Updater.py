@@ -11,7 +11,8 @@ connection a complete cached copy is used; after a successful download the cache
 branches are deleted. The branch is looked up as a commit on api.github.com; when that fails, the
 files come from the branch on raw.githubusercontent.com, which caches them for about 5 minutes: a change pushed just now
 may only show a few minutes later. Private repositories are not supported;
-- anything else: a local folder with the scripts <component Name>.py.
+- anything else: a local folder with the scripts <component Name>.py in its subfolder components (a clone of the
+repository), or directly in it.
 A script component is matched by its Name (every TRNLizard script sets it, e.g. Lizard_Hygro) to <Name>.py of the
 source. Its code is replaced when it differs from the file (line endings, a BOM and trailing white space are
 ignored). Its inputs and outputs follow the Args/Returns docstring of the new script:
@@ -99,11 +100,13 @@ UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this sc
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
 DEFAULT_REF = 'main'                                      # branch when a GitHub URL names none
 MANIFEST_NAME = 'trnlizard_manifest.json'                 # at the repository root, made by tools/build_manifest.py
+SCRIPTS_FOLDER = 'components'                             # subfolder of the repository root with the scripts
 ICONS_NAME = 'trnlizard_icons.json'                       # {format, icons: {script: base64 PNG 24x24}}, made from icons/*.png
 PRESETS_NAME = 'trnlizard_presets.json'                   # preset templates of presets/ (tools/build_manifest.py)
 BUNDLE_NAMES = (ICONS_NAME, PRESETS_NAME)                 # files of the source besides the scripts
 SHARED_MARKER = u'[TRNLizard shared {0}]'                 # in the Description of a shared cluster: its template hash
-MANIFEST_FORMAT = 1                                       # newest manifest format this updater reads
+MANIFEST_FORMAT = 2                                       # newest manifest format this updater reads: 2 lists the
+                                                          # scripts as components/<name>.py, 1 as <name>.py
 RAW_HOST = 'https://raw.githubusercontent.com'
 API_HOST = 'https://api.github.com'
 SHA_MEDIA_TYPE = 'application/vnd.github.sha'             # Accept header: the commits API answers with the bare sha
@@ -528,7 +531,7 @@ GITHUB_PREFIXES = (                                       # what clearly is GitH
 )
 GITHUB_USAGE = 'use https://github.com/<owner>/<repo> or https://github.com/<owner>/<repo>/tree/<branch>'
 REPO_NAME_PATTERN = r'^[A-Za-z0-9_.-]+$'
-SCRIPT_NAME_PATTERN = r'^[A-Za-z0-9][A-Za-z0-9_.-]*\.py$'  # manifest entries: top-level scripts only, no paths
+SCRIPT_NAME_PATTERN = r'^(' + SCRIPTS_FOLDER + r'/)?[A-Za-z0-9][A-Za-z0-9_.-]*\.py$'  # manifest entries of scripts
 
 
 def parseSource(source):
@@ -667,15 +670,24 @@ def canUseCache(status):
     return status is None or status in RATE_LIMIT_STATUSES or status >= 500
 
 
+def isSafeManifestName(name):
+    """True for a file name without a path, or with the one path a manifest may name: SCRIPTS_FOLDER/<file name>."""
+    if not isinstance(name, str):
+        return False
+    prefix = SCRIPTS_FOLDER + u'/'
+    base = name[len(prefix):] if name.startswith(prefix) else name
+    return bool(base.strip()) and re.search(r'[/\\:]', base) is None and base.strip('.') != ''
+
+
 def parseManifest(text):
     """{'format', 'generated', 'files': {file name: {'sha256', 'size'}}, 'ignored': [file names]} of a
     trnlizard_manifest.json text.
 
-    Files this updater does not know (neither a top-level script without leading '_' nor trnlizard_icons.json) are
-    left out and listed under 'ignored', so a newer manifest with new kinds of files still works. ValueError when the
-    text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name with a path, names
-    that only differ in case, or a sha256 that is not 64 hex digits. sha256 is getHash of the script text; size (bytes
-    of the normalized UTF-8 text) is informative only.
+    Files this updater does not know (neither a script without leading '_', at the root or in SCRIPTS_FOLDER, nor a file
+    of BUNDLE_NAMES) are left out and listed under 'ignored', so a newer manifest with new kinds of files still works.
+    ValueError when the text is no valid manifest: not JSON, a format newer than MANIFEST_FORMAT, no files, a file name
+    with another path (isSafeManifestName), names that only differ in case, or a sha256 that is not 64 hex digits. sha256
+    is getHash of the script text; size (bytes of the normalized UTF-8 text) is informative only.
     """
     try:
         data = json.loads(text)
@@ -696,7 +708,7 @@ def parseManifest(text):
     ignored = []
     for name in files:
         entry = files[name]
-        if not isinstance(name, str) or not name.strip() or re.search(r'[/\\:]', name) or name.strip('.') == '':
+        if not isSafeManifestName(name):
             raise ValueError(u"invalid file name '{0}'".format(name))
         if not (re.match(SCRIPT_NAME_PATTERN, name) or name in BUNDLE_NAMES):
             ignored.append(name)
@@ -943,6 +955,14 @@ def readScript(path):
 
 
 def findScripts(folder, log):
+    """{base name: path} of the scripts of a source folder: those of its subfolder SCRIPTS_FOLDER, else its own (a ref
+    from before the scripts moved, or the folder of the scripts itself)."""
+    subfolder = os.path.join(folder, SCRIPTS_FOLDER)
+    scripts = listScripts(subfolder, log) if os.path.isdir(subfolder) else {}
+    return scripts or listScripts(folder, log)
+
+
+def listScripts(folder, log):
     """{base name: path} of the .py files of a folder (not recursive, files starting with '_' left out)."""
     scripts = {}
     try:
@@ -1412,19 +1432,25 @@ def sourceCacheRoot():
 
 
 def cachedScriptHashes(folder):
-    """{file name: getHash of the text, None when unreadable} of the .py files and the icons file of a cache folder
-    (empty when it is missing)."""
+    """{file name as in a manifest: getHash of the text, None when unreadable} of the .py files and the bundle files of a
+    cache folder and of its subfolder SCRIPTS_FOLDER (empty when it is missing)."""
     hashes = {}
-    if not os.path.isdir(folder):
-        return hashes
-    for fileName in os.listdir(folder):
-        path = os.path.join(folder, fileName)
-        if (fileName.endswith('.py') or fileName in BUNDLE_NAMES) and os.path.isfile(path):
-            try:
-                hashes[fileName] = getHash(readScript(path))
-            except Exception:
-                hashes[fileName] = None
+    for parent, prefix in ((folder, u''), (os.path.join(folder, SCRIPTS_FOLDER), SCRIPTS_FOLDER + u'/')):
+        if not os.path.isdir(parent):
+            continue
+        for fileName in os.listdir(parent):
+            path = os.path.join(parent, fileName)
+            if (fileName.endswith('.py') or fileName in BUNDLE_NAMES) and os.path.isfile(path):
+                try:
+                    hashes[prefix + fileName] = getHash(readScript(path))
+                except Exception:
+                    hashes[prefix + fileName] = None
     return hashes
+
+
+def cachePath(folder, name):
+    """Path in a cache folder of a file named as in a manifest."""
+    return os.path.join(folder, *name.split(u'/'))
 
 
 def readCachedManifest(folder):
@@ -1577,7 +1603,8 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
 
     Only missing and changed scripts are downloaded (getHash against the manifest); every download must match its
     manifest hash, and nothing is written unless all downloads succeeded. Cached scripts the manifest no longer lists
-    are deleted (only .py files of this cache folder). Without a usable answer of GitHub a complete cached copy is used.
+    are deleted (only .py files of this cache folder and of its subfolder SCRIPTS_FOLDER). Without a usable answer of
+    GitHub a complete cached copy is used.
     fetch(url, accept) -> text, raising SourceError (default httpGetText); root: cache root (default sourceCacheRoot()).
     """
     fetch = fetch or httpGetText
@@ -1629,9 +1656,12 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
         if not os.path.isdir(folder):
             os.makedirs(folder)
         for name in removals:  # before the writes: a file whose name changed case is then written under its new name
-            os.remove(os.path.join(folder, name))
+            os.remove(cachePath(folder, name))
         for name, text in downloads:
-            writeTextFile(os.path.join(folder, name), text)
+            path = cachePath(folder, name)
+            if not os.path.isdir(os.path.dirname(path)):
+                os.makedirs(os.path.dirname(path))
+            writeTextFile(path, text)
         writeTextFile(os.path.join(folder, MANIFEST_NAME), manifestText)  # last: it marks a complete cache
     except Exception as e:
         message = u'Could not update the cache folder {0}: {1}'.format(folder, e)

@@ -214,7 +214,7 @@ class ManifestTests(unittest.TestCase):
             json.dumps({"files": {"X.py": good}}): "format",
             json.dumps({"format": True, "files": {"X.py": good}}): "format",
             json.dumps({"format": 0, "files": {"X.py": good}}): "format",
-            json.dumps({"format": 2, "files": {"X.py": good}}): "newer than this updater",
+            json.dumps({"format": 3, "files": {"X.py": good}}): "newer than this updater",
             json.dumps({"format": 1, "files": {}}): "no files",
             json.dumps({"format": 1, "files": []}): "no files",
             json.dumps({"format": 1, "files": {"../X.py": good}}): "invalid file name",
@@ -668,6 +668,180 @@ class FileAndSourceGlueTests(unittest.TestCase):
             self.assertIn("only GitHub", errors[0])
             log, updated, skipped, errors = UPDATER.runUpdater(None, False)
             self.assertEqual(["Set runUpdate to True to execute the updater."], log)
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# the scripts of a source in the subfolder components (manifest format 2)
+# ---------------------------------------------------------------------------------------------------------------------
+
+class ComponentsManifestTests(unittest.TestCase):
+    GOOD = {"sha256": "a" * 64, "size": 1}
+
+    def parse(self, *names, fmt=2):
+        return UPDATER.parseManifest(json.dumps({"format": fmt, "files": {name: self.GOOD for name in names}}))
+
+    def test_this_updater_reads_format_2(self):
+        self.assertEqual(2, UPDATER.MANIFEST_FORMAT)
+
+    def test_scripts_of_the_components_folder_are_used(self):
+        manifest = self.parse("components/Lizard_A.py", "trnlizard_icons.json", "trnlizard_presets.json")
+        self.assertEqual(["components/Lizard_A.py", "trnlizard_icons.json", "trnlizard_presets.json"],
+                         sorted(manifest["files"]))
+        self.assertEqual([], manifest["ignored"])
+
+    def test_a_flat_manifest_of_an_older_ref_is_still_read(self):
+        self.assertEqual(["Lizard_A.py"], sorted(self.parse("Lizard_A.py", fmt=1)["files"]))
+
+    def test_other_files_of_the_components_folder_are_ignored(self):
+        manifest = self.parse("components/Lizard_A.py", "components/_private.py", "components/notes.txt",
+                              "components/trnlizard_icons.json")
+        self.assertEqual(["components/Lizard_A.py"], sorted(manifest["files"]))
+        self.assertEqual(["components/_private.py", "components/notes.txt", "components/trnlizard_icons.json"],
+                         manifest["ignored"])
+
+    def test_no_other_path_is_accepted(self):
+        for name in ("sub/X.py", "components/sub/X.py", "components/../X.py", "components/..", "components/", "components//X.py",
+                     "components\\X.py", "components/C:X.py", "../components/X.py", "/components/X.py",
+                     "./components/X.py", "Components/X.py", "sub/components/X.py"):
+            with self.assertRaises(ValueError, msg=name) as caught:
+                self.parse("components/Lizard_A.py", name)
+            self.assertIn("invalid file name", str(caught.exception), name)
+
+
+class ComponentsFolderFindScriptsTests(unittest.TestCase):
+    def setUp(self):
+        self.folder = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.folder)
+
+    def write(self, *parts):
+        path = os.path.join(self.folder, *parts)
+        if not os.path.isdir(os.path.dirname(path)):
+            os.makedirs(os.path.dirname(path))
+        with open(path, "w") as handle:
+            handle.write("x = 1\n")
+        return path
+
+    def test_the_scripts_of_the_components_folder(self):
+        path = self.write("components", "Lizard_A.py")
+        self.write("components", "_private.py")
+        self.write("setup.py")   # next to the folder: not a script of this source
+        self.assertEqual({"Lizard_A": path}, UPDATER.findScripts(self.folder, []))
+
+    def test_a_flat_folder(self):
+        path = self.write("Lizard_A.py")
+        self.assertEqual({"Lizard_A": path}, UPDATER.findScripts(self.folder, []))
+
+    def test_an_empty_components_folder_does_not_hide_a_flat_folder(self):
+        os.makedirs(os.path.join(self.folder, "components"))
+        path = self.write("Lizard_A.py")
+        self.assertEqual({"Lizard_A": path}, UPDATER.findScripts(self.folder, []))
+
+    def test_no_error_is_logged_without_a_components_folder(self):
+        self.write("Lizard_A.py")
+        log = []
+        UPDATER.findScripts(self.folder, log)
+        self.assertEqual([], log)
+
+
+class ComponentsFolderSyncTests(unittest.TestCase):
+    SCRIPTS = {"Lizard_A.py": "a = 1\r\n", "Lizard_B.py": "b = 2\n", "Lizard_Updater.py": "u = 1\n"}
+
+    def setUp(self):
+        self.root = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, self.root)
+        self.folder = os.path.join(self.root, "o_r_main")
+        self.nested = dict(("components/" + name, text) for name, text in self.SCRIPTS.items())
+        self.use(self.nested, 2)
+        sleeper = mock.patch("time.sleep")
+        sleeper.start()
+        self.addCleanup(sleeper.stop)
+
+    def use(self, scripts, fmt):
+        self.github = FakeGitHub(scripts)
+        self.github.manifest_override = manifest_text(scripts, fmt=fmt)
+
+    def sync(self):
+        log, errors = [], []
+        info = {"kind": "github", "owner": "o", "repo": "r", "ref": "main"}
+        return UPDATER.syncGitHubSource(info, log, errors, fetch=self.github, root=self.root), log, errors
+
+    def tree(self):
+        found = []
+        for parent, _, names in os.walk(self.folder):
+            for name in names:
+                found.append(os.path.relpath(os.path.join(parent, name), self.folder).replace(os.sep, "/"))
+        return sorted(found)
+
+    def test_first_sync_writes_into_the_components_folder(self):
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual(self.folder, folder)
+        self.assertEqual(["components/Lizard_A.py", "components/Lizard_B.py", "components/Lizard_Updater.py",
+                          "trnlizard_manifest.json"], self.tree())
+        with open(os.path.join(folder, "components", "Lizard_A.py"), "rb") as handle:
+            self.assertEqual(b"a = 1\r\n", handle.read())   # written as downloaded
+        self.assertEqual(["Lizard_A", "Lizard_B", "Lizard_Updater"], sorted(UPDATER.findScripts(folder, [])))
+        self.assertIn("Downloaded: 3, unchanged: 0, removed: 0", log)
+
+    def test_the_download_url_has_the_folder(self):
+        self.sync()
+        urls = [url for url, _ in self.github.calls]
+        self.assertIn("https://raw.githubusercontent.com/o/r/{0}/components/Lizard_A.py".format(SHA), urls)
+
+    def test_second_sync_downloads_nothing(self):
+        self.sync()
+        self.github.calls = []
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual([], self.github.downloads())
+        self.assertIn("Downloaded: 0, unchanged: 3, removed: 0", log)
+
+    def test_a_flat_cache_moves_into_the_components_folder(self):
+        self.use(self.SCRIPTS, 1)
+        self.sync()
+        self.assertEqual(["Lizard_A.py", "Lizard_B.py", "Lizard_Updater.py", "trnlizard_manifest.json"], self.tree())
+        self.use(self.nested, 2)
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual(["components/Lizard_A.py", "components/Lizard_B.py", "components/Lizard_Updater.py",
+                          "trnlizard_manifest.json"], self.tree())
+        self.assertIn("Downloaded: 3, unchanged: 0, removed: 3", log)
+        self.assertEqual(os.path.join(folder, "components", "Lizard_A.py"), UPDATER.findScripts(folder, [])["Lizard_A"])
+
+    def test_going_back_to_a_flat_ref_of_the_same_cache_folder(self):
+        self.sync()
+        self.use(self.SCRIPTS, 1)
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual(["Lizard_A.py", "Lizard_B.py", "Lizard_Updater.py", "trnlizard_manifest.json"], self.tree())
+        self.assertEqual(os.path.join(folder, "Lizard_A.py"), UPDATER.findScripts(folder, [])["Lizard_A"])
+
+    def test_changed_and_removed_scripts_of_the_components_folder(self):
+        self.sync()
+        changed = dict(self.nested, **{"components/Lizard_A.py": "a = 2\n"})
+        del changed["components/Lizard_B.py"]
+        self.use(changed, 2)
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual(["Lizard_A.py"], self.github.downloads())
+        self.assertEqual(["components/Lizard_A.py", "components/Lizard_Updater.py", "trnlizard_manifest.json"], self.tree())
+        self.assertIn("Removed from the cache: components/Lizard_B.py", log)
+
+    def test_complete_cache_is_used_when_github_fails(self):
+        self.sync()
+        self.github.fail("trnlizard_manifest.json", 500, 500, 500, 500)
+        folder, log, errors = self.sync()
+        self.assertEqual([], errors)
+        self.assertEqual(self.folder, folder)
+        self.assertTrue(any("Using the cached copy" in line for line in log), log)
+
+    def test_incomplete_cache_is_not_used_when_github_fails(self):
+        self.sync()
+        os.remove(os.path.join(self.folder, "components", "Lizard_B.py"))
+        self.github.fail("trnlizard_manifest.json", 500, 500, 500, 500)
+        folder, log, errors = self.sync()
+        self.assertIsNone(folder)
+        self.assertTrue(any("No complete cached copy" in line for line in errors), errors)
 
 
 if __name__ == "__main__":
