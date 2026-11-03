@@ -27,3 +27,14 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   errors. `Lizard_Thermal_Airnode` and `Lizard_Multizone` show the same errors at once. Warnings and locked components do not count.
 - **Existing definitions:** fix the red components. An error that is not relevant has to go as well, for example by removing that component from
   the path to `Lizard_System`.
+
+<a id="com-04"></a>
+## COM-04: Gain inputs of `Lizard_Zone_Regime` take lists
+
+- **Before:** `PeopleGain`, `EquipmentGain` and `LightGain` had item access. A flat list of several gains in one of them ran the component once per gain,
+  which gave several regimes and so several airnodes.
+- **Now:** they have list access. A flat list is one regime with several gains of that kind, each with its own power and schedule. Data in several branches
+  still gives one regime per branch.
+- **Existing definitions:** `Lizard_Updater` sets the list access on these inputs and keeps the wires. With one gain per input nothing changes. A definition
+  that used a flat list to get one airnode per gain has to put each gain in its own branch, for example with Graft; otherwise it gets one airnode, without an
+  error. With several people gains, the CO2 per person of TRNFlow stops `Lizard_System`, since TRNFlow takes one CO2 source schedule.

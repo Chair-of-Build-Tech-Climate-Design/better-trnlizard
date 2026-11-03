@@ -9,16 +9,16 @@ See the file "License.txt" for additional terms and conditions.
 -
 
 Args:
-    PeopleGain (object): Link people gain for zone
-        Access: item
+    PeopleGain (object): Link people gains for zone; several gains each keep their own power and schedule
+        Access: list
         Required: True
-    EquipmentGain (object): Link computer gain for zone
-        Access: item
+    EquipmentGain (object): Link computer gains for zone; several gains each keep their own power and schedule
+        Access: list
         Required: True
-    LightGain (object): Link lighting gain for zone
-        Access: item
+    LightGain (object): Link lighting gains for zone; several gains each keep their own power and schedule
+        Access: list
         Required: True
-    MiscGain (object): Link other gain for zone
+    MiscGain (object): Link other gains for zone; several gains each keep their own power and schedule
         Access: list
         Required: True
     HamtGain (object): Script variable Zone Regime

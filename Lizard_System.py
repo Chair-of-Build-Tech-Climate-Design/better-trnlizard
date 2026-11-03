@@ -574,6 +574,50 @@ def has_hamt_surfaces(airnode):
             return True
     return False
 # ---- HAMT gain of a zone (end)
+# ---- Several gains of one kind in a zone
+def gainInstances(airnode):
+    """The gains of a zone, each with what tells it from the others of its kind: (gain, ''), (gain, '2'), ... It goes behind the name of the
+    gain and of its power variable, so one gain of a kind is written as before: HUMID_A1 and Q_ADDON_KJ_A1, then HUMID2_A1 and Q_ADDON_KJ2_A1."""
+    instances = []
+    counts = {}
+    for gain_item in airnode.Gain:
+        counts[gain_item.Name] = counts.get(gain_item.Name, 0) + 1
+        instances.append((gain_item, str(counts[gain_item.Name]) if counts[gain_item.Name] > 1 else ''))
+    return instances
+def gainPowerEquation(gain_item, suffix, airnode):
+    """The deck equation of the power of a further gain of a kind, in the form the template has for the first one. None for another kind."""
+    if gain_item.Personsgain == 1:
+        power = round((gain_item.Conv2 + gain_item.Rad2)/airnode.Areaperperson,2)
+        return 'Q_pers_kJ%s_%s = ( %s * (1 - lt(Tamb_m24,%s ) * %s)) * 3.6    !internal heat gain from persons'%(suffix, airnode.Name, power, gain_item.Tamb24hon, float(gain_item.Winterred) / 100)
+    if gain_item.Computergain == 1:
+        power = float(gain_item.Specificpower) / float(airnode.Areaperperson)
+        return 'Q_comp_kJ%s_%s = ( %s * (1 - lt(Tamb_m24,%s ) * %s)) * 3.6    !internal heat gain from equipment'%(suffix, airnode.Name, power, gain_item.Tamb24hon, float(gain_item.Winterred) / 100)
+    if gain_item.Lightinggain == 1:
+        return 'Q_light_kJ%s_%s = %s * 3.6    !internal heat gain from artificial lighting'%(suffix, airnode.Name, gain_item.Specificpower)
+    if gain_item.Othergain == 1:
+        return 'Q_addon_KJ%s_%s = (0+%s * (max(not(%s), lt(Tamb_m24,12)))) * 3.6    !internal heat gain from miscellaneous equipment'%(suffix, airnode.Name, gain_item.Specificpower, gain_item.Heatbymisc)
+    return None
+def peopleSchedule(gain_item):
+    """The schedule of a people gain in the deck, with its annual schedule."""
+    schedule = 'SCHED_' + str(gain_item.Schedule)
+    if gain_item.Annual != None and gain_item.Annual != '':
+        schedule += '*SCHED_' + str(gain_item.Annual)
+    return schedule
+def peopleSchedules(first_schedule, first_co2, more):
+    """With further people gains: the occupation schedule of the zone, and the CO2 production [l/h per person of the zone] as a schedule."""
+    occupation = first_schedule
+    co2 = '%s*%s'%(float(first_co2 or 0), first_schedule)
+    for gain_item in more:
+        occupation += ' + ' + peopleSchedule(gain_item)
+        co2 += ' + %s*%s'%(float(gain_item.CO2 or 0), peopleSchedule(gain_item))
+    return '(' + occupation + ')', '(' + co2 + ')'
+def countPeopleGains(airnode):
+    count = 0
+    for gain_item in airnode.Gain:
+        if gain_item.Personsgain == 1:
+            count += 1
+    return count
+# ---- Several gains of one kind in a zone (end)
 # ---- TRNFlow helpers (begin)
 # Parameters 4 to 14 of the TRNFlow version of Type 56 and the CRACK link type of the airflow network.
 def trnflow_parameters(altitude):
@@ -821,7 +865,7 @@ def printbuitoppart(dataset):
         if has_hamt_surfaces(item) and ('HAMT_Gain_' + item.Name) not in existing_gain_names:
             lines.append('GAIN HAMT_Gain_{0}\r\n CONVECTIVE=0 : RADIATIVE=0 : HUMIDITY=INPUT 1*HamtHumidityGain_KgPerHr_{0} : ELPOWERFRAC=0 :  ABSOLUTE : CATEGORY=MISCELLANEOUS\r\n'.format(item.Name))
     for item in dataset:
-        for item2 in item.Gain:
+        for item2, suffix in gainInstances(item):
             if item2.Userdefined == 1:
                 if 'THB' in item2.Name:
                     dummy = item2.Name
@@ -832,9 +876,9 @@ def printbuitoppart(dataset):
                     dummy = item2.Name
                     dummyrad = item2.Radiative
                     dummycon = item2.Convective
-                    item2.Name = dummy + '_' + item.Name
-                    item2.Radiative = dummyrad + '_' + item.Name
-                    item2.Convective = dummycon + '_' + item.Name
+                    item2.Name = dummy + suffix + '_' + item.Name
+                    item2.Radiative = dummyrad + suffix + '_' + item.Name
+                    item2.Convective = dummycon + suffix + '_' + item.Name
                     item2.Humidity   = item2.Hum2
                     lines.append(printsingledata(item2,'Gain'))
                     item2.Name = dummy.replace('_' + item.Name,'')
@@ -850,9 +894,9 @@ def printbuitoppart(dataset):
                 dummy = item2.Name
                 dummyrad = item2.Radiative
                 dummycon = item2.Convective
-                item2.Name = dummy + '_' + item.Name
-                item2.Radiative = dummyrad + '_' + item.Name
-                item2.Convective = dummycon + '_' + item.Name
+                item2.Name = dummy + suffix + '_' + item.Name
+                item2.Radiative = dummyrad + suffix + '_' + item.Name
+                item2.Convective = dummycon + suffix + '_' + item.Name
                 # REGIME SCALE applies the people schedule to all gain channels, including humidity.
                 item2.Humidity   = '{0}'.format(item2.Hum2/item.Areaperperson)
                 lines.append(printsingledata(item2,'Gain'))
@@ -863,9 +907,9 @@ def printbuitoppart(dataset):
                 dummy = item2.Name
                 dummyrad = item2.Radiative
                 dummycon = item2.Convective
-                item2.Name = dummy + '_' + item.Name
-                item2.Radiative = dummyrad + '_' + item.Name
-                item2.Convective = dummycon + '_' + item.Name
+                item2.Name = dummy + suffix + '_' + item.Name
+                item2.Radiative = dummyrad + suffix + '_' + item.Name
+                item2.Convective = dummycon + suffix + '_' + item.Name
                 lines.append(printsingledata(item2,'Gain'))
                 item2.Name = dummy.replace('_' + item.Name,'')
                 item2.Radiative = dummyrad.replace('_' + item.Name,'')
@@ -874,9 +918,9 @@ def printbuitoppart(dataset):
                 dummy = item2.Name
                 dummyrad = item2.Radiative
                 dummycon = item2.Convective
-                item2.Name = dummy + '_' + item.Name
-                item2.Radiative = dummyrad + '_' + item.Name
-                item2.Convective = dummycon + '_' + item.Name
+                item2.Name = dummy + suffix + '_' + item.Name
+                item2.Radiative = dummyrad + suffix + '_' + item.Name
+                item2.Convective = dummycon + suffix + '_' + item.Name
                 lines.append(printsingledata(item2,'Gain'))
                 item2.Name = dummy.replace('_' + item.Name,'')
                 item2.Radiative = dummyrad.replace('_' + item.Name,'')
@@ -1425,9 +1469,9 @@ def printbuiZonepart(dataset):
         Airnodes.Manualorientation = manual_ori
         # Zone Regime definition starting from here
         regimelines = ''
-        for gain_item in Airnodes.Gain:
+        for gain_item, suffix in gainInstances(Airnodes):
             if gain_item.Name:
-                dummy = gain_item.Name
+                dummy = gain_item.Name + suffix
                 scale1 = 1
                 if gain_item.Schedule != '':
                     if "INPUT" in gain_item.Schedule:
@@ -1771,6 +1815,9 @@ def printbuibotpart(dataset):
                 linkoutput = {}
                 if Airnode.Trnflow.__class__.__name__ == 'THERMALZONES':
                     if Airnode.Trnflow.Co2perperson > 0:
+                        if countPeopleGains(Airnode) > 1:
+                            ghenv.Component.AddRuntimeMessage(err, "Airnode %s: TRNFlow takes one CO2 source schedule, so its CO2 per person does not work with several people gains. Connect one PeopleGain, or set the CO2 per person of TRNFlow to 0."%Airnode.Name)
+                            sys.exit()
                         for gitem in Airnode.Gain:
                             if gitem.Personsgain == 1:
                                 Airnode.Trnflow.Source = 'SCHEDULE %s*%s'%(Airnode.Floorarea / Airnode.Areaperperson * Airnode.Trnflow.Co2perperson, gitem.Schedule)
@@ -2747,7 +2794,10 @@ def writereport(zone_item, printtype):
             for item in wallproperties:
                 pass
         if zone_item.Airnode.Gain:
-            for gain_item in zone_item.Airnode.Gain:
+            for gain_item, suffix in gainInstances(zone_item.Airnode):
+                if suffix:
+                    print 'NOTE: the report shows the first gain of a kind, not gain %s of airnode %s'%(gain_item.Name + suffix, zone_item.Airnode.Name)
+                    continue
                 if gain_item.Lightinggain == 1:
                     print_datasheet(TemplateReport.Artificial_lighting, zone_item, outputfile)
                     variables['ligh']   = '|lig|'
@@ -3927,6 +3977,7 @@ def getzonevariables(zone_item):
     variables['winterred_comp']   = 0
     variables['winterred_pers']   = 0
     variables['gainredon']        = 12
+    variables['compredon']        = 12
     variables['compheat']         = 0
     variables['lightheat']        = 0
     variables['mischeat']        = 0
@@ -4385,8 +4436,21 @@ def getzonevariables(zone_item):
             variables['shadedef'] += 'DLSHADE_{0} = {1}\n'.format(zone_item.Airnode.Name,dummy)
     #print variables['shadedef']
     #gains
+    moregainpower = []
+    morepeople = []
     if zone_item.Airnode.Gain:
-        for gain_item in zone_item.Airnode.Gain:
+        for gain_item, suffix in gainInstances(zone_item.Airnode):
+            if suffix:
+                # a further gain of a kind has its own equation; the variables below hold the first one
+                equation = gainPowerEquation(gain_item, suffix, zone_item.Airnode)
+                if equation:
+                    moregainpower.append(equation)
+                schedulescoll.append('SCHED_' + str(gain_item.Schedule))
+                if gain_item.Annual != None and gain_item.Annual != '':
+                    schedulescoll.append('SCHED_' + str(gain_item.Annual))
+                if gain_item.Personsgain == 1:
+                    morepeople.append(gain_item)
+                continue
             if gain_item.Personsgain == 1:
                 variables['sched_occ']        = 'SCHED_' + str(gain_item.Schedule)
                 schedulescoll.append(variables['sched_occ'])
@@ -4439,6 +4503,7 @@ def getzonevariables(zone_item):
                 variables['power_comp_tot']   = gain_item.Specificpower
                 variables['compheat']         = gain_item.Heatbycomp
                 variables['winterred_comp']   = str(float(gain_item.Winterred) / 100)
+                variables['compredon']        = str(gain_item.Tamb24hon)
             if gain_item.Othergain == 1:
                 if 'THB' in gain_item.Name:
                     area_dummy = 0
@@ -4454,6 +4519,15 @@ def getzonevariables(zone_item):
                     variables['mischeat']         = gain_item.Heatbymisc
                     schedulescoll.append(variables['sched_og'])
                     variables['power_og']         = gain_item.Specificpower
+    variables['ngainpower']    = 4 + len(moregainpower)
+    variables['moregainpower'] = ''
+    for equation in moregainpower:
+        variables['moregainpower'] += '\n' + equation
+    variables['sched_co2']     = variables['sched_occ']
+    if morepeople:
+        variables['sched_occ'], variables['sched_co2'] = peopleSchedules(variables['sched_occ'], variables['co2ppers'], morepeople)
+        if len(zone) <= 1:
+            variables['co2ppers'] = 1  # the CO2 production per person is in sched_co2
     #co2 coupling
     variables['couplco2']       = 0
     if zone[-1].Coupling:

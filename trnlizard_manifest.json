@@ -1,6 +1,6 @@
 {
   "format": 1,
-  "generated": "2026-11-03T15:09:34Z",
+  "generated": "2026-11-03T18:19:11Z",
   "files": {
     "Lizard_Active_CC_Layer.py": {
       "sha256": "a386fccd889ae6cca5fc671955595cb1bf853681c9ef0c2f8e0f2c940f4976fd",
@@ -67,8 +67,8 @@
       "size": 5137
     },
     "Lizard_DCK_Template.py": {
-      "sha256": "f28f68f50958bc96afe8f3c99d2002e2e5f36bbc0bec0a64a21a62fd5d117af1",
-      "size": 69774
+      "sha256": "1e3c04c5da724a3a00c7c41d7d64774f7251bcb1b5e715a3cdf4d1b972d46636",
+      "size": 69798
     },
     "Lizard_DHW.py": {
       "sha256": "8f27a7bb621ecbb533c87cfea1720cdac3edd82473e7f049b2f3d81fa26ff417",
@@ -219,12 +219,12 @@
       "size": 2133
     },
     "Lizard_System.py": {
-      "sha256": "c2353a2422775c8ca5b5f6a98f0754195b1cf8b4aa28fc37b6a82d93fd02f7c6",
-      "size": 380929
+      "sha256": "812d844b203161315b161803d98186b8dfa41ee09e9385c420e23254afdf760b",
+      "size": 385847
     },
     "Lizard_Thermal_Airnode.py": {
-      "sha256": "861ff15221369b08ac7ff5257688b101ca158bb6f1525b1883dfd032022208ac",
-      "size": 17769
+      "sha256": "82ced9dd3524044b60e4725949d021888d4bfc80fcbf9be7a3eefb5d17463340",
+      "size": 17854
     },
     "Lizard_Thermal_Bridge_Gain.py": {
       "sha256": "11dd9df85b4897f1138b5f34ace678fc017c8db1f33fbbb4838838b798741113",
@@ -235,8 +235,8 @@
       "size": 10265
     },
     "Lizard_Updater.py": {
-      "sha256": "42d55bc62d38de5d425d7c6fa83aed960a84f5c1f18cb74c23548ecbad111030",
-      "size": 111356
+      "sha256": "9bd7aedf9d368f263e19765036cc871cd3f21ae09a8c256d34b444c894cc3b7d",
+      "size": 112515
     },
     "Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",
@@ -267,8 +267,8 @@
       "size": 34040
     },
     "Lizard_Zone_Regime.py": {
-      "sha256": "7ea5c142e39333d048e45550c50b3507657ed620ef438284b7029cd47f957ecd",
-      "size": 4531
+      "sha256": "1dabc3bdefb9dbc7216d8fc070abba1937983b5078b9a73d0edb63bca2d4a27d",
+      "size": 4751
     },
     "Lizard_b18_to_Rhino.py": {
       "sha256": "4a13f990e6bfa625b339c1ce37cbc39cc52af3d874548a04e48d9823554d3ef5",

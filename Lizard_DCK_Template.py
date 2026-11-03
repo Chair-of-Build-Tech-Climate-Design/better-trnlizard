@@ -209,7 +209,7 @@ X_@aname                 = ABSHUM_@aname * 1000                                 
 Rh_@aname                = RELHUM_@aname                                                         !relative humidity of airnode
 CO2l_@aname              = [@zunit01,8]                                                          !CO2 level in airnode from last time step
 CO2_ppers_@aname         = @co2ppers                                                             !CO2 production per person in l/h
-Gpers_@aname             = CO2_ppers_@aname * Area_@aname / @appers * @sched_occ * 1 / Vol_@aname / 1000 * 1000000 !CO2 calculation part 1
+Gpers_@aname             = CO2_ppers_@aname * Area_@aname / @appers * @sched_co2 * 1 / Vol_@aname / 1000 * 1000000 !CO2 calculation part 1
 Gcoup_@aname             = @couplco2
 Gtot_@aname              = Gpers_@aname + Gcoup_@aname
 CO2_@aname               = (CO2l_@aname - CO2_amb - Gtot_@aname / (ACR_tot_@aname+0.0000001)) * exp(-ACR_tot_@aname*STEP) + CO2_amb + Gtot_@aname / (ACR_tot_@aname+0.0000001)  !CO2 calculation equation
@@ -415,11 +415,11 @@ Khours_@aname     = Klhours_@aname + dK_@aname * STEP              !kelvin hours
 *------------------------------------------------------------------------------
 * EQUATIONS "Zone Specific Power Inputs"
 * 
-EQUATIONS 4
+EQUATIONS @ngainpower
 Q_pers_kJ_@aname    = ( @power_pers * (1 - lt(Tamb_m24,@gainredon ) * @winterred_pers)) * 3.6    !internal heat gain from persons
-Q_comp_kJ_@aname    = ( @power_comp * (1 - lt(Tamb_m24,@gainredon ) * @winterred_comp)) * 3.6    !internal heat gain from equipment
+Q_comp_kJ_@aname    = ( @power_comp * (1 - lt(Tamb_m24,@compredon ) * @winterred_comp)) * 3.6    !internal heat gain from equipment
 Q_addon_KJ_@aname   =((@poweraddon * (max(not(@mischeat), lt(Tamb_m24,12)))) * (1 - lt(Tamb_m24,@gainredon ) * 0)) * 3.6                !internal heat gain from miscellaneous equipment
-Q_light_kJ_@aname  =  @power_light * 3.6                                                         !internal heat gain from artificial lighting
+Q_light_kJ_@aname  =  @power_light * 3.6                                                         !internal heat gain from artificial lighting@moregainpower
 *$UNIT_NAME Specific Power Inputs
 *$LAYER Main
 *$POSITION @uposzunit28

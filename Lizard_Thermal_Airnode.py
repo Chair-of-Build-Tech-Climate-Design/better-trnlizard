@@ -145,6 +145,17 @@ if len(newparo)>0:
     addPar("OUT",newparo)
 ghenv.Component.Params.OnParametersChanged()
 #---- initial definition end
+def regimeGains(value):
+    """The gains in one input of a regime: nothing, one gain, or a list, which holds None for a gain component that is switched off."""
+    if value is None or value == "":
+        return []
+    if not hasattr(value, '__iter__') or isinstance(value, str):
+        return [value]
+    gains = []
+    for gain in value:
+        if gain is not None and gain != "":
+            gains.append(gain)
+    return gains
 w = gh.Kernel.GH_RuntimeMessageLevel.Warning
 err = gh.Kernel.GH_RuntimeMessageLevel.Error
 warn = '*** Warning *** '
@@ -283,29 +294,19 @@ if len(SurfaceInfo) > 0:
         Airnode.Totfloorarea = AreaTotalLoadCalc
     #if Airnode.Totfloorarea == 0:
     #    Airnode.Totfloorarea = Airnode.Refarea
-    if Regime and Regime.Persgain != "":
-        Airnode.Gain.append(Regime.Persgain)
-    if Regime and Regime.Compgain  != "":
-        Airnode.Gain.append(Regime.Compgain)
-    if Regime and Regime.Lightgain != "":
-        Airnode.Gain.append(Regime.Lightgain)
-        if Regime.Lightgain.Dctrl == 'DLC':
-            if DaylightCtrl:
-                pass
-            else:
-                print 'Please link daylight ctrl component to use the feature of controling the artificial lighting!'
-                ghenv.Component.AddRuntimeMessage(err, "Please link daylight ctrl component to use the feature of controling the artificial lighting!")
-                sys.exit()
-    if Regime and len(Regime.Othergain) != 0:
-        other_gains = Regime.Othergain
-        if isinstance(other_gains, str):
-            other_gains = [other_gains]
-        for gain in other_gains:
-            if isinstance(other_gains, str):
-                if len(gain)>0:
-                    Airnode.Gain.append(gain)
-            else:
-                Airnode.Gain.append(gain)
+    if Regime:
+        Airnode.Gain.extend(regimeGains(Regime.Persgain))
+        Airnode.Gain.extend(regimeGains(Regime.Compgain))
+        for gain in regimeGains(Regime.Lightgain):
+            Airnode.Gain.append(gain)
+            if gain.Dctrl == 'DLC':
+                if DaylightCtrl:
+                    pass
+                else:
+                    print 'Please link daylight ctrl component to use the feature of controling the artificial lighting!'
+                    ghenv.Component.AddRuntimeMessage(err, "Please link daylight ctrl component to use the feature of controling the artificial lighting!")
+                    sys.exit()
+        Airnode.Gain.extend(regimeGains(Regime.Othergain))
     if Regime and Regime.Thbgain   != "":
         Airnode.Gain.append(Regime.Thbgain)
     if Regime and Regime.Udefgain != "":

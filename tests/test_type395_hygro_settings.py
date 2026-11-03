@@ -413,7 +413,7 @@ class HamtZoneAggregationTests(unittest.TestCase):
         execute_source_block(
             source,
             "    # Auto-define HAMT gains for zones with EXTCALEXT/EXTCALBND surfaces (multi-HAMT support)",
-            "    for item in dataset:\n        for item2 in item.Gain:",
+            "    for item in dataset:\n        for item2, suffix in gainInstances(item):",
             namespace,
         )
         gains = re.findall(r"GAIN (HAMT_Gain_\w+)\r\n.*HUMIDITY=INPUT 1\*(\w+)", "".join(namespace["lines"]))

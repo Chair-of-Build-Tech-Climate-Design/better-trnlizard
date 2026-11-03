@@ -32,9 +32,12 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [COM-01](components.md#com-01) | `checkAdjacent` removed from the shared functions | yes | no | `a93769f` |
 | [COM-02](components.md#com-02) | Log Check lost the input `start_time` | no | no | `3e05d53` |
 | [COM-03](components.md#com-03) | A component in error upstream stops `Lizard_System` | yes | no | `a8af542` |
+| [COM-04](components.md#com-04) | `PeopleGain`, `EquipmentGain` and `LightGain` of `Lizard_Zone_Regime` take lists | no | yes | not committed yet |
 | [RES-01](results.md#res-01) | Mirror `BOUNDARY` walls get `HBACK` 29.51 through a `_MIRROR` wall type | no | yes | `733df04` |
 | [RES-02](results.md#res-02) | HAMT coupling of Type 395 changed on both sides | no | yes | `916c405`, `d2a3ce8` |
 | [RES-03](results.md#res-03) | One HAMT pseudo-wall type per construction | no | yes | `c9862bf` |
+| [RES-04](results.md#res-04) | Several `MiscGain` get their own name, power and schedule | no | yes | not committed yet |
+| [RES-05](results.md#res-05) | The equipment reduction uses the threshold of the equipment gain | no | yes | not committed yet |
 
 ## Adding an entry
 
