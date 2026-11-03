@@ -2141,7 +2141,7 @@ def getSurfaceVertices(refnormalvector,surface):
     for point in polyline:
         sort_vertices.append(point)
     new_srf = rc.Geometry.Brep.CreatePlanarBreps(polyline.ToNurbsCurve())[0]
-    new_normal = surfaceNormal(new_srf)
+    new_normal = new_srf.Faces[0].NormalAt(0,0)
     vector_deviation = 1-rc.Geometry.Vector3d.Multiply(new_normal,ori_normal)
     sort_vertices.pop()
     if vector_deviation <= abs_tolerance:
@@ -2192,7 +2192,7 @@ def getSurfaceVertices(refnormalvector,surface):
     #        cleaned_vertices.append(item)
     sort_vertices = refined_vertices
     new_srf = rc.Geometry.Brep.CreatePlanarBreps(polyline.ToNurbsCurve(),abs_tolerance)[0]
-    new_normal = new_srf.Faces[0].NormalAt(0,0)
+    new_normal = surfaceNormal(new_srf)
     vector_deviation = 1-rc.Geometry.Vector3d.Multiply(new_normal,refnormalvector)
     if sort_vertices[-1] == sort_vertices[0]:
         sort_vertices.pop()

@@ -443,8 +443,9 @@ class SurfaceNormalTests(unittest.TestCase):
         self.assertEqual([(10.5, 20.5)], self.face.surface.asked)
 
     def test_vertices_compare_with_the_same_normal(self):
-        first = self.text.index("def getSurfaceVertices(refnormalvector,surface):")
-        self.assertIn("new_normal = surfaceNormal(new_srf)", self.text[first:self.text.index('"""', first)])
+        # the first definition of the name is an old copy inside a string; Python runs the last one
+        first = self.text.rindex("def getSurfaceVertices(refnormalvector,surface):")
+        self.assertIn("new_normal = surfaceNormal(new_srf)", self.text[first:self.text.index("return vertices", first)])
 
 
 class FailureTests(unittest.TestCase):
