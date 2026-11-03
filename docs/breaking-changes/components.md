@@ -38,3 +38,12 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
 - **Existing definitions:** `Lizard_Updater` sets the list access on these inputs and keeps the wires. With one gain per input nothing changes. A definition
   that used a flat list to get one airnode per gain has to put each gain in its own branch, for example with Graft; otherwise it gets one airnode, without an
   error. With several people gains, the CO2 per person of TRNFlow stops `Lizard_System`, since TRNFlow takes one CO2 source schedule.
+
+<a id="com-05"></a>
+## COM-05: The installer of a release stays at its release
+
+- **Before:** the installer had no source, so `Lizard_Updater` read the latest `main` of the default repository, whatever release the file came from.
+- **Now:** the installer attached to a release has a panel named `source <release>` at the input `source`, with the commit of that release. The instructions
+  panel is named `TRNLizard <release>`. The same installer always installs the same scripts.
+- **Existing definitions:** nothing, this is only the installer file. To install newer scripts, take the installer of a newer release, or replace the panel by
+  a GitHub URL or a folder. Components already in a definition follow the `source` of their own `Lizard_Updater`.

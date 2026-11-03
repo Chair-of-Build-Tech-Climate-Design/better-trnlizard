@@ -15,7 +15,8 @@
 ## GEO-02: Reversed normals
 
 - **Before:** an error for the surface.
-- **Now:** corrected by `Lizard_Thermal_Airnode` when the surfaces close a volume, with a remark and the surfaces at `OriToCheck`.
+- **Now:** corrected by `Lizard_Thermal_Airnode` when the surfaces close a volume, with a remark and the surfaces at `OriToCheck`. The normal is
+  read from the underlying surface and `OrientationIsReversed` is applied once (since `fd12ff4`), so a correct face of a solid is not flipped.
 - **Existing definitions:** nothing.
 - **Results:** a definition that was stopped before now runs.
 

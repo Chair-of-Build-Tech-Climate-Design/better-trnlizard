@@ -22,7 +22,10 @@ jobs:
           if [ -f installer/TRNLizard_Installer.ghx ]; then echo "found=true" >> "$GITHUB_OUTPUT"; else echo "::warning::installer/TRNLizard_Installer.ghx missing: make it once with tools/make_installer.py in Grasshopper"; fi
       - name: Build installer
         if: steps.template.outputs.found == 'true'
-        run: python tools/build_installer.py --out dist/TRNLizard_Installer.ghx
+        env:
+          INSTALLER_SOURCE: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+          INSTALLER_RELEASE: ${{ github.event.release.tag_name || github.ref_name }}
+        run: python tools/build_installer.py --out dist/TRNLizard_Installer.ghx --source "$INSTALLER_SOURCE" --release "$INSTALLER_RELEASE"
       - name: Attach to the release
         if: steps.template.outputs.found == 'true' && github.event_name == 'release'
         env:
