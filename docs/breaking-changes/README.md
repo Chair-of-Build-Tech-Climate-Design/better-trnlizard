@@ -22,7 +22,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [BC-01](boundary-conditions.md#bc-01) | `AUTOMATIC` equals an empty category | no | yes | `923d514` |
 | [BC-02](boundary-conditions.md#bc-02) | Unmatched `ADJACENT` is an error, not a mirrored `BOUNDARY` | yes | no | `a93769f` |
 | [BC-03](boundary-conditions.md#bc-03) | Empty settings no longer mean `BOUNDARY` with `TAIR_@ANAME` | yes | yes | `da8d4f4` |
-| [BC-04](boundary-conditions.md#bc-04) | Unmatched surfaces without a category follow `FallbackBoundary` and `GroundLevel`; new category `GROUND` | yes | yes | not committed yet |
+| [BC-04](boundary-conditions.md#bc-04) | Unmatched surfaces without a category follow `FallbackBoundary` and `GroundLevel`; new category `GROUND` | yes | yes | `d23df35` |
 | [CON-01](constructions.md#con-01) | No default construction `IFL_L`; a surface without one is an error | yes | no | `da8d4f4` |
 | [CON-02](constructions.md#con-02) | Different constructions on one pair are an error unless mirrored | yes | no | `a93769f` |
 | [CON-03](constructions.md#con-03) | FRONT without a construction cannot follow a non-symmetric BACK | yes | no | `923d514` |
