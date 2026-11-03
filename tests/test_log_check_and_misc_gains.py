@@ -58,7 +58,7 @@ class LogCheckTests(unittest.TestCase):
     def test_docstring_declares_only_output(self):
         inputs, outputs = load_updater().parseIONames(LOG_CHECK_SOURCE.read_text(encoding="utf-8-sig"))
 
-        self.assertEqual(["Variant", "start_time"], inputs)   # start_time is not used by the script (kept as it is)
+        self.assertEqual(["Variant"], inputs)
         self.assertEqual(["output"], outputs)
 
     def test_the_never_assigned_outputs_are_gone_from_the_script(self):
@@ -97,8 +97,9 @@ class LogCheckTests(unittest.TestCase):
         self.assertEqual("remove", plan["kind"])
         self.assertEqual(LOG_CHECK_OUTPUTS, plan["removedOutputs"])
         self.assertEqual(["output"], plan["addedOutputs"])
-        self.assertEqual([], plan["addedInputs"] + plan["removedInputs"])
-        # wired by name: Variant and start_time keep their sources; no output keeps a name, so no recipient moves
+        self.assertEqual([], plan["addedInputs"])
+        self.assertEqual(["start_time"], plan["removedInputs"])
+        # wired by name: Variant keeps its sources, the wire of start_time ends; no output keeps a name, so no recipient moves
         self.assertEqual([], updater.wiringPlan(LOG_CHECK_OUTPUTS, ["output"]))
 
     def test_the_copy_with_output_and_a_separator_output_is_replaced(self):
@@ -109,7 +110,7 @@ class LogCheckTests(unittest.TestCase):
 
         self.assertEqual("remove", plan["kind"])
         self.assertEqual([LOG_CHECK_SEPARATOR], plan["removedOutputs"])
-        self.assertEqual(["start_time"], plan["addedInputs"])
+        self.assertEqual([], plan["addedInputs"] + plan["removedInputs"])
         self.assertEqual([], plan["addedOutputs"])
         self.assertEqual([("output", 0, 0)], updater.wiringPlan(["output", LOG_CHECK_SEPARATOR], ["output"]))
 
