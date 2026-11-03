@@ -11,6 +11,8 @@ object.xml, icon.png; see tools/import_presets.py) in one file.
 The manifest lists every *.py of components/ that Lizard_Updater.findScripts picks up (not starting with '_'), named
 components/<script>.py, with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
 at the end, UTF-8) and the byte size of that normalized text, so CRLF checkouts and a BOM give the same manifest.
+The entry 'updater' names components/Lizard_Updater.py with its UPDATER_VERSION and hash; an older updater reads it before
+the format check and upgrades itself. Every change of that script must raise UPDATER_VERSION: otherwise nothing is written.
 Only 'files' is compared: 'generated' (UTC time of the last change of 'files') is kept when the files are unchanged,
 so writing the manifest again changes nothing.
 
@@ -24,12 +26,14 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import sys
 
 
 MANIFEST_NAME = "trnlizard_manifest.json"
 MANIFEST_FORMAT = 2
 SCRIPTS_FOLDER = "components"
+UPDATER_PATH = SCRIPTS_FOLDER + "/Lizard_Updater.py"
 ICONS_NAME = "trnlizard_icons.json"
 ICONS_FOLDER = "icons"
 ICONS_FORMAT = 1
@@ -112,6 +116,28 @@ def manifestFiles(root):
     return files
 
 
+def updaterEntry(root, files):
+    """{'path', 'version', 'sha256'} of the updater script of a repository, None when it has none; version None when the
+    script does not say it."""
+    if UPDATER_PATH not in files:
+        return None
+    with open(os.path.join(root, *UPDATER_PATH.split("/")), "rb") as handle:
+        match = re.search(r"^UPDATER_VERSION\s*=\s*(\d+)", handle.read().decode("utf-8-sig"), re.MULTILINE)
+    return {"path": UPDATER_PATH, "version": int(match.group(1)) if match else None, "sha256": files[UPDATER_PATH]["sha256"]}
+
+
+def updaterVersionProblem(entry, previous):
+    """Why a manifest with this updater entry must not be written after the previous manifest, None when it may."""
+    if entry is None:
+        return None
+    if entry["version"] is None:
+        return "{0} does not say its UPDATER_VERSION".format(UPDATER_PATH)
+    old = (previous or {}).get("updater")
+    if isinstance(old, dict) and old.get("sha256") != entry["sha256"] and entry["version"] <= (old.get("version") or 0):
+        return "{0} changed: raise its UPDATER_VERSION above {1}".format(UPDATER_PATH, old.get("version"))
+    return None
+
+
 def readManifest(path):
     """The manifest dict of a file, None when it is missing or no valid JSON."""
     try:
@@ -129,7 +155,12 @@ def buildManifest(root, previous=None, now=None):
     else:
         now = now or datetime.datetime.now(datetime.timezone.utc)
         generated = now.strftime("%Y-%m-%dT%H:%M:%SZ")
-    return {"format": MANIFEST_FORMAT, "generated": generated, "files": files}
+    manifest = {"format": MANIFEST_FORMAT, "generated": generated}
+    entry = updaterEntry(root, files)
+    if entry is not None:
+        manifest["updater"] = entry
+    manifest["files"] = files
+    return manifest
 
 
 def dumpManifest(manifest):
@@ -142,7 +173,10 @@ def staleFiles(root, manifest):
     listed = (manifest or {}).get("files") or {}
     if (manifest or {}).get("format") != MANIFEST_FORMAT:
         return sorted(set(current) | set(listed))
-    return sorted(name for name in set(current) | set(listed) if current.get(name) != listed.get(name))
+    stale = set(name for name in set(current) | set(listed) if current.get(name) != listed.get(name))
+    if (manifest or {}).get("updater") != updaterEntry(root, current):
+        stale.add(UPDATER_PATH)
+    return sorted(stale)
 
 
 def main(argv=None):
@@ -152,6 +186,11 @@ def main(argv=None):
     args = parser.parse_args(argv)
     path = os.path.join(args.root, MANIFEST_NAME)
     previous = readManifest(path)
+    if not args.check:
+        problem = updaterVersionProblem(updaterEntry(args.root, manifestFiles(args.root)), previous)
+        if problem:
+            print(problem)
+            return 1
     bundles = []
     for bundleName, bundleText in ((ICONS_NAME, buildIcons(args.root)), (PRESETS_NAME, buildPresets(args.root))):
         bundlePath = os.path.join(args.root, bundleName)

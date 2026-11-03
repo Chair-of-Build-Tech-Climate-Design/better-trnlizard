@@ -26,8 +26,15 @@ All document changes are made right after this solution, then the report of the 
 Every script is written with the hash of its text in the first line. A script that no longer matches that hash was
 changed by hand: it is left alone and listed under errors, unless force is True, which overwrites it (the changes are
 lost). A script without that line, e.g. from an older updater, cannot be checked: it is updated as usual.
-The updater never updates itself: when its own code differs from Lizard_Updater.py of the source, a warning is
-logged and listed under errors; paste the new code into this component by hand.
+With a GitHub source the updater upgrades itself: when trnlizard_manifest.json names a Lizard_Updater of a higher
+UPDATER_VERSION, its script is downloaded, checked against the manifest hash and compiled by the Python that runs this
+component (IronPython 2 in a GhPython or Rhino 8 Python 2 component, CPython 3 in a Rhino 8 Python 3 component). It then
+replaces the code of this component right after this solution, and the new code carries on with the update. When a check
+fails, the script was changed by hand (see force) or this component cannot be changed in place, it stays as it is, the
+reason is listed under errors and the update goes on: use the installer of the latest release to upgrade. A local folder
+never upgrades the updater, and a source with a lower version never downgrades it: when its own code differs from
+Lizard_Updater.py of a folder or of a source of the same version, a warning is logged and listed under errors; paste the
+new code into this component by hand.
 Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
 TRNLizard of the Grasshopper UserObjects folder (switch it off with makeUserObjects = False). Each UserObject is built
 from the script alone: a new IronPython script component with the params of the docstring and the Name, NickName,
@@ -105,6 +112,9 @@ SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
+UPDATER_VERSION = 1                                       # raise with every change of this script (tools/build_manifest.py insists)
+SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
+SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
 DEFAULT_REF = 'main'                                      # branch when a GitHub URL names none
 MANIFEST_NAME = 'trnlizard_manifest.json'                 # at the repository root, made by tools/build_manifest.py
@@ -187,6 +197,21 @@ def isChangedByHand(code):
     return stored is not None and stored != getHash(body)
 
 
+def parseUpdaterVersion(code):
+    """UPDATER_VERSION of a Lizard_Updater script, None for a script from before it had one."""
+    match = re.search(r'^UPDATER_VERSION\s*=\s*(\d+)', code or u'', re.MULTILINE)
+    return int(match.group(1)) if match else None
+
+
+def checkCodeSyntax(code):
+    """None when the Python that runs this updater compiles a script (nothing of it is run), else the error text."""
+    try:
+        compile(normalizeCode(code) + u'\n', UPDATER_SCRIPT + '.py', 'exec', 0, True)
+    except Exception as e:
+        return u'{0}'.format(e)
+    return None
+
+
 def changedByHandMessage(name):
     return (u'The script of {0} was changed by hand (it does not match the hash in its first line) and was not updated. '
             u'Set force to True to overwrite it: your changes are then lost.').format(name)
@@ -212,8 +237,11 @@ def selfCheckMessage(ownCode, fileCode, path):
     ownCode, fileCode = splitScriptHash(ownCode)[1], splitScriptHash(fileCode)[1]
     if getHash(ownCode) == getHash(fileCode):
         return None
-    return (u'This Lizard_Updater is outdated: it runs other code than {0} (first diff {1}). The updater never updates '
-            u'itself: replace this component by a new Lizard_Updater from the TRNLizard tab (its UserObject is rewritten '
+    ownVersion = parseUpdaterVersion(ownCode)
+    if ownVersion is not None and ownVersion > (parseUpdaterVersion(fileCode) or 0):
+        return None   # the source is older than this updater
+    return (u'This Lizard_Updater is outdated: it runs other code than {0} (first diff {1}). '
+            u'Replace this component by a new Lizard_Updater from the TRNLizard tab (its UserObject is rewritten '
             u'unless makeUserObjects is False; restart Grasshopper if the tab still shows the old one), or paste the '
             u'file into this component by hand.').format(path, firstDiff(ownCode, fileCode))
 
@@ -717,10 +745,8 @@ class NewerManifestError(ValueError):
 def tooOldForRepositoryMessage(owner, repo, version):
     """What to do when a GitHub repository has a manifest format this updater cannot read."""
     return (u'This Lizard_Updater is too old for the GitHub repository {0}/{1} and changed nothing (the repository uses '
-            u'manifest format {2}, this updater reads up to format {3}). Go to {4}/{0}/{1} and download '
-            u'TRNLizard_Installer.ghx of the latest release. Run it to install over the current version, then replace this '
-            u'component by a new Lizard_Updater from the TRNLizard tab.').format(owner, repo, version, MANIFEST_FORMAT,
-                                                                                 GITHUB_HOST)
+            u'manifest format {2}, this updater reads up to format {3}). {4}').format(owner, repo, version, MANIFEST_FORMAT,
+                                                                                      installerAdvice(owner, repo))
 
 
 def tooOldForFolderMessage(folder, version, updaterPath):
@@ -730,6 +756,18 @@ def tooOldForFolderMessage(folder, version, updaterPath):
     return (u'This Lizard_Updater is too old for the source folder {0} and changed nothing (the folder uses manifest '
             u'format {1}, this updater reads up to format {2}). Paste {3} into this component by hand.').format(
                 folder, version, MANIFEST_FORMAT, script)
+
+
+def installerAdvice(owner, repo):
+    """What to do when only the installer can bring a new updater."""
+    return (u'Go to {0}/{1}/{2} and download TRNLizard_Installer.ghx of the latest release. Run it to install over the '
+            u'current version, then replace this component by a new Lizard_Updater from the TRNLizard '
+            u'tab.').format(GITHUB_HOST, owner, repo)
+
+
+def selfUpgradeRefused(owner, repo, version, reason):
+    return u'Lizard_Updater was not upgraded to version {0}: {1}. {2}'.format(version, reason.rstrip(u'.'),
+                                                                              installerAdvice(owner, repo))
 
 
 def isSafeManifestName(name):
@@ -791,6 +829,27 @@ def parseManifest(text):
     generated = data.get('generated')
     return {'format': version, 'generated': generated if isinstance(generated, str) else None, 'files': result,
             'ignored': sorted(ignored)}
+
+
+def parseUpdaterEntry(text):
+    """{'path', 'version', 'sha256'} of the 'updater' entry of a trnlizard_manifest.json text, None when it has none or it
+    is invalid. Every format keeps this entry as it is and it is read before the format check, so that an updater can
+    upgrade itself to one that reads a newer format."""
+    try:
+        data = json.loads(text)
+    except ValueError:
+        return None
+    entry = data.get('updater') if isinstance(data, dict) else None
+    if not isinstance(entry, dict):
+        return None
+    path, version, sha = entry.get('path'), entry.get('version'), entry.get('sha256')
+    if not isSafeManifestName(path) or not path.endswith('.py'):
+        return None
+    if not isinstance(version, int) or isinstance(version, bool) or version < 1:
+        return None
+    if not isinstance(sha, str) or not re.match(r'^[0-9a-fA-F]{64}$', sha):
+        return None
+    return {'path': path, 'version': version, 'sha256': sha.lower()}
 
 
 def planDownloads(files, cachedHashes):
@@ -1687,7 +1746,34 @@ def fallBackToCache(folder, failure, log, errors):
     return None
 
 
-def syncGitHubSource(info, log, errors, fetch=None, root=None):
+def fetchSelfUpgrade(owner, repo, ref, entry, fetch, log, errors, waits, attempted):
+    """{'version', 'path', 'sha256', 'code', 'owner', 'repo'} of the new updater of a manifest entry when its script passes
+    all checks, else None with the reason in errors. attempted: hash of the upgrade tried before in this Rhino session."""
+    version = entry['version']
+
+    def refuse(reason):
+        message = selfUpgradeRefused(owner, repo, version, reason)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+
+    if attempted == entry['sha256']:
+        return refuse(u'the upgrade tried before did not take effect')
+    try:
+        code = fetchWithRetry(fetch, rawUrl(owner, repo, ref, entry['path']), log, waits)
+    except SourceError as e:
+        return refuse(u'its script could not be downloaded ({0})'.format(e))
+    if getHash(code) != entry['sha256']:
+        return refuse(u'its script does not match the manifest')
+    found = parseUpdaterVersion(code)
+    if found != version:
+        return refuse(u'its script says version {0}'.format(found))
+    problem = checkCodeSyntax(code)
+    if problem:
+        return refuse(u'its script fails the syntax check of this Python ({0})'.format(problem))
+    return {'version': version, 'path': entry['path'], 'sha256': entry['sha256'], 'code': code, 'owner': owner, 'repo': repo}
+
+
+def syncGitHubSource(info, log, errors, fetch=None, root=None, upgrade=None):
     """Bring the cache folder of a GitHub source up to date with its trnlizard_manifest.json; the folder or None.
 
     Only missing and changed scripts are downloaded (getHash against the manifest); every download must match its
@@ -1695,6 +1781,9 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
     are deleted (only .py files of this cache folder and of its subfolder SCRIPTS_FOLDER). Without a usable answer of
     GitHub a complete cached copy is used.
     fetch(url, accept) -> text, raising SourceError (default httpGetText); root: cache root (default sourceCacheRoot()).
+    upgrade: a dict to look for a new updater: when the manifest names a higher UPDATER_VERSION whose script passes the
+    checks, the dict gets it (see fetchSelfUpgrade) and None is returned with nothing else done; its key 'attempted' is the
+    hash of the upgrade tried before. Without upgrade, or when there is none or it is refused, the sync goes on as usual.
     """
     fetch = fetch or httpGetText
     owner, repo, ref = info['owner'], info['repo'], info['ref']
@@ -1714,6 +1803,12 @@ def syncGitHubSource(info, log, errors, fetch=None, root=None):
                             u'tools/build_manifest.py was not run and committed'.format(
                                 u'{0}/{1}'.format(owner, repo), MANIFEST_NAME, ref, commit[:12]), 404)
         return fallBackToCache(folder, e, log, errors)
+    entry = parseUpdaterEntry(manifestText) if upgrade is not None else None
+    if entry is not None and entry['version'] > UPDATER_VERSION:
+        found = fetchSelfUpgrade(owner, repo, fetchRef, entry, fetch, log, errors, waits, upgrade.get('attempted'))
+        if found is not None:
+            upgrade.update(found)
+            return None
     try:
         manifest = parseManifest(manifestText)
     except NewerManifestError as e:
@@ -1784,9 +1879,10 @@ def removeOtherCaches(root, current, log):
             log.append(u'Note: could not remove the old cache folder {0}: {1}'.format(name, e))
 
 
-def resolveSource(source, log, errors):
+def resolveSource(source, log, errors, upgrade=None):
     """The folder with the scripts of the source input (see parseSource): a local folder as it is, a GitHub repository
-    through its cache folder (syncGitHubSource). None, with the reason in errors, when there is none."""
+    through its cache folder (syncGitHubSource, which also fills upgrade). None, with the reason in errors, when there is
+    none or a new updater was found."""
     try:
         info = parseSource(source)
     except ValueError as e:
@@ -1803,7 +1899,51 @@ def resolveSource(source, log, errors):
             log.append(u'Error: ' + message)
             return None
         return info['path']
-    return syncGitHubSource(info, log, errors)
+    return syncGitHubSource(info, log, errors, upgrade=upgrade)
+
+
+def scheduleSelfUpgrade(updater, upgrade, log, errors, force, reportKey):
+    """Plan the upgrade of this component to the script of upgrade and make it right after this solution; False, with the
+    reason in errors, when it cannot be made: the update then goes on with this updater."""
+    comp = _impl(updater)
+    guid = str(comp.InstanceGuid)
+    version = upgrade['version']
+    doc = comp.OnPingDocument()
+    status, result = planComponentCode(comp, None, upgrade['path'], upgrade['code'], log, force) if doc else ('error', None)
+    if status != 'action' or result['what'] not in ('code', 'add'):
+        if status == 'action':
+            reason = u'{0}'.format(describePlan(result['plan']) or u'it needs a new component')
+        else:
+            reason = u'{0}'.format(result or u'this component cannot be changed')
+        message = selfUpgradeRefused(upgrade['owner'], upgrade['repo'], version, reason)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return False
+    note = u'Lizard_Updater upgraded itself from version {0} to version {1}.'.format(UPDATER_VERSION, version)
+    report = (log, [], [], errors)
+
+    def callback(document):
+        applySelfUpgrade(document, result, note, SELF_NOTE_KEY + guid, report, reportKey)
+    sc.sticky[SELF_ATTEMPT_KEY + guid] = upgrade['sha256']
+    doc.ScheduleSolution(1, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
+    log.append(u'Lizard_Updater version {0} is available (this is version {1}): it upgrades itself right after this solution '
+               u'and then carries on with the update.'.format(version, UPDATER_VERSION))
+    return True
+
+
+def applySelfUpgrade(doc, action, note, noteKey, report, reportKey):
+    """ScheduleSolution callback: write the new code into this component. The next solution runs it with the same inputs:
+    it logs note and carries on with the update. When that fails, this code shows report with the reason."""
+    sc.sticky[noteKey] = note
+    try:
+        applyInPlace(doc, action, report[0])
+    except Exception as e:
+        sc.sticky.pop(noteKey, None)
+        message = u'Lizard_Updater was not upgraded: {0}'.format(e)
+        report[0].append(u'Error: ' + message)
+        report[3].append(message)
+        sc.sticky[reportKey] = report
+        action['component'].ExpireSolution(False)
 
 
 def userObjectFolder():
@@ -2413,7 +2553,15 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None
         log.append('Set runUpdate to True to execute the updater.')
         return log, updated, skipped, errors
     log.append('=== TRNLizard Updater Started ===')
-    sourceFolder = resolveSource(source, log, errors)
+    note = sc.sticky.pop(SELF_NOTE_KEY + str(updater.InstanceGuid), None)
+    if note:
+        log.append(note)
+    upgrade = {'attempted': sc.sticky.get(SELF_ATTEMPT_KEY + str(updater.InstanceGuid))}
+    sourceFolder = resolveSource(source, log, errors, upgrade)
+    if upgrade.get('code') is not None:
+        if scheduleSelfUpgrade(updater, upgrade, log, errors, force is True, reportKey):
+            return log, updated, skipped, errors
+        sourceFolder = resolveSource(source, log, errors)
     if sourceFolder is None:
         return log, updated, skipped, errors
     log.append('Source folder: {0}'.format(sourceFolder))

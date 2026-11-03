@@ -442,7 +442,7 @@ class UpdaterGlueTests(unittest.TestCase):
         spec = importlib.util.spec_from_file_location("Lizard_Updater_glue", UPDATER_SOURCE)
         self.updater = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(self.updater)
-        # the updater itself: a script component whose script is in the folder too, it must never update itself
+        # the updater itself: a script component whose script is in the folder too, a folder never upgrades it
         shutil.copy(UPDATER_SOURCE, self.folder / "Lizard_Updater.py")
         self.updater_component = LegacyGhPython("Lizard_Updater", [ScriptVariable("source"), ScriptVariable("runUpdate")],
                                                 [Param("log")], code=UPDATER_SOURCE.read_text(encoding="utf-8"))
@@ -642,7 +642,7 @@ class UpdaterGlueTests(unittest.TestCase):
         self.assertEqual([], new[3].TypeHints.selected)   # object: default hint kept
         self.assertEqual([("Type", "System.Int32")], new[4].TypeHints.selected)
 
-    def test_the_updater_never_updates_itself_and_ignores_scripts_without_a_component(self):
+    def test_a_local_folder_leaves_the_updater_alone_and_ignores_scripts_without_a_component(self):
         hygro = self.legacy_hygro()
         doc = Document([hygro, self.updater_component])
         log, updated, skipped, errors = self.run_updater(doc)
@@ -661,7 +661,7 @@ class UpdaterGlueTests(unittest.TestCase):
         log, updated, skipped, errors = self.run_updater(doc)
         self.assertEqual(["Lizard_Hygro"], updated)
         self.assertEqual(1, len(errors))
-        for fragment in ("Lizard_Updater.py", "never updates itself", "by hand", "line 1"):
+        for fragment in ("Lizard_Updater.py", "outdated", "by hand", "line 1"):
             self.assertIn(fragment, errors[0])
         self.assertIn("WARNING: " + errors[0], log)
 
