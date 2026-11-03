@@ -47,3 +47,15 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   panel is named `TRNLizard <release>`. The same installer always installs the same scripts.
 - **Existing definitions:** nothing, this is only the installer file. To install newer scripts, take the installer of a newer release, or replace the panel by
   a GitHub URL or a folder. Components already in a definition follow the `source` of their own `Lizard_Updater`.
+
+<a id="com-06"></a>
+## COM-06: The scripts moved to `components/`, manifest format 2
+
+- **Before:** the component scripts were at the root of the repository, and `trnlizard_manifest.json` (format 1) listed them as `<script>.py`.
+- **Now:** the scripts are in `components/`, and the manifest (format 2) lists them as `components/<script>.py`. The manifest, `trnlizard_icons.json` and
+  `trnlizard_presets.json` stay at the root. `Lizard_Updater` still reads a source with the old layout, such as an older release.
+- **Existing definitions:** nothing in the definition changes, since components are matched by name. Only an older `Lizard_Updater` needs a change:
+  - With a GitHub source, it stops with `format 2 is newer than this updater reads` and changes nothing.
+  - With a local clone as `source`, it stops with `No Python files found in source folder` and changes nothing.
+  - In both cases, paste `components/Lizard_Updater.py` into it by hand, or take the installer of a newer release. An installer that is fixed to its release
+    (COM-05) keeps installing that release.
