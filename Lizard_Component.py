@@ -1845,9 +1845,11 @@ def inspectTable(rows):
     return lines
 # ---- Surface model (end)
 def surfaceNormal(brep):
-    """Normal of the single face of a surface as Rhino shows it: a face can be flipped against its underlying surface."""
+    """Normal of the single face of a surface as Rhino shows it: a face can be flipped against its underlying surface. It is read from that
+    surface, because the docs do not say whether BrepFace.NormalAt already includes the flag, and in the middle of it: (0,0) can lie outside."""
     face = brep.Faces[0]
-    normal = face.NormalAt(0,0)
+    surface = face.UnderlyingSurface()
+    normal = surface.NormalAt(surface.Domain(0).Mid, surface.Domain(1).Mid)
     if face.OrientationIsReversed:
         normal.Reverse()
     return normal
@@ -2139,7 +2141,7 @@ def getSurfaceVertices(refnormalvector,surface):
     for point in polyline:
         sort_vertices.append(point)
     new_srf = rc.Geometry.Brep.CreatePlanarBreps(polyline.ToNurbsCurve())[0]
-    new_normal = new_srf.Faces[0].NormalAt(0,0)
+    new_normal = surfaceNormal(new_srf)
     vector_deviation = 1-rc.Geometry.Vector3d.Multiply(new_normal,ori_normal)
     sort_vertices.pop()
     if vector_deviation <= abs_tolerance:

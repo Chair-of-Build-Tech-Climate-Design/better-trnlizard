@@ -205,7 +205,10 @@ def normals_of(faces):
 BOX = [(0.0, 0.0), (5.0, 0.0), (5.0, 4.0), (0.0, 4.0)]
 L_PLAN = [(0.0, 0.0), (8.0, 0.0), (8.0, 3.0), (3.0, 3.0), (3.0, 7.0), (0.0, 7.0)]
 U_PLAN = [(0.0, 0.0), (9.0, 0.0), (9.0, 6.0), (6.0, 6.0), (6.0, 2.0), (3.0, 2.0), (3.0, 6.0), (0.0, 6.0)]
-ROOMS = {"box": prism(BOX), "L": prism(L_PLAN), "U": prism(U_PLAN), "U with a T-junction": prism(U_PLAN, splitwall=2)}
+# A room from Rhino: a notch between two walls of one plane, far from the origin
+NOTCH_PLAN = [(153.994108, 81.872353), (163.177703, 78.048583), (163.009742, 82.064993), (161.401094, 82.064993), (159.901094, 84.663069),
+              (161.401094, 87.261145), (162.792446, 87.261145), (162.670587, 90.175141), (158.222307, 92.02727)]
+ROOMS = {"box": prism(BOX), "L": prism(L_PLAN), "U": prism(U_PLAN), "U with a T-junction": prism(U_PLAN, splitwall=2), "notch": prism(NOTCH_PLAN)}
 
 
 class OrientClosedPolygonsTests(unittest.TestCase):

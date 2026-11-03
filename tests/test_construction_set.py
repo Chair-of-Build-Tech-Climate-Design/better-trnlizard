@@ -384,6 +384,69 @@ class SolidFacesTests(unittest.TestCase):
         self.assertIn("hole", self.run_on(FakeRhinoFace("a", loops=2))[1])
 
 
+class FakeNormal:
+    def __init__(self, z):
+        self.Z = z
+
+    def Reverse(self):
+        self.Z = -self.Z
+
+
+class FakeUnderlyingSurface:
+    def __init__(self, z):
+        self.z = z
+        self.asked = []
+
+    def Domain(self, direction):
+        return SimpleNamespace(Mid=(10.5, 20.5)[direction])
+
+    def NormalAt(self, u, v):
+        self.asked.append((u, v))
+        return FakeNormal(self.z)
+
+
+class FakeBrepFace:
+    """A face in a Rhino whose NormalAt includes the flag, and one whose NormalAt does not: the normal must not depend on it."""
+    def __init__(self, natural, reversed_flag, honours_flag):
+        self.surface = FakeUnderlyingSurface(natural)
+        self.OrientationIsReversed = reversed_flag
+        self.honours_flag = honours_flag
+
+    def UnderlyingSurface(self):
+        return self.surface
+
+    def NormalAt(self, u, v):
+        return FakeNormal(-self.surface.z if self.honours_flag and self.OrientationIsReversed else self.surface.z)
+
+
+class SurfaceNormalTests(unittest.TestCase):
+    def setUp(self):
+        self.text = (REPO_ROOT / "Lizard_Component.py").read_text(encoding="utf-8-sig")
+        first = self.text.index("def surfaceNormal(brep):")
+        self.scope = {}
+        exec(self.text[first:self.text.index("def makeSurfaceVertices(points):", first)], self.scope)
+
+    def normal(self, natural, reversed_flag, honours_flag):
+        self.face = FakeBrepFace(natural, reversed_flag, honours_flag)
+        return self.scope["surfaceNormal"](SimpleNamespace(Faces=[self.face])).Z
+
+    def test_the_flag_is_applied_once_whatever_normalat_does(self):
+        for honours_flag in (True, False):
+            with self.subTest(honours_flag=honours_flag):
+                self.assertEqual(1, self.normal(1, False, honours_flag))
+                self.assertEqual(-1, self.normal(-1, False, honours_flag))
+                self.assertEqual(-1, self.normal(1, True, honours_flag))
+                self.assertEqual(1, self.normal(-1, True, honours_flag))
+
+    def test_the_normal_is_read_inside_the_domain(self):
+        self.normal(1, False, False)
+        self.assertEqual([(10.5, 20.5)], self.face.surface.asked)
+
+    def test_vertices_compare_with_the_same_normal(self):
+        first = self.text.index("def getSurfaceVertices(refnormalvector,surface):")
+        self.assertIn("new_normal = surfaceNormal(new_srf)", self.text[first:self.text.index('"""', first)])
+
+
 class FailureTests(unittest.TestCase):
     def failure(self):
         return M["ComponentFailure"]("Lizard_Construction_Set", "ExteriorWall: construction NOPE not found")
