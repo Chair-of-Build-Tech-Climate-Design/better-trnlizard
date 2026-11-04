@@ -5,6 +5,7 @@ TRNLizard
 Copyright (c) 2020 Transsolar Energietechnik GmbH
 All Rights Reserved.
 See the file "License.txt" for additional terms and conditions.
+Modified by Junfeng Xiao, 2026.
 
 Args:
     Multizone (Brep): Multizone geometry

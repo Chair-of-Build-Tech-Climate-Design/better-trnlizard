@@ -1,6 +1,8 @@
 """
 Lizard_Log_Check
 -
+Modified by Junfeng Xiao, 2026.
+-
 
 Args:
     Variant (object): Script input Folder.

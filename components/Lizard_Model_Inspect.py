@@ -3,9 +3,8 @@ Shows what Lizard_System would make of the surfaces, without writing anything: t
 split surfaces and the constructions from the sets. It also works when the model has errors, so the surfaces in question can be seen.
 -
 TRNLizard
-Copyright (c) 2020 Transsolar Energietechnik GmbH
+Copyright (c) 2026 Junfeng Xiao
 All Rights Reserved.
-See the file "License.txt" for additional terms and conditions.
 -
 
 For colours in the viewport connect Preview and Colours to a Custom Preview component (Geometry and Material) and switch off the preview
