@@ -1844,16 +1844,33 @@ def inspectRow(airnode, item, group, filled):
     return {'airnode': airnode.Name, 'surface': item.Surfnum, 'source': item.Sourcesurf if item.Sourcesurf is not None else item.Surfnum, 'type': item.Type,
             'group': group, 'category': item.Boundarycond, 'temperature': item.Boundarytemp, 'construction': item.Construction, 'fromset': id(item) in filled,
             'slot': slot, 'frontback': item.Frontback, 'partner': partner, 'area': float(item.Area or 0.0)}
+def uniqueSurfaceNumbers(airnodes):
+    """Gives a new number to a surface whose number is already used: compileModel finds the surfaces by their number. A surface copied from
+    the output of a surface component keeps the number of the original. Returns (message, surface) for each."""
+    numbers = [item.Surfnum for airnode in airnodes for item in airnode.Surfaces]
+    nextnumber = max(numbers or [0])+1
+    seen = set()
+    changed = []
+    for airnode in airnodes:
+        for item in airnode.Surfaces:
+            if item.Surfnum in seen:
+                changed.append(("Surface number {0} is used several times: the one in {1} is now {2}".format(item.Surfnum, airnode.Name, nextnumber), item))
+                item.Surfnum = nextnumber
+                nextnumber += 1
+            seen.add(item.Surfnum)
+    return changed
 def inspectModel(airnodes, library, autoadjacency=False, gaptolerance=None, standalone=False, constructionset=None):
     """compileModel for looking at the result, also when it has errors. Works on the given airnodes (deep copies from callFromZones).
 
     Returns a dict: 'airnodes' (names), 'groups' {group: one list of surfaces per airnode}, 'rows' (one dict per surface), 'summary' and 'issues'."""
     issues = []
+    for message, item in uniqueSurfaceNumbers(airnodes):
+        addIssue(issues, 'warning', message, [item])
     if standalone:
         for airnode in airnodes:
             issues.extend(compileModel([airnode], library, autoadjacency, gaptolerance, True, constructionset))
     else:
-        issues = compileModel(airnodes, library, autoadjacency, gaptolerance, False, constructionset)
+        issues.extend(compileModel(airnodes, library, autoadjacency, gaptolerance, False, constructionset))
     filled = []
     for issue in issues:
         if issue['level'] == 'info':
@@ -2870,6 +2887,7 @@ sc.sticky[sc.doc.Path]["Build_mode"]         = build_mode
 sc.sticky[sc.doc.Path]["Exe_mode"]           = exe_mode
 sc.sticky[sc.doc.Path]["findMaxSurfNum"]     = findMaxSurfNum
 sc.sticky[sc.doc.Path]["compileModel"]       = compileModel
+sc.sticky[sc.doc.Path]["uniqueSurfaceNumbers"] = uniqueSurfaceNumbers
 sc.sticky[sc.doc.Path]["orientSurfaces"]     = orientSurfaces
 sc.sticky[sc.doc.Path]["ComponentFailure"]   = ComponentFailure
 sc.sticky[sc.doc.Path]["isFailure"]          = isFailure

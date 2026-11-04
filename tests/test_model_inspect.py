@@ -116,6 +116,27 @@ class ReportTests(unittest.TestCase):
         self.assertEqual(("Mirror", "Mirror"), (row_of(report, 70)["group"], row_of(report, 71)["group"]))
 
 
+class SurfaceNumberTests(unittest.TestCase):
+    def test_partner_with_a_number_used_elsewhere_follows_the_explicit_side(self):
+        a, b, other = south(0, 5, construction="WALL", number=10), north(0, 5, construction=None, number=11), south(0, 5, y=9.0, construction="IFL", number=11)
+        report = inspect(airnode("A1", a), airnode("A2", b), airnode("A3", other), constructionset=SimpleNamespace(InteriorWall="OUT", ExteriorWall="OUT"))
+        self.assertEqual([], [issue["message"] for issue in report["issues"] if issue["level"] == "error"])
+        self.assertEqual(("WALL", "WALL", "A2:11"), (a.Construction, b.Construction, row_of(report, 10)["partner"]))
+        self.assertIn("used several times", [issue["message"] for issue in report["issues"] if issue["level"] == "warning"][0])
+
+    def test_both_sides_of_a_pair_with_one_number_are_paired(self):
+        a, b = south(0, 5, construction="WALL", number=20), north(0, 5, construction=None, number=20)
+        report = inspect(airnode("A1", a), airnode("A2", b))
+        self.assertEqual([], [issue["message"] for issue in report["issues"] if issue["level"] == "error"])
+        self.assertEqual(("Adjacent", "Adjacent"), (M["inspectGroup"](a), M["inspectGroup"](b)))
+        self.assertNotEqual(a.Surfnum, b.Surfnum)
+
+    def test_unique_numbers_stay(self):
+        a, b = south(0, 5, number=30), north(0, 5, number=31)
+        self.assertEqual([], M["uniqueSurfaceNumbers"]([airnode("A1", a), airnode("A2", b)]))
+        self.assertEqual((30, 31), (a.Surfnum, b.Surfnum))
+
+
 class FakeTree:
     def __init__(self):
         self.branches = {}

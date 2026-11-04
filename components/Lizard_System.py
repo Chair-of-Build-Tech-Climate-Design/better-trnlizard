@@ -170,6 +170,7 @@ exe_mode                = sc.sticky[sc.doc.Path]["Exe_mode"]
 TRNSYS = sc.sticky[sc.doc.Path]["TRNSYS"]
 getInputs           = sc.sticky[sc.doc.Path]["getInputs"]
 compileModel        = sc.sticky[sc.doc.Path]["compileModel"]
+uniqueSurfaceNumbers = sc.sticky[sc.doc.Path]["uniqueSurfaceNumbers"]
 findMaxSurfNum      = sc.sticky[sc.doc.Path]["findMaxSurfNum"]
 library             = sc.sticky[sc.doc.Path]["library"]
 hemisphere          = sc.sticky[sc.doc.Path]["Hemisphere"]
@@ -5141,26 +5142,10 @@ if WriteSimulationFiles:
 
         ### STOP make general changes to definitions here
         surfaceinfo = []
-        surfacenumbers = []
+        for mess, sitem in uniqueSurfaceNumbers(Airnode):
+            print mess
+            ghenv.Component.AddRuntimeMessage(w, mess)
         for Airnode_item in Airnode:
-            for sitem in Airnode_item.Surfaces:
-                surfacenumbers.append(sitem.Surfnum)
-        surfacenumbers = list(set(surfacenumbers))
-        foundsurfacenum = []
-        for Airnode_item in Airnode:
-            for sitem in Airnode_item.Surfaces:
-                if sitem.Surfnum in foundsurfacenum:
-                    mess = "multiple times the same surface number is used %s"%sitem.Surfnum
-                    print mess
-                    ghenv.Component.AddRuntimeMessage(w, mess)
-                    newnumber = surfacenumbers[-1] + 1
-                    surfacenumbers.append(newnumber)
-                    sitem.Surfnum = surfacenumbers[-1]
-                    mess = "new surface number is used %s"%sitem.Surfnum
-                    print mess
-                    ghenv.Component.AddRuntimeMessage(w, mess)
-                else:
-                    foundsurfacenum.append(sitem.Surfnum)
             surfaceinfo.extend(Airnode_item.Surfaces)
         templates = sc.sticky[sc.doc.Path]["Template"]
         printdata = sc.sticky[sc.doc.Path]["printdata"]
