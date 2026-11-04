@@ -591,16 +591,16 @@ def gainInstances(airnode):
         counts[gain_item.Name] = counts.get(gain_item.Name, 0) + 1
         instances.append((gain_item, str(counts[gain_item.Name]) if counts[gain_item.Name] > 1 else ''))
     return instances
-def outputPairs(output_item, airnodename, comfids, okey):
+def outputPairs(output_item, airnode, okey):
     """(label, name in the deck) of every output of an output component."""
     if output_item.Type == 'SURFACE':
         return [(name.rsplit('_S', 1)[0], name) for name in output_item.NtypesShort]
     if output_item.Type == 'COMFORT':
         label = output_item.NtypesShort[0]
-        return [(label, '{0}_C{1}'.format(label, comfid)) for comfid in comfids]
+        return [(label, '{0}_C{1}'.format(label, comfid)) for comfid in airnode.ComfId]
     if output_item.Type == 'AIRLINKS':
         return [(name, name) for label in output_item.Ntype for name in okey if label in name]
-    return [(label, '{0}_{1}'.format(label, airnodename)) for label in output_item.NtypesShort]
+    return [(label, '{0}_{1}'.format(label, airnode.Name)) for label in output_item.NtypesShort]
 def renamedOutputs(username, pairs):
     """[(new name, name in the deck)] for the UserDefName of an output component: <label>_<username>, and what follows the label in the
     deck, e.g. _S12, when the component has several outputs of that label."""
@@ -6550,7 +6550,7 @@ LABELS  3
                             pass
                         else:
                             continue
-                        pairs = outputPairs(output_item, zone_item.Airnode.Name, zone_item.Airnode.ComfId, okey)
+                        pairs = outputPairs(output_item, zone_item.Airnode, okey)
                         outputlist = outputlist + len(pairs)
                         if output_item.UserName:
                             for newname, original in renamedOutputs(output_item.UserName, pairs):

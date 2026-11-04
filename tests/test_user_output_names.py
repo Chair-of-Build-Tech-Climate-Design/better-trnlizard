@@ -23,8 +23,8 @@ def surface(labels, numbers):
     return SimpleNamespace(Type="SURFACE", NtypesShort=["{0}_S{1}".format(label, number) for label in labels for number in numbers])
 
 
-def renamed(output, username="Floor", airnode="A1", comfids=(), okey=()):
-    return F["renamedOutputs"](username, F["outputPairs"](output, airnode, list(comfids), list(okey)))
+def renamed(output, username="Floor", airnode=None, okey=()):
+    return F["renamedOutputs"](username, F["outputPairs"](output, airnode or SimpleNamespace(Name="A1"), list(okey)))
 
 
 class RenameTests(unittest.TestCase):
@@ -44,8 +44,12 @@ class RenameTests(unittest.TestCase):
 
     def test_comfort_outputs(self):
         output = SimpleNamespace(Type="COMFORT", NtypesShort=["PMV"])
-        self.assertEqual([("PMV_Room", "PMV_C4")], renamed(output, "Room", comfids=[4]))
-        self.assertEqual([("PMV_Room_C4", "PMV_C4"), ("PMV_Room_C5", "PMV_C5")], renamed(output, "Room", comfids=[4, 5]))
+        self.assertEqual([("PMV_Room", "PMV_C4")], renamed(output, "Room", SimpleNamespace(ComfId=[4])))
+        self.assertEqual([("PMV_Room_C4", "PMV_C4"), ("PMV_Room_C5", "PMV_C5")], renamed(output, "Room", SimpleNamespace(ComfId=[4, 5])))
+
+    def test_only_comfort_outputs_read_the_comfort_points(self):
+        # an airnode without comfort points has no ComfId at all
+        self.assertEqual([("TSI_Floor", "TSI_S1")], renamed(surface(["TSI"], [1]), airnode=SimpleNamespace()))
 
 
 class ProblemTests(unittest.TestCase):
