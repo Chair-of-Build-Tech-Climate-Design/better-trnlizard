@@ -254,14 +254,18 @@ def addRadmaterial(subitems):
 # @OC END
 def readWeatherHead(filename,linecount=None,stoppattern=None):
     """The first lines of a weather file, up to linecount or the first line that matches stoppattern. The location is in the head, and the
-    file can lie on a slow drive."""
+    file can lie on a slow drive. Read with .NET: open() of IronPython can fail in Rhino 8 with "No data is available for encoding 0"."""
     lines = []
-    f = open(filename, 'r')
-    for line in f:
-        lines.append(line)
-        if len(lines) == linecount or (stoppattern and re.search(stoppattern,line)):
-            break
-    f.close()
+    reader = System.IO.StreamReader(filename)
+    try:
+        line = reader.ReadLine()
+        while line is not None:
+            lines.append(line + '\n')
+            if len(lines) == linecount or (stoppattern and re.search(stoppattern,line)):
+                break
+            line = reader.ReadLine()
+    finally:
+        reader.Close()
     return lines
 def getparagraph(file,startpattern,stoppattern):
     output = []

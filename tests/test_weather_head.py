@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from textwrap import dedent
+from types import SimpleNamespace
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -22,20 +23,27 @@ def run_location_block(filename):
     block = dedent(text[start:text.index("        #Library should be disconnected", start)])
     helpers, block = [re.sub(r"^(\s*)print (.*)$", r"\1print(\2)", part, flags=re.M) for part in (helpers, block)]
     opened = []
+    closed = []
 
-    class Counted:
+    class StreamReader:
         def __init__(self, path):
             self.file = open(path, "r")
 
-        def __iter__(self):
-            for line in self.file:
-                opened.append(line)
-                yield line
+        def ReadLine(self):
+            line = self.file.readline()
+            if not line:
+                return None
+            opened.append(line)
+            return line.rstrip("\n")
 
-        def close(self):
+        def Close(self):
+            closed.append(True)
             self.file.close()
 
-    scope = {"re": re, "weather_file": str(filename), "open": lambda path, mode: Counted(path), "convertTry2017ETRS892WSG84": lambda x, y: (x, y)}
+    def no_open(path, mode):
+        raise AssertionError("open() of IronPython can fail in Rhino 8")
+
+    scope = {"re": re, "weather_file": str(filename), "open": no_open, "System": SimpleNamespace(IO=SimpleNamespace(StreamReader=StreamReader)), "convertTry2017ETRS892WSG84": lambda x, y: (x, y)}
     exec(helpers, scope)
     exec(block, scope)
     return scope, opened
