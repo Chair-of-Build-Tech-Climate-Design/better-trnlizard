@@ -1576,18 +1576,14 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
     pieces = {}
     splits = {}
     replaced = {}
+    outlets = {}
+    serial = []
     for key in sorted(regionsof):
         parent = bynumber[key]
         own = sorted(regionsof[key], key=lambda index: (-regions[index]['area'], index))
         if len(own) == 1:
             pieces[(key, own[0])] = parent
             continue
-        chained = 'TOFL_S' in str(parent.Intemp) and parent.Activelayer != 0
-        for airnode in airnodes:
-            for item in airnode.Surfaces:
-                chained = chained or 'TOFL_S{0}'.format(key) == str(item.Intemp).replace('INPUT 1*', '')
-        if chained:
-            addIssue(issues, 'error', "Surface {0} would be split but belongs to a serial active layer circuit: split it yourself".format(key), [parent])
         created = []
         for rank, index in enumerate(own):
             piece = makeSurfacePiece(parent, regions[index]['loops'][key])
@@ -1597,10 +1593,9 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
                 nextnumber += 1
             pieces[(key, index)] = piece
             created.append(piece)
-        if parent.Activelayer != 0 and not chained:
-            for previous, piece in zip(created, created[1:]):
-                piece.Intemp = 'INPUT 1*TOFL_S{0}'.format(previous.Surfnum)
-            addIssue(issues, 'warning', "Active layer surface {0} was split: its pieces {1} are a serial circuit".format(key, ', '.join([str(piece.Surfnum) for piece in created])), created)
+        if parent.Activelayer != 0:
+            outlets['INPUT 1*TOFL_S{0}'.format(key)] = 'INPUT 1*TOFL_S{0}'.format(created[-1].Surfnum)
+            serial.append(created)
         hostWindows(parent, created, issues)
         replaced[key] = created
     for airnode in airnodes:
@@ -1611,6 +1606,14 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
             else:
                 surfaces.append(item)
         airnode.Surfaces = surfaces
+    # what took its supply from a split surface now takes it from the last piece; the pieces follow each other, biggest first
+    for airnode in airnodes:
+        for item in airnode.Surfaces:
+            item.Intemp = outlets.get(str(item.Intemp), item.Intemp)
+    for created in serial:
+        for previous, piece in zip(created, created[1:]):
+            piece.Intemp = 'INPUT 1*TOFL_S{0}'.format(previous.Surfnum)
+        addIssue(issues, 'warning', "Active layer surface {0} was split: its pieces {1} are in series, check that the pipes run like that".format(created[0].Surfnum, ', '.join([str(piece.Surfnum) for piece in created])), created)
     expandSurfaceOutputs(airnodes, splits)
     ownsets = dict([(airnode.Name, airnode.Constructionset) for airnode in airnodes])
     pairs = []

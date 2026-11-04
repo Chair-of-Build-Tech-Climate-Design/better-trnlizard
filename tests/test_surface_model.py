@@ -448,7 +448,7 @@ class FrontBackTests(unittest.TestCase):
         n1, n2 = airnode("A1", a), airnode("A2", b, c)
         issues = compile_model(n1, n2)
         self.assertEqual([], errors(issues))
-        self.assertIn("serial circuit", warnings_of(issues)[0])
+        self.assertIn("in series", warnings_of(issues)[0])
         self.assertEqual([(80, "INPUT 1*TSUP_AL1"), (83, "INPUT 1*TOFL_S80")], [(item.Surfnum, item.Intemp) for item in n1.Surfaces])
         self.assertEqual({82: "INPUT 1*TSUP_AL1", 81: "INPUT 1*TOFL_S80"}, dict([(item.Surfnum, item.Intemp) for item in n2.Surfaces]))
 
@@ -523,11 +523,44 @@ class FollowersOfASplitTests(unittest.TestCase):
         self.assertEqual([70, 73], output.SurfaceID)
         self.assertEqual(["TSI_S70", "TSI_S73"], output.NtypesShort)
 
-    def test_serial_active_layer_is_not_split(self):
-        a = south(0, 6, category="ADJACENT", number=80)
-        b, c = north(0, 2, category="ADJACENT", number=81), north(2, 6, category="ADJACENT", number=82)
+    def test_surface_after_a_split_head_takes_the_outlet_of_the_last_piece(self):
+        head = active(south(0, 6, category="ADJACENT", number=80, construction="TABS"))
+        tail = active(south(6, 8, category="EXTERNAL", number=84, construction="TABS"))
+        tail.Intemp = "INPUT 1*TOFL_S80"
+        b, c = north(0, 2, category="ADJACENT", number=81, construction=None), north(2, 6, category="ADJACENT", number=82, construction=None)
+        n1 = airnode("A1", head, tail)
+        self.assertEqual([], errors(compile_model(n1, airnode("A2", b, c))))
+        self.assertEqual([(80, "INPUT 1*TSUP_AL1"), (85, "INPUT 1*TOFL_S80"), (84, "INPUT 1*TOFL_S85")], [(item.Surfnum, item.Intemp) for item in n1.Surfaces])
+
+    def test_split_surface_in_the_middle_of_a_circuit(self):
+        head = active(south(6, 8, category="EXTERNAL", number=70, construction="TABS"))
+        middle = active(south(0, 6, category="ADJACENT", number=71, construction="TABS"))
+        tail = active(south(8, 10, category="EXTERNAL", number=72, construction="TABS"))
+        middle.Intemp, tail.Intemp = "INPUT 1*TOFL_S70", "INPUT 1*TOFL_S71"
+        b, c = north(0, 2, category="ADJACENT", number=73, construction=None), north(2, 6, category="ADJACENT", number=74, construction=None)
+        n1 = airnode("A1", head, middle, tail)
+        self.assertEqual([], errors(compile_model(n1, airnode("A2", b, c))))
+        self.assertEqual([(70, "INPUT 1*TSUP_AL1"), (71, "INPUT 1*TOFL_S70"), (75, "INPUT 1*TOFL_S71"), (72, "INPUT 1*TOFL_S75")], [(item.Surfnum, item.Intemp) for item in n1.Surfaces])
+
+    def test_two_split_surfaces_follow_each_other_whatever_their_numbers(self):
+        head = active(south(0, 6, category="ADJACENT", number=62, construction="TABS"))
+        tail = active(south(6, 12, category="ADJACENT", number=61, construction="TABS"))
+        tail.Intemp = "INPUT 1*TOFL_S62"
+        partners = [north(x0, x1, category="ADJACENT", number=number, construction=None) for x0, x1, number in ((0, 2, 63), (2, 6, 64), (6, 8, 65), (8, 12, 66))]
+        n1, n2 = airnode("A1", head, tail), airnode("A2", *partners)
+        self.assertEqual([], errors(compile_model(n1, n2)))
+        numbers = [item.Surfnum for item in n1.Surfaces]
+        self.assertEqual(["INPUT 1*TSUP_AL1"]+["INPUT 1*TOFL_S{0}".format(number) for number in numbers[:-1]], [item.Intemp for item in n1.Surfaces])
+        partner = dict([(item.Surfnum, item) for item in n2.Surfaces])
+        for item in n1.Surfaces:
+            self.assertEqual(item.Intemp, partner[item.Adjsurf].Intemp)
+
+    def test_split_without_a_circuit_leaves_other_surfaces_alone(self):
+        a = south(0, 6, category="ADJACENT", number=86)
+        b, c = north(0, 2, category="ADJACENT", number=87), north(2, 6, category="ADJACENT", number=88)
         c.Intemp = "INPUT 1*TOFL_S80"
-        self.assertIn("serial active layer", errors(compile_model(airnode("A1", a), airnode("A2", b, c)))[0])
+        self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b, c))))
+        self.assertEqual("INPUT 1*TOFL_S80", c.Intemp)
 
     def test_geosurf_is_computed_per_piece_and_before_the_orientation_is_shared(self):
         floor = surface([(0, 0, 3), (0, 4, 3), (6, 4, 3), (6, 0, 3)], number=90, construction="IFL")

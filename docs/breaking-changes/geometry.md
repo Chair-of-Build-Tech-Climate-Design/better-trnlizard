@@ -26,7 +26,7 @@
 - **Before:** a warning unless the two areas were equal. The model was still written: an `ADJACENT` surface fell back to a mirrored `BOUNDARY`
   and an `AUTOMATIC` one to `EXTERNAL`.
 - **Now:** split along what faces them. The biggest piece keeps the surface number and the others get new numbers above the highest one.
-  A window across the split line and a surface in a serial active layer circuit stay errors. A single active surface: see [GEO-04](#geo-04).
+  A window across the split line stays an error. An active surface: see [GEO-04](#geo-04).
 - **Existing definitions:** nothing.
 - **Results:** those surfaces now exchange heat with the neighbour. New surface numbers depend on the geometry.
 
@@ -34,8 +34,9 @@
 ## GEO-04: A split active surface becomes a serial circuit
 
 - **Before:** since [GEO-03](#geo-03), the pieces of an active surface all started at the supply temperature and each got the mass flow of the
-  whole airnode, without a message. The flow per area was too high and the return temperature came from the last piece only.
+  whole airnode, without a message. The flow per area was too high and the return temperature came from the last piece only. A surface in a
+  serial circuit was an error.
 - **Now:** the second piece takes its supply from the outlet of the first (`TOFL_S`), biggest piece first, like the surfaces of a list on
-  `Lizard_Active_Layer_Surface`, with a warning. A surface that already is in a serial circuit stays an error.
-- **Existing definitions:** nothing. Split the surface yourself if the pieces are hydraulically parallel.
+  `Lizard_Active_Layer_Surface`, with a warning. In a serial circuit, what took its supply from the surface now takes it from the last piece.
+- **Existing definitions:** nothing. Split the surface yourself if the pipes do not run through the pieces in that order, or run in parallel.
 - **Results:** the mass flow per area of a split active surface goes back to the set value.
