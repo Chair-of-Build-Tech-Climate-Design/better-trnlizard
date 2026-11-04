@@ -591,6 +591,12 @@ def gainInstances(airnode):
         counts[gain_item.Name] = counts.get(gain_item.Name, 0) + 1
         instances.append((gain_item, str(counts[gain_item.Name]) if counts[gain_item.Name] > 1 else ''))
     return instances
+def infiltrationAch(infiltration, airnode):
+    """The air change of the input ACH of an infiltration, or of its flow per person when that is more."""
+    perperson = getattr(infiltration, 'Vflowppers', 0)
+    if not perperson:
+        return infiltration.Ach
+    return max(float(infiltration.Ach or 0), round(float(perperson) * airnode.Floorarea / airnode.Areaperperson / airnode.Volume, 2))
 def gainPowerEquation(gain_item, suffix, airnode):
     """The deck equation of the power of a further gain of a kind, in the form the template has for the first one. None for another kind."""
     if gain_item.Personsgain == 1:
@@ -4546,7 +4552,7 @@ def getzonevariables(zone_item):
     #infiltration
     if zone_item.Airnode.Infiltration:
         variables['yx_inf']       = 1
-        variables['ach_inf']      = zone_item.Airnode.Infiltration.Ach
+        variables['ach_inf']      = infiltrationAch(zone_item.Airnode.Infiltration, zone_item.Airnode)
         variables['min_inf']      = zone_item.Airnode.Infiltration.Minach
         variables['schedule_inf'] = 'SCHED_' + zone_item.Airnode.Infiltration.Schedule
         # @OC START

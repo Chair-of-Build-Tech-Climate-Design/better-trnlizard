@@ -9,18 +9,21 @@ See the file "License.txt" for additional terms and conditions.
 
 Args:
     --------------- Infiltration
-    ACH (object): air changes per hour due to fresh air demand
+    ACH (object): air changes per hour of outdoor air during Schedule, for example the minimum ventilation
         Access: item
         Required: True
-    Schedule (object): ALLDAY Schedule should be selected
+    Schedule (object): schedule that scales ACH, for example the occupancy
         Access: item
         Required: True
     AnnualSchedule (object): Script variable Infiltration
         Access: item
         Required: False
-    MinACH (object): air changes per hour due to air leakage
+    MinACH (object): air changes per hour due to air leakage; the deck uses max(ACH * Schedule, MinACH)
         Access: item
         Required: True
+    OrPersonRelatedVolumeFlow (object): m3/h per person instead of ACH, persons from the area per person of the airnode; the higher of the two is used
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -50,6 +53,7 @@ class INFILTRATION:
         self.Type           = self.__class__.__name__
         self.Minach         = 0.1
         self.Annual         = None
+        self.Vflowppers     = 0
         self.Windredfac    = 1
         self.Width       = 10
     def __repr__(self):
@@ -66,6 +70,8 @@ if 'Schedule' in locals():
     Infiltration.Schedule   = Schedule
 if 'AnnualSchedule' in locals():
     Infiltration.Annual   = AnnualSchedule
+if 'OrPersonRelatedVolumeFlow' in locals() and OrPersonRelatedVolumeFlow is not None:
+    Infiltration.Vflowppers = OrPersonRelatedVolumeFlow
 if 'OC_wind_red' in locals():
     Infiltration.Windredfac        = float(OC_wind_red)
 if 'OC_width' in locals():
