@@ -42,6 +42,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [COM-06](components.md#com-06) | The scripts moved to `components/`, manifest format 2 | no | no | `842f56d`, `931bcb2` |
 | [COM-07](components.md#com-07) | Scripts changed by hand are not overwritten unless `force` is `True` | no | yes | `00bcaef` |
 | [COM-08](components.md#com-08) | A required input without data stops the component | yes | no | `37353c2` |
+| [COM-09](components.md#com-09) | `Ventilation` of `Lizard_Zone_Regime` takes a list of every kind of ventilation | no | no | not committed yet |
 | [RES-01](results.md#res-01) | Mirror `BOUNDARY` walls get `HBACK` 29.51 through a `_MIRROR` wall type | no | yes | `733df04` |
 | [RES-02](results.md#res-02) | HAMT coupling of Type 395 changed on both sides | no | yes | `916c405`, `d2a3ce8` |
 | [RES-03](results.md#res-03) | One HAMT pseudo-wall type per construction | no | yes | `c9862bf` |

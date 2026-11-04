@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T19:39:07Z",
+  "generated": "2026-11-04T19:39:19Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -272,8 +272,8 @@
       "size": 34101
     },
     "components/Lizard_Zone_Regime.py": {
-      "sha256": "8791dc883ac81772bc29c52dc7637e1a5db33b98900a61d8af5a530e0e75398e",
-      "size": 4797
+      "sha256": "d21c43d52a797228a8a6929f03289cfe04f4aabb0f74820afffc365208a130dc",
+      "size": 5656
     },
     "components/Lizard_b18_to_Rhino.py": {
       "sha256": "c120ee032eee6503459d06e2ba0c634a4b07b3ff14a6c37a7938241a2bb20d34",

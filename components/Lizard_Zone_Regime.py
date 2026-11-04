@@ -37,16 +37,16 @@ Args:
     Cooling (object): Link airnode cooling definition
         Access: item
         Required: False
-    Infiltration (object): Link airnode infiltration definition
+    Infiltration (object): Link airnode infiltration definition; can also go into Ventilation
         Access: item
         Required: False
-    Ventilation (object): Link airnode ventilation definitions (mechanical, stack)
+    Ventilation (object): Link any of infiltration, mechanical ventilation and stack ventilation 1 and 2, at most one of each
+        Access: list
+        Required: False
+    StackVentilation1 (object): Link airnode stack ventilation definition; can also go into Ventilation
         Access: item
         Required: False
-    StackVentilation1 (object): Link airnode stack ventilation definitions (mechanical, stack)
-        Access: item
-        Required: False
-    StackVentilation2 (object): Link airnode stack ventilation definitions (mechanical, stack)
+    StackVentilation2 (object): Link airnode stack ventilation definition; can also go into Ventilation
         Access: item
         Required: False
     Comfort (object): Link comfort definition
@@ -91,6 +91,20 @@ class REGIME:
         """Class representation."""
         return "{}:{}".format(self.__class__.__name__, self.Name)
 Regime = REGIME()
+def addVentilation(item):
+    """Puts a definition of any kind of ventilation on its place in the regime. The deck has one place of each."""
+    kind = getattr(item, 'Type', None)
+    if kind == 'INFILTRATION':
+        place = 'Infiltration'
+    elif kind == 'VENTILATION':
+        place = 'Mechvent'
+    elif kind == 'STACKVENTILATION':
+        place = 'Stvent1' if item.Name == 'STVENT1' else 'Stvent2'
+    else:
+        raise ValueError("Not a ventilation definition: {0}".format(item))
+    if getattr(Regime, place) != "":
+        raise ValueError("Two ventilation definitions of one kind in the regime: {0}".format(item))
+    setattr(Regime, place, item)
 if 'PeopleGain' in locals():
     if PeopleGain is not None:
         Regime.Persgain = PeopleGain
@@ -123,22 +137,24 @@ if 'Cooling' in locals():
         Regime.Cooling = Cooling
 if 'Infiltration' in locals():
     if Infiltration is not None:
-        Regime.Infiltration = Infiltration
+        addVentilation(Infiltration)
 if 'MechanicalVentilation' in locals():
     if MechanicalVentilation is not None:
-        Regime.Mechvent = MechanicalVentilation
+        addVentilation(MechanicalVentilation)
 if 'Ventilation' in locals():
     if Ventilation is not None:
-        Regime.Mechvent = Ventilation
+        for item in ([Ventilation] if hasattr(Ventilation, 'Type') else Ventilation):
+            if item is not None:
+                addVentilation(item)
 if 'EarthDuct' in locals():
     if EarthDuct is not None:
         Regime.Earthduct = EarthDuct
 if 'StackVentilation1' in locals():
     if StackVentilation1 is not None:
-        Regime.Stvent1 = StackVentilation1
+        addVentilation(StackVentilation1)
 if 'StackVentilation2' in locals():
     if StackVentilation2 is not None:
-        Regime.Stvent2 = StackVentilation2
+        addVentilation(StackVentilation2)
 if 'Comfort' in locals():
     if Comfort is not None:
         Regime.Pmvcomfort = Comfort

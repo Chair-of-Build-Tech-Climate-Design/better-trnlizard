@@ -78,3 +78,12 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
 - **Before:** the legacy GhPython component keeps all its inputs optional, so `Required: True` in a docstring had no effect. A required input without data gave a raw exception, or a result that looks fine.
 - **Now:** a script with required inputs stops with the error `Required input without data: ...`, and its outputs stay empty. `Lizard_System` then stops too ([COM-03](#com-03)). `Lizard_Updater` writes the one line that checks this after the docstring of the script, and `requireInputs` of `Lizard_Component` does the rest.
 - **Existing definitions:** the first update adds that line. A component with a required input not connected now shows an error: connect the input. Which inputs count as required was reviewed for this change, and most of the old flags were dropped since the scripts work without them.
+
+<a id="com-09"></a>
+## COM-09: `Ventilation` of `Lizard_Zone_Regime` takes a list of every kind
+
+- **Before:** `Ventilation` had item access and took the mechanical ventilation only.
+- **Now:** list access, for any of infiltration, mechanical ventilation and stack ventilation 1 and 2. Two of one kind are an error, also across the
+  inputs, because the deck has one place of each. `Lizard_Infiltration` has the new input `OrPersonRelatedVolumeFlow`.
+- **Existing definitions:** `Lizard_Updater` sets the list access and adds the input in place and keeps the wires. The inputs `Infiltration`,
+  `StackVentilation1` and `StackVentilation2` keep working.
