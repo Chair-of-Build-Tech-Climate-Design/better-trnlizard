@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T14:47:22Z",
+  "generated": "2026-11-04T15:09:43Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -52,16 +52,16 @@
       "size": 2126
     },
     "components/Lizard_Component.py": {
-      "sha256": "f80e2084f62652aab997f1b904010449b95eda1a287e8ad65321d88adc24cf83",
-      "size": 143300
+      "sha256": "bae014bf06106ae5db44a35d57237eb78f870cf0db6769cd4291d8937b432575",
+      "size": 144776
     },
     "components/Lizard_Construction.py": {
       "sha256": "ff00f859abfc0143f64d0d01de92da5dc85e3354ae86257afe4396ee08e4ccef",
       "size": 5813
     },
     "components/Lizard_Construction_Set.py": {
-      "sha256": "930615787fd2572e067e06079a58f2cc247ff1c5950eb16c1f2caa389f3415ec",
-      "size": 3312
+      "sha256": "9d422eb038a6c160c625a9c6f9f4ee7e1e4461ee2619418b8002d48e3dd3b224",
+      "size": 3416
     },
     "components/Lizard_Cooling.py": {
       "sha256": "0cc5b1d3cf0f748619b78dc679adb4035ac80877f4238e1d63015acf610aed54",

@@ -143,6 +143,42 @@ class FillTests(unittest.TestCase):
         self.assertEqual(1, len(errors(issues)))
         self.assertIn("InteriorFloor", errors(issues)[0])
 
+    def test_set_of_a_room_goes_before_the_default_of_the_other_room(self):
+        for own, other in (("A1", "A2"), ("A2", "A1")):
+            a, b = south(0, 5, construction=None), north(0, 5, construction=None)
+            first, second = airnode(own, a), airnode(other, b)
+            first.Constructionset = constructions(InteriorWall="OUT")
+            issues = self.compile(first, second, model=constructions(InteriorWall="WALL"))
+            self.assertEqual([], errors(issues))
+            self.assertEqual(("OUT", "OUT"), (a.Construction, b.Construction))
+            self.assertEqual(("FRONT", "BACK"), (a.Frontback, b.Frontback))
+            self.assertEqual(["Construction set: InteriorWall = OUT on surfaces {0}".format(a.Surfnum)], [issue["message"] for issue in issues if issue["level"] == "info"])
+
+    def test_set_of_a_ceiling_room_goes_before_the_default_of_the_floor(self):
+        top, bottom = floor(z=3.0, construction=None), ceiling(z=3.0, construction=None)
+        lower = airnode("A1", bottom)
+        lower.Constructionset = constructions(InteriorCeiling="OUT")
+        issues = self.compile(airnode("A2", top), lower, model=constructions(InteriorFloor="IFL"))
+        self.assertEqual([], errors(issues))
+        self.assertEqual(("OUT", "OUT"), (top.Construction, bottom.Construction))
+        self.assertEqual(("BACK", "FRONT"), (top.Frontback, bottom.Frontback))
+
+    def test_mirrored_default_keeps_its_own_construction(self):
+        top, bottom = floor(z=3.0, construction=None), ceiling(z=3.0, construction=None)
+        upper = airnode("A2", top)
+        upper.Constructionset = constructions(InteriorFloor="IFL")
+        issues = self.compile(upper, airnode("A1", bottom), model=constructions(InteriorCeiling="ICL"))
+        self.assertEqual([], errors(issues))
+        self.assertEqual(("IFL", "ICL"), (top.Construction, bottom.Construction))
+
+    def test_explicit_front_with_only_the_default_cannot_follow_a_non_symmetric_back(self):
+        a, b = south(0, 5, construction=None, frontback="FRONT"), north(0, 5, construction=None)
+        second = airnode("A2", b)
+        second.Constructionset = constructions(InteriorWall="OUT")
+        issues = self.compile(airnode("A1", a), second, model=constructions(InteriorWall="WALL"))
+        self.assertEqual(1, len(errors(issues)))
+        self.assertIn("is the FRONT of the pair", errors(issues)[0])
+
     def test_rooms_with_different_sets_on_one_wall_are_an_error(self):
         a, b = south(0, 5, construction=None), north(0, 5, construction=None)
         na, nb = airnode("A1", a), airnode("A2", b)

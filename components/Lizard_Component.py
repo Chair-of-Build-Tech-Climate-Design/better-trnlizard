@@ -1355,11 +1355,15 @@ def wallLayers(name, walls):
     if wall is None:
         return None
     return list(zip(wall.Layers.split(), wall.Thickness.split()))
-def frontOfPair(a, b):
+def ownSetFills(item, ownsets):
+    """Whether the set of the airnode of a surface has a construction for it, not only the set of the model."""
+    constructions = ownsets.get(item.Airnode)
+    return constructions is not None and not isFailure(constructions) and bool(getattr(constructions, constructionSlot(item), None))
+def frontOfPair(a, b, ownsets):
     """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with an active layer (the
     deck defines a circuit for the airnode of its FRONT), then the only side with a construction (it lists its layers from its own side),
-    then the floor (floor constructions list their layers from the walking surface down). Between walls the airnode that sorts first is
-    the front: guessed."""
+    then the only side filled by the set of its own airnode, then the floor (floor constructions list their layers from the walking surface
+    down). Between walls the airnode that sorts first is the front: guessed."""
     if a.Frontback != b.Frontback and (a.Frontback or b.Frontback):
         if a.Frontback == 'FRONT' or b.Frontback == 'BACK':
             return a, b, False
@@ -1372,6 +1376,10 @@ def frontOfPair(a, b):
         if a.Construction:
             return a, b, False
         return b, a, False
+    if not a.Construction and ownSetFills(a, ownsets) != ownSetFills(b, ownsets):
+        if ownSetFills(a, ownsets):
+            return a, b, False
+        return b, a, False
     if a.Type == 'FLOOR' or b.Type == 'FLOOR':
         if a.Type == 'FLOOR':
             return a, b, False
@@ -1380,6 +1388,9 @@ def frontOfPair(a, b):
     return front, back, True
 def isSymmetric(layers):
     return layers == list(reversed(layers))
+def isMirrored(first, second, walls):
+    firstlayers, secondlayers = wallLayers(first, walls), wallLayers(second, walls)
+    return firstlayers is not None and secondlayers is not None and firstlayers == list(reversed(secondlayers))
 def matchConstructions(front, back, walls, issues):
     """Both sides of a pair end up with a construction: an empty side follows the other one; two constructions must be the same or mirrored."""
     if front.Type == 'ADDWINDOW':
@@ -1403,8 +1414,7 @@ def matchConstructions(front, back, walls, issues):
         if front.Frontguessed and layers and not isSymmetric(layers):
             addIssue(issues, 'warning', "Surfaces {0} & {1} have no FRONT/BACK of their own and the non-symmetric construction {2}: {0} is used as FRONT".format(front.Surfnum, back.Surfnum, front.Construction), [front, back])
         return
-    frontlayers, backlayers = wallLayers(front.Construction, walls), wallLayers(back.Construction, walls)
-    if frontlayers is None or backlayers is None or frontlayers != list(reversed(backlayers)):
+    if not isMirrored(front.Construction, back.Construction, walls):
         addIssue(issues, 'error', "Surfaces {0} & {1} are adjacent but have the different constructions {2} and {3}".format(front.Surfnum, back.Surfnum, front.Construction, back.Construction), [front, back])
 def sumPoints(points):
     total = (0.0, 0.0, 0.0)
@@ -1436,14 +1446,14 @@ def pairWindows(front, back, issues):
         partner.Construction = window.Construction
     for window in remaining:
         addIssue(issues, 'error', "Window {0} is in the adjacent surface {1} but surface {2} has no window at the same place".format(window.Surfnum, back.Surfnum, front.Surfnum), [window])
-def pairSurfaces(a, b, issues):
+def pairSurfaces(a, b, issues, ownsets):
     """Makes two surfaces of one region adjacent. Returns (front, back) for the orientation that is shared at the end."""
     if a.Hygrothermal or b.Hygrothermal:
         addIssue(issues, 'error', "Surfaces {0} & {1} are adjacent but a HAMT surface can only be EXTERNAL or BOUNDARY".format(a.Surfnum, b.Surfnum), [a, b])
-    front, back, guessed = frontOfPair(a, b)
+    a.Boundarycond = b.Boundarycond = 'ADJACENT'
+    front, back, guessed = frontOfPair(a, b, ownsets)
     front.Frontguessed = guessed
     front.Frontback, back.Frontback = 'FRONT', 'BACK'
-    front.Boundarycond = back.Boundarycond = 'ADJACENT'
     front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
     front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
     if back.Activelayer != 0 and front.Activelayer == 0:
@@ -1602,6 +1612,7 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
                 surfaces.append(item)
         airnode.Surfaces = surfaces
     expandSurfaceOutputs(airnodes, splits)
+    ownsets = dict([(airnode.Name, airnode.Constructionset) for airnode in airnodes])
     pairs = []
     changed = []
     unmatched = []
@@ -1625,7 +1636,7 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
             for item in (a, b):
                 if item.Boundarycond in ('EXTERNAL', 'BOUNDARY') and item.Construction:
                     converted.setdefault(item.Construction, []).append(item)
-            pairs.append(pairSurfaces(a, b, issues))
+            pairs.append(pairSurfaces(a, b, issues, ownsets))
     for construction in sorted(converted, key=str):
         items = converted[construction]
         addIssue(issues, 'warning', "Surfaces {0} were not declared adjacent but face another room: they keep the construction {1}, check that it suits an inner wall".format(', '.join(sorted(set([str(item.Surfnum) for item in items]))), construction), items)
@@ -1667,7 +1678,8 @@ def constructionSlot(item):
     return 'InteriorWall'
 def fillConstructions(airnodes, pairs, modelset, library, issues):
     """Gives the surfaces without a construction the one of their slot, from the set of the airnode and then from the set of the model. A
-    surface whose partner has a construction follows that one. Matches the two sides of every pair afterwards."""
+    surface whose partner has a construction follows that one, and so does one that only has the default of the model when its partner has
+    another construction from the set of its own airnode. Matches the two sides of every pair afterwards."""
     walls = dict([(wall.Name, wall) for wall in library.Walls])
     following = []
     for front, back in pairs:
@@ -1676,6 +1688,7 @@ def fillConstructions(airnodes, pairs, modelset, library, issues):
         if back.Construction:
             following.append(id(front))
     filled = {}
+    fromdefault = {}
     for airnode in airnodes:
         sets = [item for item in (airnode.Constructionset, modelset) if item is not None and not isFailure(item)]
         for item in airnode.Surfaces:
@@ -1687,11 +1700,20 @@ def fillConstructions(airnodes, pairs, modelset, library, issues):
                 if name:
                     item.Construction = name
                     filled.setdefault((slot, name), []).append(item)
+                    if constructions is modelset:
+                        fromdefault[id(item)] = (slot, name)
                     break
+    for front, back in pairs:
+        for item, other in ((front, back), (back, front)):
+            if id(item) in fromdefault and id(other) not in fromdefault and other.Construction and other.Construction != item.Construction and not isMirrored(item.Construction, other.Construction, walls):
+                filled[fromdefault[id(item)]].remove(item)
+                item.Construction = None
     for front, back in pairs:
         matchConstructions(front, back, walls, issues)
     for slot, name in sorted(filled):
         items = filled[(slot, name)]
+        if not items:
+            continue
         addIssue(issues, 'info', "Construction set: {0} = {1} on surfaces {2}".format(slot, name, ', '.join([str(item.Surfnum) for item in items])), items)
 def subtractSurfaces(faces, explicit):
     """What remains of the faces of a solid when other surfaces lie on them. Returns ({number of a face with a surface on it: the 3D loops

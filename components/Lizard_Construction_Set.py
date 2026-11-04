@@ -8,8 +8,8 @@ All Rights Reserved.
 -
 
 Connect Set to the input ConstructionSet of Lizard_Multizone for the whole building, or of Lizard_Thermal_Airnode for one room. The
-airnode comes first, slot by slot: an empty slot is looked up in the set of the model. A construction in Lizard_Surface_Settings always
-wins. Windows and active layers need that explicit construction: a set does not fill them. A name that is not in the library makes the
+airnode comes first, slot by slot: an empty slot is looked up in the set of the model. On a wall between two rooms, the set of a room
+also goes before the set of the model of the other room. A construction in Lizard_Surface_Settings always wins. Windows and active layers need that explicit construction: a set does not fill them. A name that is not in the library makes the
 whole set fail: the components after it then stop the model, and none of its slots is used.
 
 Args:

@@ -55,3 +55,13 @@ The deck defines the circuit for the airnode of the FRONT, and only the FRONT pa
 - **Now:** an error. Changing only other settings after `Lizard_Active_Layer_Surface` still works. Another construction with pipes is not
   detected: the pipe values and `Nloops` stay those of the first one.
 - **Existing definitions:** set the construction before `Lizard_Active_Layer_Surface`.
+
+<a id="con-07"></a>
+## CON-07: The set of a room goes before the default of the other room
+
+- **Before:** with a set on one airnode and only the set of the model on the other, both sides of a wall were filled on their own. Two different
+  constructions then gave the error of [CON-02](#con-02).
+- **Now:** the side with the set of its own airnode is FRONT, and the other side follows it. A mirrored construction from the model stays. Different
+  sets on the two airnodes, and an explicit FRONT on the side that only has the default with a non-symmetric construction on the other, stay errors.
+- **Existing definitions:** nothing.
+- **Results:** none for a definition that could run, except that a mirrored pair can change direction.
