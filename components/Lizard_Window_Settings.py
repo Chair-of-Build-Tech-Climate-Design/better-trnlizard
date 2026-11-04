@@ -11,7 +11,7 @@ Args:
     -------------- Window
     Name (object): define window type (no blanks or special signs)
         Access: item
-        Required: True
+        Required: False
     WinID (object): define the window library ID number (refer to Window Type Library)
         Access: item
         Required: True
@@ -25,7 +25,7 @@ Args:
     -------------- Shading
     ShadingMovable (object): define a shading type: outside (OUT), inside (INT), outside + inside (IOT), no (NON)
         Access: item
-        Required: True
+        Required: False
         Options: OUT, INT, IOT, NON
     ShadingFractionExt (object): 0 = no shading (fully transparent) 100 = fully shaded (opaque) in %
         Access: item
@@ -52,13 +52,13 @@ Args:
     ------------- Daylight
     RadMaterial0 (object): window radiance material when shading is open, for daylight simulation
         Access: item
-        Required: True
+        Required: False
     RadMaterial1 (object): window radiance material when shading is fully closed, for daylight simulation
         Access: item
-        Required: True
+        Required: False
     ShadingGroup (object): Script variable Window
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

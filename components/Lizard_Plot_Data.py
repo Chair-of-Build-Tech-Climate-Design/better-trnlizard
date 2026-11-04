@@ -16,13 +16,13 @@ Args:
         Required: True
     AirnodeName (object): Script variable PlotData
         Access: item
-        Required: True
+        Required: False
     XOutput (object): Script variable PlotData
         Access: item
-        Required: True
+        Required: False
     YOutput (object): Script variable PlotData
         Access: list
-        Required: True
+        Required: False
 
 Returns:
     out (object): Information

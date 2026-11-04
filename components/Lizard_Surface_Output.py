@@ -10,16 +10,16 @@ See the file "License.txt" for additional terms and conditions.
 Args:
     SurfaceInfo (Brep): link the wall informations
         Access: list
-        Required: True
+        Required: False
     SelectedOutputs (object): Selected outputs to be printed out
         Access: list
-        Required: True
+        Required: False
     Filter (object): 
         Access: item
-        Required: True
+        Required: False
     UserDefName (object): Renamed selected ouputs with new user-defined name
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

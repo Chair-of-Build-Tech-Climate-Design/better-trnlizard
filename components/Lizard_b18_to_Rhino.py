@@ -19,28 +19,28 @@ Args:
         Required: True
     BakeBuilding (object): bake building
         Access: item
-        Required: True
+        Required: False
     BakeShader (object): bake shader
         Access: item
-        Required: True
+        Required: False
     BakeVirtual (object): bake virtual surfaces
         Access: item
-        Required: True
+        Required: False
     BakePoints (object): bake sensor points
         Access: item
-        Required: True
+        Required: False
     CutOutWindow (object): cut out windows overlapping on wall surfaces
         Access: item
-        Required: True
+        Required: False
     ShowSurfaceID (object): show surface ID
         Access: item
-        Required: True
+        Required: False
     ShowConstruction (object): show construction type of surface
         Access: item
-        Required: True
+        Required: False
     ShowShading (object): show shading information
         Access: item
-        Required: True
+        Required: False
     AirnodeScale (object): Script variable b18_to_Rhino
         Access: item
         Required: True

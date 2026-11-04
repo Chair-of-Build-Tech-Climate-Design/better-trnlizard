@@ -10,49 +10,49 @@ See the file "License.txt" for additional terms and conditions.
 Args:
     Title (object): String that defines the chart title
         Access: item
-        Required: True
+        Required: False
     Xlabel (object): Script variable Python
         Access: item
-        Required: True
+        Required: False
     Ylabel (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Ystart (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Ystop (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Ydticks (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Xstart (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Xstop (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Xdticks (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Data (object): Script variable PlotSettings
         Access: list
-        Required: True
+        Required: False
     Type (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Comfort (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Fill (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Image (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
     Width (object): Script variable PlotSettings
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Information

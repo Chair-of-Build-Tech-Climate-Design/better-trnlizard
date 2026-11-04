@@ -10,13 +10,13 @@ See the file "License.txt" for additional terms and conditions.
 Args:
     Output (object): Script variable PlotData
         Access: item
-        Required: True
+        Required: False
     Label (object): Script variable PlotData
         Access: item
-        Required: True
+        Required: False
     Color (object): Script variable PlotData
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Information

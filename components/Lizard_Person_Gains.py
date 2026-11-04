@@ -20,7 +20,7 @@ Args:
         Required: True
     CO2Production (object): Script variable Person Gains
         Access: item
-        Required: True
+        Required: False
     ----- WinterRedOfGains
     ReductionPercentage (object): winter reduction percentage
         Access: item
@@ -30,7 +30,7 @@ Args:
         Required: True
     AnnualSchedule (object): annual schedule of occupation
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

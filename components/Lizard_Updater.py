@@ -31,6 +31,9 @@ value the script uses when the input is not set: an input without a wire and wit
 data, in new components and in existing ones, also when their code is up to date. Stored data is never overwritten, so
 a later change of a Default only reaches inputs that hold no data yet. Both are shown in the mouse-over text of the input.
 All document changes are made right after this solution, then the report of the finished update is shown.
+A script with Required: True inputs gets one more line after its docstring, written by the updater and not part of the
+hash: it calls requireInputs of Lizard_Component with those names, which stops the script with an error when one of them
+has no data. Before Lizard_Component has run, or with one that does not have requireInputs yet, the line does nothing.
 Every script is written with the hash of its text in the first line. A script that no longer matches that hash was
 changed by hand: it is left alone and listed under errors, unless force is True, which overwrites it (the changes are
 lost). A script without that line, e.g. from an older updater, cannot be checked: it is updated as usual.
@@ -70,7 +73,7 @@ Args:
         Required: False
     runUpdate (bool): True = update the script components of this document
         Access: item
-        Required: True
+        Required: False
     makeUserObjects (bool): True or not connected = write a UserObject per script into <Grasshopper UserObjects folder>/TRNLizard; False = canvas update only
         Access: item
         Required: False
@@ -118,9 +121,12 @@ RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rh
                    u'tab.')
 SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  # first line of every script it writes
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
+REQUIRED_LINE = (u'import scriptcontext as _sc; _sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)'
+                 u'(ghenv.Component, [{0}])  # Lizard_Updater: required inputs, do not edit\n')  # after the docstring of a script with such inputs
+REQUIRED_LINE_PATTERN = u'(?m)^import scriptcontext as _sc; .*# Lizard_Updater: required inputs, do not edit[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 3                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 4                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -187,16 +193,33 @@ def getHash(content):
 
 
 def splitScriptHash(code):
-    """(hash in the first line or None, the script without that line)."""
+    """(hash in the first line or None, the script without that line and without its line of required inputs)."""
     code = code or u''
     match = re.match(SCRIPT_HASH_PATTERN, code)
-    return (match.group(1).lower(), code[match.end():]) if match else (None, code)
+    if not match:
+        return None, code
+    return match.group(1).lower(), re.sub(REQUIRED_LINE_PATTERN, u'', code[match.end():], count=1)
+
+
+def requiredLine(code):
+    """The line of required inputs that belongs to a script without its stamp lines, '' when it has no such inputs."""
+    names = [p['name'] for p in parseDocstringIO(code)[0] or [] if p['required'] and not p['separator']]
+    return REQUIRED_LINE.format(u', '.join(u'"{0}"'.format(name) for name in names)) if names else u''
+
+
+def writtenRequiredLine(code):
+    """The line of required inputs of a script as a component holds it, normalized; '' when it has none."""
+    match = re.match(SCRIPT_HASH_PATTERN, code or u'')
+    found = re.search(REQUIRED_LINE_PATTERN, code[match.end():]) if match else None
+    return found.group(0).replace(u'\r\n', u'\n') if found else u''
 
 
 def stampCode(code):
-    """The script with the hash of its text in the first line, as this updater writes it into a component."""
+    """The script with the hash of its text in the first line and its required inputs, as this updater writes it into a component."""
     body = splitScriptHash(code)[1]
-    return SCRIPT_HASH_LINE.format(getHash(body)) + body
+    docstring = re.match(r'\s*[uUrR]?""".*?"""[ \t]*\r?\n', body, re.DOTALL)  # stays the docstring of the script
+    at = docstring.end() if docstring else 0
+    return SCRIPT_HASH_LINE.format(getHash(body)) + body[:at] + requiredLine(body) + body[at:]
 
 
 def isChangedByHand(code):
@@ -949,8 +972,10 @@ def parseIcons(text):
 
 
 def userObjectHash(code, icon):
-    """Hash that decides whether a UserObject is rewritten: the script text, plus its icon when it has one."""
-    return getHash(code) if not icon else getHash(code + u'\n#icon ' + icon)
+    """Hash that decides whether a UserObject is rewritten: the script as it is written into the component (so also a new
+    line of required inputs), plus its icon when it has one."""
+    stamped = stampCode(code)
+    return getHash(stamped) if not icon else getHash(stamped + u'\n#icon ' + icon)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1591,6 +1616,7 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
                 return 'error', changedByHandMessage(name)
             log.append('WARNING: force: the changes by hand to the script of {0} are overwritten.'.format(name))
     codeChanged = codeChanged or storedHash != newHash   # also when only the hash line is missing or outdated
+    codeChanged = codeChanged or writtenRequiredLine(currentCode) != requiredLine(newCode)
     currentInputs, currentOutputs = paramNames(comp.Params.Input), paramNames(comp.Params.Output)
     inputSpecs, outputSpecs = parseDocstringIO(newCode)
     specsByName = dict((p['name'], p) for p in inputSpecs or [])

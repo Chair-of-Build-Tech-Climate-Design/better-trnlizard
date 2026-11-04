@@ -68,19 +68,19 @@ Args:
         Required: True
     Shading (Brep): Script input Shading.
         Access: list
-        Required: True
+        Required: False
     AddDaylightGeometry (Brep): Script input AddDaylightGeometry.
         Access: list
-        Required: True
+        Required: False
     Coupling (object): Script input Coupling.
         Access: list
-        Required: True
+        Required: False
     Timebase (object): Script input Timebase.
         Access: item
-        Required: True
+        Required: False
     DaylightMode (object): Script input DaylightMode.
         Access: item
-        Required: True
+        Required: False
     AutoAdjacency (bool): True = surfaces with the category EXTERNAL or BOUNDARY become adjacent where another room faces them, and are split along it; what no room faces keeps its category. Not connected = only surfaces with an empty, AUTOMATIC or ADJACENT category are looked at
         Access: item
         Required: False

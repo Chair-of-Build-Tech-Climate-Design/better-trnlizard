@@ -12,22 +12,22 @@ Args:
     --------------- MiscGain
     SpecificPower (object): specific power of gain
         Access: item
-        Required: True
+        Required: False
     Schedule (object): select gain "use" schedule (refer to Schedule Library)
         Access: item
-        Required: True
+        Required: False
     ConvectivePart (object): convective part of the gain as a fraction (0-1) of its power (radiative part = 1 - ConvectivePart); not connected = 0.6
         Access: item
-        Required: True
+        Required: False
     conv_part (float): convective part of the gain [-] (0..1, radiative part = 1 - conv_part), the input name of older copies of this component for ConvectivePart; ConvectivePart wins when both are connected; not connected = 0.6
         Access: item
         Required: False
     Humidity (object): Script variable Gains
         Access: item
-        Required: True
+        Required: False
     AnnualSchedule (object): Script variable Gains
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

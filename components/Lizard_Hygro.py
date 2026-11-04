@@ -11,10 +11,10 @@ Modified by Junfeng Xiao, 2026.
 Args:
     BRep (Brep): set one/multiple surfaces in Rhino (right click brep)
         Access: list
-        Required: True
+        Required: False
     Settings (object): Script variable Active Layer CN ID
         Access: item
-        Required: True
+        Required: False
     ------------------ hygrothermal
     datafile_assembly (object): Script variable Active Layer CN ID
         Access: item

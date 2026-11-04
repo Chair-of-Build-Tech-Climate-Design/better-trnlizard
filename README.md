@@ -68,7 +68,7 @@ For a pull request:
 
 - The `components/Lizard_*.py` scripts are IronPython 2 code. The tests run on plain Python 3: `python -m unittest discover -s tests`
 - After changing a script, icon or preset, run `python tools/build_manifest.py` and commit the result. CI checks it.
-- An input in the docstring of a script can have two more lines after `Required`. `Options: A, B` lists the values to choose from, for the mouse-over text. `Default: x` is the value the script uses when the input is not set: `Lizard_Updater` stores it on inputs that have no wire and no data, and the script has to treat "not set" the same way.
+- An input in the docstring of a script can have two more lines after `Required`. `Options: A, B` lists the values to choose from, for the mouse-over text. `Default: x` is the value the script uses when the input is not set: `Lizard_Updater` stores it on inputs that have no wire and no data, and the script has to treat "not set" the same way. `Required: True` means the script cannot run without the input: `Lizard_Updater` writes one line after the docstring that stops the script with an error when such an input has no data.
 - After changing `components/Lizard_Updater.py`, raise its `UPDATER_VERSION`. Otherwise `tools/build_manifest.py` refuses to write the manifest.
 - When a change can stop a definition or change results, add an entry to [docs/breaking-changes](docs/breaking-changes/README.md).
 

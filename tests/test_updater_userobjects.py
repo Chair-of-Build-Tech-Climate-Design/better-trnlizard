@@ -378,7 +378,7 @@ class UserObjectGlueTests(unittest.TestCase):
 
         state = self.state()
         self.assertEqual(self.updater.USEROBJECT_FORMAT, state["format"])
-        self.assertEqual({"sha256": self.updater.getHash(hygro_code), "file": "Lizard_Hygro.ghuser", "name": "Lizard_Hygro"},
+        self.assertEqual({"sha256": self.updater.userObjectHash(hygro_code, None), "file": "Lizard_Hygro.ghuser", "name": "Lizard_Hygro"},
                          state["userObjects"]["Lizard_Hygro"])
         self.assertEqual(["Lizard_Hygro", "Lizard_Simple", "Lizard_Updater"], sorted(state["userObjects"]))
         self.assertIn("UpdateRibbonUI", self.ribbon)

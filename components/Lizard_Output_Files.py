@@ -10,10 +10,10 @@ See the file "License.txt" for additional terms and conditions.
 Args:
     Variants (object): Simulation output files
         Access: list
-        Required: True
+        Required: False
     FocusAirnode (object): Selecting focused airnode to post-process result
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): 
