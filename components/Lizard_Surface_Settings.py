@@ -15,6 +15,7 @@ Args:
     Category (object): define boundary conditions of surface. Empty = keep the value of the surface; if it has none, adjacent where another room faces it, otherwise what FallbackBoundary of Lizard_Component gives. AUTOMATIC = back to that rule. GROUND = BOUNDARY with BoundaryTemperature Tsoil
         Access: item
         Required: False
+        Options: AUTOMATIC, EXTERNAL, ADJACENT, BOUNDARY, GROUND
     --------------------- Boundary
     BoundaryTemperature (str): use if category = boundary and if boundary temp. is not identical
         Access: item

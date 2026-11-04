@@ -11,23 +11,23 @@ Args:
     ------ DomesticHotWater
     FreshWaterTemperature (object): temperature of water source (system inlet)
         Access: item
-        Required: True
+        Required: False
     HotWaterTemperature (object): set point for water supply temperature (system outlet)
         Access: item
-        Required: True
+        Required: False
     -------------
     HotWaterPerPersonPerDay (object): amount of hot water used by one person in a day
         Access: item
-        Required: True
+        Required: False
     Schedule (object): select DHW schedule (matching full_load_hours)
         Access: item
         Required: True
     or ------------- (object): Script variable DHW
         Access: item
-        Required: True
+        Required: False
     HourlyValuesFileName (object): Script variable DHW
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

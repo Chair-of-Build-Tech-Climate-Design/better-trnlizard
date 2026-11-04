@@ -26,7 +26,14 @@ next to the old one, wired by param name and put into a red group; the old compo
 params and wires for reference;
 - order-only differences: the params are kept, a note is logged;
 - inside clusters only additions are applied, anything else is reported as manual update needed.
+Two more docstring lines belong to an input. "Options: A, B" only documents the values to choose from. "Default: x" is the
+value the script uses when the input is not set: an input without a wire and without data of its own gets it as stored
+data, in new components and in existing ones, also when their code is up to date. Stored data is never overwritten, so
+a later change of a Default only reaches inputs that hold no data yet. Both are shown in the mouse-over text of the input.
 All document changes are made right after this solution, then the report of the finished update is shown.
+A script with Required: True inputs gets one more line after its docstring, written by the updater and not part of the
+hash: it calls requireInputs of Lizard_Component with those names, which stops the script with an error when one of them
+has no data. Before Lizard_Component has run, or with one that does not have requireInputs yet, the line does nothing.
 Every script is written with the hash of its text in the first line. A script that no longer matches that hash was
 changed by hand: it is left alone and listed under errors, unless force is True, which overwrites it (the changes are
 lost). A script without that line, e.g. from an older updater, cannot be checked: it is updated as usual.
@@ -66,7 +73,7 @@ Args:
         Required: False
     runUpdate (bool): True = update the script components of this document
         Access: item
-        Required: True
+        Required: False
     makeUserObjects (bool): True or not connected = write a UserObject per script into <Grasshopper UserObjects folder>/TRNLizard; False = canvas update only
         Access: item
         Required: False
@@ -114,9 +121,12 @@ RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rh
                    u'tab.')
 SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  # first line of every script it writes
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
+REQUIRED_LINE = (u'import scriptcontext as _sc; _sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)'
+                 u'(ghenv.Component, [{0}])  # Lizard_Updater: required inputs, do not edit\n')  # after the docstring of a script with such inputs
+REQUIRED_LINE_PATTERN = u'(?m)^import scriptcontext as _sc; .*# Lizard_Updater: required inputs, do not edit[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 2                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 4                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -183,16 +193,33 @@ def getHash(content):
 
 
 def splitScriptHash(code):
-    """(hash in the first line or None, the script without that line)."""
+    """(hash in the first line or None, the script without that line and without its line of required inputs)."""
     code = code or u''
     match = re.match(SCRIPT_HASH_PATTERN, code)
-    return (match.group(1).lower(), code[match.end():]) if match else (None, code)
+    if not match:
+        return None, code
+    return match.group(1).lower(), re.sub(REQUIRED_LINE_PATTERN, u'', code[match.end():], count=1)
+
+
+def requiredLine(code):
+    """The line of required inputs that belongs to a script without its stamp lines, '' when it has no such inputs."""
+    names = [p['name'] for p in parseDocstringIO(code)[0] or [] if p['required'] and not p['separator']]
+    return REQUIRED_LINE.format(u', '.join(u'"{0}"'.format(name) for name in names)) if names else u''
+
+
+def writtenRequiredLine(code):
+    """The line of required inputs of a script as a component holds it, normalized; '' when it has none."""
+    match = re.match(SCRIPT_HASH_PATTERN, code or u'')
+    found = re.search(REQUIRED_LINE_PATTERN, code[match.end():]) if match else None
+    return found.group(0).replace(u'\r\n', u'\n') if found else u''
 
 
 def stampCode(code):
-    """The script with the hash of its text in the first line, as this updater writes it into a component."""
+    """The script with the hash of its text in the first line and its required inputs, as this updater writes it into a component."""
     body = splitScriptHash(code)[1]
-    return SCRIPT_HASH_LINE.format(getHash(body)) + body
+    docstring = re.match(r'\s*[uUrR]?""".*?"""[ \t]*\r?\n', body, re.DOTALL)  # stays the docstring of the script
+    at = docstring.end() if docstring else 0
+    return SCRIPT_HASH_LINE.format(getHash(body)) + body[:at] + requiredLine(body) + body[at:]
 
 
 def isChangedByHand(code):
@@ -254,9 +281,11 @@ def parseDocstringIO(code):
     """Inputs and outputs declared in the Args/Returns sections of the first docstring of a script.
 
     Returns (inputs, outputs); a side is None when its section is missing, otherwise a list of dicts with the keys
-    name, type, description, access ('item', 'list' or 'tree', default 'item'), required (default False) and separator.
-    Param lines have exactly 4 spaces of indent, 'Name (type): description', followed by 8-space 'Access: x' and
-    'Required: y' lines; a 4-space line without ': ' after the name is a separator param (e.g. '------- hygrothermal').
+    name, type, description, access ('item', 'list' or 'tree', default 'item'), required (default False), default (the
+    text of the value, default None), options (list of text) and separator.
+    Param lines have exactly 4 spaces of indent, 'Name (type): description', followed by 8-space 'Access: x',
+    'Required: y', 'Default: z' and 'Options: a, b' lines (an older updater skips the last two);
+    a 4-space line without ': ' after the name is a separator param (e.g. '------- hygrothermal').
     """
     docMatch = re.search(r'"""(.*?)"""', code or u'', re.DOTALL)
     if not docMatch:
@@ -278,10 +307,11 @@ def parseDocstringIO(code):
             m = re.match(r'^    ([^(:]+?)(?:\s*\(([^)]*)\))?\s*:\s', line)
             if m:
                 current = {'name': m.group(1).strip(), 'type': (m.group(2) or u'').strip(),
-                           'description': line[m.end():].strip(), 'access': 'item', 'required': False, 'separator': False}
+                           'description': line[m.end():].strip(), 'access': 'item', 'required': False,
+                           'default': None, 'options': [], 'separator': False}
             else:  # separator line (no colon)
                 current = {'name': line.strip(), 'type': u'', 'description': u'', 'access': 'item', 'required': False,
-                           'separator': True}
+                           'default': None, 'options': [], 'separator': True}
             (inputs if section == 'in' else outputs).append(current)
         elif current is not None and re.match(r'^        \S', line):
             m = re.match(r'^        (Access|Required)\s*:\s*(\S+)', line)
@@ -289,7 +319,47 @@ def parseDocstringIO(code):
                 current['access'] = m.group(2).lower()
             elif m and m.group(1) == 'Required':
                 current['required'] = m.group(2).lower() == 'true'
+            m = re.match(r'^        (Default|Options)\s*:\s*(.*\S)', line)
+            if m and m.group(1) == 'Default':
+                current['default'] = m.group(2)
+            elif m:
+                current['options'] = [option.strip() for option in m.group(2).split(u',') if option.strip()]
     return inputs, outputs
+
+
+def paramTooltip(spec):
+    """Mouse-over text of a param: its description, then its Options and its Default."""
+    lines = [spec['description']] if spec['description'] else []
+    if spec.get('options'):
+        lines.append(u'Options: ' + u', '.join(spec['options']))
+    if spec.get('default') is not None:
+        lines.append(u'Default: ' + spec['default'])
+    return u'\n'.join(lines)
+
+
+def defaultValue(spec):
+    """(kind, value) of the Default of a param, kind 'bool', 'int', 'float' or 'str' after its docstring type; an object
+    param takes the kind the text looks like. ValueError when the text does not fit the type, or for a geometry type."""
+    text = spec['default']
+    key = (spec['type'] or u'').strip().lower()
+    key = TYPE_ALIASES.get(key, key)
+    if key not in TYPE_HINTS:
+        lowered = text.lower()
+        if lowered in (u'true', u'false'):
+            return 'bool', lowered == u'true'
+        for kind, convert in (('int', int), ('float', float)):
+            try:
+                return kind, convert(text)
+            except ValueError:
+                pass
+        return 'str', text
+    if key == 'str':
+        return 'str', text
+    if key == 'bool' and text.lower() in (u'true', u'false'):
+        return 'bool', text.lower() == u'true'
+    if key in ('int', 'float'):
+        return key, {'int': int, 'float': float}[key](text)
+    raise ValueError(u"Default '{0}' of {1} does not fit its type {2}".format(text, spec['name'], spec['type']))
 
 
 def parseIONames(code):
@@ -902,8 +972,10 @@ def parseIcons(text):
 
 
 def userObjectHash(code, icon):
-    """Hash that decides whether a UserObject is rewritten: the script text, plus its icon when it has one."""
-    return getHash(code) if not icon else getHash(code + u'\n#icon ' + icon)
+    """Hash that decides whether a UserObject is rewritten: the script as it is written into the component (so also a new
+    line of required inputs), plus its icon when it has one."""
+    stamped = stampCode(code)
+    return getHash(stamped) if not icon else getHash(stamped + u'\n#icon ' + icon)
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -1175,6 +1247,67 @@ def clrType(typeName):
     return None
 
 
+def setParamDoc(param, kind, text):
+    """Set the mouse-over text of a param."""
+    if kind == KIND_GHPYTHON or not _setIfPresent(param, 'ToolTip', text):
+        param.Description = text
+
+
+def staleParamDocs(comp, kind, specs):
+    """The inputs with Options or a Default whose mouse-over text differs from the docstring: [(param, text)]."""
+    stale = []
+    for param in map(_impl, comp.Params.Input):
+        spec = specs.get(str(param.Name))
+        if spec is None or (spec['default'] is None and not spec['options']):
+            continue
+        current = getattr(param, 'ToolTip', None) if kind != KIND_GHPYTHON else None
+        if current is None:
+            current = param.Description
+        text = paramTooltip(spec)
+        if normalizeCode(u'{0}'.format(current)) != normalizeCode(text):
+            stale.append((param, text))
+    return stale
+
+
+def inputsToFill(comp, specs):
+    """(inputs that get their Default as stored data: no wire, no stored data, [(param, spec)]; problems, [text])."""
+    fill, problems = [], []
+    for param in map(_impl, comp.Params.Input):
+        spec = specs.get(str(param.Name))
+        if spec is None or spec['default'] is None or param.SourceCount > 0:
+            continue
+        if not hasattr(param, 'PersistentDataCount'):
+            problems.append(u'{0} of {1} cannot store its Default: this param holds no data of its own'.format(param.Name, comp.Name))
+        elif param.PersistentDataCount == 0:
+            try:
+                defaultValue(spec)
+                fill.append((param, spec))
+            except ValueError as e:
+                problems.append(u'{0} of {1}: {2}'.format(param.Name, comp.Name, e))
+    return fill, problems
+
+
+def applyParamDetails(comp, kind, specs, notes):
+    """Bring the mouse-over text of the inputs up to date and store the Default of the inputs that have no data."""
+    for param, text in staleParamDocs(comp, kind, specs):
+        setParamDoc(param, kind, text)
+    fill, problems = inputsToFill(comp, specs)
+    notes.extend(problems)
+    for param, spec in fill:
+        kindName, value = defaultValue(spec)
+        types = Grasshopper.Kernel.Types
+        goo = {'bool': types.GH_Boolean, 'int': types.GH_Integer, 'float': types.GH_Number, 'str': types.GH_String}[kindName]
+        try:
+            param.SetPersistentData(goo(value))
+        except Exception as e:
+            notes.append(u'could not store the Default of {0}: {1}'.format(param.Name, e))
+            continue
+        if param.PersistentDataCount == 0:
+            notes.append(u'could not store the Default of {0}: it stays empty'.format(param.Name))
+        else:
+            notes.append(u'{0} got its Default {1}'.format(param.Name, spec['default']))
+
+
 def createParam(vpc, side, index, spec, kind, isInput):
     """A new param from the component's own factory, named and configured after its docstring spec."""
     param = _impl(vpc.call('CreateParameter', side, index))
@@ -1185,8 +1318,7 @@ def createParam(vpc, side, index, spec, kind, isInput):
     param.NickName = name
     _setIfPresent(param, 'VariableName', name)  # Rhino 8 script params: name of the script variable
     _setIfPresent(param, 'PrettyName', name)
-    if kind == KIND_GHPYTHON or not _setIfPresent(param, 'ToolTip', spec['description']):
-        param.Description = spec['description']
+    setParamDoc(param, kind, paramTooltip(spec))
     if isInput:
         param.Access = accessValue(spec['access'])
         param.Optional = not spec['required']  # legacy GhPython keeps all its inputs optional
@@ -1361,6 +1493,7 @@ def applyInPlace(doc, action, log):
     if action['what'] == 'add':
         applyParamChanges(comp, action['kind'], action, notes)
     applyListAccess(comp, notes)
+    applyParamDetails(comp, action['kind'], action['inputSpecs'], notes)
     if action['codeChanged']:
         writeComponentCode(comp, action['kind'], action['code'])
     comp.ExpireSolution(False)
@@ -1377,6 +1510,7 @@ def applyReplacement(doc, action, log):
     new = copyComponent(old)
     applyParamChanges(new, action['kind'], action, notes)
     applyListAccess(new, notes)
+    applyParamDetails(new, action['kind'], action['inputSpecs'], notes)
     writeComponentCode(new, action['kind'], action['code'])
     pivot = old.Attributes.Pivot
     new.Attributes.Pivot = drawing().PointF(pivot.X + REPLACEMENT_OFFSET, pivot.Y + REPLACEMENT_OFFSET)
@@ -1482,8 +1616,10 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
                 return 'error', changedByHandMessage(name)
             log.append('WARNING: force: the changes by hand to the script of {0} are overwritten.'.format(name))
     codeChanged = codeChanged or storedHash != newHash   # also when only the hash line is missing or outdated
+    codeChanged = codeChanged or writtenRequiredLine(currentCode) != requiredLine(newCode)
     currentInputs, currentOutputs = paramNames(comp.Params.Input), paramNames(comp.Params.Output)
     inputSpecs, outputSpecs = parseDocstringIO(newCode)
+    specsByName = dict((p['name'], p) for p in inputSpecs or [])
     log.append('Current inputs:  {0}'.format(currentInputs))
     log.append('Current outputs: {0}'.format(currentOutputs))
     log.append('New script inputs:  {0}'.format([p['name'] for p in inputSpecs or []]))
@@ -1497,7 +1633,11 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
     what = decideAction(codeChanged, plan, cluster is not None, bool(comp.Locked))
     if what == 'skip' and inputsWithoutListAccess(comp):
         what = 'code'  # an updater from before LIST_ACCESS_INPUTS brought the code and left the access
+    if what == 'skip' and not comp.Locked and (staleParamDocs(comp, kind, specsByName) or inputsToFill(comp, specsByName)[0]):
+        what = 'code'  # the code is up to date, a mouse-over text or a Default is not
     if what == 'skip':
+        for problem in inputsToFill(comp, specsByName)[1]:
+            log.append('Note: ' + problem)
         return 'skipped', 'Component {0} is already up to date.'.format(name)
     if what == 'locked':
         return 'skipped', ('Component {0} is locked and its IO would lose params ({1}): left alone, it is probably the old '
@@ -1512,7 +1652,7 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
         log.append('Note: SDK-mode script: check that RunScript takes the new inputs')
     action = {'name': name, 'component': comp, 'cluster': cluster, 'kind': kind, 'what': what, 'plan': plan,
               'code': newCode, 'codeChanged': codeChanged,
-              'inputSpecs': dict((p['name'], p) for p in inputSpecs or []),
+              'inputSpecs': specsByName,
               'outputSpecs': dict((p['name'], p) for p in outputSpecs or [])}
     descriptions = {'code': 'code update', 'add': 'params added in place', 'replace': 'replaced by a new copy, old one locked'}
     detail = describePlan(plan)
@@ -2099,12 +2239,14 @@ def updateTemplateDocument(doc, scripts, shared, counts):
                 new = copyComponent(obj)
                 applyParamChanges(new, result['kind'], result, notes)
                 applyListAccess(new, notes)
+                applyParamDetails(new, result['kind'], result['inputSpecs'], notes)
                 writeComponentCode(new, result['kind'], result['code'])
                 swapObject(doc, obj, new)
             else:
                 if result['what'] == 'add':
                     applyParamChanges(obj, result['kind'], result, notes)
                 applyListAccess(obj, notes)
+                applyParamDetails(obj, result['kind'], result['inputSpecs'], notes)
                 if result['codeChanged']:
                     writeComponentCode(obj, result['kind'], result['code'])
             counts['scripts'] += 1
@@ -2225,6 +2367,7 @@ def buildUserObjectComponent(componentGuid, entry, notes):
     action = {'plan': plan, 'inputSpecs': dict((p['name'], p) for p in inputSpecs or []),
               'outputSpecs': dict((p['name'], p) for p in outputSpecs or [])}
     applyParamChanges(comp, kind, action, notes)
+    applyParamDetails(comp, kind, action['inputSpecs'], notes)
     info = entry['info']
     comp.Name = info['name']
     comp.NickName = info['nickName']

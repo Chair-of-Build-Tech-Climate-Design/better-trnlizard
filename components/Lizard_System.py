@@ -11,73 +11,74 @@ Modified by Junfeng Xiao, 2026.
 Args:
     Reload (object): set this to true if information in the library is changing or the template of the dck
         Access: item
-        Required: True
+        Required: False
     ReportTemplate (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     DckTemplate (object): this definition is used in order to replace the @variables with the information given in the variables dict
         Access: list
-        Required: True
+        Required: False
     Multizone (object): connect the output from the Multizone component
         Access: item
-        Required: True
+        Required: False
     WriteSimulationFiles (object): generating simulation files
         Access: item
-        Required: True
+        Required: False
     RunDaylightPreprocessing (object): this launches the daylight coefficient generation
         Access: item
-        Required: True
+        Required: False
     RunThermalPreprocessing (object): this launches the matrices generation
         Access: item
-        Required: True
+        Required: False
     RunThermalSimulation (object): this launches the matrices generation followed by the TRNEXE
         Access: item
-        Required: True
+        Required: False
     SimTimestep (object): define the simulation time step
         Access: item
-        Required: True
+        Required: False
     SimTolerance (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     SimMaxIteration (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     SimMaxWarning (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     StartDay (object): first day of simulation time
         Access: item
-        Required: True
+        Required: False
     StartMonth (object): first month of simulation time
         Access: item
-        Required: True
+        Required: False
     StopDay (object): last day of simulation time
         Access: item
-        Required: True
+        Required: False
     StopMonth (object): last month of simulation time
         Access: item
-        Required: True
+        Required: False
     UserEquations (object): define Equations that will be directly written in the dck file
         Access: list
-        Required: True
+        Required: False
     UserOutputs (object): define Variables that will be directly plotted in the dck file
         Access: list
-        Required: True
+        Required: False
     ResFocusAirnode (object): link the Airnode name for that you want to show details in the Online Plotter. Only one name can be linked.
         Access: item
-        Required: True
+        Required: False
     SystemComponents (object): Script variable Thermal System
         Access: list
-        Required: True
+        Required: False
     t395_udepth (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     t395_udivnum (object): Script variable Thermal System
         Access: item
-        Required: True
+        Required: False
     ShowPlotter (bool): True or not connected = draw the TRNSYS online plotters (Type65) while the simulation runs; False = keep them hidden (faster, for batch runs)
         Access: item
         Required: False
+        Default: True
 
 Returns:
     out (object): Log Information!!!

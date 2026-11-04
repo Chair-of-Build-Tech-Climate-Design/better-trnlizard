@@ -43,7 +43,7 @@ class AirnodeCapacitanceTests(unittest.TestCase):
 
     def test_declared_input(self):
         source = SOURCE.read_text(encoding="utf-8-sig")
-        self.assertRegex(source, r"\n    CapacitanceFactor \(float\): .*Not connected = 3")
+        self.assertRegex(source, r"\n    CapacitanceFactor \(float\): .*\n(?:        .*\n)*?        Default: 3\n")
         self.assertIn('"CapacitanceFactor"]', source)
 
 

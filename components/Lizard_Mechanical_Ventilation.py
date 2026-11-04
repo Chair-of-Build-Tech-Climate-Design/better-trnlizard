@@ -11,19 +11,19 @@ Args:
     ------- Hybr.Ventilation
     Mode (object): Script variable Mechanical Ventilation
         Access: item
-        Required: True
+        Required: False
     ACH (object): air changes per hour driven by mechanical ventilation
         Access: item
-        Required: True
+        Required: False
     OrAbsoluteVolumeFlow (object): optional you can define the volume flow instead of ACH
         Access: item
         Required: False
     OrPersonRelatedVolumeFlow (object): in m?/(h.Person), persons are defined in the zone component
         Access: item
-        Required: True
+        Required: False
     MinACH (object): min. air changes for 24/7
         Access: item
-        Required: True
+        Required: False
     ScheduleACH (object): define the schedule when ACH definitions for ventilation rates are to be applied
         Access: item
         Required: True
@@ -33,54 +33,54 @@ Args:
     -------- MechanicalVentilation
     SupplyTempWinterOcc (object): Supply temperature in occupied hours
         Access: item
-        Required: True
+        Required: False
     SupplyTempWinterUnocc (object): Supply temperature in unoccupied hours
         Access: item
-        Required: True
+        Required: False
     MinSupplyAirHumidity (object): to set minimum humidity level of supply air in winter
         Access: item
-        Required: True
+        Required: False
     SupplyTempSummerOcc (object): Supply temperature in occupied hours
         Access: item
-        Required: True
+        Required: False
     SupplyTempSummerUnocc (object): Supply temperature in unoccupied hours
         Access: item
-        Required: True
+        Required: False
     MaxSupplyAirHumidity (object): to set maximum humidity level of supply air in summer
         Access: item
-        Required: True
+        Required: False
     SensibleHeatRecovery (object): Sensible Heat recovery efficiency in %/100
         Access: item
-        Required: True
+        Required: False
     LatentHeatRecovery (object): Latent Heat recovery efficiency in %/100
         Access: item
-        Required: True
+        Required: False
     SpecFanPower (object): Script input spec_fan_power.
         Access: item
-        Required: True
+        Required: False
     -------- NaturalVentilation
     Activated (object): Use hybrid ventilation
         Access: item
-        Required: True
+        Required: False
     NaturalIfTairOutsideAbove (object): in natural mode if ambient temperature is above this value
         Access: item
-        Required: True
+        Required: False
     NaturalIfTairOutsideBelow (object): in natural mode if ambient temperature is below this value
         Access: item
-        Required: True
+        Required: False
     -------------------- Additional
     RefTempSeason (object): define which temperature is used to determine the seasonal operation between summer and winter
         Access: item
-        Required: True
+        Required: False
     SummerRefTempSeasonAbove (object): setpoint temperature above that summer operation mode is active
         Access: item
-        Required: True
+        Required: False
     ActivateWinterReduction (object): Use reduced ventilation rates in winter
         Access: item
-        Required: True
+        Required: False
     WinterFraction (object): Define the fraction of winter ventilation
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

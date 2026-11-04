@@ -11,23 +11,23 @@ Args:
     --------------- Equipment
     PowerEquipmentGain (object): specific power of computer in Watts
         Access: item
-        Required: True
+        Required: False
     ScheduleEquipmentGain (object): select computer use schedule (refer to Schedule Library)
         Access: item
-        Required: True
+        Required: False
     ConvPartEquipmentGain (object): convective part of computer gain
         Access: item
-        Required: True
+        Required: False
     ----- WinterRedOfGains
     ReductionPercentage (object): Script variable Gains
         Access: item
-        Required: True
+        Required: False
     OnTairoutside24hBelow (object): Script variable Gains
         Access: item
-        Required: True
+        Required: False
     AnnualSchedule (object): Script variable Equipment Gains
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

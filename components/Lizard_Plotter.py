@@ -11,16 +11,16 @@ Modified by Junfeng Xiao, 2026.
 Args:
     Settings (object): Script variable Plot
         Access: list
-        Required: True
+        Required: False
     ScriptPath (object): Script variable Plot
         Access: item
-        Required: True
+        Required: False
     OutputFilePath (object): Script variable Plot
         Access: item
         Required: True
     Plot (object): 
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): 

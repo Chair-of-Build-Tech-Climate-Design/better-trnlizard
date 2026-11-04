@@ -13,7 +13,7 @@ Args:
         Required: True
     Hours_Domains (object): define the occupation times
         Access: list
-        Required: True
+        Required: False
 
 Returns:
     out (object): The execution information, as output and error streams

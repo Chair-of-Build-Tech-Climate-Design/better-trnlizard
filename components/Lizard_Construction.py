@@ -16,16 +16,16 @@ Args:
         Required: True
     Abs_Front (object): define solar absorptance at front side [%/100]
         Access: item
-        Required: True
+        Required: False
     Abs_Back (object): define solar absorptance at back side [%/100]
         Access: item
-        Required: True
+        Required: False
     H_Front (object): define convective heat exchange coefficient at front side [kJ/(h.m2.K)]
         Access: item
-        Required: True
+        Required: False
     H_Back (object): define convective heat exchange coefficient at back side [kJ/(h.m2.K)]
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): The execution information, as output and error streams

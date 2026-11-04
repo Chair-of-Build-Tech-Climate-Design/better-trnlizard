@@ -11,10 +11,10 @@ Modified by Junfeng Xiao, 2026.
 Args:
     BRep (Brep): set one/multiple surfaces in Rhino (right click brep)
         Access: list
-        Required: True
+        Required: False
     Settings (object): Script variable Active Layer CN ID
         Access: item
-        Required: True
+        Required: False
     ------------------ hygrothermal
     datafile_assembly (object): Script variable Active Layer CN ID
         Access: item
@@ -22,9 +22,11 @@ Args:
     write_report (bool): True or not connected = Type 395 writes its report rows into the files Type395_0<unit>*.out (parameter 6 = 1); False = no report rows (parameter 6 = -1, Type 395 writes only for a value > 0; the files are still created with their headers)
         Access: item
         Required: False
-    report_interval (float): hours between two report rows (parameter 7), > 0; not connected = 1. Type 395 rounds it to 0.0001 h and writes a row at the end of the first time step at which at least this time has passed since the last row
+        Default: True
+    report_interval (float): hours between two report rows (parameter 7), > 0. Type 395 rounds it to 0.0001 h and writes a row at the end of the first time step at which at least this time has passed since the last row
         Access: item
         Required: False
+        Default: 1
     add_heat_depth (float): depth [m] from the side-2 surface (the TB2 face: outside of an EXTCALEXT wall, neighbour side of an EXTCALBND wall; x = 0 in Type 395, layers in the order of the material file) to the point that receives add_heat and gives the userdef outputs 5-7 (T, RH, water) (parameter 5); linear between the two nearest cell centres, clamped to the first/last cell; not connected = t395_udepth of the System component, else 0.02
         Access: item
         Required: False

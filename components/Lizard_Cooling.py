@@ -11,28 +11,28 @@ Args:
     ------------------ Cooling
     SetTemperature (object): maximum temperature in zone
         Access: item
-        Required: True
+        Required: False
     MaxSpecCoolPower (object): maximum specific cooling power
         Access: item
-        Required: True
+        Required: False
     ControlledTemperature (object): temperature being control by ideal cooling
         Access: item
-        Required: True
+        Required: False
     MaxRelHum (object): maximum relative humidity in zone
         Access: item
-        Required: True
+        Required: False
     NightSetUp (object): allowed temperature increase in zone at nighttime
         Access: item
-        Required: True
+        Required: False
     Schedule (object): schedule for Cooling control (Refer to Schedule Library)
         Access: item
         Required: True
     OnTairOutside24hAbove (object): only start ideal cooling if Tamb_m24 above this value
         Access: item
-        Required: True
+        Required: False
     ControlledBasedOn (object): You can link either an existing airnode name or a type of place holder variable name in order to make a userdefined control temperature. If you are using a non existing airnode or zone name you will have to add at least those variables Tair_dummyname, Top_dummyname in OPERATIVE mode and Tset_cl_red_dummyname as setpoint temperature
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

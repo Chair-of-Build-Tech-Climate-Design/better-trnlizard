@@ -20,9 +20,10 @@ Args:
         e.g. "0.8 -0.2 -0.2 -0.2"; a single text is used for all nodes
         Access: list
         Required: False
-    WindDirections (str): wind directions of the Cp values in degrees (0 = wind from north, 90 = from east), default "0 90 180 270"
+    WindDirections (str): wind directions of the Cp values in degrees (0 = wind from north, 90 = from east)
         Access: item
         Required: False
+        Default: 0 90 180 270
     CpRefHeight (float): height in m above the building reference level (ground) of the wind speed that belongs to the Cp values,
         usually the height of the eaves, default 10
         Access: item
@@ -35,9 +36,11 @@ Args:
     LinkNames (str): unique names of the links; the prefix CR_ (crack) or WI_ (opening) is added if it is missing
         Access: list
         Required: False
-    LinkTypes (str): CRACK or OPENING per link, default CRACK
+    LinkTypes (str): CRACK or OPENING per link
         Access: list
         Required: False
+        Options: CRACK, OPENING
+        Default: CRACK
     FromNodes (str): name of the node on the From side (external node or airnode), positive flow direction From -> To
         Access: list
         Required: False
@@ -57,21 +60,26 @@ Args:
         in the deck).  Default 1 for a CRACK and 0 for an OPENING
         Access: list
         Required: False
-    CrackCs (float): air mass flow coefficient of a CRACK in kg/s at 1 Pa, default 0.002
+    CrackCs (float): air mass flow coefficient of a CRACK in kg/s at 1 Pa
         Access: list
         Required: False
-    CrackExpn (float): flow exponent of a CRACK, 0.5 turbulent to 1 laminar, default 0.66
+        Default: 0.002
+    CrackExpn (float): flow exponent of a CRACK, 0.5 turbulent to 1 laminar
         Access: list
         Required: False
-    OpeningWidth (float): width of the fully open OPENING in m, default 1
+        Default: 0.66
+    OpeningWidth (float): width of the fully open OPENING in m
         Access: list
         Required: False
-    OpeningHeight (float): height of the fully open OPENING in m, default 1
+        Default: 1
+    OpeningHeight (float): height of the fully open OPENING in m
         Access: list
         Required: False
-    OpeningCd (float): discharge coefficient of the OPENING, default 0.6
+        Default: 1
+    OpeningCd (float): discharge coefficient of the OPENING
         Access: list
         Required: False
+        Default: 0.6
     OpeningOwnHeightFactor (float): 1 = opening in a vertical wall (window, door), 0 = in a horizontal floor or ceiling (one way
         flow only), default 1
         Access: list

@@ -18,37 +18,37 @@ Args:
         Required: True
     SurfaceInfo (Brep): link all airnode related surface definitions and/or one closed solid. A solid becomes its faces, without boundary condition and construction; a surface given here that lies on one of its faces replaces that part of the face
         Access: list
-        Required: True
+        Required: False
     Regime (object): connect the regime component
         Access: item
-        Required: True
+        Required: False
     AreaPerPerson (object): define the area per person in order to quantify the regime definitions
         Access: item
         Required: True
     VolumeUserDef (object): define a value if the volume is different from the geometrical volume
         Access: item
-        Required: True
+        Required: False
     RefAreaBRepUserDef (Brep): set geometry for reference floor area calculation
         Access: list
-        Required: True
+        Required: False
     TotAirnodeAreaBRep (Brep): set geometry for reference of the total load calculation to p_tot_1h.prn
         Access: list
-        Required: True
+        Required: False
     ComfortPts (object): define the geometrical points for those a comfort evaluation would be possible by the regime definition
         Access: list
-        Required: True
+        Required: False
     DaylightCtrl (object): Script variable Thermal Airnode
         Access: list
-        Required: True
+        Required: False
     OutputInfo (object): link additional userdefined output information
         Access: list
-        Required: True
+        Required: False
     ComplexShade (object): Script variable Thermal Airnode
         Access: item
-        Required: True
+        Required: False
     Sequence (object): Script variable Thermal Airnode
         Access: item
-        Required: True
+        Required: False
     BeamMode (object): Contains a collection of script-friendly data
         Access: item
         Required: True
@@ -60,10 +60,11 @@ Args:
         Required: True
     Wcapr (object): Script variable Thermal Airnode
         Access: item
-        Required: True
-    CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor. Not connected = 3
+        Required: False
+    CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor.
         Access: item
         Required: False
+        Default: 3
     ConstructionSet (object): default constructions from Lizard_Construction_Set for the surfaces of this airnode that have none after the adjacency is solved; comes before the set of Lizard_Multizone, slot by slot
         Access: item
         Required: False

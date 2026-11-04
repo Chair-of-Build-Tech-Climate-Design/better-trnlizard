@@ -22,6 +22,7 @@ Args:
     TempCtrlStackVent (object): define which information drives the air flow, LAST or MEAN or FIRST
         Access: item
         Required: False
+        Options: FIRST, LAST, MEAN
     ScalingFactor (object): increase the air flow by the scaling factor
         Access: item
         Required: False

@@ -12,46 +12,46 @@ Modified by Junfeng Xiao, 2026.
 Args:
     PeopleGain (object): Link people gains for zone; several gains each keep their own power and schedule
         Access: list
-        Required: True
+        Required: False
     EquipmentGain (object): Link computer gains for zone; several gains each keep their own power and schedule
         Access: list
-        Required: True
+        Required: False
     LightGain (object): Link lighting gains for zone; several gains each keep their own power and schedule
         Access: list
-        Required: True
+        Required: False
     MiscGain (object): Link other gains for zone; several gains each keep their own power and schedule
         Access: list
-        Required: True
+        Required: False
     HamtGain (object): Script variable Zone Regime
         Access: item
-        Required: True
+        Required: False
     ThbGain (object): Link thermal bridge gains for zone
         Access: item
-        Required: True
+        Required: False
     Heating (object): Link airnode heating definition
         Access: item
-        Required: True
+        Required: False
     Dhw (object): Link DHW Regime
         Access: item
-        Required: True
+        Required: False
     Cooling (object): Link airnode cooling definition
         Access: item
-        Required: True
+        Required: False
     Infiltration (object): Link airnode infiltration definition
         Access: item
-        Required: True
+        Required: False
     Ventilation (object): Link airnode ventilation definitions (mechanical, stack)
         Access: item
-        Required: True
+        Required: False
     StackVentilation1 (object): Link airnode stack ventilation definitions (mechanical, stack)
         Access: item
-        Required: True
+        Required: False
     StackVentilation2 (object): Link airnode stack ventilation definitions (mechanical, stack)
         Access: item
-        Required: True
+        Required: False
     Comfort (object): Link comfort definition
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

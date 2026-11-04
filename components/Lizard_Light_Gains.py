@@ -11,20 +11,20 @@ Args:
     -------- ArtificialLight
     ScheduleLightGain (object): select artificial lighting use schedule (refer to Schedule Library)
         Access: item
-        Required: True
+        Required: False
     SpecPowerLightGain (object): Define the area specific lighting power in W/m?
         Access: item
-        Required: True
+        Required: False
     ConvPartLightGain (object): convective part of lighting gain
         Access: item
-        Required: True
+        Required: False
     ----- Daylight Control
     UseDaylightCtrl (object): Define if daylight grid with airnode specific control settings should be applied.
         Access: item
-        Required: True
+        Required: False
     AnnualSchedule (object): Script variable Light Gains
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

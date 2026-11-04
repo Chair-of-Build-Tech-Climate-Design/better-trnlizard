@@ -13,37 +13,37 @@ Args:
     ----------- StackVentilation
     EffOpeningAreaBottom (object): define effective opening area of lower operable windows: total area of side and top openings when lower window(s) is fully open
         Access: item
-        Required: True
+        Required: False
     OrFloorRelatedEffOpAreaBottom (object): define effective opening area of lower operable windows as percentage related to the floor area
         Access: item
-        Required: True
+        Required: False
     EffOpeningAreaTop (object): define effective opening area of upper operable windows: total area of side and top opening when window is open
         Access: item
-        Required: True
+        Required: False
     OrFloorRelatedEffOpAreaTop (object): define effective opening area of upper operable windows as percentage related to the floor area
         Access: item
-        Required: True
+        Required: False
     HeightDifference (object): height (in meters) between bottom/lower windows and top/upper windows
         Access: item
-        Required: True
+        Required: False
     ONTemperatureAbove (object): windows open when air temperature exceeds this value / - / Hint: Windows will close if ambient air temperature is 3°C above room air temperature
         Access: item
-        Required: True
+        Required: False
     OFFTemperatureBelow (object): windows close when air temperature is below this value / - / Hint: Windows will also close if ambient air temperature is 3°C above room air temperature
         Access: item
-        Required: True
+        Required: False
     ONTairOutsideAbove (object): windows only open when ambient temperature is above this value
         Access: item
-        Required: True
+        Required: False
     ONTairOutside24hAbove (object): windows only open when daily mean ambient temperature is above this threshold
         Access: item
-        Required: True
+        Required: False
     Schedule (object): select schedule for natural ventilation (when operable windows will be used)
         Access: item
         Required: True
     MaxAirChange (object): define maximum air change allowed
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

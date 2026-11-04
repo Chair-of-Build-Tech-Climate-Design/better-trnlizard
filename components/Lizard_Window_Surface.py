@@ -10,10 +10,10 @@ See the file "License.txt" for additional terms and conditions.
 Args:
     BRep (Brep): set window surface(s) in Rhino (right click brep)
         Access: list
-        Required: True
+        Required: False
     Settings (object): Script variable Window
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!

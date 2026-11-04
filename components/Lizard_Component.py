@@ -32,13 +32,15 @@ Args:
         Required: True
     Hemisphere (object): link either the string SOUTHERN or NORTHERN as string
         Access: item
-        Required: True
+        Required: False
+        Options: NORTHERN, SOUTHERN
     Altitude (object): define the building altitude for thermal simulation
         Access: item
         Required: True
-    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height. Not connected = 0
+    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height.
         Access: item
         Required: False
+        Default: 0
     FallbackBoundary (bool): for a surface without a category and without a partner. True = GROUND if all its vertices are at or below GroundLevel and it has no window and is no ADDWINDOW, otherwise EXTERNAL. False = an error. Not connected = True
         Access: item
         Required: False
@@ -50,25 +52,25 @@ Args:
         Required: True
     AddSchedules (object): link the used schedules that are required for the regime components or the active layer
         Access: list
-        Required: True
+        Required: False
     AddLayers (object): link the layer definitions required for the wall assemblies
         Access: list
-        Required: True
+        Required: False
     AddConstructions (object): link the construction definitions containing the single layers
         Access: list
-        Required: True
+        Required: False
     AnnualSchedules (object): link the annual schedules definition in order to account e.g. for vacations, etc.
         Access: list
-        Required: True
+        Required: False
     Variants (object): Script variable Lizard
         Access: item
-        Required: True
+        Required: False
     Reload (object): define True if you added information to the library by walls, layers, etc. in order to update the library
         Access: item
-        Required: True
+        Required: False
     x (object): Script variable Lizard
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -1883,6 +1885,13 @@ def upstreamErrors(component, level):
                     seen.add(owner.InstanceGuid)
                     stack.append(owner)
     return found
+def requireInputs(component, names):
+    """Stop a script with an error when one of its required inputs has no data. Lizard_Updater writes the call into the script, with
+    the names of the Required: True inputs of its docstring."""
+    missing = [str(param.Name) for param in component.Params.Input if str(param.Name) in names and param.VolatileDataCount == 0]
+    if missing:
+        component.AddRuntimeMessage(gh.GH_RuntimeMessageLevel.Error, "Required input without data: " + ", ".join(missing))
+        sys.exit()
 def solidFaces(solid):
     """The faces of a room solid as single-face Breps with outward normals. Returns (faces, problem)."""
     brep = solid.DuplicateBrep()
@@ -2827,6 +2836,7 @@ sc.sticky[sc.doc.Path]["ComponentFailure"]   = ComponentFailure
 sc.sticky[sc.doc.Path]["isFailure"]          = isFailure
 sc.sticky[sc.doc.Path]["setFailures"]        = setFailures
 sc.sticky[sc.doc.Path]["upstreamErrors"]     = upstreamErrors
+sc.sticky[sc.doc.Path]["requireInputs"]      = requireInputs
 sc.sticky[sc.doc.Path]["inspectModel"]       = inspectModel
 sc.sticky[sc.doc.Path]["inspectTable"]       = inspectTable
 sc.sticky[sc.doc.Path]["INSPECT_GROUPS"]     = INSPECT_GROUPS

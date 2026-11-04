@@ -17,7 +17,7 @@ Args:
         Required: True
     AnnualSchedule (object): Script variable Infiltration
         Access: item
-        Required: True
+        Required: False
     MinACH (object): air changes per hour due to air leakage
         Access: item
         Required: True

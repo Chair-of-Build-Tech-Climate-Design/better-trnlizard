@@ -91,9 +91,21 @@ class Param:
         self.InstanceGuid = Guid()
         self.ComponentGuid = Guid(type_id)
         self.Attributes = None
+        self.Persistent = []
 
     def CreateAttributes(self):
         self.Attributes = Attributes()
+
+    @property
+    def SourceCount(self):
+        return len(self.Sources)
+
+    @property
+    def PersistentDataCount(self):
+        return len(self.Persistent)
+
+    def SetPersistentData(self, value):
+        self.Persistent.append(value)
 
     def AddSource(self, source):
         self.Sources.append(source)
@@ -270,7 +282,7 @@ def snapshot(component):
     def params(side):
         return [dict(cls=type(p), name=p.Name, nick=p.NickName, description=p.Description, access=p.Access,
                      type_id=str(p.ComponentGuid), guid=p.InstanceGuid, sources=list(p.Sources),
-                     hint=getattr(p, "TypeHint", None), hints=getattr(p, "Hints", None)) for p in side]
+                     hint=getattr(p, "TypeHint", None), hints=getattr(p, "Hints", None), persistent=list(p.Persistent)) for p in side]
     return dict(name=component.Name, nick=component.NickName, source=component.source, guid=component.InstanceGuid,
                 pivot=(component.Attributes.Pivot.X, component.Attributes.Pivot.Y) if component.Attributes else (0.0, 0.0),
                 inputs=params(component.Params.Input), outputs=params(component.Params.Output))
@@ -285,6 +297,7 @@ def restore(target, state, keep_sources):
             cls = item["cls"]
             param = cls(item["name"]) if cls in (ScriptVariable, RhinoCodeParam) else cls(item["name"], item["type_id"])
             param.NickName, param.Description, param.Access, param.InstanceGuid = item["nick"], item["description"], item["access"], item["guid"]
+            param.Persistent = list(item["persistent"])
             if hasattr(param, "TypeHint"):
                 param.TypeHint, param.Hints = item["hint"], item["hints"]
             if keep_sources:  # unresolved wires of a raw copy
@@ -380,6 +393,8 @@ def fake_modules():
     kernel.GH_Document = SimpleNamespace(GH_ScheduleDelegate=lambda function: function)
     kernel.IGH_VariableParameterComponent = object
     kernel.Special = SimpleNamespace(GH_Cluster=GH_Cluster, GH_Group=GH_Group)
+    kernel.Types = SimpleNamespace(GH_Boolean=lambda value: ("GH_Boolean", value), GH_Integer=lambda value: ("GH_Integer", value),
+                                   GH_Number=lambda value: ("GH_Number", value), GH_String=lambda value: ("GH_String", value))
     grasshopper.Kernel = kernel
     grasshopper.Instances = SimpleNamespace(
         ComponentServer=SimpleNamespace(EmitObject=lambda guid: COMPONENT_TYPES[str(guid)]()))

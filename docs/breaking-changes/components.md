@@ -72,3 +72,9 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   - A script that stays changed keeps its old code, which can give other results than the current scripts.
   - An updater that upgrades itself gets the input `force` by itself. For an updater pasted by hand, add an input named `force`, or take a new one from the
     TRNLizard tab.
+
+## COM-08: A required input without data stops the component
+
+- **Before:** the legacy GhPython component keeps all its inputs optional, so `Required: True` in a docstring had no effect. A required input without data gave a raw exception, or a result that looks fine.
+- **Now:** a script with required inputs stops with the error `Required input without data: ...`, and its outputs stay empty. `Lizard_System` then stops too ([COM-03](#com-03)). `Lizard_Updater` writes the one line that checks this after the docstring of the script, and `requireInputs` of `Lizard_Component` does the rest.
+- **Existing definitions:** the first update adds that line. A component with a required input not connected now shows an error: connect the input. Which inputs count as required was reviewed for this change, and most of the old flags were dropped since the scripts work without them.

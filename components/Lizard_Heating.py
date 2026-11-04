@@ -11,31 +11,31 @@ Args:
     ------------------ Heating
     SetTemperature (object): minimum temperature in zone
         Access: item
-        Required: True
+        Required: False
     ControlledTemperature (object): temperature being control by ideal heating
         Access: item
-        Required: True
+        Required: False
     MaxSpecHeatPower (object): maximum specific heating power
         Access: item
-        Required: True
+        Required: False
     MinRelHum (object): minimum relative humidity in zone
         Access: item
-        Required: True
+        Required: False
     RadiativeFraction (object): Script variable Heating
         Access: item
-        Required: True
+        Required: False
     NightSetBack (object): temperature setback in zone at nighttime
         Access: item
-        Required: True
+        Required: False
     Schedule (object): schedule for heating control (Refer to Schedule Library)
         Access: item
         Required: True
     OnTairOutside24hBelow (object): Script input on_tairoutside24h_below.
         Access: item
-        Required: True
+        Required: False
     ControlledBasedOn (object): You can link either an existing airnode name or a type of place holder variable name in order to make a userdefined control temperature. If you are using a non existing airnode or zone name you will have to add at least those variables Tair_dummyname, Top_dummyname in OPERATIVE mode and Tset_ht_red_dummyname as setpoint temperature
         Access: item
-        Required: True
+        Required: False
 
 Returns:
     out (object): Log Information!!!
