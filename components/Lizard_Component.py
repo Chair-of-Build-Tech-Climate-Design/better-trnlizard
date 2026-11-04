@@ -1356,11 +1356,16 @@ def wallLayers(name, walls):
         return None
     return list(zip(wall.Layers.split(), wall.Thickness.split()))
 def frontOfPair(a, b):
-    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with a construction (it
-    lists its layers from its own side), then the floor (floor constructions list their layers from the walking surface down). Between
-    walls the airnode that sorts first is the front: guessed."""
+    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with an active layer (the
+    deck defines a circuit for the airnode of its FRONT), then the only side with a construction (it lists its layers from its own side),
+    then the floor (floor constructions list their layers from the walking surface down). Between walls the airnode that sorts first is
+    the front: guessed."""
     if a.Frontback != b.Frontback and (a.Frontback or b.Frontback):
         if a.Frontback == 'FRONT' or b.Frontback == 'BACK':
+            return a, b, False
+        return b, a, False
+    if (a.Activelayer != 0) != (b.Activelayer != 0):
+        if a.Activelayer != 0:
             return a, b, False
         return b, a, False
     if bool(a.Construction) != bool(b.Construction):
@@ -1441,8 +1446,10 @@ def pairSurfaces(a, b, issues):
     front.Boundarycond = back.Boundarycond = 'ADJACENT'
     front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
     front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
-    if front.Activelayer == 1:
-        back.Activelayer = 1
+    if back.Activelayer != 0 and front.Activelayer == 0:
+        addIssue(issues, 'error', "Surface {0} has an active layer but is the BACK of the pair with surface {1}: make it the FRONT or leave FRONT/BACK empty".format(back.Surfnum, front.Surfnum), [front, back])
+    if front.Activelayer != 0:
+        back.Activelayer = front.Activelayer
         back.Intemp = front.Intemp
     if front.Coupling != 0 or back.Coupling != 0:
         front.Coupling = "INPUT 1*MF_{0}_{1}".format(back.Airnode, front.Airnode)
@@ -1580,6 +1587,10 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
                 nextnumber += 1
             pieces[(key, index)] = piece
             created.append(piece)
+        if parent.Activelayer != 0 and not chained:
+            for previous, piece in zip(created, created[1:]):
+                piece.Intemp = 'INPUT 1*TOFL_S{0}'.format(previous.Surfnum)
+            addIssue(issues, 'warning', "Active layer surface {0} was split: its pieces {1} are a serial circuit".format(key, ', '.join([str(piece.Surfnum) for piece in created])), created)
         hostWindows(parent, created, issues)
         replaced[key] = created
     for airnode in airnodes:
@@ -1712,6 +1723,10 @@ def setFailures(airnodes, modelset):
     if isFailure(modelset):
         messages.append("Multizone: {0}".format(modelset.Message))
     return messages
+def hasActiveLayer(wall, library):
+    """Whether a layer of the wall has pipes, the same test as in Lizard_Active_Layer_Surface."""
+    active = [layer.Name for layer in library.Layers if layer.Pdiameter != '' or getattr(layer, 'Cc_pidiameter', '') != '']
+    return True in [name in active for name in wall.Layers.split()]
 def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
     """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values. A surface
     without a construction is not reported when a set has failed: that error says it already."""
@@ -1739,6 +1754,8 @@ def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
                 addIssue(issues, 'error', "Surface {0} of {1}: construction {2} is not in the library".format(item.Surfnum, item.Airnode, item.Construction), [item])
             else:
                 wall = walls[item.Construction]
+                if item.Activelayer != 0 and not hasActiveLayer(wall, library):
+                    addIssue(issues, 'error', "Surface {0} of {1} has an active layer but its construction {2} has none: set the construction before Lizard_Active_Layer_Surface".format(item.Surfnum, item.Airnode, item.Construction), [item])
                 item.Uvalue = wall.Uvalue
                 item.Abs_front = wall.Abs_front
                 item.Abs_back = wall.Abs_back
