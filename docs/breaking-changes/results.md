@@ -75,3 +75,14 @@ as in `Lizard_DCK_Template`. Without them, a further gain stops the TRNSYS run a
 - **Now:** it runs in its own schedule, outside the schedule of the first one. An empty input keeps the old behaviour, and the input is no longer required.
 - **Existing definitions:** check this input. A schedule that was connected without any effect now switches the windows, and one equal to that of
   `Lizard_Stack_Ventilation_1` switches the second ventilation off.
+
+<a id="res-09"></a>
+## RES-09: Weekly schedules follow the real weekdays of the simulation year
+
+- **Before:** the Monday of a weekly schedule was always the first day of the simulation year. With a year that starts on a Thursday, the weekend of
+  the schedules fell on Tuesday and Wednesday.
+- **Now:** `Lizard_System` has the input `SimulationYear`. Not connected, it takes the year of an EPW weather file whose records all lie in one year.
+  The b18 lists the days of each weekly schedule from the weekday of 1 January on, so Monday to Sunday of the schedule are the real ones. The deck has
+  the new equations `FIRSTWEEKDAY` and `WEEKDAY` (1 = Monday ... 7 = Sunday). A typical year, another weather format, or no year keeps the old behaviour.
+- **Existing definitions:** nothing has to change. A leap year gives a warning: the simulation has no 29 February, so the weekdays after 28 February are one day off.
+- **Results:** with a single-year EPW, everything that follows a weekly schedule moves to the real weekdays, so results can change. Connect a year whose 1 January is a Monday, for example 2024, for the old order.

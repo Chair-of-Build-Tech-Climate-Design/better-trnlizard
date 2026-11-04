@@ -79,6 +79,9 @@ Args:
         Access: item
         Required: False
         Default: True
+    SimulationYear (int): year of the simulation; gives the weekday of 1 January, and the weekly schedules are shifted in the b18 so that their Monday is a real Monday. Not connected = the year of an EPW weather file whose records all lie in one year, otherwise 1 January counts as a Monday
+        Access: item
+        Required: False
 
 Returns:
     out (object): Log Information!!!
@@ -195,6 +198,7 @@ else:
 Online = 0   #Type65 online plotters (deck constant showonline): 0 = shown, -1 = hidden. Input ShowPlotter: True or not connected = shown, False = hidden (faster batch runs)
 if "ShowPlotter" in locals() and ShowPlotter is not None and str(ShowPlotter).strip().lower() in ("false", "0", "no", "off"):
     Online = -1
+FirstWeekday = 1   #weekday of time 0 in the deck: 1 = Monday ... 7 = Sunday, see firstWeekdayOf
 Turn = 0
 #SystemComponents = [] #define as list input object
 WriteDaylightGrid = 1
@@ -267,6 +271,48 @@ def readWeatherHead(filename,linecount=None,stoppattern=None):
     finally:
         reader.Close()
     return lines
+def weatherYear(filename):
+    """The year of an EPW weather file whose records all lie in one year, None for any other file: a typical year mixes years, so its
+    first record says nothing about the weekdays. Reads the whole file, with .NET like readWeatherHead."""
+    if not filename.lower().endswith('.epw'):
+        return None
+    years = set()
+    indata = False
+    reader = System.IO.StreamReader(filename)
+    try:
+        line = reader.ReadLine()
+        while line is not None:
+            if indata and line.strip():
+                years.add(line.split(',')[0].strip())
+            elif line.startswith('DATA PERIODS'):
+                indata = True
+            line = reader.ReadLine()
+    finally:
+        reader.Close()
+    if len(years) != 1:
+        return None
+    year = list(years)[0]
+    return int(year) if year.isdigit() else None
+def simulationYear(value, weatheryear):
+    """The year from the input SimulationYear, or from the weather file when it is empty; None when neither has one. ValueError for a bad input."""
+    if value is None or str(value).strip() == '':
+        return weatheryear
+    year = int(float(value))
+    if year < 1 or year > 9999:
+        raise ValueError(value)
+    return year
+def firstWeekdayOf(year):
+    """The weekday of 1 January, 1 = Monday ... 7 = Sunday. Without a year: 1, as TRNBuild starts its weekly schedules on day 1 at time 0."""
+    return datetime(year, 1, 1).isoweekday() if year else 1
+def weeklyInSimulation(schedule, firstweekday):
+    """A weekly schedule as the b18 needs it: its first day is the weekday of time 0. Anything else comes back as it is, also a schedule with
+    other than seven days. The library keeps its Monday to Sunday."""
+    days = schedule.Hourly.split()
+    if firstweekday == 1 or len(days) != 7:
+        return schedule
+    shifted = copy.copy(schedule)
+    shifted.Hourly = ' '.join(days[firstweekday-1:] + days[:firstweekday-1])
+    return shifted
 def getparagraph(file,startpattern,stoppattern):
     output = []
     inparagraph = 'FALSE'
@@ -800,7 +846,9 @@ def printbuitoppart(dataset):
     for schedule_items in library.Schedules:
         for subitems in collect_schedules:
             if subitems == schedule_items.Name:
-                lines.append(printsingledata(schedule_items,'Hours','Days'))
+                if FirstWeekday != 1 and schedule_items.Hourly and len(schedule_items.Hourly.split()) != 7:
+                    ghenv.Component.AddRuntimeMessage(w, "Weekly schedule %s does not list seven days: it is not shifted to the weekdays of the simulation year"%schedule_items.Name)
+                lines.append(printsingledata(weeklyInSimulation(schedule_items, FirstWeekday),'Hours','Days'))
     for schedule_items in library.Annualschedules:
         for subitems in collect_schedules:
             if subitems == schedule_items.Name:
@@ -5234,6 +5282,20 @@ if WriteSimulationFiles:
         #convertTry2017ETRS892WSG84(3720500,2705500)
         #convertTry2017ETRS892WSG84(4339500,2730500)
         #convertTry2017ETRS892WSG84(3931500,3110500)
+        #Weekday of time 0, for the weekly schedules of the b18 and the deck
+        try:
+            SimYear = simulationYear(SimulationYear if 'SimulationYear' in locals() else None, weatherYear(weather_file))
+        except ValueError:
+            print 'SimulationYear must be a year between 1 and 9999'
+            ghenv.Component.AddRuntimeMessage(err, 'SimulationYear must be a year between 1 and 9999')
+            sys.exit()
+        FirstWeekday = firstWeekdayOf(SimYear)
+        if SimYear:
+            ghenv.Component.AddRuntimeMessage(rem, "1 January %s is weekday %s (1 = Monday): the weekly schedules follow the real weekdays"%(SimYear, FirstWeekday))
+            if SimYear % 4 == 0 and (SimYear % 100 != 0 or SimYear % 400 == 0):
+                ghenv.Component.AddRuntimeMessage(w, "%s is a leap year: the simulation has no 29 February, so the weekdays after 28 February are one day off"%SimYear)
+        else:
+            ghenv.Component.AddRuntimeMessage(rem, "No simulation year: time 0 counts as a Monday. Connect SimulationYear for real weekdays")
         #Get location information
         if '.epw' in weather_file:
             dummy = readWeatherHead(weather_file,1)[0].strip()
@@ -5583,6 +5645,7 @@ if WriteSimulationFiles:
             variables['stoptime']       = SimStopTime
             variables['altitude']        = sc.sticky[sc.doc.Path]["Altitude"]
             variables['ambpres']        = sc.sticky[sc.doc.Path]["Pressure"]
+            variables['firstweekday']   = FirstWeekday
             variables['online']         = Online
             variables['ydaysim']        = UseDaylightSim
             variables['daylightfact']   = 0.02

@@ -106,7 +106,7 @@ Tamb		! Environmental:Tamb ->Ambient temperature
 *------------------------------------------------------------------------------
 * EQUATIONS "Environmental"
 * 
-EQUATIONS 37
+EQUATIONS 39
 GRDREF       = 0.2          !ground reflection regarding solar radiation
 Rh_amb       = [33,6]       !relative humidity of outside air in %
 Abshum_amb   = [33,1]       !absolute humidity of outside air in kg/kg
@@ -131,6 +131,8 @@ rhoGlyk      = 1047         !density water / glycol Antifrogen N 25 % [kg/m?]
 Zero         = 0
 Totarea      = @totarea     !total area of that space type
 DAYTIME      = mod(TIME,24) !time of the day
+FIRSTWEEKDAY = @firstweekday !weekday of 1 January: 1 = Monday ... 7 = Sunday
+WEEKDAY      = mod(int((TIME-STEP/2)/24)+FIRSTWEEKDAY-1,7)+1 !weekday of this time step: 1 = Monday ... 7 = Sunday
 WINDVEL      = [@wv_link]   !wind velocity in m/s
 WINDDIR      = [@wd_link]   !wind direction in ?
 pamb_abs     = @ambpres     !absolute outside air pressure level

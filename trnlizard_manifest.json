@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T20:57:33Z",
+  "generated": "2026-11-04T21:23:19Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -72,8 +72,8 @@
       "size": 5172
     },
     "components/Lizard_DCK_Template.py": {
-      "sha256": "3d7e4d74d98a9a908c0d546d3260b2918cab408d6ac13ff729e85e2d75fde6c6",
-      "size": 69866
+      "sha256": "a0d270a43490b45e00c17a9f033a78500580579c634c4163995ef2e20ee7ce9d",
+      "size": 70059
     },
     "components/Lizard_DHW.py": {
       "sha256": "aa44fb20c208ffb74025db98bf3a22265f4f5f3cbe696c314aff92ec499d08ed",
@@ -224,8 +224,8 @@
       "size": 2648
     },
     "components/Lizard_System.py": {
-      "sha256": "df3a1cb220cfbfdfb8278409e35febf1bc4be6144ba145d0984a333e65b62c45",
-      "size": 386826
+      "sha256": "6d9da670da365e29e7b3eb239d00b182576fb6ccb43df1a0b3095e4364a1c17e",
+      "size": 390660
     },
     "components/Lizard_Thermal_Airnode.py": {
       "sha256": "1b629562132b4fce39ad6a095bd886334a78514a6b449e6c01f7d042a8f656d2",
