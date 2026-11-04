@@ -479,6 +479,28 @@ class FrontBackTests(unittest.TestCase):
 
 
 class WindowTests(unittest.TestCase):
+    def test_window_in_a_wall_of_its_airnode_passes(self):
+        a = south(0, 6, category="EXTERNAL")
+        issues = compile_model(airnode("A1", a, windows=[window_in(a, 1, 2)]))
+        self.assertNotIn("lies in no wall", " ".join(errors(issues)))
+
+    def test_window_in_a_wall_of_another_airnode_is_an_error(self):
+        a = south(0, 6, category="EXTERNAL")
+        b = north(0, 6, y=5.0, category="EXTERNAL")
+        window = surface([(1, 0, 1), (2, 0, 1), (2, 0, 2), (1, 0, 2)], kind="WINDOW", construction="WIN", number=70)
+        issues = compile_model(airnode("A1", a), airnode("A2", b, windows=[window]))
+        found = [issue for issue in issues if "lies in no wall" in issue["message"]]
+        self.assertEqual(1, len(found))
+        self.assertEqual("error", found[0]["level"])
+        self.assertIn("Window 70 of airnode A2", found[0]["message"])
+        self.assertEqual([window], found[0]["surfaces"])
+
+    def test_window_held_only_by_a_window_is_an_error(self):
+        other = surface([(1, 0, 1), (2, 0, 1), (2, 0, 2), (1, 0, 2)], kind="WINDOW", construction="WIN")
+        held = surface([(1, 0, 1), (2, 0, 1), (2, 0, 2), (1, 0, 2)], kind="WINDOW", construction="WIN")
+        other.Subsurfacedef.append(held)
+        self.assertEqual([other, held], M["unhostedWindows"]([south(0, 6), other, held]))
+
     def test_window_moves_to_the_piece_that_holds_it(self):
         a = south(0, 6, category="AUTOMATIC", number=50)
         window = window_in(a, 0.5, 1.5)

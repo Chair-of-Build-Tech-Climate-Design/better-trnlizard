@@ -40,3 +40,13 @@
   `Lizard_Active_Layer_Surface`, with a warning. In a serial circuit, what took its supply from the surface now takes it from the last piece.
 - **Existing definitions:** nothing. Split the surface yourself if the pipes do not run through the pieces in that order, or run in parallel.
 - **Results:** the mass flow per area of a split active surface goes back to the set value.
+
+<a id="geo-05"></a>
+## GEO-05: A window in no wall of its airnode is an error
+
+- **Before:** a window that lay in no wall of its airnode, for example connected to the wrong airnode, was left out of the b18 without an error.
+  `Lizard_Model_Inspect` still listed it. The same happened to a window that Rhino could not cut out of its wall.
+- **Now:** `compileModel` reports an error with the window, so `Lizard_Model_Inspect` shows it and `Lizard_System` stops. `Lizard_Thermal_Airnode`
+  warns as well, and its message about surfaces that do not close a volume is now a warning instead of a remark.
+- **Existing definitions:** connect the window to the airnode of its wall, or move it onto the wall.
+- **Results:** a model that lost windows this way gets them back after the fix.

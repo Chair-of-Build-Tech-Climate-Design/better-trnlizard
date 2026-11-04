@@ -1263,6 +1263,10 @@ def surfaceFace(item):
     return {'key': item.Surfnum, 'points': surfacePoints(item), 'normal': pointTuple(item.Normalvector)}
 def addIssue(issues, level, message, surfaces=()):
     issues.append({'level': level, 'message': message, 'surfaces': list(surfaces)})
+def unhostedWindows(surfaces):
+    """The windows of one airnode that no wall of it holds: the b18 only writes a window through its wall."""
+    hosted = set(window.Surfnum for item in surfaces if not isWindowSurface(item) for window in item.Subsurfacedef)
+    return [item for item in surfaces if isWindowSurface(item) and item.Surfnum not in hosted]
 def flipSurface(item):
     """The surface with the opposite normal; everything derived from the normal is computed after this."""
     item.Normalvector = item.Normalvector * -1.0
@@ -1813,6 +1817,9 @@ def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, stan
     failures = setFailures(airnodes, constructionset)
     for message in failures:
         addIssue(issues, 'error', message)
+    for airnode in airnodes:
+        for window in unhostedWindows(airnode.Surfaces):
+            addIssue(issues, 'error', "Window {0} of airnode {1} lies in no wall of that airnode and would be missing from the b18: connect it to the airnode of its wall, or move it onto the wall".format(window.Surfnum, airnode.Name), [window])
     pairs = resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues)
     fillConstructions(airnodes, pairs, constructionset, library, issues)
     finalizeSurfaces(airnodes, library, pairs, issues, len(failures) > 0)
@@ -2904,6 +2911,7 @@ sc.sticky[sc.doc.Path]["inspectTable"]       = inspectTable
 sc.sticky[sc.doc.Path]["INSPECT_GROUPS"]     = INSPECT_GROUPS
 sc.sticky[sc.doc.Path]["INSPECT_COLOURS"]    = INSPECT_COLOURS
 sc.sticky[sc.doc.Path]["checkWindowsInWalls"] = checkWindowsInWalls
+sc.sticky[sc.doc.Path]["unhostedWindows"] = unhostedWindows
 sc.sticky[sc.doc.Path]["defineGeosurf"]      = defineGeosurf
 sc.sticky[sc.doc.Path]["getFloorArea"]       = getFloorArea
 sc.sticky[sc.doc.Path]["getSurfaceOrientation"] = getSurfaceOrientation

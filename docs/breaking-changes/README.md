@@ -34,6 +34,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [GEO-02](geometry.md#geo-02) | Reversed normals are corrected, not reported as an error | no | yes | `a93769f` |
 | [GEO-03](geometry.md#geo-03) | Partly overlapping adjacent surfaces are split, not left without a partner | no | yes | `a93769f` |
 | [GEO-04](geometry.md#geo-04) | A split active surface becomes a serial circuit, also inside one | no | yes | `ee12487`, `ce5a1f4` |
+| [GEO-05](geometry.md#geo-05) | A window in no wall of its airnode is an error, not left out of the b18 | yes | yes | not committed yet |
 | [COM-01](components.md#com-01) | `checkAdjacent` removed from the shared functions | yes | no | `a93769f` |
 | [COM-02](components.md#com-02) | Log Check lost the input `start_time` | no | no | `3e05d53` |
 | [COM-03](components.md#com-03) | A component in error upstream stops `Lizard_System` | yes | no | `a8af542` |

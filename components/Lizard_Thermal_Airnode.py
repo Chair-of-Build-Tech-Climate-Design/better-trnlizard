@@ -173,6 +173,7 @@ if len(SurfaceInfo) > 0:
     getOrientation = sc.sticky[sc.doc.Path]["getOrientation"]
     getSurfaceType = sc.sticky[sc.doc.Path]["getSurfaceType"]
     checkWindowsInWalls = sc.sticky[sc.doc.Path]["checkWindowsInWalls"]
+    unhostedWindows = sc.sticky[sc.doc.Path]["unhostedWindows"]
     orientSurfaces = sc.sticky[sc.doc.Path]["orientSurfaces"]
     lizard_coll = sc.sticky[sc.doc.Path]["CONSTRUCTION"]()
     AIRNODE = sc.sticky[sc.doc.Path]["AIRNODE"]
@@ -231,10 +232,13 @@ if len(SurfaceInfo) > 0:
         print 'Normal vector turned outward: surfaces %s'%[item.Surfnum for item in flipped_surfaces]
         ghenv.Component.AddRuntimeMessage(rem, "Normal vector turned outward: surfaces %s"%[item.Surfnum for item in flipped_surfaces])
     if not closed_surfaces:
-        ghenv.Component.AddRuntimeMessage(rem, "The surfaces do not close a volume: their normal vectors are not checked")
+        ghenv.Component.AddRuntimeMessage(w, "The surfaces do not close a volume, a surface may belong to another airnode: their normal vectors are not checked")
     Airnode.Orientations= getSurfaceOrientation(SurfaceInfo)
     getSurfaceType(SurfaceInfo)
     Match               = checkWindowsInWalls(SurfaceInfo,Match)
+    unhosted = unhostedWindows(SurfaceInfo)
+    if unhosted:
+        ghenv.Component.AddRuntimeMessage(w, "Windows %s lie in no wall of this airnode: Lizard_System stops on them"%[item.Surfnum for item in unhosted])
     Airnode.Surfaces    = SurfaceInfo
     if 'ConstructionSet' in locals():
         Airnode.Constructionset = ConstructionSet

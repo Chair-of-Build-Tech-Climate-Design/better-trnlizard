@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T19:39:19Z",
+  "generated": "2026-11-04T20:20:50Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -52,8 +52,8 @@
       "size": 2126
     },
     "components/Lizard_Component.py": {
-      "sha256": "4ef9ac30831f0d92ad9f568a4aa1d67c870bb9cfb6177aa88d0b20770ae7521d",
-      "size": 145913
+      "sha256": "8f9233e8eb5d9eee7706b16ad8055bb38d433b0342c6187923d8d7e3f164b139",
+      "size": 146656
     },
     "components/Lizard_Construction.py": {
       "sha256": "ff00f859abfc0143f64d0d01de92da5dc85e3354ae86257afe4396ee08e4ccef",
@@ -228,8 +228,8 @@
       "size": 385964
     },
     "components/Lizard_Thermal_Airnode.py": {
-      "sha256": "64bf5225e0262fa61a228f6db6615191225192266351063354470e9735f3822e",
-      "size": 17898
+      "sha256": "1b629562132b4fce39ad6a095bd886334a78514a6b449e6c01f7d042a8f656d2",
+      "size": 18217
     },
     "components/Lizard_Thermal_Bridge_Gain.py": {
       "sha256": "11dd9df85b4897f1138b5f34ace678fc017c8db1f33fbbb4838838b798741113",
