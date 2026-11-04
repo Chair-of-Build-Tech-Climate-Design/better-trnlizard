@@ -231,6 +231,8 @@ if activelayer == 1:
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Pwallthickness',WallThicknessPipe)
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Pconductivity',ConductivityPipe*3.6)
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Massflow',MassflowFluid)
+        if MassflowFluid > 0:
+            sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Mflowmin',MassflowFluid)
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Tempcooling',SupplyTempCoolFluid)
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Schedulecooling',ScheduleCoolFluid)
         sc.sticky[sc.doc.Path]["CONSTRUCTION"]().updateConstruction(SurfaceInfo[items],'Tempheating',SupplyTempHeatFluid)

@@ -1461,6 +1461,8 @@ def pairSurfaces(a, b, issues, ownsets):
     if front.Activelayer != 0:
         back.Activelayer = front.Activelayer
         back.Intemp = front.Intemp
+        back.Mflowmin = front.Mflowmin
+        back.Nloops = front.Nloops
     if front.Coupling != 0 or back.Coupling != 0:
         front.Coupling = "INPUT 1*MF_{0}_{1}".format(back.Airnode, front.Airnode)
         back.Coupling = "INPUT 1*MF_{0}_{1}".format(front.Airnode, back.Airnode)

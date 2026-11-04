@@ -48,6 +48,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [RES-04](results.md#res-04) | Several `MiscGain` get their own name, power and schedule | no | yes | `833515d` |
 | [RES-05](results.md#res-05) | The equipment reduction uses the threshold of the equipment gain | no | yes | `833515d` |
 | [RES-06](results.md#res-06) | The second active layer circuit also goes to the BACK | no | yes | `da1012e` |
+| [RES-07](results.md#res-07) | `MFLOWMIN` follows `SpecMassFlow` instead of a fixed 11; the BACK takes `NLOOP` from the FRONT | no | yes | not committed yet |
 
 ## Adding an entry
 

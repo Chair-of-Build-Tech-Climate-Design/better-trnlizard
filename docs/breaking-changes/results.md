@@ -59,3 +59,11 @@ as in `Lizard_DCK_Template`. Without them, a further gain stops the TRNSYS run a
 
 - **Before:** only circuit 1 went from the FRONT to the BACK, so the BACK of a surface on circuit 2 had no `INTEMP`, `MFLOW` or `NLOOP`.
 - **Now:** both circuits go to the BACK.
+
+<a id="res-07"></a>
+## RES-07: `MFLOWMIN` and `NLOOP` of an active surface
+
+- **Before:** `MFLOWMIN` was always 11 kg/(h m2), whatever the layer, and TRNBuild warned when its own minimum for the surface was higher. The BACK of
+  an adjacent pair always had `NLOOP` 1.
+- **Now:** `MFLOWMIN` is `SpecMassFlow` of the layer, and the BACK takes both values from the FRONT. A layer without a mass flow keeps 11. The warning
+  now means that the set flow is really too low: raise it or split the surface.

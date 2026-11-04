@@ -416,6 +416,16 @@ class FrontBackTests(unittest.TestCase):
         self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
         self.assertEqual((1, "INPUT 1*TSUP_AL1"), (b.Activelayer, b.Intemp))
 
+    def test_minimum_mass_flow_and_loops_go_from_front_to_back(self):
+        a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS")), north(0, 5, category="ADJACENT", frontback="BACK", construction=None)
+        a.Mflowmin, a.Nloops = 15, 7
+        self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
+        self.assertEqual((15, 7), (b.Mflowmin, b.Nloops))
+
+    def test_minimum_mass_flow_of_a_surface_is_its_specific_mass_flow(self):
+        source = (REPO_ROOT / "components" / "Lizard_Active_Layer_Surface.py").read_text(encoding="utf-8-sig")
+        self.assertRegex(source, r"if MassflowFluid > 0:\s+\S+updateConstruction\(SurfaceInfo\[items\],'Mflowmin',MassflowFluid\)")
+
     def test_second_circuit_goes_from_front_to_back(self):
         a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS"), 2), north(0, 5, category="ADJACENT", frontback="BACK", construction=None)
         self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
