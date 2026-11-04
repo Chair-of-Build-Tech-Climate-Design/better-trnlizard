@@ -46,3 +46,12 @@ The deck defines the circuit for the airnode of the FRONT, and only the FRONT pa
   an error. With an active layer on both sides, the FRONT still decides.
 - **Existing definitions:** remove the explicit value or swap it.
 - **Results:** a pair that only ran because the airnode of its FRONT has a circuit of its own now uses the circuit of the active surface.
+
+<a id="con-06"></a>
+## CON-06: An active surface needs a construction with pipes
+
+- **Before:** not checked after `Lizard_Active_Layer_Surface`. A later surface component with another construction kept the active layer values on
+  a wall without pipes.
+- **Now:** an error. Changing only other settings after `Lizard_Active_Layer_Surface` still works. Another construction with pipes is not
+  detected: the pipe values and `Nloops` stay those of the first one.
+- **Existing definitions:** set the construction before `Lizard_Active_Layer_Surface`.

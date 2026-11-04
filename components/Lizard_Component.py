@@ -1723,6 +1723,10 @@ def setFailures(airnodes, modelset):
     if isFailure(modelset):
         messages.append("Multizone: {0}".format(modelset.Message))
     return messages
+def hasActiveLayer(wall, library):
+    """Whether a layer of the wall has pipes, the same test as in Lizard_Active_Layer_Surface."""
+    active = [layer.Name for layer in library.Layers if layer.Pdiameter != '' or getattr(layer, 'Cc_pidiameter', '') != '']
+    return True in [name in active for name in wall.Layers.split()]
 def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
     """Fills what is still empty, checks that every surface can be written, and fills what is derived from the final values. A surface
     without a construction is not reported when a set has failed: that error says it already."""
@@ -1750,6 +1754,8 @@ def finalizeSurfaces(airnodes, library, pairs, issues, setfailed=False):
                 addIssue(issues, 'error', "Surface {0} of {1}: construction {2} is not in the library".format(item.Surfnum, item.Airnode, item.Construction), [item])
             else:
                 wall = walls[item.Construction]
+                if item.Activelayer != 0 and not hasActiveLayer(wall, library):
+                    addIssue(issues, 'error', "Surface {0} of {1} has an active layer but its construction {2} has none: set the construction before Lizard_Active_Layer_Surface".format(item.Surfnum, item.Airnode, item.Construction), [item])
                 item.Uvalue = wall.Uvalue
                 item.Abs_front = wall.Abs_front
                 item.Abs_back = wall.Abs_back

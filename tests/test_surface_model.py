@@ -459,6 +459,14 @@ class FrontBackTests(unittest.TestCase):
         self.assertEqual([], errors(compile_model(n1, airnode("A2", b, c))))
         self.assertEqual(["INPUT 1*Tinal1"]*2, [item.Intemp for item in n1.Surfaces])
 
+    def test_active_surface_needs_a_construction_with_pipes(self):
+        a = active(south(0, 5, category="EXTERNAL", construction="WALL"))
+        self.assertIn("construction WALL has none", errors(compile_model(airnode("A1", a)))[0])
+
+    def test_capillary_layer_counts_as_active(self):
+        a = active(south(0, 5, category="EXTERNAL", construction="TABSCL"))
+        self.assertEqual([], errors(compile_model(airnode("A1", a))))
+
 
 class WindowTests(unittest.TestCase):
     def test_window_moves_to_the_piece_that_holds_it(self):
