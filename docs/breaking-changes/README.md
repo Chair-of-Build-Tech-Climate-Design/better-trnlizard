@@ -54,7 +54,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [RES-06](results.md#res-06) | The second active layer circuit also goes to the BACK | no | yes | `da1012e` |
 | [RES-07](results.md#res-07) | `MFLOWMIN` follows `SpecMassFlow` instead of a fixed 11; the BACK takes `NLOOP` from the FRONT | no | yes | `27ba583` |
 | [RES-08](results.md#res-08) | `Schedule` of `Lizard_Stack_Ventilation_2` takes effect | no | yes | `bcd1ab1` |
-| [RES-09](results.md#res-09) | Weekly schedules follow the real weekdays of the simulation year | no | yes | not committed yet |
+| [RES-09](results.md#res-09) | Weekly schedules follow the real weekdays of the simulation year | no | yes | `9333e99` |
 
 ## Adding an entry
 
