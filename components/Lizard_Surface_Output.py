@@ -17,7 +17,7 @@ Args:
     Filter (object): 
         Access: item
         Required: False
-    UserDefName (object): Renamed selected ouputs with new user-defined name
+    UserDefName (object): name of the selected outputs instead of the default one: <short name of the output>_<UserDefName>, with _S<surface> when the component has several surfaces
         Access: item
         Required: False
 

@@ -87,3 +87,12 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   inputs, because the deck has one place of each. `Lizard_Infiltration` has the new input `OrPersonRelatedVolumeFlow`.
 - **Existing definitions:** `Lizard_Updater` sets the list access and adds the input in place and keeps the wires. The inputs `Infiltration`,
   `StackVentilation1` and `StackVentilation2` keep working.
+
+<a id="com-10"></a>
+## COM-10: `UserDefName` of the output components
+
+- **Before:** the name went to the printer but no equation defined it, so TRNSYS stopped on an undefined variable. Every use failed.
+- **Now:** the printer gets `<label>_<UserDefName>` instead of the default name, for example `TSI_Floor`, with `_S<surface>` for several surfaces and
+  `_C<comfort point>` for several comfort points. The deck defines it as an equation. A name used twice, also when one `Lizard_Airnode_Output` goes to
+  several airnodes, or a name with a blank stops `Lizard_System` with an error.
+- **Existing definitions:** a name that already holds the label gets it twice: `TSI_Floor` as `UserDefName` gives `TSI_TSI_Floor`. Use `Floor`.

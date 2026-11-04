@@ -10,7 +10,7 @@ Args:
     SelectedOutputs (object): Selected outputs to be printed out
         Access: list
         Required: False
-    UserDefName (object): Renamed selected ouputs with new user-defined name
+    UserDefName (object): name of the selected outputs instead of the default one: <short name of the output>_<UserDefName>, with _C<comfort point> when the airnode has several
         Access: item
         Required: False
 

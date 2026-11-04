@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T20:20:50Z",
+  "generated": "2026-11-04T20:46:20Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -24,8 +24,8 @@
       "size": 470
     },
     "components/Lizard_Airnode_Output.py": {
-      "sha256": "e5963af56e21ebbc1f6f0c785ccebd34cb0a660cfe90572c1e947dde781973c5",
-      "size": 1773
+      "sha256": "e2a8ee6dfc7bcf8d17920473335c60ab5625565bfa295f1a9fef9721df39203f",
+      "size": 1820
     },
     "components/Lizard_Annual_Schedule.py": {
       "sha256": "7a775fd8d8b88c10770e8ec03fd76ad505fbe71ae9b86bbac99a5ff95f3dbcc1",
@@ -44,8 +44,8 @@
       "size": 10344
     },
     "components/Lizard_Comfort_Output.py": {
-      "sha256": "6f21d5ac8be02f1d8a55d3c9a86db75061e8daef7b7d6a72b5247f5edcc7fb7c",
-      "size": 1776
+      "sha256": "12e8ad0a25f8610f2fbbaf93e5e62e506c719b85473422c60405b70167df03a8",
+      "size": 1876
     },
     "components/Lizard_Complex_Shader.py": {
       "sha256": "84e643a4460327f8bb88abf7e9ffeec61cf02068b16d817cb4a419778bc12ba7",
@@ -212,8 +212,8 @@
       "size": 1659
     },
     "components/Lizard_Surface_Output.py": {
-      "sha256": "e6e972d774c7a2391efd1cc3f319be5c68a315a2f0039dcee9d15bb91983d8f1",
-      "size": 3005
+      "sha256": "432ccd098e5e1ea589b31ea219d8b35fc3395a7492af55059519d9cd5e4be758",
+      "size": 3110
     },
     "components/Lizard_Surface_SegSplitting.py": {
       "sha256": "dc15ebbc443b26d1ddb506b80f77dd7adec072c3c1ea292460d0e332c82746ab",
@@ -224,8 +224,8 @@
       "size": 2648
     },
     "components/Lizard_System.py": {
-      "sha256": "3e091281be5ff32203e4a94cda4a81955eaa5fc3eb722649ca155c16bcdbf534",
-      "size": 385964
+      "sha256": "4427267626d9d12da03d13cfc5ff5f07c403f9c49a826d8a9ff8647b9aaf5088",
+      "size": 386862
     },
     "components/Lizard_Thermal_Airnode.py": {
       "sha256": "1b629562132b4fce39ad6a095bd886334a78514a6b449e6c01f7d042a8f656d2",

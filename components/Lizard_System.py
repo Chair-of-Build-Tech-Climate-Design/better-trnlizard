@@ -591,6 +591,37 @@ def gainInstances(airnode):
         counts[gain_item.Name] = counts.get(gain_item.Name, 0) + 1
         instances.append((gain_item, str(counts[gain_item.Name]) if counts[gain_item.Name] > 1 else ''))
     return instances
+def outputPairs(output_item, airnodename, comfids, okey):
+    """(label, name in the deck) of every output of an output component."""
+    if output_item.Type == 'SURFACE':
+        return [(name.rsplit('_S', 1)[0], name) for name in output_item.NtypesShort]
+    if output_item.Type == 'COMFORT':
+        label = output_item.NtypesShort[0]
+        return [(label, '{0}_C{1}'.format(label, comfid)) for comfid in comfids]
+    if output_item.Type == 'AIRLINKS':
+        return [(name, name) for label in output_item.Ntype for name in okey if label in name]
+    return [(label, '{0}_{1}'.format(label, airnodename)) for label in output_item.NtypesShort]
+def renamedOutputs(username, pairs):
+    """[(new name, name in the deck)] for the UserDefName of an output component: <label>_<username>, and what follows the label in the
+    deck, e.g. _S12, when the component has several outputs of that label."""
+    labels = [label for label, _ in pairs]
+    renamed = []
+    for label, original in pairs:
+        name = '{0}_{1}'.format(label, username)
+        if labels.count(label) > 1:
+            name = name + original[len(label):]
+        renamed.append((name, original))
+    return renamed
+def outputNameProblem(names):
+    """The reason why the names of renamed outputs cannot go into the deck, None when they can. TRNSYS does not tell upper and lower case apart."""
+    seen = set()
+    for name in names:
+        if not re.match(r'^[A-Za-z0-9_]+$', name):
+            return "UserDefName: {0} has a character the deck cannot take: use letters, digits and _".format(name)
+        if name.upper() in seen:
+            return "UserDefName: {0} is used twice, an output component connected to several airnodes needs one name per airnode".format(name)
+        seen.add(name.upper())
+    return None
 def infiltrationAch(infiltration, airnode):
     """The air change of the input ACH of an infiltration, or of its flow per person when that is more."""
     perperson = getattr(infiltration, 'Vflowppers', 0)
@@ -6158,6 +6189,7 @@ Zero
         outputlist = 0
         outputnames = []
         userdefoutnames = defaultdict()
+        renamedoutputnames = []
         if WriteSimulationFiles == 1 and Multizone:
             if int(StandardOutputs) == 1:
                 variables['focairnodeonline'] +=  PrintOnline(name = 'Temperature', unit = 651, content = onlinetempoutput, y1min = -5, y1max = 35, y2min = -5, y2max = 35, y1label = 'Temperature [C]', y2label = 'Temperature [C]')
@@ -6514,42 +6546,30 @@ LABELS  3
             for zone_item in zone:
                 if zone_item.Airnode.Output:
                     for output_item in zone_item.Airnode.Output:
-                        udefoutput = []
                         if output_item:
                             pass
                         else:
                             continue
-                        if output_item.Type == 'SURFACE':
-                            outputlist = outputlist + len(output_item.NtypesNo) * len(output_item.SurfaceID)
-                            outputnames.extend(output_item.NtypesShort)
-                            udefoutput.extend(output_item.NtypesShort)
-                        elif output_item.Type == 'COMFORT':
-                            outputlist = outputlist + 1
-                            dummy = []
-                            #addouttempllines = addouttempllines + '= {0} : COMFID = '.format(ntype)
-                            for cmf in zone_item.Airnode.ComfId:
-                                dummy.append('{0}_C{1}'.format(output_item.NtypesShort[0],cmf))
-                            outputnames.extend(dummy)
-                            udefoutput.extend(dummy)
-                        elif output_item.Type == 'AIRLINKS':
-                            for doitem in output_item.Ntype:
-                                for dsubitem in okey:
-                                    if doitem in dsubitem:
-                                        outputlist = outputlist + 1
-                                        outputnames.append(dsubitem)
-                                        udefoutput.append(dsubitem)
+                        pairs = outputPairs(output_item, zone_item.Airnode.Name, zone_item.Airnode.ComfId, okey)
+                        outputlist = outputlist + len(pairs)
+                        if output_item.UserName:
+                            for newname, original in renamedOutputs(output_item.UserName, pairs):
+                                userdefoutnames[newname] = [original]
+                                renamedoutputnames.append(newname)
+                                outputnames.append(newname)
                         else:
-                            outputlist = outputlist + len(output_item.NtypesNo)
-                            for item2 in output_item.NtypesShort:
-                                outputnames.append('{0}_{1}'.format(item2,zone_item.Airnode.Name))
-                                udefoutput.append('{0}_{1}'.format(item2,zone_item.Airnode.Name))
-                        if output_item.UserName and output_item.UserName != '':
-                            userdefoutnames[output_item.UserName] = udefoutput
-                            outputnames.append(output_item.UserName)
+                            outputnames.extend([name for label, name in pairs])
+            nameproblem = outputNameProblem(renamedoutputnames)
+            if nameproblem:
+                print nameproblem
+                ghenv.Component.AddRuntimeMessage(err, nameproblem)
+                ghenv.Component.Message = 'Model not written: see the errors'
+                rs.EnableRedraw(True)
+                sys.exit()
         if WriteSimulationFiles == 1:
             dummyequ = 0
             dummystr = ''
-            useroutputnames = []
+            useroutputnames = list(renamedoutputnames)
             for item in UserEquations:
                 for subitem in item.split('\r\n'):
                     dummy = subitem.split('=')
