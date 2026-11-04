@@ -96,3 +96,12 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
   `_C<comfort point>` for several comfort points. The deck defines it as an equation. A name used twice, also when one `Lizard_Airnode_Output` goes to
   several airnodes, or a name with a blank stops `Lizard_System` with an error.
 - **Existing definitions:** a name that already holds the label gets it twice: `TSI_Floor` as `UserDefName` gives `TSI_TSI_Floor`. Use `Floor`.
+
+<a id="com-11"></a>
+## COM-11: A surface output on an airnode without those surfaces is an error
+
+- **Before:** `Lizard_Surface_Output` on `OutputInfo` of `Lizard_Thermal_Airnode` wrote its surfaces under that airnode in the b18, also when they
+  were not surfaces of it. Nothing checked this.
+- **Now:** `compileModel` reports an error with the surfaces, so `Lizard_Model_Inspect` shows it and `Lizard_System` stops.
+- **Existing definitions:** connect the output to the airnode of its surfaces. A surface that is copied into a second airnode gets a new number
+  there, so an output on that airnode now gives this error: take the output from a surface of that airnode.

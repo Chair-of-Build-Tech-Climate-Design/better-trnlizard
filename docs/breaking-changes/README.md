@@ -45,6 +45,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [COM-08](components.md#com-08) | A required input without data stops the component | yes | no | `37353c2` |
 | [COM-09](components.md#com-09) | `Ventilation` of `Lizard_Zone_Regime` takes a list of every kind of ventilation | no | no | `8f4fd8e` |
 | [COM-10](components.md#com-10) | `UserDefName` of the output components gives `<label>_<name>` and works | no | no | `8d7490c` |
+| [COM-11](components.md#com-11) | A surface output on an airnode without those surfaces is an error | yes | no | not committed yet |
 | [RES-01](results.md#res-01) | Mirror `BOUNDARY` walls get `HBACK` 29.51 through a `_MIRROR` wall type | no | yes | `733df04` |
 | [RES-02](results.md#res-02) | HAMT coupling of Type 395 changed on both sides | no | yes | `916c405`, `d2a3ce8` |
 | [RES-03](results.md#res-03) | One HAMT pseudo-wall type per construction | no | yes | `c9862bf` |

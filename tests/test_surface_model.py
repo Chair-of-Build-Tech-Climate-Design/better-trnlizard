@@ -478,6 +478,51 @@ class FrontBackTests(unittest.TestCase):
         self.assertEqual([], errors(compile_model(airnode("A1", a))))
 
 
+def surface_output(*numbers):
+    return SimpleNamespace(Type="SURFACE", NtypesNo=["17"], Ntype=["TSI"], SurfaceID=list(numbers), NtypesShort=["TSI_S{0}".format(number) for number in numbers])
+
+
+class SurfaceOutputTests(unittest.TestCase):
+    def stray_issues(self, issues):
+        return [issue for issue in issues if "surface output of airnode" in issue["message"]]
+
+    def test_surface_of_the_airnode_passes(self):
+        a = south(0, 6, category="EXTERNAL", number=80)
+        node = airnode("A1", a)
+        node.Output = [surface_output(80)]
+        self.assertEqual([], self.stray_issues(compile_model(node)))
+
+    def test_surface_of_another_airnode_is_an_error(self):
+        a = south(0, 6, category="EXTERNAL", number=81)
+        b = north(0, 6, y=5.0, category="EXTERNAL", number=82)
+        first, second = airnode("A1", a), airnode("A2", b)
+        first.Output = [surface_output(81, 82)]
+        found = self.stray_issues(compile_model(first, second))
+        self.assertEqual(1, len(found))
+        self.assertEqual("error", found[0]["level"])
+        self.assertIn("airnode A1 names surfaces 82,", found[0]["message"])
+        self.assertEqual([b], found[0]["surfaces"])
+
+    def test_surface_in_no_airnode_is_an_error(self):
+        node = airnode("A1", south(0, 6, category="EXTERNAL", number=83))
+        node.Output = [surface_output(99)]
+        self.assertIn("names surfaces 99,", self.stray_issues(compile_model(node))[0]["message"])
+
+    def test_a_split_surface_passes_and_its_pieces_join_the_output(self):
+        a = south(0, 6, category="AUTOMATIC", number=84)
+        b, c = north(0, 2, category="AUTOMATIC", number=85), north(2, 6, category="EXTERNAL", number=86)
+        first = airnode("A1", a)
+        first.Output = [surface_output(84)]
+        issues = compile_model(first, airnode("A2", b, c), autoadjacency=True)
+        self.assertEqual([], self.stray_issues(issues))
+        self.assertGreater(len(first.Output[0].SurfaceID), 1)
+
+    def test_other_outputs_and_empty_entries_are_left_alone(self):
+        node = airnode("A1", south(0, 6, category="EXTERNAL"))
+        node.Output = [None, SimpleNamespace(Type="AIRNODE", SurfaceID=[99])]
+        self.assertEqual([], M["strayOutputSurfaces"](node))
+
+
 class WindowTests(unittest.TestCase):
     def test_window_in_a_wall_of_its_airnode_passes(self):
         a = south(0, 6, category="EXTERNAL")

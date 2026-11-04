@@ -1267,6 +1267,14 @@ def unhostedWindows(surfaces):
     """The windows of one airnode that no wall of it holds: the b18 only writes a window through its wall."""
     hosted = set(window.Surfnum for item in surfaces if not isWindowSurface(item) for window in item.Subsurfacedef)
     return [item for item in surfaces if isWindowSurface(item) and item.Surfnum not in hosted]
+def strayOutputSurfaces(airnode):
+    """The surface numbers in the surface outputs of an airnode that are not surfaces of it, in the order of the outputs."""
+    numbers = set(item.Surfnum for item in airnode.Surfaces)
+    stray = []
+    for output in airnode.Output or []:
+        if output and output.Type == 'SURFACE':
+            stray.extend([number for number in output.SurfaceID if number not in numbers and number not in stray])
+    return stray
 def flipSurface(item):
     """The surface with the opposite normal; everything derived from the normal is computed after this."""
     item.Normalvector = item.Normalvector * -1.0
@@ -1820,6 +1828,11 @@ def compileModel(airnodes, library, autoadjacency=False, gaptolerance=None, stan
     for airnode in airnodes:
         for window in unhostedWindows(airnode.Surfaces):
             addIssue(issues, 'error', "Window {0} of airnode {1} lies in no wall of that airnode and would be missing from the b18: connect it to the airnode of its wall, or move it onto the wall".format(window.Surfnum, airnode.Name), [window])
+    for airnode in airnodes:
+        stray = strayOutputSurfaces(airnode)
+        if stray:
+            surfaces = [item for other in airnodes for item in other.Surfaces if item.Surfnum in stray]
+            addIssue(issues, 'error', "The surface output of airnode {0} names surfaces {1}, which are not in that airnode: connect the output to the airnode of those surfaces".format(airnode.Name, ', '.join([str(number) for number in stray])), surfaces)
     pairs = resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues)
     fillConstructions(airnodes, pairs, constructionset, library, issues)
     finalizeSurfaces(airnodes, library, pairs, issues, len(failures) > 0)
