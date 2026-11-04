@@ -1587,6 +1587,10 @@ def resolveAdjacency(airnodes, autoadjacency, gaptolerance, standalone, issues):
                 nextnumber += 1
             pieces[(key, index)] = piece
             created.append(piece)
+        if parent.Activelayer != 0 and not chained:
+            for previous, piece in zip(created, created[1:]):
+                piece.Intemp = 'INPUT 1*TOFL_S{0}'.format(previous.Surfnum)
+            addIssue(issues, 'warning', "Active layer surface {0} was split: its pieces {1} are a serial circuit".format(key, ', '.join([str(piece.Surfnum) for piece in created])), created)
         hostWindows(parent, created, issues)
         replaced[key] = created
     for airnode in airnodes:

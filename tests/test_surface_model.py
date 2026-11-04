@@ -442,6 +442,23 @@ class FrontBackTests(unittest.TestCase):
         a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS")), active(north(0, 5, category="ADJACENT", frontback="BACK", construction="TABS"))
         self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
 
+    def test_split_active_surface_becomes_a_serial_circuit(self):
+        a = active(south(0, 6, category="ADJACENT", number=80, construction="TABS"))
+        b, c = north(0, 2, category="ADJACENT", number=81, construction=None), north(2, 6, category="ADJACENT", number=82, construction=None)
+        n1, n2 = airnode("A1", a), airnode("A2", b, c)
+        issues = compile_model(n1, n2)
+        self.assertEqual([], errors(issues))
+        self.assertIn("serial circuit", warnings_of(issues)[0])
+        self.assertEqual([(80, "INPUT 1*TSUP_AL1"), (83, "INPUT 1*TOFL_S80")], [(item.Surfnum, item.Intemp) for item in n1.Surfaces])
+        self.assertEqual({82: "INPUT 1*TSUP_AL1", 81: "INPUT 1*TOFL_S80"}, dict([(item.Surfnum, item.Intemp) for item in n2.Surfaces]))
+
+    def test_split_without_an_active_layer_keeps_its_intemp(self):
+        a = south(0, 6, category="ADJACENT", number=84)
+        b, c = north(0, 2, category="ADJACENT", number=85), north(2, 6, category="ADJACENT", number=86)
+        n1 = airnode("A1", a)
+        self.assertEqual([], errors(compile_model(n1, airnode("A2", b, c))))
+        self.assertEqual(["INPUT 1*Tinal1"]*2, [item.Intemp for item in n1.Surfaces])
+
 
 class WindowTests(unittest.TestCase):
     def test_window_moves_to_the_piece_that_holds_it(self):
