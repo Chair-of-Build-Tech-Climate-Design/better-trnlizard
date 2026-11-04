@@ -67,3 +67,11 @@ as in `Lizard_DCK_Template`. Without them, a further gain stops the TRNSYS run a
   an adjacent pair always had `NLOOP` 1.
 - **Now:** `MFLOWMIN` is `SpecMassFlow` of the layer, and the BACK takes both values from the FRONT. A layer without a mass flow keeps 11. The warning
   now means that the set flow is really too low: raise it or split the surface.
+
+<a id="res-08"></a>
+## RES-08: `Schedule` of `Lizard_Stack_Ventilation_2`
+
+- **Before:** ignored. The second stack ventilation could run in every hour outside the schedule of the first one, weekends included.
+- **Now:** it runs in its own schedule, outside the schedule of the first one. An empty input keeps the old behaviour, and the input is no longer required.
+- **Existing definitions:** check this input. A schedule that was connected without any effect now switches the windows, and one equal to that of
+  `Lizard_Stack_Ventilation_1` switches the second ventilation off.

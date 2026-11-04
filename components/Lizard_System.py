@@ -4624,7 +4624,9 @@ def getzonevariables(zone_item):
                 variables['aeff2top']    = max( ventilation_item.Aefftop, ventilation_item.Aefftopfl * zone_item.Airnode.Floorarea)
                 variables['aeff2bot']    = max( ventilation_item.Aeffbot, ventilation_item.Aeffbotfl * zone_item.Airnode.Floorarea)
                 variables['hdiff_sv2']   = ventilation_item.Hdiff
-                if 'NOT(GT(SCHED' in ventilation_item.Schedule:
+                if not ventilation_item.Schedule:
+                    variables['schedule_sv2']= 1
+                elif 'NOT(GT(SCHED' in ventilation_item.Schedule:
                     variables['schedule_sv2']= ventilation_item.Schedule
                 else:
                     variables['schedule_sv2']= 'SCHED_' + ventilation_item.Schedule

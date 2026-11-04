@@ -62,6 +62,17 @@ class StackVentilationComponentTests(unittest.TestCase):
             return re.findall(r"^\s{4}(\S+) \(object\)", doc.split("Args:")[1].split("Returns:")[0], flags=re.M)
         self.assertEqual(inputs(1), inputs(2))
 
+    def test_schedule_of_stvent2_gates_its_control_signal(self):
+        template = (REPO_ROOT / "components" / "Lizard_DCK_Template.py").read_text(encoding="utf-8-sig")
+        line = [item for item in template.splitlines() if item.startswith("y_nfl_@aname")][0]
+        self.assertIn("not(sched_sv_@aname) * gt(@schedule_sv2,0)", line)
+
+    def test_empty_schedule_of_stvent2_runs_outside_stvent1(self):
+        vent, _ = run_component(2, Schedule=None)
+        self.assertEqual("", vent.Schedule)
+        source = SYSTEM_SOURCE.read_text(encoding="utf-8-sig")
+        self.assertIn("if not ventilation_item.Schedule:\n                    variables['schedule_sv2']= 1", source)
+
     def test_system_reads_the_humidity_control_of_stvent2_into_its_own_variable(self):
         source = SYSTEM_SOURCE.read_text(encoding="utf-8-sig")
         branch = source.split("ventilation_item.Name == 'STVENT2':\n                variables['taircomp_sv2']")[1]

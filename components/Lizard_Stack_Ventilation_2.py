@@ -38,9 +38,9 @@ Args:
     ONTairOutside24hAbove (object): windows only open when daily mean ambient temperature is above this threshold
         Access: item
         Required: False
-    Schedule (object): select schedule for natural ventilation (when operable windows will be used)
+    Schedule (object): schedule for natural ventilation (when operable windows will be used); empty = all hours outside the schedule of Stack Ventilation 1, which wins where both are on
         Access: item
-        Required: True
+        Required: False
     MaxAirChange (object): define maximum air change allowed
         Access: item
         Required: False
