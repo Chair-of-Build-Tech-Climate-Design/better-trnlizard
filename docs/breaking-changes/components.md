@@ -105,3 +105,11 @@ that way, and with the rules of [BC-03](boundary-conditions.md#bc-03) the walls 
 - **Now:** `compileModel` reports an error with the surfaces, so `Lizard_Model_Inspect` shows it and `Lizard_System` stops.
 - **Existing definitions:** connect the output to the airnode of its surfaces. A surface that is copied into a second airnode gets a new number
   there, so an output on that airnode now gives this error: take the output from a surface of that airnode.
+
+<a id="com-12"></a>
+## COM-12: Wider columns in `AddOutput_1h.prn`
+
+- **Before:** the columns had the format `F10.2`. A sum that did not fit, for example the sum of `QALFL` over a season, became a field of stars and
+  Type 46 stopped TRNSYS with message 431 at the end of the run, after the hourly values were written.
+- **Now:** this printer uses `F14.2`. The other printers keep `F10.2`.
+- **Existing definitions:** nothing has to change. A script that reads this file by fixed column positions has to follow the new width.

@@ -2767,7 +2767,7 @@ LABELS  3
         return plotdata
     else:
         return ''
-def PrintPrintegrator(name = 'Printer', unit = 900, content = ['Tamb'], outpath = 'Results', labels = [], file = '', timestep = 1):
+def PrintPrintegrator(name = 'Printer', unit = 900, content = ['Tamb'], outpath = 'Results', labels = [], file = '', timestep = 1, width = 10):
     dummyname = ''
     dummylabels = ''
     dummynini = ''
@@ -2805,10 +2805,10 @@ INPUTS {2}
 {3}
 LABELS {2}
 {5}
-FORMAT (1(F10.2,1X),{2}(F10.2,1X))
+FORMAT (1(F{9}.2,1X),{2}(F{9}.2,1X))
 *** External files
 ASSIGN "{6}\\{7}" {1}
-*|? Output file for integrated results? |1000""".format(name, unit, len(content), dummynini, dummyname, dummylabels, outpath, file, timestep)
+*|? Output file for integrated results? |1000""".format(name, unit, len(content), dummynini, dummyname, dummylabels, outpath, file, timestep, width)
     return plotdata
 
 @timing
@@ -6654,7 +6654,7 @@ LABELS  3
                 if len(outputnames) > 20:
                     variables['addoutputonline'] = variables['addoutputonline'] + PrintOnline(name = 'AddOutput', unit = lu_counter, content = outputnames[0:20], y1min = 0, y1max = 100, y2min = 0, y2max = 100)
                     variables['addoutputonline'] = variables['addoutputonline'] + PrintOnline(name = 'AddOutput2', unit = lu_counter, content = outputnames[20:40], y1min = 0, y1max = 100, y2min = 0, y2max = 100)
-                variables['addoutputprint']  = PrintPrintegrator(name = 'AddOutput', unit = lu_counter, content = outputnames, timestep = addoutstep)
+                variables['addoutputprint']  = PrintPrintegrator(name = 'AddOutput', unit = lu_counter, content = outputnames, timestep = addoutstep, width = 14)  # the sums of user outputs can overflow F10.2, which stops TRNSYS at the end
         if WriteSimulationFiles == 1:
             for sysitem in SystemComponents:
                 variables['sysdef'] += sysitem.fillTemplate()
