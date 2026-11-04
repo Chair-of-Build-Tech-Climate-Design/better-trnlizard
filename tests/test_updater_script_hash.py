@@ -128,6 +128,12 @@ class ScriptHashGlueTests(unittest.TestCase):
         component.CreateAttributes()
         return component
 
+    def settled(self, component):
+        """A component whose inputs already hold their Default and mouse-over text, so that only its code can be out of date."""
+        specs = dict((p["name"], p) for p in self.updater.parseDocstringIO(HYGRO_CODE)[0])
+        self.updater.applyParamDetails(component, self.updater.KIND_GHPYTHON, specs, [])
+        return component
+
     def changed_by_hand(self, code="old script\n"):
         return self.updater.stampCode(code).replace(code, code + "my change\n")
 
@@ -151,7 +157,7 @@ class ScriptHashGlueTests(unittest.TestCase):
 
     def test_a_current_script_with_its_hash_is_left_alone(self):
         stamped = self.updater.stampCode(HYGRO_CODE)
-        hygro = self.hygro(stamped)
+        hygro = self.settled(self.hygro(stamped))
         doc = glue.Document([hygro])
         log, updated, skipped, errors = self.run_updater(doc)
         self.assertEqual([], updated)
@@ -159,7 +165,7 @@ class ScriptHashGlueTests(unittest.TestCase):
         self.assertEqual([], doc.scheduled)
 
     def test_a_current_script_saved_by_grasshopper_is_left_alone(self):
-        hygro = self.hygro(self.updater.stampCode(HYGRO_CODE).replace("\n", "\r\n"))
+        hygro = self.settled(self.hygro(self.updater.stampCode(HYGRO_CODE).replace("\n", "\r\n")))
         doc = glue.Document([hygro])
         log, updated, skipped, errors = self.run_updater(doc)
         self.assertEqual(["Lizard_Hygro"], skipped)

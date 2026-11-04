@@ -278,7 +278,7 @@ class ComponentTests(unittest.TestCase):
         comp, _ = self.component("Lizard_Zone_Regime", ("PeopleGain", "item"))
         block = dict(self.updater(), decideAction=lambda *args: "skip", comp=comp, codeChanged=False, plan={}, cluster=None)
         block["comp"].Locked = False
-        run_block(UPDATER, "    what = decideAction(codeChanged, plan, cluster is not None, bool(comp.Locked))", "    if what == 'skip':\n        return", block)
+        run_block(UPDATER, "    what = decideAction(codeChanged, plan, cluster is not None, bool(comp.Locked))", "    if what == 'skip':\n        for problem", block)
         self.assertEqual("code", block["what"])
 
     def test_regime_script_gives_the_airnode_every_gain(self):

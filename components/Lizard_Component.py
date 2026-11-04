@@ -33,12 +33,14 @@ Args:
     Hemisphere (object): link either the string SOUTHERN or NORTHERN as string
         Access: item
         Required: True
+        Options: NORTHERN, SOUTHERN
     Altitude (object): define the building altitude for thermal simulation
         Access: item
         Required: True
-    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height. Not connected = 0
+    GroundLevel (float): Z of the ground [m]. FallbackBoundary uses it, so the model has to stand at its real height.
         Access: item
         Required: False
+        Default: 0
     FallbackBoundary (bool): for a surface without a category and without a partner. True = GROUND if all its vertices are at or below GroundLevel and it has no window and is no ADDWINDOW, otherwise EXTERNAL. False = an error. Not connected = True
         Access: item
         Required: False

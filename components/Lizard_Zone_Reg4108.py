@@ -12,6 +12,7 @@ Args:
     Type (object): set Type: residential (RES) or non-residential (NONRES)
         Access: item
         Required: False
+        Options: RES, NONRES
     FloorArea (float): link/define floor area
         Access: item
         Required: False

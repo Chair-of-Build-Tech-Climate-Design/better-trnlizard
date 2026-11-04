@@ -26,6 +26,7 @@ Args:
     ShadingMovable (object): define a shading type: outside (OUT), inside (INT), outside + inside (IOT), no (NON)
         Access: item
         Required: True
+        Options: OUT, INT, IOT, NON
     ShadingFractionExt (object): 0 = no shading (fully transparent) 100 = fully shaded (opaque) in %
         Access: item
         Required: True

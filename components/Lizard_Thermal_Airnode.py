@@ -61,9 +61,10 @@ Args:
     Wcapr (object): Script variable Thermal Airnode
         Access: item
         Required: True
-    CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor. Not connected = 3
+    CapacitanceFactor (float): heat capacity of the air node per m3 of volume [kJ/(m3 K)], air plus furnishing; CAPACITANCE of the zone = volume * factor.
         Access: item
         Required: False
+        Default: 3
     ConstructionSet (object): default constructions from Lizard_Construction_Set for the surfaces of this airnode that have none after the adjacency is solved; comes before the set of Lizard_Multizone, slot by slot
         Access: item
         Required: False

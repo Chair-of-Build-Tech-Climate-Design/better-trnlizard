@@ -84,9 +84,10 @@ Args:
     AutoAdjacency (bool): True = surfaces with the category EXTERNAL or BOUNDARY become adjacent where another room faces them, and are split along it; what no room faces keeps its category. Not connected = only surfaces with an empty, AUTOMATIC or ADJACENT category are looked at
         Access: item
         Required: False
-    GapTolerance (float): largest distance in m between two parallel surfaces of adjacent rooms, for models with net room volumes. Not connected = 0.02
+    GapTolerance (float): largest distance in m between two parallel surfaces of adjacent rooms, for models with net room volumes.
         Access: item
         Required: False
+        Default: 0.02
     ConstructionSet (object): default constructions from Lizard_Construction_Set for surfaces that have none after the adjacency is solved; a set on the airnode comes first, slot by slot. Not connected = such a surface is an error
         Access: item
         Required: False

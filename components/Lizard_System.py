@@ -78,6 +78,7 @@ Args:
     ShowPlotter (bool): True or not connected = draw the TRNSYS online plotters (Type65) while the simulation runs; False = keep them hidden (faster, for batch runs)
         Access: item
         Required: False
+        Default: True
 
 Returns:
     out (object): Log Information!!!
