@@ -9,54 +9,54 @@ See the file "License.txt" for additional terms and conditions.
 
 Args:
     -------------- Window
-    Name (object): define window type (no blanks or special signs)
+    Name (str): define window type (no blanks or special signs)
         Access: item
         Required: False
-    WinID (object): define the window library ID number (refer to Window Type Library)
+    WinID (int): define the window library ID number (refer to Window Type Library)
         Access: item
         Required: True
     ---------------- Frame
-    FrameFraction (object): fraction of frame to window area in %
+    FrameFraction (float): fraction of frame to window area in %
         Access: item
         Required: True
-    FrameConduction (object): u-value of frame in W/(m?.K)
+    FrameConduction (float): u-value of frame in W/(m?.K)
         Access: item
         Required: True
     -------------- Shading
-    ShadingMovable (object): define a shading type: outside (OUT), inside (INT), outside + inside (IOT), no (NON)
+    ShadingMovable (str): define a shading type: outside (OUT), inside (INT), outside + inside (IOT), no (NON)
         Access: item
         Required: False
         Options: OUT, INT, IOT, NON
-    ShadingFractionExt (object): 0 = no shading (fully transparent) 100 = fully shaded (opaque) in %
+    ShadingFractionExt (float): 0 = no shading (fully transparent) 100 = fully shaded (opaque) in %
         Access: item
         Required: True
-    ShadingFractionInt (object): Script variable Window
+    ShadingFractionInt (float): Script variable Window
         Access: item
         Required: True
-    ShadingActive (object): when irradiation levels exceed this value in W/m?, shading is used/on
+    ShadingActive (float): when irradiation levels exceed this value in W/m?, shading is used/on
         Access: item
         Required: True
-    ShadingNonActive (object): when irradiation levels drop below this value in W/m?, shading is not used/off
+    ShadingNonActive (float): when irradiation levels drop below this value in W/m?, shading is not used/off
         Access: item
         Required: True
-    ActiveIfTairRoomAbove (object): it is active if room temperature is above the set value in ?C
+    ActiveIfTairRoomAbove (float): it is active if room temperature is above the set value in ?C
         Access: item
         Required: True
     --------------- Glazing
-    Hinside (object): define the heat exchange inside in kJ/(h.m?)
+    Hinside (float): define the heat exchange inside in kJ/(h.m?)
         Access: item
         Required: True
-    Houtside (object): define the heat exchange outside in kJ/(h.m?)
+    Houtside (float): define the heat exchange outside in kJ/(h.m?)
         Access: item
         Required: True
     ------------- Daylight
-    RadMaterial0 (object): window radiance material when shading is open, for daylight simulation
+    RadMaterial0 (str): window radiance material when shading is open, for daylight simulation
         Access: item
         Required: False
-    RadMaterial1 (object): window radiance material when shading is fully closed, for daylight simulation
+    RadMaterial1 (str): window radiance material when shading is fully closed, for daylight simulation
         Access: item
         Required: False
-    ShadingGroup (object): Script variable Window
+    ShadingGroup (str): Script variable Window
         Access: item
         Required: False
 
@@ -79,21 +79,21 @@ class WindowDefinition:
     def __init__(self):
         self.Type = 'WINDOW'
         self.Name = Name
-        self.Winid = WinID
+        self.Winid = int(WinID)
         self.Construction = 'WIN_' + str(self.Name) + '_' + str(self.Winid)
         self.Windows = 1
-        self.Framefrac = FrameFraction/100
-        self.Uframe = FrameConduction
+        self.Framefrac = float(FrameFraction)/100
+        self.Uframe = float(FrameConduction)
         self.Cframe = round(1/(1/self.Uframe - 0.17)*3.6,2)
         self.Mshade = ShadingMovable #Options are OUT, INT, IOT, NON  
-        self.Mshadeglazingcover = ShadingFractionExt/100
-        self.Ishadeglazingcover = ShadingFractionInt/100
-        self.Eshadeglazingcover = ShadingFractionExt/100
-        self.Shadeopen  = ShadingNonActive*3.6
-        self.Shadeclose = ShadingActive*3.6
-        self.Shdtairabove = ActiveIfTairRoomAbove
-        self.Hinside = Hinside
-        self.Houtside = Houtside
+        self.Mshadeglazingcover = float(ShadingFractionExt)/100
+        self.Ishadeglazingcover = float(ShadingFractionInt)/100
+        self.Eshadeglazingcover = float(ShadingFractionExt)/100
+        self.Shadeopen  = float(ShadingNonActive)*3.6
+        self.Shadeclose = float(ShadingActive)*3.6
+        self.Shdtairabove = float(ActiveIfTairRoomAbove)
+        self.Hinside = float(Hinside)
+        self.Houtside = float(Houtside)
         self.Spacid = 4
         self.Wwid = 1.4
         self.Wheig = 1.8
