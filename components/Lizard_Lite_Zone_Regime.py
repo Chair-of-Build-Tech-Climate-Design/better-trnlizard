@@ -6,6 +6,7 @@ TRNLizard
 Copyright (c) 2019 Transsolar Energietechnik GmbH
 All Rights Reserved.
 See the file "License.txt" for additional terms and conditions.
+Modified by Junfeng Xiao, 2026.
 
 Args:
     NamePeopleGain (float): Link persons gains for zone

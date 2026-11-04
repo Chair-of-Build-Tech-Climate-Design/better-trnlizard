@@ -1,6 +1,10 @@
 """
 Update the TRNLizard script components of this Grasshopper document from the TRNLizard scripts on GitHub or in a folder.
 -
+TRNLizard
+Copyright (c) 2026 Junfeng Xiao
+All Rights Reserved.
+-
 source tells where the scripts come from:
 - not connected or empty: the main branch of https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard;
 - a GitHub repository (https://github.com/<owner>/<repo>, github.com/<owner>/<repo> or git@github.com:<owner>/<repo>.git),
@@ -112,7 +116,7 @@ SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 1                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 2                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'

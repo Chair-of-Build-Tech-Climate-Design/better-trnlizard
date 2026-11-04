@@ -3,9 +3,8 @@ Define the TRNFlow airflow network (COMIS) of the building: external nodes with 
 and the air links between them (cracks and large openings, e.g. windows, doors, a stairwell).
 -
 TRNLizard
-Copyright (c) 2020 Transsolar Energietechnik GmbH
+Copyright (c) 2026 Junfeng Xiao
 All Rights Reserved.
-See the file "License.txt" for additional terms and conditions.
 -
 
 Connect Network to the input TrnflowNetwork of the Lizard_System component (add that input to the component if it is missing:

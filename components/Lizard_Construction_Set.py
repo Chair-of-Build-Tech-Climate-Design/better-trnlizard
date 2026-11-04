@@ -3,9 +3,8 @@ Default constructions by the kind of surface. Lizard_System gives them to the su
 solved, so one wall that is split into an outer and an inner part gets a construction for each part.
 -
 TRNLizard
-Copyright (c) 2020 Transsolar Energietechnik GmbH
+Copyright (c) 2026 Junfeng Xiao
 All Rights Reserved.
-See the file "License.txt" for additional terms and conditions.
 -
 
 Connect Set to the input ConstructionSet of Lizard_Multizone for the whole building, or of Lizard_Thermal_Airnode for one room. The
