@@ -34,3 +34,15 @@ A construction lists its layers from its FRONT side, so following it from the wr
   first. That last case with a non-symmetric construction gives a warning.
 - **Existing definitions:** nothing, unless a pair relied on the old default. Set FRONT/BACK where the direction matters.
 - **Results:** a non-symmetric wall can change direction.
+
+<a id="con-05"></a>
+## CON-05: The active side of a pair is FRONT
+
+The deck defines the circuit for the airnode of the FRONT, and only the FRONT passes its circuit on to the BACK.
+
+- **Before:** an active surface could end up as BACK: by an explicit value, against a floor with a construction, or when its airnode sorted last.
+  No message, and the deck referred to a circuit that was not defined.
+- **Now:** after an explicit FRONT/BACK the active side comes first. An explicit value that makes it the BACK of a side without an active layer is
+  an error. With an active layer on both sides, the FRONT still decides.
+- **Existing definitions:** remove the explicit value or swap it.
+- **Results:** a pair that only ran because the airnode of its FRONT has a circuit of its own now uses the circuit of the active surface.

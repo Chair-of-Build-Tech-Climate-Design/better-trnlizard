@@ -1356,11 +1356,16 @@ def wallLayers(name, walls):
         return None
     return list(zip(wall.Layers.split(), wall.Thickness.split()))
 def frontOfPair(a, b):
-    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with a construction (it
-    lists its layers from its own side), then the floor (floor constructions list their layers from the walking surface down). Between
-    walls the airnode that sorts first is the front: guessed."""
+    """(front surface, back surface, guessed). An explicit FRONT/BACK on either side decides, then the only side with an active layer (the
+    deck defines a circuit for the airnode of its FRONT), then the only side with a construction (it lists its layers from its own side),
+    then the floor (floor constructions list their layers from the walking surface down). Between walls the airnode that sorts first is
+    the front: guessed."""
     if a.Frontback != b.Frontback and (a.Frontback or b.Frontback):
         if a.Frontback == 'FRONT' or b.Frontback == 'BACK':
+            return a, b, False
+        return b, a, False
+    if (a.Activelayer != 0) != (b.Activelayer != 0):
+        if a.Activelayer != 0:
             return a, b, False
         return b, a, False
     if bool(a.Construction) != bool(b.Construction):
@@ -1441,6 +1446,8 @@ def pairSurfaces(a, b, issues):
     front.Boundarycond = back.Boundarycond = 'ADJACENT'
     front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
     front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
+    if back.Activelayer != 0 and front.Activelayer == 0:
+        addIssue(issues, 'error', "Surface {0} has an active layer but is the BACK of the pair with surface {1}: make it the FRONT or leave FRONT/BACK empty".format(back.Surfnum, front.Surfnum), [front, back])
     if front.Activelayer != 0:
         back.Activelayer = front.Activelayer
         back.Intemp = front.Intemp

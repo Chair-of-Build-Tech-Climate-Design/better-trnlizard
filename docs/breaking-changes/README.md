@@ -27,6 +27,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [CON-02](constructions.md#con-02) | Different constructions on one pair are an error unless mirrored | yes | no | `a93769f` |
 | [CON-03](constructions.md#con-03) | FRONT without a construction cannot follow a non-symmetric BACK | yes | no | `923d514` |
 | [CON-04](constructions.md#con-04) | With no FRONT/BACK set, the side with the construction is FRONT | no | yes | `923d514` |
+| [CON-05](constructions.md#con-05) | The active side of a pair is FRONT; an explicit BACK on it is an error | yes | yes | not committed yet |
 | [GEO-01](geometry.md#geo-01) | Adjacent surfaces may be 0.02 m apart by default, not about 0.5 m | yes | no | `a93769f` |
 | [GEO-02](geometry.md#geo-02) | Reversed normals are corrected, not reported as an error | no | yes | `a93769f` |
 | [GEO-03](geometry.md#geo-03) | Partly overlapping adjacent surfaces are split, not left without a partner | no | yes | `a93769f` |

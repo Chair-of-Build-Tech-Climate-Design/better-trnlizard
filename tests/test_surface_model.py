@@ -421,6 +421,27 @@ class FrontBackTests(unittest.TestCase):
         self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
         self.assertEqual((2, "INPUT 1*TSUP_AL2"), (b.Activelayer, b.Intemp))
 
+    def test_active_side_is_front_when_the_airnode_sorts_last(self):
+        a, b = active(south(0, 5, category="ADJACENT", construction="TABS")), north(0, 5, category="ADJACENT", construction="TABS")
+        self.assertEqual([], compile_model(airnode("A2", a), airnode("A1", b)))
+        self.assertEqual(("FRONT", "BACK"), (a.Frontback, b.Frontback))
+        self.assertEqual((1, 1), (a.Activelayer, b.Activelayer))
+
+    def test_active_ceiling_is_front_of_a_floor_with_a_construction(self):
+        ceiling = active(surface([(0, 0, 3), (6, 0, 3), (6, 4, 3), (0, 4, 3)], construction="TABSCL"))
+        floor = surface([(0, 0, 3), (0, 4, 3), (6, 4, 3), (6, 0, 3)], construction="TABSFL")
+        self.assertEqual([], compile_model(airnode("A1", floor), airnode("A2", ceiling)))
+        self.assertEqual(("FRONT", "BACK"), (ceiling.Frontback, floor.Frontback))
+        self.assertEqual(1, floor.Activelayer)
+
+    def test_explicit_back_on_the_active_side_is_an_error(self):
+        a, b = active(south(0, 5, category="ADJACENT", frontback="BACK", construction="TABS")), north(0, 5, category="ADJACENT", construction=None)
+        self.assertIn("is the BACK of the pair", errors(compile_model(airnode("A1", a), airnode("A2", b)))[0])
+
+    def test_both_sides_active_keep_working(self):
+        a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS")), active(north(0, 5, category="ADJACENT", frontback="BACK", construction="TABS"))
+        self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
+
 
 class WindowTests(unittest.TestCase):
     def test_window_moves_to_the_piece_that_holds_it(self):
