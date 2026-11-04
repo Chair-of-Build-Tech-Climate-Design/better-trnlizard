@@ -43,6 +43,7 @@ Each entry has an ID, what it did before and does now, and the smallest change t
 | [RES-03](results.md#res-03) | One HAMT pseudo-wall type per construction | no | yes | `c9862bf` |
 | [RES-04](results.md#res-04) | Several `MiscGain` get their own name, power and schedule | no | yes | `833515d` |
 | [RES-05](results.md#res-05) | The equipment reduction uses the threshold of the equipment gain | no | yes | `833515d` |
+| [RES-06](results.md#res-06) | The second active layer circuit also goes to the BACK | no | yes | not committed yet |
 
 ## Adding an entry
 

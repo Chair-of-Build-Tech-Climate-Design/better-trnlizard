@@ -136,8 +136,15 @@ def airnode(name, *surfaces, windows=()):
 
 def library(**extra):
     walls = {"WALL": ("A B A", "0.1 0.2 0.1"), "OUT": ("P Q R", "0.1 0.2 0.3"), "IFL": ("WOOD CONC GYP", "0.01 0.2 0.01"), "ICL": ("GYP CONC WOOD", "0.01 0.2 0.01")}
+    walls.update({"TABS": ("A AL A", "0.1 0.2 0.1"), "TABSFL": ("WOOD CC GYP", "0.01 0.2 0.01"), "TABSCL": ("GYP CC WOOD", "0.01 0.2 0.01")})
     walls.update(extra)
-    return SimpleNamespace(Walls=[SimpleNamespace(Name=name, Layers=layers, Thickness=thickness, Uvalue=1.5, Abs_front=0.6, Abs_back=0.5) for name, (layers, thickness) in walls.items()])
+    return SimpleNamespace(Walls=[SimpleNamespace(Name=name, Layers=layers, Thickness=thickness, Uvalue=1.5, Abs_front=0.6, Abs_back=0.5) for name, (layers, thickness) in walls.items()], Layers=[SimpleNamespace(Name="AL", Pdiameter="0.02"), SimpleNamespace(Name="CC", Pdiameter="", Cc_pidiameter="0.003"), SimpleNamespace(Name="A", Pdiameter="")])
+
+
+def active(item, circuit=1):
+    """What Lizard_Active_Layer_Surface leaves on the first surface of a circuit."""
+    item.Activelayer, item.Intemp = circuit, "INPUT 1*TSUP_AL{0}".format(circuit)
+    return item
 
 
 def compile_model(*airnodes, **options):
@@ -405,10 +412,14 @@ class FrontBackTests(unittest.TestCase):
         self.assertEqual("FRONT", wall.Frontback)
 
     def test_active_layer_goes_from_front_to_back(self):
-        a, b = south(0, 5, category="ADJACENT", frontback="FRONT"), north(0, 5, category="ADJACENT", frontback="BACK")
-        a.Activelayer, a.Intemp = 1, "INPUT 1*TSUP_AL1"
-        compile_model(airnode("A1", a), airnode("A2", b))
+        a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS")), north(0, 5, category="ADJACENT", frontback="BACK", construction=None)
+        self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
         self.assertEqual((1, "INPUT 1*TSUP_AL1"), (b.Activelayer, b.Intemp))
+
+    def test_second_circuit_goes_from_front_to_back(self):
+        a, b = active(south(0, 5, category="ADJACENT", frontback="FRONT", construction="TABS"), 2), north(0, 5, category="ADJACENT", frontback="BACK", construction=None)
+        self.assertEqual([], errors(compile_model(airnode("A1", a), airnode("A2", b))))
+        self.assertEqual((2, "INPUT 1*TSUP_AL2"), (b.Activelayer, b.Intemp))
 
 
 class WindowTests(unittest.TestCase):

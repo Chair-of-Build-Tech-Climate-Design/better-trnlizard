@@ -53,3 +53,9 @@ as in `Lizard_DCK_Template`. Without them, a further gain stops the TRNSYS run a
 - **Results:** change when `ReductionPercentage` of the equipment gain is not 0 and its threshold differs from the one that applied so far. The deck text of
   `Q_comp_kJ` can also differ when the reduction is 0, without an effect on results.
 - **Existing definitions:** nothing has to change. To keep the old behaviour, connect the threshold of the people gain to the equipment gain as well.
+
+<a id="res-06"></a>
+## RES-06: The second active layer circuit on adjacent surfaces
+
+- **Before:** only circuit 1 went from the FRONT to the BACK, so the BACK of a surface on circuit 2 had no `INTEMP`, `MFLOW` or `NLOOP`.
+- **Now:** both circuits go to the BACK.

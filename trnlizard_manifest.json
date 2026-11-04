@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "generated": "2026-11-04T12:49:12Z",
+  "generated": "2026-11-04T14:23:39Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
     "version": 4,
@@ -52,8 +52,8 @@
       "size": 2126
     },
     "components/Lizard_Component.py": {
-      "sha256": "da46974687b822891456b435a84dcc8fb4a447ab79f56dad030af2197f0f3dd2",
-      "size": 141746
+      "sha256": "15898a9e8df9535439149121c892db2c4557b1aabb97be415f067f7753862017",
+      "size": 141762
     },
     "components/Lizard_Construction.py": {
       "sha256": "ff00f859abfc0143f64d0d01de92da5dc85e3354ae86257afe4396ee08e4ccef",

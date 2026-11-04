@@ -1441,8 +1441,8 @@ def pairSurfaces(a, b, issues):
     front.Boundarycond = back.Boundarycond = 'ADJACENT'
     front.Adjsurf, back.Adjsurf = back.Surfnum, front.Surfnum
     front.Adjairnode, back.Adjairnode = back.Airnode, front.Airnode
-    if front.Activelayer == 1:
-        back.Activelayer = 1
+    if front.Activelayer != 0:
+        back.Activelayer = front.Activelayer
         back.Intemp = front.Intemp
     if front.Coupling != 0 or back.Coupling != 0:
         front.Coupling = "INPUT 1*MF_{0}_{1}".format(back.Airnode, front.Airnode)
