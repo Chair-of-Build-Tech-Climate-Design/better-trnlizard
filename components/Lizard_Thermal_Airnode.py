@@ -19,9 +19,11 @@ Args:
     SurfaceInfo (Brep): link all airnode related surface definitions and/or one closed solid. A solid becomes its faces, without boundary condition and construction; a surface given here that lies on one of its faces replaces that part of the face
         Access: list
         Required: False
+        Source: Lizard_Surface.SurfaceInfo, Lizard_Window_Surface.SurfaceInfo, Lizard_Active_Layer_Surface.SurfaceInfo, Lizard_Hygro.SurfaceInfo
     Regime (object): connect the regime component
         Access: item
         Required: False
+        Source: Lizard_Zone_Regime.Regime, Lizard_Lite_Zone_Regime.Regime, Lizard_Zone_Reg4108.Regime
     AreaPerPerson (object): define the area per person in order to quantify the regime definitions
         Access: item
         Required: True
@@ -40,24 +42,31 @@ Args:
     DaylightCtrl (object): Script variable Thermal Airnode
         Access: list
         Required: False
+        Source: Lizard_Daylight_Control.DaylightCtrl
     OutputInfo (object): link additional userdefined output information
         Access: list
         Required: False
+        Source: Lizard_Airnode_Output.OutputInfo, Lizard_Comfort_Output.OutputInfo, Lizard_Surface_Output.OutputInfo
     ComplexShade (object): Script variable Thermal Airnode
         Access: item
         Required: False
+        Source: Lizard_Complex_Shader.ComplexShade
     Sequence (object): Script variable Thermal Airnode
         Access: item
         Required: False
+        Source: Lizard_Component.Sequence
     BeamMode (object): Contains a collection of script-friendly data
         Access: item
         Required: True
+        Options: STANDARD, DETAILED
     DiffuseMode (object): Contains a collection of script-friendly data
         Access: item
         Required: True
+        Options: STANDARD, DETAILED
     LongwaveMode (object): Contains a collection of script-friendly data
         Access: item
         Required: True
+        Options: STANDARD, DETAILED
     Wcapr (object): Script variable Thermal Airnode
         Access: item
         Required: False
@@ -68,6 +77,7 @@ Args:
     ConstructionSet (object): default constructions from Lizard_Construction_Set for the surfaces of this airnode that have none after the adjacency is solved; comes before the set of Lizard_Multizone, slot by slot
         Access: item
         Required: False
+        Source: Lizard_Construction_Set.Set
 
 Returns:
     out (object): Log Information!!!

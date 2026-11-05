@@ -86,3 +86,13 @@ as in `Lizard_DCK_Template`. Without them, a further gain stops the TRNSYS run a
   the new equations `FIRSTWEEKDAY` and `WEEKDAY` (1 = Monday ... 7 = Sunday). A typical year, another weather format, or no year keeps the old behaviour.
 - **Existing definitions:** nothing has to change. A leap year gives a warning: the simulation has no 29 February, so the weekdays after 28 February are one day off.
 - **Results:** with a single-year EPW, everything that follows a weekly schedule moves to the real weekdays, so results can change. Connect a year whose 1 January is a Monday, for example 2024, for the old order.
+
+<a id="res-10"></a>
+## RES-10: Site location from a TMY3 weather file
+
+- **Before:** the location block read the latitude and the longitude of a `.tmy3` or `.tm3` file from each other's columns and kept the east-positive
+  longitude. Fresno (latitude 36.783, longitude -119.717) gave `LATITUDE` -119.717 and `LONGITUDE` 36.783 in the b18.
+- **Now:** `LATITUDE` is 36.783 and `LONGITUDE` is 119.717, west positive as in the EPW branch and in TRNBuild.
+- **Existing definitions:** nothing has to change. Other weather formats are not touched.
+- **Results:** Radiance and daylight calculations that use the site location can change with a TMY3 file. The solar position of Type 15 comes from the
+  weather file, so it should not change. This comes from the code; no fixed model has been run through TRNBuild yet.

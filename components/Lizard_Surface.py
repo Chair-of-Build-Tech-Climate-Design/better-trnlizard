@@ -12,9 +12,11 @@ Args:
     BRep (Brep): set one/multiple surfaces in Rhino (right click brep)
         Access: list
         Required: False
+        Source: Lizard_Surface_Fraction.BRep1_, Lizard_Surface_Fraction.BRep2_, Lizard_Surface_SegSplitting.Brep_
     Settings (object): settings for these surfaces; empty settings keep the values a surface already has from an earlier Surface component
         Access: item
         Required: False
+        Source: Lizard_Surface_Settings.Settings
 
 Returns:
     out (object): Log Information!!!

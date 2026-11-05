@@ -52,8 +52,50 @@ class LineTests(unittest.TestCase):
     def test_the_docstring_stays_the_docstring(self):
         self.assertEqual(ast.get_docstring(ast.parse(SCRIPT)), ast.get_docstring(ast.parse(self.updater.stampCode(SCRIPT))))
 
-    def test_a_script_without_required_inputs_has_no_line(self):
-        self.assertNotIn("requireInputs", self.updater.stampCode(OPTIONAL_ONLY))
+    def test_a_script_without_required_inputs_has_the_line_with_no_names(self):
+        self.assertIn('(ghenv.Component, [])', self.updater.stampCode(OPTIONAL_ONLY))
+
+    def test_a_script_without_inputs_has_no_line(self):
+        self.assertEqual("", self.updater.requiredLine('"""\nReturns:\n    r (object): output\n        Access: item\n"""\n'))
+
+    def test_the_updater_has_no_line(self):
+        self.assertEqual("", self.updater.requiredLine(COMPONENT.with_name("Lizard_Updater.py").read_text(encoding="utf-8")))
+
+    def test_the_line_stops_at_the_check_of_the_placeholder_first(self):
+        calls = []
+        scriptcontext = ModuleType("scriptcontext")
+        scriptcontext.doc = SimpleNamespace(Path="doc")
+        scriptcontext.sticky = {"checkPlaceholder": lambda component: calls.append("check"),
+                                "doc": {"requireInputs": lambda component, names: calls.append("require")}}
+        with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
+            exec(self.updater.requiredLine(SCRIPT), {"ghenv": SimpleNamespace(Component=SimpleNamespace())})
+        self.assertEqual(["check", "require"], calls)
+
+    def test_the_line_sets_the_first_paragraph_as_description(self):
+        code = '"""\nIt says "hi" \\ twice\nin two lines.\n-\nCopyright\n\nArgs:\n    a (float): first\n        Access: item\n"""\n'
+        component = SimpleNamespace()
+        scriptcontext = ModuleType("scriptcontext")
+        scriptcontext.doc = SimpleNamespace(Path="doc")
+        scriptcontext.sticky = {}
+        with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
+            exec(self.updater.requiredLine(code), {"ghenv": SimpleNamespace(Component=component)})
+        self.assertEqual('It says "hi" \\ twice\nin two lines.', component.Description)
+
+    def test_a_docstring_that_is_only_its_description_needs_no_line(self):
+        self.assertEqual("", self.updater.requiredLine('"""Just this."""\nx = 1\n'))
+
+    def test_the_description_of_the_updater_is_the_first_paragraph_of_its_docstring(self):
+        code = COMPONENT.with_name("Lizard_Updater.py").read_text(encoding="utf-8")
+        self.assertEqual(self.updater.scriptDescription(code), self.updater.UPDATER_DESCRIPTION)
+
+    def test_no_description_is_long_and_every_script_gets_the_short_one(self):
+        for path in COMPONENT.parent.glob("Lizard_*.py"):
+            code = path.read_text(encoding="utf-8")
+            description = self.updater.scriptDescription(code)
+            self.assertNotIn("Args:", description, path.name)
+            self.assertLess(len(description), 700, path.name)
+            if path.name != "Lizard_Updater.py" and "Args:" in self.updater.moduleDocstring(code):
+                self.assertIn("ghenv.Component.Description", self.updater.requiredLine(code), path.name)
 
     def test_the_hash_is_that_of_the_script_alone(self):
         stamped = self.updater.stampCode(SCRIPT)
@@ -81,16 +123,17 @@ class LineTests(unittest.TestCase):
         for sticky in ({}, {"doc": {}}):
             scriptcontext.sticky = sticky
             with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
-                exec(line, {"ghenv": SimpleNamespace(Component=None)})
+                exec(line, {"ghenv": SimpleNamespace(Component=SimpleNamespace())})
 
     def test_the_line_calls_the_shared_function(self):
         calls = []
+        component = SimpleNamespace()
         scriptcontext = ModuleType("scriptcontext")
         scriptcontext.doc = SimpleNamespace(Path="doc")
         scriptcontext.sticky = {"doc": {"requireInputs": lambda component, names: calls.append((component, names))}}
         with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
-            exec(self.updater.requiredLine(SCRIPT), {"ghenv": SimpleNamespace(Component="comp")})
-        self.assertEqual([("comp", ["a", "c"])], calls)
+            exec(self.updater.requiredLine(SCRIPT), {"ghenv": SimpleNamespace(Component=component)})
+        self.assertEqual([(component, ["a", "c"])], calls)
 
 
 class RepositoryTests(unittest.TestCase):

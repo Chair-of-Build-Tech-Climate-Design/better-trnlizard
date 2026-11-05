@@ -53,18 +53,23 @@ Args:
     AddSchedules (object): link the used schedules that are required for the regime components or the active layer
         Access: list
         Required: False
+        Source: Lizard_Weekly_Schedule.Schedule
     AddLayers (object): link the layer definitions required for the wall assemblies
         Access: list
         Required: False
+        Source: Lizard_Layer.Layer, Lizard_Layer_Resistance.Layer, Lizard_Active_CC_Layer.Layer, Lizard_Active_Slab_Layer.Layer
     AddConstructions (object): link the construction definitions containing the single layers
         Access: list
         Required: False
+        Source: Lizard_Construction.Construction
     AnnualSchedules (object): link the annual schedules definition in order to account e.g. for vacations, etc.
         Access: list
         Required: False
+        Source: Lizard_Annual_Schedule.Annual_Schedule
     Variants (object): Script variable Lizard
         Access: item
         Required: False
+        Source: Lizard_Variant_Definition.Variants
     Reload (object): define True if you added information to the library by walls, layers, etc. in order to update the library
         Access: item
         Required: False

@@ -1,4 +1,4 @@
-"""Lizard_Updater upgrades itself from a GitHub source when the manifest names a higher UPDATER_VERSION.
+"""Lizard_Updater upgrades itself: from a GitHub source when the manifest names a higher UPDATER_VERSION, from a local folder also with the same version.
 
 The new script must match the manifest hash, say the announced version and compile in the Python that runs the component;
 anything else is refused with a pointer to the installer. Whether real Grasshopper recompiles a component that changes
@@ -470,17 +470,100 @@ class GlueTests(unittest.TestCase):
         self.assertFalse(self.component.Locked)
         self.assertTrue(any("not upgraded" in e and INSTALLER_ADVICE in e for e in errors), errors)
 
-    def test_a_local_folder_never_upgrades_the_updater(self):
+    def folder(self, updater_code):
         folder = self.root / "clone"
-        (folder / "components").mkdir(parents=True)
-        (folder / "components" / "Lizard_Updater.py").write_text(self.newer(), encoding="utf-8")
+        (folder / "components").mkdir(parents=True, exist_ok=True)
+        (folder / "components" / "Lizard_Updater.py").write_text(updater_code, encoding="utf-8")
         (folder / "components" / "Lizard_Hygro.py").write_text(self.hygro_code, encoding="utf-8")
-        (folder / "trnlizard_manifest.json").write_text(self.files["trnlizard_manifest.json"], encoding="utf-8")
-        log, updated, skipped, errors = self.run_updater(source=str(folder))
+        return str(folder)
+
+    def test_a_local_folder_with_a_higher_version_upgrades_the_updater(self):
+        log, updated, skipped, errors = self.run_updater(source=self.folder(self.newer()))
+        self.assertEqual(([], []), (errors, updated))
+        self.assertEqual(self.current, self.component.Code)
+        self.apply_scheduled()
+        self.assertEqual(self.updater.stampCode(self.newer()), self.component.Code)
+        self.assertEqual("old hygro code", self.hygro.Code)
+
+    def test_a_local_folder_with_the_same_version_and_other_code_upgrades_the_updater(self):
+        changed = self.current + "\n# new code, same version\n"
+        log, updated, skipped, errors = self.run_updater(source=self.folder(changed))
+        self.assertEqual([], errors)
+        self.apply_scheduled()
+        self.assertEqual(self.updater.stampCode(changed), self.component.Code)
+        new = self.load(changed)
+        log, updated, skipped, errors = self.run_updater(updater=new, source=self.folder(changed))
+        self.assertIn("(same version, new code)", " ".join(log))
+        self.assertEqual(["Lizard_Hygro"], updated)   # it carries on with the update, once
+        self.assertEqual([], errors)
+
+    def test_a_local_folder_with_the_same_code_does_nothing_special(self):
+        self.component.Code = self.updater.stampCode(self.current)
+        log, updated, skipped, errors = self.run_updater(source=self.folder(self.current))
+        self.assertEqual([], errors)
+        self.assertEqual(["Lizard_Hygro"], updated)
+        self.assertFalse(any("upgrade" in line for line in log), log)
+
+    def test_a_local_folder_with_a_lower_version_does_not_downgrade(self):
+        older = self.current.replace("UPDATER_VERSION = {0}".format(self.version), "UPDATER_VERSION = {0}".format(self.version - 1))
+        log, updated, skipped, errors = self.run_updater(source=self.folder(older))
         self.assertEqual(["Lizard_Hygro"], updated)
         self.apply_scheduled()
         self.assertEqual(self.current, self.component.Code)
-        self.assertTrue(any("outdated" in e and "by hand" in e for e in errors), errors)
+        self.assertEqual([], errors)
+
+    def test_a_local_script_with_a_syntax_error_is_refused_and_the_update_goes_on(self):
+        log, updated, skipped, errors = self.run_updater(source=self.folder(self.newer("\ndef broken(:\n")))
+        self.assertEqual(["Lizard_Hygro"], updated)
+        refusal = [e for e in errors if "not upgraded" in e]
+        self.assertEqual(1, len(refusal), errors)
+        self.assertIn("syntax check", refusal[0])
+        self.assertIn("by hand", refusal[0])
+        self.assertNotIn(INSTALLER_ADVICE, refusal[0])
+        self.apply_scheduled()
+        self.assertEqual(self.current, self.component.Code)
+
+    def test_an_updater_changed_by_hand_is_kept_from_a_local_folder_until_force(self):
+        changed = self.updater.stampCode(self.current) + "\n# my change\n"
+        self.component.Code = changed
+        source = self.folder(self.newer())
+        log, updated, skipped, errors = self.run_updater(source=source)
+        self.assertEqual(changed, self.component.Code)
+        self.assertTrue(any("changed by hand" in e for e in errors), errors)
+        self.assertEqual(["Lizard_Hygro"], updated)
+        self.apply_scheduled()
+        self.assertEqual(changed, self.component.Code)
+        sys.modules["scriptcontext"].sticky.clear()
+        self.run_updater(force=True, source=source)
+        self.apply_scheduled()
+        self.assertEqual(self.updater.stampCode(self.newer()), self.component.Code)
+
+    def test_a_local_upgrade_that_did_not_take_effect_does_not_loop(self):
+        source = self.folder(self.newer())
+        self.run_updater(source=source)
+        self.doc.scheduled.pop()   # the new code never arrives
+        log, updated, skipped, errors = self.run_updater(source=source)
+        self.assertEqual(["Lizard_Hygro"], updated)
+        self.assertTrue(any("did not take effect" in e for e in errors), errors)
+
+    def test_code_that_comes_back_to_a_local_folder_is_taken_again(self):
+        first, second = self.current + "\n# first\n", self.current + "\n# second\n"
+        for code in (first, second, first):
+            log, updated, skipped, errors = self.run_updater(source=self.folder(code))
+            self.assertEqual([], errors)
+            self.apply_scheduled()
+            self.assertEqual(self.updater.stampCode(code), self.component.Code)
+            self.run_updater(source=self.folder(code))   # the new code carries on with the update
+            del self.doc.scheduled[:]
+            sys.modules["scriptcontext"].sticky.pop(self.updater.REPORT_KEY + str(self.component.InstanceGuid), None)
+
+    def test_a_too_new_folder_format_upgrades_first(self):
+        source = self.folder(self.newer())
+        (Path(source) / "trnlizard_manifest.json").write_text('{"format": 99}', encoding="utf-8")
+        log, updated, skipped, errors = self.run_updater(source=source)
+        self.assertEqual([], errors)
+        self.apply_scheduled()
+        self.assertEqual(self.updater.stampCode(self.newer()), self.component.Code)
 
     def test_a_current_updater_with_its_hash_does_nothing_special(self):
         self.publish(self.current, version=self.version)

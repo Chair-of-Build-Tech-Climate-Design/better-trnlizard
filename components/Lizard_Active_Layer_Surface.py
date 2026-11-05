@@ -11,6 +11,7 @@ Args:
     BRep (Brep): set one/multiple surfaces in Rhino (right click brep)
         Access: list
         Required: False
+        Source: Lizard_Surface.SurfaceInfo
     ------------------- ActiveLayer
     SetTemperatureCooling (object): define a set temperature in ?C at which the cooling process starts
         Access: item
@@ -42,12 +43,14 @@ Args:
     TemperatureControl (str): define which information is tracked in order to have the system running
         Access: item
         Required: False
+        Options: OPERATIVE=TOP_, ACTIVE_SURFACE=Tsurf_al_, AIR=TAIR_
     DewpointControl (int): if True a dewpoint control is activated
         Access: item
         Required: False
     SupplyMode (str): define a supply mode: chiller (0), dry cooler (1), hybrid cooler (2)
         Access: item
         Required: False
+        Options: CHILLER=0, DRY_COOLER=1, HYBRID_COOLER=2
     HeatingOn (int): if True, allowing active layer to work during heating mode
         Access: item
         Required: False
@@ -63,6 +66,7 @@ Args:
     Circuit (object): Contains a collection of script-friendly data
         Access: item
         Required: False
+        Options: Circuit1=1, Circuit2=2
 
 Returns:
     SurfaceInfo (object): connect to corresponding airnode - HINT: Press shift key in order to connect multiple outputs to one input node

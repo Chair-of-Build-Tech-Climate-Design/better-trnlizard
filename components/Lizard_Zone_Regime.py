@@ -13,45 +13,58 @@ Args:
     PeopleGain (object): Link people gains for zone; several gains each keep their own power and schedule
         Access: list
         Required: False
+        Source: Lizard_Person_Gains.PeopleGain
     EquipmentGain (object): Link computer gains for zone; several gains each keep their own power and schedule
         Access: list
         Required: False
+        Source: Lizard_Equipment_Gains.EquipmentGain
     LightGain (object): Link lighting gains for zone; several gains each keep their own power and schedule
         Access: list
         Required: False
+        Source: Lizard_Light_Gains.LightGain
     MiscGain (object): Link other gains for zone; several gains each keep their own power and schedule
         Access: list
         Required: False
+        Source: Lizard_Misc_Gains.MiscGain
     HamtGain (object): Script variable Zone Regime
         Access: item
         Required: False
     ThbGain (object): Link thermal bridge gains for zone
         Access: item
         Required: False
+        Source: Lizard_Thermal_Bridge_Gain.ThbGain
     Heating (object): Link airnode heating definition
         Access: item
         Required: False
+        Source: Lizard_Heating.Heating
     Dhw (object): Link DHW Regime
         Access: item
         Required: False
+        Source: Lizard_DHW.Dhw
     Cooling (object): Link airnode cooling definition
         Access: item
         Required: False
+        Source: Lizard_Cooling.Cooling
     Infiltration (object): Link airnode infiltration definition; can also go into Ventilation
         Access: item
         Required: False
+        Source: Lizard_Infiltration.Infiltration
     Ventilation (object): Link any of infiltration, mechanical ventilation and stack ventilation 1 and 2, at most one of each
         Access: list
         Required: False
+        Source: Lizard_Mechanical_Ventilation.Ventilation, Lizard_Infiltration.Infiltration, Lizard_Stack_Ventilation_1.StackVentilation1, Lizard_Stack_Ventilation_2.StackVentilation2
     StackVentilation1 (object): Link airnode stack ventilation definition; can also go into Ventilation
         Access: item
         Required: False
+        Source: Lizard_Stack_Ventilation_1.StackVentilation1
     StackVentilation2 (object): Link airnode stack ventilation definition; can also go into Ventilation
         Access: item
         Required: False
+        Source: Lizard_Stack_Ventilation_2.StackVentilation2
     Comfort (object): Link comfort definition
         Access: item
         Required: False
+        Source: Lizard_Comfort.Comfort
 
 Returns:
     out (object): Log Information!!!

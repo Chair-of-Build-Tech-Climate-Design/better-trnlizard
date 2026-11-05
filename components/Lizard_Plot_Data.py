@@ -11,18 +11,22 @@ Args:
     FilePath (object): String that defines the file to load results from
         Access: item
         Required: True
+        Source: Lizard_Output_Files.Temperature, Lizard_Output_Files.Power
     ShortVariantName (object): Script variable PlotData
         Access: item
         Required: True
+        Source: Lizard_Output_Files.VariantName
     AirnodeName (object): Script variable PlotData
         Access: item
         Required: False
+        Source: Lizard_Output_Files.FocusAirnode
     XOutput (object): Script variable PlotData
         Access: item
         Required: False
     YOutput (object): Script variable PlotData
         Access: list
         Required: False
+        Source: Lizard_Plot_Data_Settings.Output_
 
 Returns:
     out (object): Information

@@ -10,6 +10,7 @@ Args:
     surfaceinfo (Brep): link the wall informations
         Access: list
         Required: False
+        Source: Lizard_Surface.SurfaceInfo, Lizard_Window_Surface.SurfaceInfo, Lizard_Active_Layer_Surface.SurfaceInfo, Lizard_Hygro.SurfaceInfo
     information (str): search information
         Access: item
         Required: False

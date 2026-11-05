@@ -668,7 +668,14 @@ class UpdaterGlueTests(unittest.TestCase):
         self.apply_scheduled(doc)
         self.assertEqual(UPDATER_SOURCE.read_text(encoding="utf-8"), self.updater_component.Code)
 
+    def use_a_script_it_does_not_upgrade_to(self):
+        """A lower version in the folder, and a component too old to say its own: outdated, and no upgrade."""
+        version = self.updater.UPDATER_VERSION
+        code = UPDATER_SOURCE.read_text(encoding="utf-8").replace("UPDATER_VERSION = {0}".format(version), "UPDATER_VERSION = {0}".format(version - 1))
+        (self.folder / "Lizard_Updater.py").write_text(code, encoding="utf-8")
+
     def test_an_outdated_updater_says_so_and_still_updates_the_other_components(self):
+        self.use_a_script_it_does_not_upgrade_to()
         self.updater_component.Code = "an older updater"
         hygro = self.legacy_hygro()
         doc = Document([hygro, self.updater_component])
@@ -690,6 +697,7 @@ class UpdaterGlueTests(unittest.TestCase):
         messages = []
         self.updater_component.AddRuntimeMessage = lambda level, text: messages.append((level, text))
         self.updater_component.Message = ""
+        self.use_a_script_it_does_not_upgrade_to()
         self.updater_component.Code = "an older updater"
         doc = Document([self.legacy_hygro(), self.updater_component])
 

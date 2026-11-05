@@ -11,6 +11,7 @@ Args:
     SurfaceInfo (Brep): link the wall informations
         Access: list
         Required: False
+        Source: Lizard_Surface.SurfaceInfo, Lizard_Window_Surface.SurfaceInfo, Lizard_Active_Layer_Surface.SurfaceInfo, Lizard_Hygro.SurfaceInfo
     SelectedOutputs (object): Selected outputs to be printed out
         Access: list
         Required: False

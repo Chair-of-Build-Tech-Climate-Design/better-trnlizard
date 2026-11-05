@@ -59,6 +59,7 @@ Args:
     ShadingGroup (str): Script variable Window
         Access: item
         Required: False
+        Options: GroupA=A, GroupB=B
 
 Returns:
     out (object): Log Information!!!

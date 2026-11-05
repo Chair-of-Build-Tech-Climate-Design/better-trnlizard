@@ -68,7 +68,7 @@ class WeatherHeadTests(unittest.TestCase):
 
     def test_tmy3(self):
         scope, read = self.location("a.tm3", "690150,TWENTYNINE PALMS,CA,-8.0,34.3,-116.2,626\n")
-        self.assertEqual(("626", "-8.0"), (scope["altitude"], scope["gmt"]))
+        self.assertEqual(("626", "116.2", "34.3", "-8.0", "120.0"), (scope["altitude"], scope["longitude"], scope["latitude"], scope["gmt"], scope["timezone"]))
         self.assertEqual(1, read)
 
     def test_tmy2(self):

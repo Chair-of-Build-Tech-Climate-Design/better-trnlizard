@@ -5,6 +5,7 @@ Args:
     Variants (object): Script variable Python
         Access: item
         Required: False
+        Source: Lizard_Component.Variants, Lizard_Variant_Definition.Variants
 
 Returns:
     VarName (object): Script output VarName.

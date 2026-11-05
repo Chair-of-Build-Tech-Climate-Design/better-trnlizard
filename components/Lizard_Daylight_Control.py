@@ -10,21 +10,26 @@ Args:
     DaylightIll (object): Define the basis for conversion of the exterior lighting level to the inside according to weather data information.
         Access: item
         Required: False
+        Options: Daylight Factor=1, SensorPts=3
     CtrlMode (object): Operation mode, user interaction or automatic control methods.
         Access: item
         Required: False
+        Options: AlwaysON=1, ON/OFF=2, Continuous=3, Continuous ON/OFF=4
     GridPts (Point3d): Connect the points3d that are used for daylight simulation
         Access: list
         Required: False
+        Source: Lizard_Grid.Points
     GridInfo (object): Script variable Daylight_Control
         Access: item
         Required: False
+        Source: Lizard_Grid.GridInfo
     BakePts (object): Set this to True in order to see the grid specific Id's of the points in order to select numbers.
         Access: item
         Required: False
     SelectedPts (int): Define the selected grid points that are used to control the lighting mode. Up to 4 locations are possible and the lighting results averaged.
         Access: list
         Required: False
+        Source: Lizard_Grid.CtrDlPos
     DaylightFactor (float): Define daylight factor value, if DaylightIll mode is Daylight Factor
         Access: item
         Required: False

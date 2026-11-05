@@ -9,6 +9,7 @@ Args:
     ClimateRegion (object): Link region letter A,B or C
         Access: item
         Required: False
+        Options: A, B, C
     Type (object): set Type: residential (RES) or non-residential (NONRES)
         Access: item
         Required: False

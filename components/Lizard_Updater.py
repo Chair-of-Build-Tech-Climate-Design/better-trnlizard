@@ -26,14 +26,22 @@ next to the old one, wired by param name and put into a red group; the old compo
 params and wires for reference;
 - order-only differences: the params are kept, a note is logged;
 - inside clusters only additions are applied, anything else is reported as manual update needed.
-Two more docstring lines belong to an input. "Options: A, B" only documents the values to choose from. "Default: x" is the
+A line "StandardOutput: False" before Args means that the UserObject of the script has no output 'out'; a component already on
+the canvas keeps it. More docstring lines belong to an input. "Options: A, B" gives the values to choose from, a value with a label as
+"Label=value"; "Source: Lizard_X.Output, Lizard_Y.Output" names the outputs that feed the input. Both do nothing to the script:
+Options is shown in the mouse-over text and Lizard_Placeholder reads both (tools/build_manifest.py writes them into it). "Default: x" is the
 value the script uses when the input is not set: an input without a wire and without data of its own gets it as stored
 data, in new components and in existing ones, also when their code is up to date. Stored data is never overwritten, so
 a later change of a Default only reaches inputs that hold no data yet. Both are shown in the mouse-over text of the input.
 All document changes are made right after this solution, then the report of the finished update is shown.
-A script with Required: True inputs gets one more line after its docstring, written by the updater and not part of the
-hash: it calls requireInputs of Lizard_Component with those names, which stops the script with an error when one of them
-has no data. Before Lizard_Component has run, or with one that does not have requireInputs yet, the line does nothing.
+A script gets one more line after its docstring, written by the updater and not part of the hash. It first sets the
+description of the component to the first paragraph of the docstring: GhPython takes a docstring that starts without indent
+as one description, Args and Returns included, and the mouse-over text of the component overflows. It then
+calls the check of Lizard_Placeholder, which stops the script when a Lizard_Placeholder was just connected to one of its
+inputs; without a Lizard_Placeholder on the canvas that does nothing. Then it calls requireInputs of Lizard_Component with the
+names of the Required: True inputs, which stops the script with an error when one of them has no data; before Lizard_Component
+has run, or with one that does not have requireInputs yet, that does nothing. In Grasshopper all inputs are optional, so that
+the script runs and can do both: an empty required input would otherwise keep Rhino 8 script components from running at all.
 Every script is written with the hash of its text in the first line. A script that no longer matches that hash was
 changed by hand: it is left alone and listed under errors, unless force is True, which overwrites it (the changes are
 lost). A script without that line, e.g. from an older updater, cannot be checked: it is updated as usual.
@@ -43,9 +51,10 @@ component (IronPython 2 in a GhPython or Rhino 8 Python 2 component, CPython 3 i
 replaces the code of this component right after this solution, and the new code carries on with the update. When a check
 fails, the script was changed by hand (see force) or this component cannot be changed in place, it stays as it is, the
 reason is listed under errors and the update goes on: use the installer of the latest release to upgrade. A local folder
-never upgrades the updater, and a source with a lower version never downgrades it: when its own code differs from
-Lizard_Updater.py of a folder or of a source of the same version, a warning is logged and listed under errors; paste the
-new code into this component by hand.
+upgrades the updater in the same way, also with the same version: when Lizard_Updater.py of the folder has other code and not a
+lower UPDATER_VERSION. There the code is taken as it is saved, without a manifest hash to compare, and the way out of a failed check
+is to paste it by hand. A source with a lower version never downgrades the updater. When its own code differs from a script it
+cannot or must not take, such as one of a GitHub source with the same version, a warning is logged and listed under errors.
 Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
 TRNLizard of the Grasshopper UserObjects folder (switch it off with makeUserObjects = False). Each UserObject is built
 from the script alone: a new IronPython script component with the params of the docstring and the Name, NickName,
@@ -121,12 +130,16 @@ RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rh
                    u'tab.')
 SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  # first line of every script it writes
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
-REQUIRED_LINE = (u'import scriptcontext as _sc; _sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)'
-                 u'(ghenv.Component, [{0}])  # Lizard_Updater: required inputs, do not edit\n')  # after the docstring of a script with such inputs
+# The line after the docstring of a script: these parts, for a long docstring and for a script with inputs
+REQUIRED_LINE = u'import scriptcontext as _sc; {0}  # Lizard_Updater: required inputs, do not edit\n'
+DESCRIPTION_CALL = u'ghenv.Component.Description = "{0}"'
+INPUTS_CALLS = (u'_sc.sticky.get("checkPlaceholder", lambda *args: None)(ghenv.Component); '
+                u'_sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)(ghenv.Component, [{0}])')
 REQUIRED_LINE_PATTERN = u'(?m)^import scriptcontext as _sc; .*# Lizard_Updater: required inputs, do not edit[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
+UPDATER_DESCRIPTION = 'Update the TRNLizard script components of this Grasshopper document from the TRNLizard scripts on GitHub or in a folder.'  # first paragraph of the docstring above
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 4                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 7                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -156,7 +169,7 @@ OLD_CATEGORIES = ('lizard', 'trnlizard')                  # tabs of earlier TRNL
 OLD_PREFIXES = ('lizard_', 'trnlizard_')                  # names of their components and presets
 USEROBJECT_SUBFOLDER = 'TRNLizard'                        # subfolder of the Grasshopper UserObjects folder
 USEROBJECT_STATE = 'lizard_userobjects.json'              # in that subfolder: {format, userObjects: {script: hash, file}}
-USEROBJECT_FORMAT = 3                                     # raise when the UserObject builder changes: rewrites them all
+USEROBJECT_FORMAT = 4                                     # raise when the UserObject builder changes: rewrites them all
 LEGACY_GHPYTHON_ID = '410755b1-224a-4c1e-a407-bf32fb45ea7e'  # GhPython Script (legacy, IronPython 2.7)
 DEFAULT_CATEGORY = 'TRNLizard'                              # UserObject category of a script that declares none
 DEFAULT_SUBCATEGORY = '9 | Other'                         # UserObject subcategory of a script that declares none
@@ -202,20 +215,29 @@ def splitScriptHash(code):
 
 
 def requiredLine(code):
-    """The line of required inputs that belongs to a script without its stamp lines, '' when it has no such inputs."""
-    names = [p['name'] for p in parseDocstringIO(code)[0] or [] if p['required'] and not p['separator']]
-    return REQUIRED_LINE.format(u', '.join(u'"{0}"'.format(name) for name in names)) if names else u''
+    """The line after the docstring that belongs to a script without its stamp lines, '' when it has nothing to do: a script
+    without inputs whose docstring is its description, and the updater, which sets its own and needs nothing from the other scripts."""
+    if parseUpdaterVersion(code) is not None:
+        return u''
+    calls = []
+    description = scriptDescription(code)
+    if description and description != moduleDocstring(code).strip():
+        calls.append(DESCRIPTION_CALL.format(description.replace(u'\\', u'\\\\').replace(u'"', u'\\"').replace(u'\n', u'\\n')))
+    inputs = [p for p in parseDocstringIO(code)[0] or [] if not p['separator']]
+    if inputs:
+        calls.append(INPUTS_CALLS.format(u', '.join(u'"{0}"'.format(p['name']) for p in inputs if p['required'])))
+    return REQUIRED_LINE.format(u'; '.join(calls)) if calls else u''
 
 
 def writtenRequiredLine(code):
-    """The line of required inputs of a script as a component holds it, normalized; '' when it has none."""
+    """The line after the docstring of a script as a component holds it, normalized; '' when it has none."""
     match = re.match(SCRIPT_HASH_PATTERN, code or u'')
     found = re.search(REQUIRED_LINE_PATTERN, code[match.end():]) if match else None
     return found.group(0).replace(u'\r\n', u'\n') if found else u''
 
 
 def stampCode(code):
-    """The script with the hash of its text in the first line and its required inputs, as this updater writes it into a component."""
+    """The script with the hash of its text in the first line and the line after its docstring, as this updater writes it into a component."""
     body = splitScriptHash(code)[1]
     docstring = re.match(r'\s*[uUrR]?""".*?"""[ \t]*\r?\n', body, re.DOTALL)  # stays the docstring of the script
     at = docstring.end() if docstring else 0
@@ -528,13 +550,16 @@ def stringLiteral(text):
     return re.sub(r'\\(.)', lambda e: _ESCAPES.get(e.group(1), e.group(1)), raw)
 
 
+def moduleDocstring(code):
+    """Text of the module docstring, '' when the script has none."""
+    m = re.match(r'\s*(?:#[^\n]*\n\s*)*[uUrR]?"""(.*?)"""', (code or u'').replace(u'\r\n', u'\n'), re.DOTALL)
+    return m.group(1) if m else u''
+
+
 def scriptDescription(code):
     """First paragraph of the module docstring before its first '-' line; '' when the script has no module docstring."""
-    m = re.match(r'\s*(?:#[^\n]*\n\s*)*[uUrR]?"""(.*?)"""', (code or u'').replace(u'\r\n', u'\n'), re.DOTALL)
-    if not m:
-        return u''
     lines = []
-    for line in m.group(1).split(u'\n'):
+    for line in moduleDocstring(code).split(u'\n'):
         text = line.strip()
         if text == u'-' or text in (u'Args:', u'Returns:'):
             break
@@ -840,8 +865,9 @@ def installerAdvice(owner, repo):
 
 
 def selfUpgradeRefused(owner, repo, version, reason):
-    return u'Lizard_Updater was not upgraded to version {0}: {1}. {2}'.format(version, reason.rstrip(u'.'),
-                                                                              installerAdvice(owner, repo))
+    """Why the updater stays as it is; owner and repo None: the script came from a local folder."""
+    advice = installerAdvice(owner, repo) if owner else u'Paste Lizard_Updater.py of the source folder into this component by hand.'
+    return u'Lizard_Updater was not upgraded to version {0}: {1}. {2}'.format(version, reason.rstrip(u'.'), advice)
 
 
 def isSafeManifestName(name):
@@ -1287,8 +1313,19 @@ def inputsToFill(comp, specs):
     return fill, problems
 
 
+def inputsNotOptional(comp):
+    """The inputs that keep the script from running while they are empty, so it cannot say what is missing."""
+    return [param for param in comp.Params.Input if not param.Optional]
+
+
 def applyParamDetails(comp, kind, specs, notes):
-    """Bring the mouse-over text of the inputs up to date and store the Default of the inputs that have no data."""
+    """Make all inputs optional, bring the mouse-over text of the inputs up to date and store the Default of the inputs that have no data."""
+    params = inputsNotOptional(comp)
+    for param in params:
+        param.Optional = True
+        notes.append('{0} is now optional'.format(param.Name))
+    if params:
+        comp.Params.OnParametersChanged()
     for param, text in staleParamDocs(comp, kind, specs):
         setParamDoc(param, kind, text)
     fill, problems = inputsToFill(comp, specs)
@@ -1321,7 +1358,7 @@ def createParam(vpc, side, index, spec, kind, isInput):
     setParamDoc(param, kind, paramTooltip(spec))
     if isInput:
         param.Access = accessValue(spec['access'])
-        param.Optional = not spec['required']  # legacy GhPython keeps all its inputs optional
+        param.Optional = True  # a missing Required input is the script's own error (requireInputs)
     if param.Attributes is None:
         param.CreateAttributes()
     return param
@@ -1633,8 +1670,8 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
     what = decideAction(codeChanged, plan, cluster is not None, bool(comp.Locked))
     if what == 'skip' and inputsWithoutListAccess(comp):
         what = 'code'  # an updater from before LIST_ACCESS_INPUTS brought the code and left the access
-    if what == 'skip' and not comp.Locked and (staleParamDocs(comp, kind, specsByName) or inputsToFill(comp, specsByName)[0]):
-        what = 'code'  # the code is up to date, a mouse-over text or a Default is not
+    if what == 'skip' and not comp.Locked and (staleParamDocs(comp, kind, specsByName) or inputsToFill(comp, specsByName)[0] or inputsNotOptional(comp)):
+        what = 'code'  # the code is up to date, a mouse-over text, a Default or an input that has to be optional is not
     if what == 'skip':
         for problem in inputsToFill(comp, specsByName)[1]:
             log.append('Note: ' + problem)
@@ -1658,6 +1695,15 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
     detail = describePlan(plan)
     log.append('Planned: {0}{1}'.format(descriptions[what], ' (' + detail + ')' if detail else ''))
     return 'action', action
+
+
+def ownCode(updater):
+    """The code of this updater component, None when it cannot be read."""
+    updater = _impl(updater)
+    try:
+        return readComponentCode(updater, scriptKind(updater))
+    except Exception:
+        return None
 
 
 def checkSelf(updater, scripts, log, errors):
@@ -2023,10 +2069,36 @@ def removeOtherCaches(root, current, log):
             log.append(u'Note: could not remove the old cache folder {0}: {1}'.format(name, e))
 
 
+def findFolderUpgrade(folder, upgrade, log, errors):
+    """Fill upgrade (see fetchSelfUpgrade) when Lizard_Updater.py of a folder has other code than this component and not a lower
+    version and passes the checks, else leave it, with the reason in errors when a check failed. upgrade['ownCode']: the code
+    of this component, None when it could not be read."""
+    path = findScripts(folder, []).get(UPDATER_SCRIPT)
+    code = readScript(path) if path else None
+    ownCode = upgrade.get('ownCode')
+    if code is None or ownCode is None or getHash(splitScriptHash(ownCode)[1]) == getHash(code):
+        return
+    version = parseUpdaterVersion(code)
+    if version is None or version < UPDATER_VERSION:
+        return
+    sha256 = getHash(code)
+    problem = checkCodeSyntax(code)
+    if upgrade.get('attempted') == sha256:
+        problem = u'the upgrade tried before did not take effect'
+    elif problem:
+        problem = u'its script fails the syntax check of this Python ({0})'.format(problem)
+    if problem:
+        message = selfUpgradeRefused(None, None, version, problem)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return
+    upgrade.update({'version': version, 'path': path, 'sha256': sha256, 'code': code, 'owner': None, 'repo': None})
+
+
 def resolveSource(source, log, errors, upgrade=None):
-    """The folder with the scripts of the source input (see parseSource): a local folder as it is, a GitHub repository
-    through its cache folder (syncGitHubSource, which also fills upgrade). None, with the reason in errors, when there is
-    none or a new updater was found."""
+    """The folder with the scripts of the source input (see parseSource): a local folder as it is, which may also fill upgrade
+    (findFolderUpgrade), a GitHub repository through its cache folder (syncGitHubSource, which also fills upgrade). None, with
+    the reason in errors, when there is none or a new updater was found."""
     try:
         info = parseSource(source)
     except ValueError as e:
@@ -2036,6 +2108,10 @@ def resolveSource(source, log, errors, upgrade=None):
         if not os.path.isdir(info['path']):
             errors.append(u'Invalid source folder path: {0}'.format(info['path']))
             return None
+        if upgrade is not None:
+            findFolderUpgrade(info['path'], upgrade, log, errors)
+            if upgrade.get('code') is not None:
+                return None
         version = folderManifestFormat(info['path'])
         if version is not None and version > MANIFEST_FORMAT:
             message = tooOldForFolderMessage(info['path'], version, findScripts(info['path'], []).get(UPDATER_SCRIPT))
@@ -2063,15 +2139,16 @@ def scheduleSelfUpgrade(updater, upgrade, log, errors, force, reportKey):
         errors.append(message)
         log.append(u'Error: ' + message)
         return False
-    note = u'Lizard_Updater upgraded itself from version {0} to version {1}.'.format(UPDATER_VERSION, version)
+    note = u'Lizard_Updater upgraded itself from version {0} to version {1}{2}.'.format(
+        UPDATER_VERSION, version, u' (same version, new code)' if version == UPDATER_VERSION else u'')
     report = (log, [], [], errors)
 
     def callback(document):
         applySelfUpgrade(document, result, note, SELF_NOTE_KEY + guid, report, reportKey)
     sc.sticky[SELF_ATTEMPT_KEY + guid] = upgrade['sha256']
     doc.ScheduleSolution(1, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
-    log.append(u'Lizard_Updater version {0} is available (this is version {1}): it upgrades itself right after this solution '
-               u'and then carries on with the update.'.format(version, UPDATER_VERSION))
+    log.append(u'Lizard_Updater version {0} from {2} is available (this is version {1}): it upgrades itself right after this solution '
+               u'and then carries on with the update.'.format(version, UPDATER_VERSION, upgrade['path']))
     return True
 
 
@@ -2339,6 +2416,17 @@ def applySharedSync(doc, action):
     return notes
 
 
+def keepsStandardOutput(code):
+    """False when the docstring of a script says 'StandardOutput: False' on a line of its own."""
+    return re.search(r'(?m)^StandardOutput\s*:\s*False\s*$', moduleDocstring(code)) is None
+
+
+def removeStandardOutput(comp):
+    """No output 'out': GhPython has a switch for it, which it also saves with the component."""
+    if not _setIfPresent(comp, 'HiddenOutOutput', True) and hasStandardOutput(comp):
+        comp.Params.UnregisterOutputParameter(list(comp.Params.Output)[0], True)
+
+
 def buildUserObjectComponent(componentGuid, entry, notes):
     """A new script component made from the script alone: default params removed (the code output 'out' kept),
     params of the docstring added in docstring order (separators too), identity of the script set, code set."""
@@ -2379,6 +2467,8 @@ def buildUserObjectComponent(componentGuid, entry, notes):
     if entry.get('icon') is not None and hasattr(comp, 'SetIconOverride'):
         comp.SetIconOverride(entry['icon'])  # the component placed from the UserObject shows the icon too
     writeComponentCode(comp, kind, entry['code'])
+    if not keepsStandardOutput(entry['code']):
+        removeStandardOutput(comp)
     return comp
 
 
@@ -2703,7 +2793,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None
     note = sc.sticky.pop(SELF_NOTE_KEY + str(updater.InstanceGuid), None)
     if note:
         log.append(note)
-    upgrade = {'attempted': sc.sticky.get(SELF_ATTEMPT_KEY + str(updater.InstanceGuid))}
+    upgrade = {'attempted': sc.sticky.get(SELF_ATTEMPT_KEY + str(updater.InstanceGuid)), 'ownCode': ownCode(updater)}
     sourceFolder = resolveSource(source, log, errors, upgrade)
     if upgrade.get('code') is not None:
         if scheduleSelfUpgrade(updater, upgrade, log, errors, force is True, reportKey):
@@ -2791,6 +2881,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None
 
 
 if 'ghenv' in globals():
+    ghenv.Component.Description = UPDATER_DESCRIPTION
     log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'),
                                                globals().get('makeUserObjects'), globals().get('cleanOldUserObjects'),
                                                globals().get('force'))

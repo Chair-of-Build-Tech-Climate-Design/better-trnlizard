@@ -21,6 +21,7 @@ Args:
     Mode (object): comfort evaluation mode, PMV or PMV-elevated air speed
         Access: item
         Required: True
+        Options: PMV, Elevated Air Speed=SET
     AirVelocity (object): in m/s
         Access: item
         Required: True

@@ -14,6 +14,7 @@ Args:
     _BRep (Brep): Connect a surface
         Access: tree
         Required: False
+        Source: Lizard_Surface_Fraction.BRep1_, Lizard_Surface_Fraction.BRep2_
     NoSegments (float): Division is made based on the set area in m²
         Access: item
         Required: False

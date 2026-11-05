@@ -14,6 +14,7 @@ Args:
     Settings (object): Script variable Window
         Access: item
         Required: False
+        Source: Lizard_Window_Settings.Settings, Lizard_BSDF_Settings.Settings
 
 Returns:
     out (object): Log Information!!!

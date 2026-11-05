@@ -14,6 +14,7 @@ Args:
     Layer (object): define the construction layers starting from interior to exterior
         Access: item
         Required: True
+        Source: Lizard_Layer.Layer, Lizard_Layer_Resistance.Layer, Lizard_Active_CC_Layer.Layer, Lizard_Active_Slab_Layer.Layer
     Abs_Front (object): define solar absorptance at front side [%/100]
         Access: item
         Required: False

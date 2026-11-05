@@ -12,12 +12,14 @@ Args:
     Settings (object): Script variable Plot
         Access: list
         Required: False
+        Source: Lizard_Plot_Settings.Settings_
     ScriptPath (object): Script variable Plot
         Access: item
         Required: False
     OutputFilePath (object): Script variable Plot
         Access: item
         Required: True
+        Source: Lizard_Output_Files.PlotPath
     Plot (object): 
         Access: item
         Required: False
