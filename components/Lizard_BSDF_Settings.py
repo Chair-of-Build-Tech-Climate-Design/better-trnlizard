@@ -38,10 +38,12 @@ Args:
     ShadingGroup (object): Script variable Window
         Access: item
         Required: False
+        Options: GroupA=A, GroupB=B
     ----------------- BSDF
     ShdControl (object): Script variable Window
         Access: item
         Required: False
+        Options: SIMPLE=BSDFSIMPLE, COMPLEX=BSDFCOMPLEX
     ShdConfId (int): Script variable Window
         Access: item
         Required: False
@@ -54,6 +56,7 @@ Args:
     GapVentMode (str): Script variable Window
         Access: item
         Required: False
+        Options: STACK VENTILATION=STACK, PERMANENT VENTILATION=PERMANENT
     Aopen (object): Script variable Window
         Access: item
         Required: False

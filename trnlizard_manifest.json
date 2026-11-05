@@ -1,10 +1,10 @@
 {
   "format": 2,
-  "generated": "2026-11-04T21:25:20Z",
+  "generated": "2026-11-05T14:05:05Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
-    "version": 4,
-    "sha256": "7e94e4220b81c0bbff0293b170d3aba67bbbf1ddd94971611c9e87a9497e4fae"
+    "version": 5,
+    "sha256": "a27a2b0107895f904eade3dac1b57bbc8c0a889aa0de799d37fc9817111a3b7b"
   },
   "files": {
     "components/Lizard_Active_CC_Layer.py": {
@@ -12,8 +12,8 @@
       "size": 2900
     },
     "components/Lizard_Active_Layer_Surface.py": {
-      "sha256": "5e48ec111d981e56778691a8971e5689e01e4541e63cdeac5e1432727057767c",
-      "size": 13905
+      "sha256": "6868745f10db5e44a063dbe949d541818c0ad95415bae593db183c76c2b0cc03",
+      "size": 14115
     },
     "components/Lizard_Active_Slab_Layer.py": {
       "sha256": "2c2ed65992e36b105560e0ae186cafdf98b45e55ec97ed6de05b7e34c6daee9b",
@@ -36,40 +36,40 @@
       "size": 3389
     },
     "components/Lizard_BSDF_Settings.py": {
-      "sha256": "62baa8ede11c9ad80ffe4b53bd6e978606c65869648531aab07da5dcda2b1824",
-      "size": 5954
+      "sha256": "9e3a3966db693de56ef2e18ab96a86f30b2ee71b84a205ed02f753c2870092cc",
+      "size": 6120
     },
     "components/Lizard_Comfort.py": {
-      "sha256": "7d3bd8524e7827b1ea37040820f5f93d74c2a1ed5abd3e7c1215026c5d410317",
-      "size": 10344
+      "sha256": "32cc32f3e5efd5902b2fa1d4cb8bffba43cc115c3e4245c471fa798cfe0ce86e",
+      "size": 10389
     },
     "components/Lizard_Comfort_Output.py": {
       "sha256": "12e8ad0a25f8610f2fbbaf93e5e62e506c719b85473422c60405b70167df03a8",
       "size": 1876
     },
     "components/Lizard_Complex_Shader.py": {
-      "sha256": "84e643a4460327f8bb88abf7e9ffeec61cf02068b16d817cb4a419778bc12ba7",
-      "size": 2126
+      "sha256": "c50ac38dc5e4acd5329dc5c0757b3493d68468b48d02434d1e61f8ef1e39eedf",
+      "size": 2549
     },
     "components/Lizard_Component.py": {
-      "sha256": "7240bed6469e9bdb8b26ef2ce15d1da3436b8fcf2010c83c416ebbdd54f209dd",
-      "size": 147562
+      "sha256": "8fbd96dddf76d5872f906b307b010eff8e769d12df33bde9140ecc5fc85d30c6",
+      "size": 147893
     },
     "components/Lizard_Construction.py": {
-      "sha256": "ff00f859abfc0143f64d0d01de92da5dc85e3354ae86257afe4396ee08e4ccef",
-      "size": 5813
+      "sha256": "7340f1a28dcb5d082fed86813bbfb8175bca35d26b63524c2bd541d3b3886030",
+      "size": 5941
     },
     "components/Lizard_Construction_Set.py": {
       "sha256": "9d422eb038a6c160c625a9c6f9f4ee7e1e4461ee2619418b8002d48e3dd3b224",
       "size": 3416
     },
     "components/Lizard_Cooling.py": {
-      "sha256": "0cc5b1d3cf0f748619b78dc679adb4035ac80877f4238e1d63015acf610aed54",
-      "size": 6381
+      "sha256": "51532582f98530960cfe6ff6f8eca4e5c66189b6f54ad95a4a28b70934a20ab3",
+      "size": 6413
     },
     "components/Lizard_Coupling.py": {
-      "sha256": "00d5082ccdf1a579c8874339ef8b3c59f7e1ac333f2dbfc5870a76549b8612aa",
-      "size": 5172
+      "sha256": "dcaa9574c1aefec109b2b165eb617b294347440f06da24ab2e01bb308d40c869",
+      "size": 5240
     },
     "components/Lizard_DCK_Template.py": {
       "sha256": "a0d270a43490b45e00c17a9f033a78500580579c634c4163995ef2e20ee7ce9d",
@@ -84,32 +84,32 @@
       "size": 3686
     },
     "components/Lizard_Daylight_Control.py": {
-      "sha256": "442283ed5dfa28e945026c49b716988153d264c04c47fa7aa7ee8d3928ac90d8",
-      "size": 5064
+      "sha256": "d50ae7e8868d53d8c1084eb26d8a480dcf72f8b5e6fd8b03b2103aae0d9331af",
+      "size": 5294
     },
     "components/Lizard_Daylight_Results.py": {
-      "sha256": "fe2f2d99a7b2a46dafe32c126bee8e4e07bb8da75cb94d386fc2070d2613e032",
-      "size": 10121
+      "sha256": "7d6cf056a3726f31467af26427ce32a649d73bf4ba32c874bb840883d1e56764",
+      "size": 10166
     },
     "components/Lizard_Deconstruct.py": {
-      "sha256": "df6bfa75903ade78375cddec4f4c04b354a61b1c2dd5bc3c571807f774f0bdb1",
-      "size": 3504
+      "sha256": "47667e35b23f0beafd5404c65757c76433c057107d4b2c2441affbc74ce3fe9a",
+      "size": 3540
     },
     "components/Lizard_Equipment_Gains.py": {
       "sha256": "a9ed97dd357f044b08116027bbb4518a55942aeb165fa3f93ea2dd499166abe5",
       "size": 5200
     },
     "components/Lizard_GenMatrices.py": {
-      "sha256": "f70313652658c8a8e5fa56b6ea31177f42580620fe59af02dcd7067e981e5d85",
-      "size": 38613
+      "sha256": "5d06e88e0c42e3c7e5cb0eae5590d5a47c27222bbde4ea6e64748c7eeee5dd90",
+      "size": 38701
     },
     "components/Lizard_Grid.py": {
       "sha256": "e0245c61dc0405ee690c5d2808ffecbca0dd8dc9f09e615e204758d180c501b1",
       "size": 6356
     },
     "components/Lizard_Heating.py": {
-      "sha256": "e4093849fb873ed0e8b655ce6db7e9ffc991cea72bb2126016ed212acb262f30",
-      "size": 6515
+      "sha256": "d4c0dee07a3c2670448fb5d1cb97650f4bd851c0e7b543be4e99455476bf16e6",
+      "size": 6547
     },
     "components/Lizard_Hygro.py": {
       "sha256": "cfedd3f8de214f45e3403c77a02598fd47a96c4c9acaa9d29639ed2dc4192766",
@@ -136,52 +136,56 @@
       "size": 4662
     },
     "components/Lizard_Log_Check.py": {
-      "sha256": "ee16bd7e5827aae6ac96e3144fcba339b8a1994b6b7412ad3767ec49af5940b8",
-      "size": 5333
+      "sha256": "f74672f673744e0ba0a8ecee5759bc8bc7237de66dd2a29b8efff31b41e7d115",
+      "size": 5371
     },
     "components/Lizard_Mechanical_Ventilation.py": {
-      "sha256": "ec36806990af8b9b44269924ad637d4e02e1f47ba2d762a6224d5b13217b2635",
-      "size": 13793
+      "sha256": "2268bab1e0af832ed611433c0a3ad739a65dd62691fc87330ab32cb32de78efb",
+      "size": 13942
     },
     "components/Lizard_Misc_Gains.py": {
       "sha256": "939d4c06142a354329f27a9a8763f366b95c2e763129b4ef7c241e8c484286db",
       "size": 4926
     },
     "components/Lizard_Model_Inspect.py": {
-      "sha256": "ebf1c728207191d99c9f01a35f34a2a21cb7a0b7812715a16473af5608419e95",
-      "size": 5299
+      "sha256": "159dd079629b4a1202e42f47b1a662b9b724b60bc3c35ffc4274ff795e17ddca",
+      "size": 5342
     },
     "components/Lizard_Multizone.py": {
-      "sha256": "47bfcd0f2dd4fa7831bc93c9caef81d05640a85464aaaf846d9b31dcd96beeca",
-      "size": 3744
+      "sha256": "c14dcba7e8ba9a42f6f9f5abdc7320b237c5138372f14b139bbfee7255fc95b5",
+      "size": 3983
     },
     "components/Lizard_Operable_Shading.py": {
       "sha256": "e08cb9714b04e81e3fc822dcac81395c4d1f739a420d2e70d3e2d1827ab54209",
       "size": 1557
     },
     "components/Lizard_Output_Files.py": {
-      "sha256": "c092ebe6252321aaa0dc1d43fe25ecb76ad3182deeab2e1248c61b1ea1a137b6",
-      "size": 5532
+      "sha256": "a53ab69dd978a74ef67046e9ca1447d23384a4a03e855ce208c094a3d2262383",
+      "size": 5570
     },
     "components/Lizard_Person_Gains.py": {
       "sha256": "fcf40c55183ad2029934ebe666cff9707feeabad75ae4b5027f0703ad491a70c",
       "size": 5465
     },
+    "components/Lizard_Placeholder.py": {
+      "sha256": "80b2dc8a34aa9d0a137e9f3f9eee2bb856f47ace58cbe0efe1ffa9b4bbaccf27",
+      "size": 25839
+    },
     "components/Lizard_Plot_Data.py": {
-      "sha256": "3b89900d2b832b88fc0ccff5236d58e203ecc9594197187f2da03f82f00dad9b",
-      "size": 1860
+      "sha256": "a121905cb9039a8edf50b97301485b93d94d5d1f65f4886340542b63299701ca",
+      "size": 2082
     },
     "components/Lizard_Plot_Data_Settings.py": {
       "sha256": "05900ea518b9f9c9d02678ba27e5999a2acd1bfcb83d4f7ec01ca32fdbe994da",
       "size": 1149
     },
     "components/Lizard_Plot_Settings.py": {
-      "sha256": "e3ae0aef43a2d83e2168f1c4777c214e4e4c38a186d63e9b7a83c48244ed0379",
-      "size": 4862
+      "sha256": "d14f1db9685c310916cc5b581e25cbe727ad0a7ffd0ba9faeab7c7e261052935",
+      "size": 5092
     },
     "components/Lizard_Plotter.py": {
-      "sha256": "ea0493bb301b52110f29f82b1ce4026e524b46d793d954b47faefe8a5cf7fd73",
-      "size": 2320
+      "sha256": "eef6636c07b626d606121ac47de59b04eda6c26fcdf96c0eadf10f385213af22",
+      "size": 2412
     },
     "components/Lizard_Shading_Control.py": {
       "sha256": "62f0afafa56dc40992f0e2e9e72490e615e238f276d8764fc3f2fbb767adc6a5",
@@ -200,36 +204,36 @@
       "size": 8799
     },
     "components/Lizard_Surface.py": {
-      "sha256": "383de7c63a91bb7ab4692eab40316d8fffe7183d6ba08cbea985c61d093c783e",
-      "size": 2448
+      "sha256": "598070c942752a0b0144596a81a752a7106e09266e6eb329250478c8d86c6cb6",
+      "size": 2611
     },
     "components/Lizard_Surface_Fraction.py": {
       "sha256": "53fb6cc98d7534e4631b00f6dc8829a2385bd9f1652a4652ee12a5288ea0dbe6",
       "size": 4521
     },
     "components/Lizard_Surface_Information.py": {
-      "sha256": "860dba65d459f243e0f6aa901d4709e756384d3d62fa848e021b208ebf8eef70",
-      "size": 1659
+      "sha256": "62127a530ca47b9f06f8c32c22dad5c9752121a77f2e44fc75540d4869715b71",
+      "size": 1804
     },
     "components/Lizard_Surface_Output.py": {
-      "sha256": "432ccd098e5e1ea589b31ea219d8b35fc3395a7492af55059519d9cd5e4be758",
-      "size": 3110
+      "sha256": "7c1c89cc5a427787b106ae305d25b5d6cd08a9113bc7fe4b6f006574b7b9d2c8",
+      "size": 3255
     },
     "components/Lizard_Surface_SegSplitting.py": {
-      "sha256": "dc15ebbc443b26d1ddb506b80f77dd7adec072c3c1ea292460d0e332c82746ab",
-      "size": 4888
+      "sha256": "416c098796a836e3978a776ee8d7f934ec5c17682fd6e977d10730fee441b2d9",
+      "size": 4967
     },
     "components/Lizard_Surface_Settings.py": {
-      "sha256": "44bdfbe257b7a6aca0fc62d1cc2b3889b256d02acdd34ae9877b595c8990824d",
-      "size": 2648
+      "sha256": "afa3b30bb89d1b0c6fa72d68ff68568d7c197ab30ebf28ddf563d3b8d8381b66",
+      "size": 2677
     },
     "components/Lizard_System.py": {
-      "sha256": "403bed86891481c77e6de810dc3a2417dd357aef5f005311f4dc9ccf5f264325",
-      "size": 390771
+      "sha256": "e54845b649a28fdefddaa815c1a957c8b39333863d9d52aa111ba6ae0c04639c",
+      "size": 391044
     },
     "components/Lizard_Thermal_Airnode.py": {
-      "sha256": "1b629562132b4fce39ad6a095bd886334a78514a6b449e6c01f7d042a8f656d2",
-      "size": 18217
+      "sha256": "7d7ce473fd939b374ca44f215de8607b83f773f6d3afd58b35b89a3f3d8c2aac",
+      "size": 18879
     },
     "components/Lizard_Thermal_Bridge_Gain.py": {
       "sha256": "11dd9df85b4897f1138b5f34ace678fc017c8db1f33fbbb4838838b798741113",
@@ -240,52 +244,52 @@
       "size": 10269
     },
     "components/Lizard_Updater.py": {
-      "sha256": "7e94e4220b81c0bbff0293b170d3aba67bbbf1ddd94971611c9e87a9497e4fae",
-      "size": 137277
+      "sha256": "a27a2b0107895f904eade3dac1b57bbc8c0a889aa0de799d37fc9817111a3b7b",
+      "size": 139528
     },
     "components/Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",
       "size": 847
     },
     "components/Lizard_Variant_Signal.py": {
-      "sha256": "6eab8adc33b1bf2a66348e6ccf6edaa5ff345bde61e6098c714745d57aba2828",
-      "size": 1843
+      "sha256": "127d3bbbb9b7e99adcf563a53c1a4f6976a308bcb854c0526a0f78d95f2c2306",
+      "size": 1921
     },
     "components/Lizard_Weekly_Schedule.py": {
-      "sha256": "a4e2100ab0e02f3ccf3b80a2a892f510337fd182e7908e9a7cac5730bca8304f",
-      "size": 2126
+      "sha256": "a75a4b3c9d9612d3c57b674305ce8e3d3c9da58f940d67abce24bbceb5b84478",
+      "size": 2497
     },
     "components/Lizard_Window_Scale.py": {
-      "sha256": "b19fbc93040de48c60967b9c492d483b1a75a035080a3304c830a3bf3941e68c",
-      "size": 1927
+      "sha256": "a41f7eb643d10c21ef17b7f0a60fe9f4bb1b12cbea35a9d0250e37d4e2d4a8ee",
+      "size": 2060
     },
     "components/Lizard_Window_Settings.py": {
-      "sha256": "65b5dfb732756f5c5a768efbbc8ddaf828a2a5b805a15695a16732e112166314",
-      "size": 3868
+      "sha256": "70bf53fdb7255b39bbe233bcdf3d6c87d8cd4d3cf9976bbe9e1b9836918c2c42",
+      "size": 3904
     },
     "components/Lizard_Window_Surface.py": {
-      "sha256": "a4b30b5ca096b861987679eca61c7aabc10db9d06284d767424ad88f315afba5",
-      "size": 3551
+      "sha256": "c50cacf5efddc9ebb5a7ab058e659c41805a07fd73291befdd8d8005040da626",
+      "size": 3630
     },
     "components/Lizard_Zone_Reg4108.py": {
-      "sha256": "cef7298d8cd5b63fa8943324bcc11b087d96059a359f42e0c70066ff83cac7d3",
-      "size": 34101
+      "sha256": "8c097e3ab418c449415198f6de7658d22b3c9f26180d7d730fdd4776a5d62643",
+      "size": 34126
     },
     "components/Lizard_Zone_Regime.py": {
-      "sha256": "d21c43d52a797228a8a6929f03289cfe04f4aabb0f74820afffc365208a130dc",
-      "size": 5656
+      "sha256": "ac4dde8d9758a420bbbc41ab17822f623bfe8ac9b230ef83d18e867caa092fed",
+      "size": 6398
     },
     "components/Lizard_b18_to_Rhino.py": {
-      "sha256": "c120ee032eee6503459d06e2ba0c634a4b07b3ff14a6c37a7938241a2bb20d34",
-      "size": 125548
+      "sha256": "f6f5f8d2bdd7ec83011de4a21efe1c465e4537180f53ecc2151880ccc691cb03",
+      "size": 125593
     },
     "components/Lizard_trnPLOT_installer.py": {
       "sha256": "591518eeb0f2e4f57bcf08729971ff06f500b80480b9219df78d91ac4e115498",
       "size": 1858
     },
     "trnlizard_icons.json": {
-      "sha256": "edcedf45b1bc916b9959e0d9ab0afb98742dc57271864377f2d31ffa7f97fb7c",
-      "size": 112837
+      "sha256": "e2d8a6c9279242cc225061745b0018d9cc1ddf9b6807b095c54124f85248616e",
+      "size": 113137
     },
     "trnlizard_presets.json": {
       "sha256": "2a2c554bf858447e34fb69abc3129e47cf4afd7d31083c63be5d642605ee8edf",

@@ -66,15 +66,19 @@ Args:
     Airnode (Brep): Script input Airnode.
         Access: list
         Required: True
+        Source: Lizard_Thermal_Airnode.Airnode
     Shading (Brep): Script input Shading.
         Access: list
         Required: False
+        Source: Lizard_Window_Scale.Shading
     AddDaylightGeometry (Brep): Script input AddDaylightGeometry.
         Access: list
         Required: False
+        Source: Lizard_AddDaylightGeometry.AddDaylightGeometry
     Coupling (object): Script input Coupling.
         Access: list
         Required: False
+        Source: Lizard_Coupling.coupling
     Timebase (object): Script input Timebase.
         Access: item
         Required: False
@@ -91,6 +95,7 @@ Args:
     ConstructionSet (object): default constructions from Lizard_Construction_Set for surfaces that have none after the adjacency is solved; a set on the airnode comes first, slot by slot. Not connected = such a surface is an error
         Access: item
         Required: False
+        Source: Lizard_Construction_Set.Set
 
 Returns:
     out (object): Log Information!!!

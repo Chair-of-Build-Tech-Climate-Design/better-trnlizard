@@ -8,6 +8,9 @@ The manifest also lists trnlizard_icons.json (same hash rule), so the updater do
 trnlizard_presets.json, the preset templates of presets/<preset>/ and presets/_shared/<cluster>/ (preset.json,
 object.xml, icon.png; see tools/import_presets.py) in one file.
 
+It also writes the tables of components/Lizard_Placeholder.py from the Options, Default and Source lines of the docstrings
+of all scripts. A Source line that names an output no script has stops the tool.
+
 The manifest lists every *.py of components/ that Lizard_Updater.findScripts picks up (not starting with '_'), named
 components/<script>.py, with the SHA256 of its normalized text (Lizard_Updater.getHash: no BOM, LF line endings, no trailing white space
 at the end, UTF-8) and the byte size of that normalized text, so CRLF checkouts and a BOM give the same manifest.
@@ -17,7 +20,7 @@ Only 'files' is compared: 'generated' (UTC time of the last change of 'files') i
 so writing the manifest again changes nothing.
 
 Plain CPython 3, nothing from Rhino. normalizeCode/getHash are copies of the updater's; tests/test_updater_github.py
-checks that both agree.
+checks that both agree. parseParams reads the same docstrings as the updater's parseDocstringIO; tests/test_placeholder.py checks that too.
 """
 
 import argparse
@@ -41,6 +44,8 @@ PRESETS_NAME = "trnlizard_presets.json"
 PRESETS_FOLDER = "presets"
 PRESETS_FORMAT = 1
 SHARED_FOLDER = "_shared"
+PLACEHOLDER_PATH = SCRIPTS_FOLDER + "/Lizard_Placeholder.py"
+PLACEHOLDER_TABLES = re.compile(r"(?<=do not edit\.\n).*?(?=# End of the written part\.\n)", re.DOTALL)
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -100,6 +105,64 @@ def buildPresets(root):
                     entry["icon"] = base64.b64encode(handle.read()).decode("ascii")
             target[name] = entry
     return json.dumps({"format": PRESETS_FORMAT, "presets": presets, "shared": shared}, indent=1, sort_keys=True) + "\n"
+
+
+def parseParams(code):
+    """(inputs, outputs) of the first docstring of a script: lists of {'name', 'type', 'options', 'default', 'sources'}; no separators."""
+    match = re.search(r'"""(.*?)"""', code, re.DOTALL)
+    sides = {"Args:": [], "Returns:": []}
+    side, current = None, None
+    for line in (match.group(1) if match else "").replace("\r\n", "\n").split("\n"):
+        if line.strip() in sides:
+            side, current = sides[line.strip()], None
+        elif side is not None and re.match(r"^    \S", line):
+            found = re.match(r"^    ([^(:]+?)(?:\s*\(([^)]*)\))?\s*:\s", line)
+            current = {"name": found.group(1).strip(), "type": (found.group(2) or "").strip(), "options": [], "default": None, "sources": []} if found else None
+            if current:
+                side.append(current)
+        elif current is not None:
+            found = re.match(r"^        (Options|Default|Source)\s*:\s*(.*\S)", line)
+            if found and found.group(1) == "Default":
+                current["default"] = found.group(2)
+            elif found:
+                current["options" if found.group(1) == "Options" else "sources"] = [text.strip() for text in found.group(2).split(",") if text.strip()]
+    return sides["Args:"], sides["Returns:"]
+
+
+def placeholderTables(root):
+    """Text of the tables of Lizard_Placeholder for the docstrings of a repository, one line per input.
+    Raises ValueError for a Source that names an output no script has."""
+    params = {}
+    for name in scriptNames(root):
+        with open(os.path.join(root, SCRIPTS_FOLDER, name), encoding="utf-8-sig") as handle:
+            params[name[:-len(".py")]] = parseParams(handle.read())
+    outputs = set(script + "." + param["name"] for script, (_, out) in params.items() for param in out)
+    options, sources = [], []
+    for script in sorted(params):
+        for param in params[script][0]:
+            key = json.dumps(script + "." + param["name"])
+            if param["options"]:
+                spec = {"type": param["type"], "options": param["options"]}
+                if param["default"] is not None:
+                    spec["default"] = param["default"]
+                options.append("    {0}: {1},\n".format(key, json.dumps(spec, sort_keys=True)))
+            if param["sources"]:
+                unknown = sorted(set(param["sources"]) - outputs)
+                if unknown:
+                    raise ValueError("Source of {0}.{1} names what no script gives: {2}".format(script, param["name"], ", ".join(unknown)))
+                sources.append("    {0}: {1},\n".format(key, json.dumps(param["sources"])))
+    return "OPTIONS = {{\n{0}}}\nSOURCES = {{\n{1}}}\n".format("".join(options), "".join(sources))
+
+
+def updatedPlaceholder(root):
+    """(path, its text, its text with the current tables) of Lizard_Placeholder, None when the repository does not have it."""
+    path = os.path.join(root, *PLACEHOLDER_PATH.split("/"))
+    if not os.path.isfile(path):
+        return None
+    with open(path, encoding="utf-8", newline="") as handle:
+        text = handle.read()
+    tables = placeholderTables(root)
+    return path, text, PLACEHOLDER_TABLES.sub(lambda match: tables, text, count=1)
 
 
 def manifestFiles(root):
@@ -186,6 +249,18 @@ def main(argv=None):
     args = parser.parse_args(argv)
     path = os.path.join(args.root, MANIFEST_NAME)
     previous = readManifest(path)
+    try:
+        placeholder = updatedPlaceholder(args.root)
+    except ValueError as error:
+        print(error)
+        return 1
+    if placeholder and placeholder[1] != placeholder[2]:
+        if args.check:
+            print("{0} out of date; run: python tools/build_manifest.py".format(PLACEHOLDER_PATH))
+            return 1
+        with open(placeholder[0], "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(placeholder[2])
+        print("{0} written".format(PLACEHOLDER_PATH))
     if not args.check:
         problem = updaterVersionProblem(updaterEntry(args.root, manifestFiles(args.root)), previous)
         if problem:

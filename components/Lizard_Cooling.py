@@ -18,6 +18,7 @@ Args:
     ControlledTemperature (object): temperature being control by ideal cooling
         Access: item
         Required: False
+        Options: OPERATIVE, AIR
     MaxRelHum (object): maximum relative humidity in zone
         Access: item
         Required: False

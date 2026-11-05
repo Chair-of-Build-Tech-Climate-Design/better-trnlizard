@@ -19,6 +19,7 @@ Many thanks to the original authors, **[Christian Frenzel](https://transsolar.co
 - **Constructions and gains.** Construction and boundary condition can be set separately, `Lizard_Construction_Set` fills what is left, and `Lizard_Zone_Regime` takes several gains of one kind.
 - **Hygrothermal walls.** `Lizard_Hygro` and a reworked coupling to TRNSYS Type 395 (HAMT). Type 395 itself is not part of this repository.
 - **Airflow and ventilation.** `Lizard_Trnflow_Network` defines a TRNFlow airflow network, and `Lizard_Stack_Ventilation_2` adds a second stack ventilation.
+- **Placeholder.** `Lizard_Placeholder` becomes what a wire needs: connect it to an input or output of a TRNLizard component and it is replaced by the Value List or component that fits, or asks which one. See [docs/placeholder.md](docs/placeholder.md).
 - **Checks.** `Lizard_Model_Inspect` shows the compiled model without writing anything, and an error upstream stops the components after it.
 - **Fixes.** Many fixes to the written b18 and deck, with a test suite that runs without Rhino.
 
@@ -68,7 +69,8 @@ For a pull request:
 
 - The `components/Lizard_*.py` scripts are IronPython 2 code. The tests run on plain Python 3: `python -m unittest discover -s tests`
 - After changing a script, icon or preset, run `python tools/build_manifest.py` and commit the result. CI checks it.
-- An input in the docstring of a script can have two more lines after `Required`. `Options: A, B` lists the values to choose from, for the mouse-over text. `Default: x` is the value the script uses when the input is not set: `Lizard_Updater` stores it on inputs that have no wire and no data, and the script has to treat "not set" the same way. `Required: True` means the script cannot run without the input: `Lizard_Updater` writes one line after the docstring that stops the script with an error when such an input has no data.
+- A line `StandardOutput: False` before `Args:` in the docstring of a script means that its UserObject has no output `out`.
+- An input in the docstring of a script can have more lines after `Required`. `Options: A, B` lists the values to choose from (`Label=value` for a value with a label), for the mouse-over text and for the Value List of `Lizard_Placeholder`. `Source: Lizard_X.Output, Lizard_Y.Output` names the outputs that feed the input: `Lizard_Placeholder` offers them, and offers the input for those outputs. `Default: x` is the value the script uses when the input is not set: `Lizard_Updater` stores it on inputs that have no wire and no data, and the script has to treat "not set" the same way. `Required: True` means the script cannot run without the input: `Lizard_Updater` writes one line after the docstring that stops the script with an error when such an input has no data. In Grasshopper all inputs stay optional, so that the script always runs and says what is missing.
 - After changing `components/Lizard_Updater.py`, raise its `UPDATER_VERSION`. Otherwise `tools/build_manifest.py` refuses to write the manifest.
 - When a change can stop a definition or change results, add an entry to [docs/breaking-changes](docs/breaking-changes/README.md).
 

@@ -24,6 +24,7 @@ Args:
     FrontBack (str): use if category = adjacent in order to define which part of the wall is front or back
         Access: item
         Required: False
+        Options: FRONT, BACK
 
 Returns:
     out (object): Log Information!!!

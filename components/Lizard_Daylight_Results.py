@@ -10,6 +10,7 @@ Args:
     Building (str): link with Building output from Results component (or a path to b18 file)
         Access: item
         Required: False
+        Source: Lizard_Output_Files.Building
     HourIlluminance (int): select hour to visualize the illuminance
         Access: item
         Required: False

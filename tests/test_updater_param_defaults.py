@@ -119,6 +119,14 @@ class GlueTests(UpdaterGlueTests):
         self.apply_scheduled(doc)
         return result
 
+    def test_an_input_that_is_not_optional_becomes_optional_in_a_current_component(self):
+        component = self.component()
+        self.update(component)
+        self.run_updater(Document([component]))  # shows the report of the update before
+        component.Params.Input[0].Optional = False
+        self.update(component)
+        self.assertTrue(component.Params.Input[0].Optional)
+
     def test_an_empty_input_of_a_current_component_gets_its_default_and_tooltip(self):
         component = self.component()
         self.update(component)

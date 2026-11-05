@@ -5,30 +5,39 @@ Args:
     Shader2 (object): Script variable Python
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader3 (object): Script input Shader3.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader4 (object): Script input Shader4.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader5 (object): Script input Shader5.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader6 (object): Script input Shader6.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader7 (object): Script input Shader7.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader8 (object): Script input Shader8.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Shader9 (object): Script input Shader9.
         Access: item
         Required: False
+        Source: Lizard_Operable_Shading.Shader
     Control (object): Script input Control.
         Access: item
         Required: False
+        Source: Lizard_Shading_Control.Control
 
 Returns:
     ComplexShade (object): Script output ComplexShade.

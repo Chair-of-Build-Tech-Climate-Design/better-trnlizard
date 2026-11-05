@@ -17,6 +17,7 @@ Args:
     FileUrl (object): *.b18 file path
         Access: item
         Required: True
+        Source: Lizard_Output_Files.Building
     BakeBuilding (object): bake building
         Access: item
         Required: False

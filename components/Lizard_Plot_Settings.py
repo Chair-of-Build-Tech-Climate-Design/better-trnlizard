@@ -38,18 +38,22 @@ Args:
     Data (object): Script variable PlotSettings
         Access: list
         Required: False
+        Source: Lizard_Plot_Data.Data_
     Type (object): Script variable PlotSettings
         Access: item
         Required: False
+        Options: Scatter=SCATTER, Sequence=SEQUENCE, Bar=BAR, Load=LOAD, Heatmap=HEAT, Histogram=HIST
     Comfort (object): Script variable PlotSettings
         Access: item
         Required: False
     Fill (object): Script variable PlotSettings
         Access: item
         Required: False
+        Options: None=none, ToZeroY=tozeroy
     Image (object): Script variable PlotSettings
         Access: item
         Required: False
+        Options: None=none, PNG=png, SVG=svg
     Width (object): Script variable PlotSettings
         Access: item
         Required: False

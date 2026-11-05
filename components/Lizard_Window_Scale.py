@@ -17,6 +17,7 @@ Args:
     Wall (Brep): Input wall geometry which has window
         Access: item
         Required: True
+        Source: Lizard_Deconstruct.SouthWall, Lizard_Deconstruct.WestWall, Lizard_Deconstruct.NorthWall, Lizard_Deconstruct.EastWall
 
 Returns:
     out (object): The execution information, as output and error streams

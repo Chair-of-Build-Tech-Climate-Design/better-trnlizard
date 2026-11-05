@@ -15,6 +15,7 @@ Args:
     Multizone (object): connect the output of Lizard_Multizone
         Access: item
         Required: True
+        Source: Lizard_Multizone.Multizone
     Standalone (bool): True = each airnode on its own, as PrintSingleSimFiles of Lizard_System does.
         Access: item
         Required: False

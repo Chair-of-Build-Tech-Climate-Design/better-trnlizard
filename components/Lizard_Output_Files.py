@@ -11,6 +11,7 @@ Args:
     Variants (object): Simulation output files
         Access: list
         Required: False
+        Source: Lizard_System.Variant
     FocusAirnode (object): Selecting focused airnode to post-process result
         Access: item
         Required: False

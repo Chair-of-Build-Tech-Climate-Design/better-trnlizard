@@ -14,24 +14,31 @@ Args:
     Monday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Tuesday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Wednesday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Thursday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Friday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Saturday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
     Sunday (object): link daily input information
         Access: item
         Required: True
+        Source: Lizard_Daily_Schedule.Daily_Schedule
 
 Returns:
     out (object): The execution information, as output and error streams

@@ -8,6 +8,7 @@ Args:
     Variant (object): Script input Folder.
         Access: item
         Required: True
+        Source: Lizard_System.Variant
 
 
 Returns:

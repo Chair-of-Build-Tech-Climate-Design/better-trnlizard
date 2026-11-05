@@ -15,6 +15,7 @@ Args:
     ControlledTemperature (object): temperature being control by ideal heating
         Access: item
         Required: False
+        Options: OPERATIVE, AIR
     MaxSpecHeatPower (object): maximum specific heating power
         Access: item
         Required: False

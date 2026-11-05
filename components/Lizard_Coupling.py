@@ -13,6 +13,7 @@ Args:
     Type (str): choose type
         Access: item
         Required: False
+        Options: PERMANENT, INVERSION, STVENT1, STVENT2, MECHANICAL
     ACRInversion (float): choose ACR for inversion
         Access: item
         Required: False

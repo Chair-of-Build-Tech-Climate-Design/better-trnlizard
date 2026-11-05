@@ -455,8 +455,38 @@ class UserObjectGlueTests(unittest.TestCase):
         self.assertEqual(["a", "-------- section", "b"], [p.VariableName for p in simple.Params.Input])
         self.assertEqual([("Type", "System.Double")], simple.Params.Input[0].TypeHints.selected)
         self.assertEqual([("Type", "System.String")], simple.Params.Input[2].TypeHints.selected)
-        self.assertFalse(simple.Params.Input[0].Optional)
-        self.assertTrue(simple.Params.Input[2].Optional)
+        self.assertTrue(all(param.Optional for param in simple.Params.Input))
+
+    def test_the_placeholder_has_no_standard_output(self):
+        code = (REPO_ROOT / "components" / "Lizard_Placeholder.py").read_text(encoding="utf-8")
+        entry = {"code": code, "info": self.updater.parseComponentInfo(code, "Lizard_Placeholder")}
+        comp = self.updater.buildUserObjectComponent(glue.LEGACY_ID, entry, [])
+        self.assertEqual(["Output"], [p.Name for p in comp.Params.Output])
+
+    def test_the_docstring_decides_about_the_standard_output(self):
+        keeps = self.updater.keepsStandardOutput
+        self.assertTrue(keeps(SIMPLE_SCRIPT))
+        self.assertTrue(keeps('"""\nStandardOutput: True\n"""\n'))
+        self.assertTrue(keeps('"""\nno line here\n"""\nStandardOutput: False\n'))
+        self.assertFalse(keeps('"""\nText.\n-\nStandardOutput: False\n\nArgs:\n"""\n'))
+        self.assertFalse(keeps('"""\r\nStandardOutput : False\r\n"""\r\n'))
+
+    def test_only_the_placeholder_has_no_standard_output(self):
+        declared = [path.stem for path in sorted((REPO_ROOT / "components").glob("Lizard_*.py"))
+                    if not self.updater.keepsStandardOutput(path.read_text(encoding="utf-8"))]
+        self.assertEqual(["Lizard_Placeholder"], declared)
+
+    def test_ghpython_hides_the_standard_output_with_its_own_switch(self):
+        comp = EmittedLegacy()
+        comp.HiddenOutOutput = False
+        self.updater.removeStandardOutput(comp)
+        self.assertTrue(comp.HiddenOutOutput)
+        self.assertEqual(["out", "a"], [p.Name for p in comp.Params.Output])
+
+    def test_other_scripts_keep_the_standard_output(self):
+        entry = {"code": SIMPLE_SCRIPT, "info": self.updater.parseComponentInfo(SIMPLE_SCRIPT, "Lizard_Simple")}
+        comp = self.updater.buildUserObjectComponent(glue.LEGACY_ID, entry, [])
+        self.assertEqual("out", comp.Params.Output[0].Name)
 
     def test_without_legacy_ghpython_a_python3_updater_reports_an_error_and_still_updates_the_canvas(self):
         del self.types[glue.LEGACY_ID]

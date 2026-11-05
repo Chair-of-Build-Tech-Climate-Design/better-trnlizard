@@ -18,9 +18,11 @@ Args:
     DckTemplate (object): this definition is used in order to replace the @variables with the information given in the variables dict
         Access: list
         Required: False
+        Source: Lizard_DCK_Template.DckTemplate
     Multizone (object): connect the output from the Multizone component
         Access: item
         Required: False
+        Source: Lizard_Multizone.Multizone, Lizard_GenMatrices.Multizone
     WriteSimulationFiles (object): generating simulation files
         Access: item
         Required: False
@@ -51,12 +53,14 @@ Args:
     StartMonth (object): first month of simulation time
         Access: item
         Required: False
+        Options: JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
     StopDay (object): last day of simulation time
         Access: item
         Required: False
     StopMonth (object): last month of simulation time
         Access: item
         Required: False
+        Options: JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
     UserEquations (object): define Equations that will be directly written in the dck file
         Access: list
         Required: False

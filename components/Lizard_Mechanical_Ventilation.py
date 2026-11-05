@@ -12,6 +12,7 @@ Args:
     Mode (object): Script variable Mechanical Ventilation
         Access: item
         Required: False
+        Options: STANDARD, AHU
     ACH (object): air changes per hour driven by mechanical ventilation
         Access: item
         Required: False
@@ -72,12 +73,14 @@ Args:
     RefTempSeason (object): define which temperature is used to determine the seasonal operation between summer and winter
         Access: item
         Required: False
+        Options: Outside Air Temperature=Tamb, 24h Mean Outside Air Temperature=Tamb_m24
     SummerRefTempSeasonAbove (object): setpoint temperature above that summer operation mode is active
         Access: item
         Required: False
     ActivateWinterReduction (object): Use reduced ventilation rates in winter
         Access: item
         Required: False
+        Options: ON=1, OFF=0
     WinterFraction (object): Define the fraction of winter ventilation
         Access: item
         Required: False

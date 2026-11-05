@@ -11,6 +11,7 @@ Args:
     Multizone (Brep): Multizone geometry
         Access: item
         Required: False
+        Source: Lizard_Multizone.Multizone
     ShaderTransparency (object): Transparency of shader geometry
         Access: item
         Required: False
@@ -26,6 +27,7 @@ Args:
     CalcMode (int): calculation mode
         Access: item
         Required: False
+        Options: SinglePatch=0, AllPatches=1
     NoPatch (object): ID number of skypatch
         Access: item
         Required: False
