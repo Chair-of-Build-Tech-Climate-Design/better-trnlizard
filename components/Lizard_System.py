@@ -5316,8 +5316,8 @@ if WriteSimulationFiles:
             dummy = readWeatherHead(weather_file,1)[0].strip()
             dummy = dummy.split(',')
             altitude =dummy[-1]
-            longitude=dummy[len(dummy)-3]
-            latitude =dummy[len(dummy)-2]
+            longitude=str(-float(dummy[len(dummy)-2]))
+            latitude =dummy[len(dummy)-3]
             gmt      =dummy[len(dummy)-4]
             timezone = str(float(gmt)*(-15))
         elif '.tmy2' in weather_file or '.tm2' in weather_file:
