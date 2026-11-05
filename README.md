@@ -83,7 +83,7 @@ Citations are welcome. If this project helps your work, please cite it and give 
   author  = {Xiao, Junfeng},
   title   = {Better {TRNLizard}},
   year    = {2026},
-  version = {V1.0.1},
+  version = {V1.0.2},
   url     = {https://github.com/JunfXiao/better-trnlizard}
 }
 ```
