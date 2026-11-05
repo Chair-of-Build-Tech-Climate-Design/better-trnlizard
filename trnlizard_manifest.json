@@ -1,10 +1,10 @@
 {
   "format": 2,
-  "generated": "2026-11-05T14:05:31Z",
+  "generated": "2026-11-05T14:05:45Z",
   "updater": {
     "path": "components/Lizard_Updater.py",
-    "version": 6,
-    "sha256": "ddb5ec0efe401350cbb37d296ebb0d409bb219b6bba628852a6e51e0e694972f"
+    "version": 7,
+    "sha256": "0dbf1a52438a4d9b540547cce31101d1eddec12733a8920aa51ba3b02abdde9d"
   },
   "files": {
     "components/Lizard_Active_CC_Layer.py": {
@@ -244,8 +244,8 @@
       "size": 10269
     },
     "components/Lizard_Updater.py": {
-      "sha256": "ddb5ec0efe401350cbb37d296ebb0d409bb219b6bba628852a6e51e0e694972f",
-      "size": 140521
+      "sha256": "0dbf1a52438a4d9b540547cce31101d1eddec12733a8920aa51ba3b02abdde9d",
+      "size": 142788
     },
     "components/Lizard_Variant_Definition.py": {
       "sha256": "ec5c049e8f3bce320b7e7ebb7e2c0ba42db0e96e9a3dd3417ffbdce37ca88223",

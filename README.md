@@ -47,7 +47,7 @@ The installer also moves the UserObjects of earlier TRNLizard installs out of th
 
 Add a `Lizard_Updater` component to the definition and set `runUpdate` to `True`. With an empty `source`, it follows `main` of the [chair's repository](https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard). A component that lost inputs or outputs is replaced by a new copy in a red group, next to the locked old one. The docstring at the top of [components/Lizard_Updater.py](components/Lizard_Updater.py) has the details.
 
-With a GitHub source, `Lizard_Updater` also upgrades itself. It checks the new version, including its syntax, before it replaces its own code. If a check fails, it stays as it is and the log points to the installer.
+`Lizard_Updater` also upgrades itself. It checks the new script, including its syntax, before it replaces its own code. From GitHub it takes a higher version. From a local folder it takes any script that has other code and not a lower version, as saved at that moment. If a check fails, it stays as it is and the log says what to do.
 
 Scripts changed by hand are left alone and listed under `errors`. Setting `force` to `True` overwrites them, and those changes are lost.
 

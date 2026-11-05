@@ -51,9 +51,10 @@ component (IronPython 2 in a GhPython or Rhino 8 Python 2 component, CPython 3 i
 replaces the code of this component right after this solution, and the new code carries on with the update. When a check
 fails, the script was changed by hand (see force) or this component cannot be changed in place, it stays as it is, the
 reason is listed under errors and the update goes on: use the installer of the latest release to upgrade. A local folder
-never upgrades the updater, and a source with a lower version never downgrades it: when its own code differs from
-Lizard_Updater.py of a folder or of a source of the same version, a warning is logged and listed under errors; paste the
-new code into this component by hand.
+upgrades the updater in the same way, also with the same version: when Lizard_Updater.py of the folder has other code and not a
+lower UPDATER_VERSION. There the code is taken as it is saved, without a manifest hash to compare, and the way out of a failed check
+is to paste it by hand. A source with a lower version never downgrades the updater. When its own code differs from a script it
+cannot or must not take, such as one of a GitHub source with the same version, a warning is logged and listed under errors.
 Every update also writes a Grasshopper UserObject (.ghuser) per component script of the source into the subfolder
 TRNLizard of the Grasshopper UserObjects folder (switch it off with makeUserObjects = False). Each UserObject is built
 from the script alone: a new IronPython script component with the params of the docstring and the Name, NickName,
@@ -138,7 +139,7 @@ REQUIRED_LINE_PATTERN = u'(?m)^import scriptcontext as _sc; .*# Lizard_Updater: 
 UNDO_NAME = 'Lizard_Updater'
 UPDATER_DESCRIPTION = 'Update the TRNLizard script components of this Grasshopper document from the TRNLizard scripts on GitHub or in a folder.'  # first paragraph of the docstring above
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 6                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 7                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -864,8 +865,9 @@ def installerAdvice(owner, repo):
 
 
 def selfUpgradeRefused(owner, repo, version, reason):
-    return u'Lizard_Updater was not upgraded to version {0}: {1}. {2}'.format(version, reason.rstrip(u'.'),
-                                                                              installerAdvice(owner, repo))
+    """Why the updater stays as it is; owner and repo None: the script came from a local folder."""
+    advice = installerAdvice(owner, repo) if owner else u'Paste Lizard_Updater.py of the source folder into this component by hand.'
+    return u'Lizard_Updater was not upgraded to version {0}: {1}. {2}'.format(version, reason.rstrip(u'.'), advice)
 
 
 def isSafeManifestName(name):
@@ -1695,6 +1697,15 @@ def planComponentCode(comp, cluster, source, newCode, log, force=False):
     return 'action', action
 
 
+def ownCode(updater):
+    """The code of this updater component, None when it cannot be read."""
+    updater = _impl(updater)
+    try:
+        return readComponentCode(updater, scriptKind(updater))
+    except Exception:
+        return None
+
+
 def checkSelf(updater, scripts, log, errors):
     """Log and list as an error when the code of this updater differs from Lizard_Updater.py of the folder; returns
     the message when it is outdated, '' when it is up to date, None when it could not be checked."""
@@ -2058,10 +2069,36 @@ def removeOtherCaches(root, current, log):
             log.append(u'Note: could not remove the old cache folder {0}: {1}'.format(name, e))
 
 
+def findFolderUpgrade(folder, upgrade, log, errors):
+    """Fill upgrade (see fetchSelfUpgrade) when Lizard_Updater.py of a folder has other code than this component and not a lower
+    version and passes the checks, else leave it, with the reason in errors when a check failed. upgrade['ownCode']: the code
+    of this component, None when it could not be read."""
+    path = findScripts(folder, []).get(UPDATER_SCRIPT)
+    code = readScript(path) if path else None
+    ownCode = upgrade.get('ownCode')
+    if code is None or ownCode is None or getHash(splitScriptHash(ownCode)[1]) == getHash(code):
+        return
+    version = parseUpdaterVersion(code)
+    if version is None or version < UPDATER_VERSION:
+        return
+    sha256 = getHash(code)
+    problem = checkCodeSyntax(code)
+    if upgrade.get('attempted') == sha256:
+        problem = u'the upgrade tried before did not take effect'
+    elif problem:
+        problem = u'its script fails the syntax check of this Python ({0})'.format(problem)
+    if problem:
+        message = selfUpgradeRefused(None, None, version, problem)
+        errors.append(message)
+        log.append(u'Error: ' + message)
+        return
+    upgrade.update({'version': version, 'path': path, 'sha256': sha256, 'code': code, 'owner': None, 'repo': None})
+
+
 def resolveSource(source, log, errors, upgrade=None):
-    """The folder with the scripts of the source input (see parseSource): a local folder as it is, a GitHub repository
-    through its cache folder (syncGitHubSource, which also fills upgrade). None, with the reason in errors, when there is
-    none or a new updater was found."""
+    """The folder with the scripts of the source input (see parseSource): a local folder as it is, which may also fill upgrade
+    (findFolderUpgrade), a GitHub repository through its cache folder (syncGitHubSource, which also fills upgrade). None, with
+    the reason in errors, when there is none or a new updater was found."""
     try:
         info = parseSource(source)
     except ValueError as e:
@@ -2071,6 +2108,10 @@ def resolveSource(source, log, errors, upgrade=None):
         if not os.path.isdir(info['path']):
             errors.append(u'Invalid source folder path: {0}'.format(info['path']))
             return None
+        if upgrade is not None:
+            findFolderUpgrade(info['path'], upgrade, log, errors)
+            if upgrade.get('code') is not None:
+                return None
         version = folderManifestFormat(info['path'])
         if version is not None and version > MANIFEST_FORMAT:
             message = tooOldForFolderMessage(info['path'], version, findScripts(info['path'], []).get(UPDATER_SCRIPT))
@@ -2098,15 +2139,16 @@ def scheduleSelfUpgrade(updater, upgrade, log, errors, force, reportKey):
         errors.append(message)
         log.append(u'Error: ' + message)
         return False
-    note = u'Lizard_Updater upgraded itself from version {0} to version {1}.'.format(UPDATER_VERSION, version)
+    note = u'Lizard_Updater upgraded itself from version {0} to version {1}{2}.'.format(
+        UPDATER_VERSION, version, u' (same version, new code)' if version == UPDATER_VERSION else u'')
     report = (log, [], [], errors)
 
     def callback(document):
         applySelfUpgrade(document, result, note, SELF_NOTE_KEY + guid, report, reportKey)
     sc.sticky[SELF_ATTEMPT_KEY + guid] = upgrade['sha256']
     doc.ScheduleSolution(1, Grasshopper.Kernel.GH_Document.GH_ScheduleDelegate(callback))
-    log.append(u'Lizard_Updater version {0} is available (this is version {1}): it upgrades itself right after this solution '
-               u'and then carries on with the update.'.format(version, UPDATER_VERSION))
+    log.append(u'Lizard_Updater version {0} from {2} is available (this is version {1}): it upgrades itself right after this solution '
+               u'and then carries on with the update.'.format(version, UPDATER_VERSION, upgrade['path']))
     return True
 
 
@@ -2751,7 +2793,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None
     note = sc.sticky.pop(SELF_NOTE_KEY + str(updater.InstanceGuid), None)
     if note:
         log.append(note)
-    upgrade = {'attempted': sc.sticky.get(SELF_ATTEMPT_KEY + str(updater.InstanceGuid))}
+    upgrade = {'attempted': sc.sticky.get(SELF_ATTEMPT_KEY + str(updater.InstanceGuid)), 'ownCode': ownCode(updater)}
     sourceFolder = resolveSource(source, log, errors, upgrade)
     if upgrade.get('code') is not None:
         if scheduleSelfUpgrade(updater, upgrade, log, errors, force is True, reportKey):
