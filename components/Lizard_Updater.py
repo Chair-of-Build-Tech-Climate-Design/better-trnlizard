@@ -34,7 +34,9 @@ value the script uses when the input is not set: an input without a wire and wit
 data, in new components and in existing ones, also when their code is up to date. Stored data is never overwritten, so
 a later change of a Default only reaches inputs that hold no data yet. Both are shown in the mouse-over text of the input.
 All document changes are made right after this solution, then the report of the finished update is shown.
-A script with inputs gets one more line after its docstring, written by the updater and not part of the hash. It first
+A script gets one more line after its docstring, written by the updater and not part of the hash. It first sets the
+description of the component to the first paragraph of the docstring: GhPython takes a docstring that starts without indent
+as one description, Args and Returns included, and the mouse-over text of the component overflows. It then
 calls the check of Lizard_Placeholder, which stops the script when a Lizard_Placeholder was just connected to one of its
 inputs; without a Lizard_Placeholder on the canvas that does nothing. Then it calls requireInputs of Lizard_Component with the
 names of the Required: True inputs, which stops the script with an error when one of them has no data; before Lizard_Component
@@ -127,13 +129,16 @@ RESTART_MESSAGE = (u'TRNLizard UserObjects were installed or updated. Restart Rh
                    u'tab.')
 SCRIPT_HASH_LINE = u'# Lizard_Updater hash of this script, do not edit: {0}\n'  # first line of every script it writes
 SCRIPT_HASH_PATTERN = u'^\ufeff?# Lizard_Updater hash of this script, do not edit: ([0-9a-fA-F]{64})[ \\t]*\\r?\\n'
-REQUIRED_LINE = (u'import scriptcontext as _sc; _sc.sticky.get("checkPlaceholder", lambda *args: None)(ghenv.Component); '
-                 u'_sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)'
-                 u'(ghenv.Component, [{0}])  # Lizard_Updater: required inputs, do not edit\n')  # after the docstring of a script with inputs
+# The line after the docstring of a script: these parts, for a long docstring and for a script with inputs
+REQUIRED_LINE = u'import scriptcontext as _sc; {0}  # Lizard_Updater: required inputs, do not edit\n'
+DESCRIPTION_CALL = u'ghenv.Component.Description = "{0}"'
+INPUTS_CALLS = (u'_sc.sticky.get("checkPlaceholder", lambda *args: None)(ghenv.Component); '
+                u'_sc.sticky.get(_sc.doc.Path, dict()).get("requireInputs", lambda *args: None)(ghenv.Component, [{0}])')
 REQUIRED_LINE_PATTERN = u'(?m)^import scriptcontext as _sc; .*# Lizard_Updater: required inputs, do not edit[ \\t]*\\r?\\n'
 UNDO_NAME = 'Lizard_Updater'
+UPDATER_DESCRIPTION = 'Update the TRNLizard script components of this Grasshopper document from the TRNLizard scripts on GitHub or in a folder.'  # first paragraph of the docstring above
 UPDATER_SCRIPT = 'Lizard_Updater'                         # base name of this script in the source folder
-UPDATER_VERSION = 5                                       # raise with every change of this script (tools/build_manifest.py insists)
+UPDATER_VERSION = 6                                       # raise with every change of this script (tools/build_manifest.py insists)
 SELF_ATTEMPT_KEY = 'Lizard_Updater_upgrade_'              # sc.sticky key + updater InstanceGuid: hash of the last upgrade tried
 SELF_NOTE_KEY = 'Lizard_Updater_upgraded_'                # sc.sticky key + InstanceGuid: logged by the new code; keep this name
 DEFAULT_SOURCE = 'https://github.com/Chair-of-Build-Tech-Climate-Design/better-trnlizard'
@@ -209,12 +214,18 @@ def splitScriptHash(code):
 
 
 def requiredLine(code):
-    """The line after the docstring that belongs to a script without its stamp lines, '' for a script without inputs and for
-    the updater, which needs nothing from the other scripts."""
-    inputs = [p for p in parseDocstringIO(code)[0] or [] if not p['separator']]
-    if not inputs or parseUpdaterVersion(code) is not None:
+    """The line after the docstring that belongs to a script without its stamp lines, '' when it has nothing to do: a script
+    without inputs whose docstring is its description, and the updater, which sets its own and needs nothing from the other scripts."""
+    if parseUpdaterVersion(code) is not None:
         return u''
-    return REQUIRED_LINE.format(u', '.join(u'"{0}"'.format(p['name']) for p in inputs if p['required']))
+    calls = []
+    description = scriptDescription(code)
+    if description and description != moduleDocstring(code).strip():
+        calls.append(DESCRIPTION_CALL.format(description.replace(u'\\', u'\\\\').replace(u'"', u'\\"').replace(u'\n', u'\\n')))
+    inputs = [p for p in parseDocstringIO(code)[0] or [] if not p['separator']]
+    if inputs:
+        calls.append(INPUTS_CALLS.format(u', '.join(u'"{0}"'.format(p['name']) for p in inputs if p['required'])))
+    return REQUIRED_LINE.format(u'; '.join(calls)) if calls else u''
 
 
 def writtenRequiredLine(code):
@@ -2828,6 +2839,7 @@ def updateDocument(source, runUpdate, makeUserObjects, cleanOld=None, force=None
 
 
 if 'ghenv' in globals():
+    ghenv.Component.Description = UPDATER_DESCRIPTION
     log, updated, skipped, errors = runUpdater(globals().get('source'), globals().get('runUpdate'),
                                                globals().get('makeUserObjects'), globals().get('cleanOldUserObjects'),
                                                globals().get('force'))

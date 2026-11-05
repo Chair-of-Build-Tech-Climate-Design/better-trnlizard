@@ -71,6 +71,32 @@ class LineTests(unittest.TestCase):
             exec(self.updater.requiredLine(SCRIPT), {"ghenv": SimpleNamespace(Component=SimpleNamespace())})
         self.assertEqual(["check", "require"], calls)
 
+    def test_the_line_sets_the_first_paragraph_as_description(self):
+        code = '"""\nIt says "hi" \\ twice\nin two lines.\n-\nCopyright\n\nArgs:\n    a (float): first\n        Access: item\n"""\n'
+        component = SimpleNamespace()
+        scriptcontext = ModuleType("scriptcontext")
+        scriptcontext.doc = SimpleNamespace(Path="doc")
+        scriptcontext.sticky = {}
+        with mock.patch.dict(sys.modules, {"scriptcontext": scriptcontext}):
+            exec(self.updater.requiredLine(code), {"ghenv": SimpleNamespace(Component=component)})
+        self.assertEqual('It says "hi" \\ twice\nin two lines.', component.Description)
+
+    def test_a_docstring_that_is_only_its_description_needs_no_line(self):
+        self.assertEqual("", self.updater.requiredLine('"""Just this."""\nx = 1\n'))
+
+    def test_the_description_of_the_updater_is_the_first_paragraph_of_its_docstring(self):
+        code = COMPONENT.with_name("Lizard_Updater.py").read_text(encoding="utf-8")
+        self.assertEqual(self.updater.scriptDescription(code), self.updater.UPDATER_DESCRIPTION)
+
+    def test_no_description_is_long_and_every_script_gets_the_short_one(self):
+        for path in COMPONENT.parent.glob("Lizard_*.py"):
+            code = path.read_text(encoding="utf-8")
+            description = self.updater.scriptDescription(code)
+            self.assertNotIn("Args:", description, path.name)
+            self.assertLess(len(description), 700, path.name)
+            if path.name != "Lizard_Updater.py" and "Args:" in self.updater.moduleDocstring(code):
+                self.assertIn("ghenv.Component.Description", self.updater.requiredLine(code), path.name)
+
     def test_the_hash_is_that_of_the_script_alone(self):
         stamped = self.updater.stampCode(SCRIPT)
         stored, body = self.updater.splitScriptHash(stamped)
